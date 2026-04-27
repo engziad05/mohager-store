@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مُهاجر | Mohager</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;600;800&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* --- نظام الألوان لبراند مُهاجر --- */
+            --bg-base: #0D0D0B;
+            --bg-surface: #1C1C15;
+            --gold: #C8A96E;
+            --gold-dark: #8B6914;
+            --terracotta: #C4523A;
+            --sand: #E8D5B0;
+            --cream: #F2EDE4;
+            --umber: #4A3728;
+
+            /* --- نظام الخطوط --- */
+            --font-ar-display: 'Aref Ruqaa', serif;
+            --font-ar-body: 'Cairo', sans-serif;
+            --font-en-display: 'Cinzel', serif;
+            --font-en-body: 'Cormorant Garamond', serif;
+        }
+
+        body { 
+            background-color: var(--bg-base); 
+            color: var(--cream); 
+            font-family: var(--font-ar-body); /* الخط الافتراضي دلوقتي عربي */
+            margin: 0; 
+        }
+        
+        /* تصميم الـ Navbar */
+        header { 
+            padding: 20px 50px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--umber); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .logo { 
+            font-family: var(--font-ar-display); /* خط اللوجو */
+            font-size: 2.5rem; 
+            text-decoration: none; 
+            color: var(--gold); 
+        }
+        .nav-links a { 
+            margin: 0 15px; 
+            text-decoration: none; 
+            color: var(--sand); 
+            font-weight: 700; 
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--gold); }
+        
+        /* تصميم شبكة المنتجات (Grid) */
+        .container { 
+            padding: 50px; 
+            max-width: 1200px; 
+            margin: auto; 
+        }
+        .section-title { 
+            text-align: center; 
+            margin-bottom: 40px; 
+            font-size: 2rem; 
+            font-weight: 800;
+            color: var(--cream);
+        }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 30px; 
+        }
+        
+        /* تصميم كارت المنتج */
+        .card { 
+            background: var(--bg-surface); 
+            padding: 15px; 
+            border-radius: 10px; 
+            border: 1px solid var(--umber); 
+            text-align: center; 
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; 
+        }
+        .card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.8); 
+            border-color: var(--gold-dark);
+        }
+        .card img { 
+            width: 100%; 
+            height: 350px; 
+            object-fit: cover; 
+            border-radius: 5px; 
+            background: var(--bg-base); 
+        }
+        .card h3 { 
+            margin: 15px 0 5px; 
+            font-size: 1.3rem; 
+            font-weight: 800; 
+            color: var(--cream);
+        }
+        .card p { 
+            color: var(--sand); 
+            margin: 0 0 15px; 
+            font-size: 0.9rem; 
+            font-weight: 600; 
+        }
+        .btn { 
+            display: inline-block; 
+            padding: 10px 25px; 
+            background: var(--terracotta); 
+            color: var(--cream); 
+            text-decoration: none; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            transition: background 0.3s;
+        }
+        .btn:hover { background: #a8422e; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo">مُــهــاجــر</a>
+        <div class="nav-links">
+            <a href="/">الرئيسية</a>
+            <a href="#">التيشيرتات</a>
+            <a href="#">الهوديز</a>
+            <a href="#">عربة التسوق (0)</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">أحدث الإصدارات</h2>
+        
+        <div class="grid">
+            {% for product in products %}
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Mohager Item">
+                <h3>{{ product.name_ar }}</h3>
+                <p>القسم: {{ product.category.name_ar }}</p>
+                <a href="#" class="btn">التفاصيل</a>
+            </div>
+            {% empty %}
+            <p style="text-align: center; width: 100%; color: var(--sand);">جاري إضافة كوليكشن مُهاجر الجديد قريباً...</p>
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+</html>
