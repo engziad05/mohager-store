@@ -2,12 +2,12 @@ from django.contrib import admin
 from unfold.admin import ModelAdmin, TabularInline
 from .models import Category, Product, ProductVariant, ProductImage, HeroSlide, Cart, CartItem, Order, OrderItem
 
-# 1. تظبيط صور المنتج
+# 1. تظبيط صور المنتج الإضافية
 class ProductImageInline(TabularInline):
     model = ProductImage
     extra = 1
 
-# 2. تظبيط مقاسات المنتج (Variants)
+# 2. تظبيط مقاسات وألوان المنتج (Variants)
 class ProductVariantInline(TabularInline):
     model = ProductVariant
     extra = 1
@@ -15,7 +15,8 @@ class ProductVariantInline(TabularInline):
 # 3. تظبيط عرض المنتج في لوحة التحكم
 @admin.register(Product)
 class ProductAdmin(ModelAdmin):
-    list_display = ['name_ar', 'category', 'price', 'color', 'is_active']
+    # شيلنا color وغيرنا price لـ base_price عشان تطابق الموديل الجديد
+    list_display = ['name_ar', 'category', 'base_price', 'is_active']
     list_filter = ['category', 'is_active']
     search_fields = ['name_ar', 'name_en']
     inlines = [ProductVariantInline, ProductImageInline]
@@ -30,24 +31,25 @@ class CategoryAdmin(ModelAdmin):
 class OrderItemInline(TabularInline):
     model = OrderItem
     extra = 0
-    # الحقول دي قراءة فقط عشان الدقة
+    # الحقول دي قراءة فقط عشان محدش يلعب في الفاتورة بعد ما تتدفع
     readonly_fields = ['product', 'variant', 'quantity', 'price'] 
 
-# 6. تظبيط عرض الطلبات (الفواتير) - تم تصحيح status هنا
+# 6. تظبيط عرض الطلبات (الفواتير)
 @admin.register(Order)
 class OrderAdmin(ModelAdmin):
-    # غيرنا status لـ is_completed عشان تطابق الموديل بتاعك
-    list_display = ['id', 'full_name', 'phone', 'is_completed', 'total_price', 'created_at']
-    list_filter = ['is_completed', 'created_at']
+    # رجعنا status بدل is_completed عشان دورة حياة الطلب تبقى واضحة
+    list_display = ['id', 'full_name', 'phone', 'status', 'total_price', 'created_at']
+    list_filter = ['status', 'created_at', 'region']
     search_fields = ['full_name', 'phone']
     inlines = [OrderItemInline]
 
-# 7. تسجيل باقي الموديلات
+# 7. تسجيل البانر الرئيسي
 @admin.register(HeroSlide)
 class HeroSlideAdmin(ModelAdmin):
     list_display = ['title_ar', 'order', 'is_active']
     list_editable = ['order', 'is_active']
 
+# 8. تسجيل السلة
 @admin.register(Cart)
 class CartAdmin(ModelAdmin):
-    list_display = ['id', 'created_at'] # شيلنا user لو السلة بتشتغل بـ session بس
+    list_display = ['id', 'created_at']
