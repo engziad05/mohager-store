@@ -1,0 +1,32 @@
+:root {
+    /* باليتة ألوان مُهاجر الرسمية */
+    --bg-base: #0D0D0B;
+    --bg-surface: #1C1C15;
+    --gold: #C8A96E;
+    --gold-dark: #8B6914;
+    --terracotta: #C4523A;
+    --sand: #E8D5B0;
+    --cream: #F2EDE4;
+    --umber: #4A3728;
+
+    --font-ar: 'Aref Ruqaa', serif;
+    --font-en: 'Cinzel', serif;
+}
+
+/* إجبار الموقع كله ياخد اللون الأساسي */
+body {
+    background-color: var(--bg-base) !important;
+    color: var(--cream);
+    margin: 0;
+    font-family: var(--font-ar);
+}
+
+/* تظبيط اللينكات عشان متبقاش زرقا */
+a {
+    color: var(--sand);
+    text-decoration: none;
+    transition: 0.3s;
+}
+a:hover {
+    color: var(--gold);
+}

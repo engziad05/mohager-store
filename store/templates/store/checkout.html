@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} مُهاجر | إتمام الطلب {% endblock %}
+
+{% block content %}
+<div style="padding: 60px 5%; direction: rtl; max-width: 800px; margin: auto;">
+    
+    <h1 style="font-family: var(--font-ar); color: var(--gold); font-size: 2.5rem; margin-bottom: 40px; text-align: center;">إتمام الطلب</h1>
+    
+   <form method="POST" action="{% url 'checkout' %}" style="background: var(--bg-surface); padding: 40px; border-radius: 15px; border: 1px solid var(--umber); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        {% csrf_token %}
+        
+        <!-- قسم التواصل -->
+        <h3 style="color: var(--gold); font-family: var(--font-ar); border-bottom: 1px solid var(--umber); padding-bottom: 10px; margin-bottom: 20px;">تواصل</h3>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="color: var(--cream); font-family: var(--font-ar); display: block; margin-bottom: 8px;">رقم التليفون <span style="color: #ff4d4d;">*</span></label>
+            <input type="tel" name="phone" placeholder="+201xxxxxxxxx" required style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-en); font-size: 1.1rem; box-sizing: border-box;">
+        </div>
+
+        <div style="margin-bottom: 30px;">
+            <label style="color: var(--cream); font-family: var(--font-ar); display: block; margin-bottom: 8px;">الإيميل <span style="color: #888; font-size: 0.9rem;">(اختياري)</span></label>
+            <input type="email" name="email" placeholder="أدخل عنوان بريدك الإلكتروني" style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box;">
+            <small style="display: block; margin-top: 8px; color: #aaa; font-family: 'Cairo', sans-serif; font-size: 0.9rem; font-weight: 600;">
+    سنرسل ملخص الطلب إلى بريدك الإلكتروني.
+</small>
+        </div>
+
+        <!-- قسم عنوان الشحن -->
+        <h3 style="color: var(--gold); font-family: var(--font-ar); border-bottom: 1px solid var(--umber); padding-bottom: 10px; margin-bottom: 20px;">عنوان الشحن</h3>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="color: var(--cream); font-family: var(--font-ar); display: block; margin-bottom: 8px;">الاسم كامل <span style="color: #ff4d4d;">*</span></label>
+            <input type="text" name="full_name" placeholder="الاسم الأول والأخير" required style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box;">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="color: var(--cream); font-family: var(--font-ar); display: block; margin-bottom: 8px;">العنوان <span style="color: #ff4d4d;">*</span></label>
+            <input type="text" name="address" placeholder="اسم الشارع أو الكمباوند" required style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box;">
+        </div>
+
+        <!-- عمارة، دور، شقة (جنب بعض) -->
+        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+            <div style="flex: 1;">
+                <input type="text" name="building" placeholder="عمارة" required style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box;">
+            </div>
+            <div style="flex: 1;">
+                <input type="text" name="floor" placeholder="دور" required style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box;">
+            </div>
+            <div style="flex: 1;">
+                <input type="text" name="apartment" placeholder="شقة" required style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box;">
+            </div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <input type="text" name="landmark" placeholder="علامة مميزة (اختياري)" style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box;">
+        </div>
+
+        <div style="margin-bottom: 30px;">
+            <label style="color: var(--cream); font-family: var(--font-ar); display: block; margin-bottom: 8px;">المحافظة / المنطقة <span style="color: #ff4d4d;">*</span></label>
+            <select name="region" required style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box; outline: none; cursor: pointer;">
+                <option value="" disabled selected>اختر المحافظة...</option>
+                {% for province in provinces %}
+                    <option value="{{ province }}">{{ province }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- طريقة الدفع -->
+        <h3 style="color: var(--gold); font-family: var(--font-ar); border-bottom: 1px solid var(--umber); padding-bottom: 10px; margin-bottom: 20px;">طريقة الدفع</h3>
+        
+        <div style="background: var(--bg-base); border: 1px solid var(--gold); padding: 15px 20px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <input type="radio" checked style="accent-color: var(--gold); width: 20px; height: 20px;">
+                <span style="color: var(--cream); font-family: var(--font-ar); font-size: 1.2rem; font-weight: bold;">دفع عند الاستلام</span>
+            </div>
+            <i class="fas fa-money-bill-wave" style="color: var(--gold); font-size: 1.5rem;"></i>
+        </div>
+
+        <!-- زرار التأكيد -->
+        <button type="submit" style="width: 100%; background-color: #000; border: 2px solid var(--gold); color: var(--gold); padding: 20px; border-radius: 10px; font-weight: bold; font-size: 1.5rem; font-family: var(--font-ar); cursor: pointer; transition: 0.3s; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(200, 169, 110, 0.2);" onmouseover="this.style.backgroundColor='var(--gold)'; this.style.color='#000';" onmouseout="this.style.backgroundColor='#000'; this.style.color='var(--gold)';">
+            <span>تأكيد الطلب</span>
+            <span style="font-family: var(--font-en);">{{ total_price }} EGP</span>
+        </button>
+
+        <p style="text-align: center; color: #888; font-family: var(--font-ar); margin-top: 20px;">
+            <i class="fas fa-lock" style="margin-left: 5px;"></i> يتم تخزين بياناتك بأمان.
+        </p>
+
+    </form>
+</div>
+{% endblock %}

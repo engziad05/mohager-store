@@ -3,154 +3,398 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مُهاجر | Mohager</title>
+    <title>مُهاجر | الصفحة الرئيسية</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;600;800&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     <style>
+        /* الألوان الأساسية للموقع */
         :root {
-            /* --- نظام الألوان لبراند مُهاجر --- */
-            --bg-base: #0D0D0B;
-            --bg-surface: #1C1C15;
-            --gold: #C8A96E;
-            --gold-dark: #8B6914;
-            --terracotta: #C4523A;
-            --sand: #E8D5B0;
-            --cream: #F2EDE4;
-            --umber: #4A3728;
-
-            /* --- نظام الخطوط --- */
-            --font-ar-display: 'Aref Ruqaa', serif;
-            --font-ar-body: 'Cairo', sans-serif;
-            --font-en-display: 'Cinzel', serif;
-            --font-en-body: 'Cormorant Garamond', serif;
+            --primary-gold: #cfa872;
+            --bg-dark: #121212;
+            --card-bg: #1e1e1e;
+            --text-light: #ffffff;
+            --text-muted: #888888;
         }
 
-        body { 
-            background-color: var(--bg-base); 
-            color: var(--cream); 
-            font-family: var(--font-ar-body); /* الخط الافتراضي دلوقتي عربي */
-            margin: 0; 
+        body {
+            margin: 0;
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
         }
-        
-        /* تصميم الـ Navbar */
-        header { 
-            padding: 20px 50px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            background: var(--bg-surface);
-            border-bottom: 1px solid var(--umber); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+
+        h1, h2, h3, .brand-logo {
+            font-family: 'Aref Ruqaa', serif;
         }
-        .logo { 
-            font-family: var(--font-ar-display); /* خط اللوجو */
-            font-size: 2.5rem; 
-            text-decoration: none; 
-            color: var(--gold); 
+
+        /* شريط التنقل (الناف بار) */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5% ;
+            background-color: #000;
+            border-bottom: 2px solid var(--primary-gold);
         }
-        .nav-links a { 
-            margin: 0 15px; 
-            text-decoration: none; 
-            color: var(--sand); 
-            font-weight: 700; 
+
+        .brand-logo {
+            font-size: 2.5em;
+            color: var(--primary-gold);
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 1.1em;
             transition: color 0.3s;
         }
-        .nav-links a:hover { color: var(--gold); }
-        
-        /* تصميم شبكة المنتجات (Grid) */
-        .container { 
-            padding: 50px; 
-            max-width: 1200px; 
-            margin: auto; 
+
+        .nav-links a:hover {
+            color: var(--primary-gold);
         }
-        .section-title { 
-            text-align: center; 
-            margin-bottom: 40px; 
-            font-size: 2rem; 
-            font-weight: 800;
-            color: var(--cream);
+
+        /* سيكشن الترحيب */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
         }
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 30px; 
+
+        .hero h1 {
+            color: var(--primary-gold);
+            font-size: 3.5em;
+            margin-bottom: 10px;
         }
-        
-        /* تصميم كارت المنتج */
-        .card { 
-            background: var(--bg-surface); 
-            padding: 15px; 
-            border-radius: 10px; 
-            border: 1px solid var(--umber); 
-            text-align: center; 
-            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; 
+
+        /* شبكة المنتجات (الجريد) */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 20px 5%;
+            margin-bottom: 50px;
         }
-        .card:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.8); 
-            border-color: var(--gold-dark);
+
+        /* كارت المنتج */
+        .product-card {
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s, border-color 0.3s;
         }
-        .card img { 
-            width: 100%; 
-            height: 350px; 
-            object-fit: cover; 
-            border-radius: 5px; 
-            background: var(--bg-base); 
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-gold);
         }
-        .card h3 { 
-            margin: 15px 0 5px; 
-            font-size: 1.3rem; 
-            font-weight: 800; 
-            color: var(--cream);
+
+        .product-image-placeholder {
+            height: 250px;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-size: 1.2em;
         }
-        .card p { 
-            color: var(--sand); 
-            margin: 0 0 15px; 
-            font-size: 0.9rem; 
-            font-weight: 600; 
+
+        .product-card h3 {
+            font-size: 1.8em;
+            margin: 10px 0;
+            color: var(--text-light);
         }
-        .btn { 
-            display: inline-block; 
-            padding: 10px 25px; 
-            background: var(--terracotta); 
-            color: var(--cream); 
-            text-decoration: none; 
-            border-radius: 5px; 
-            font-weight: bold; 
-            transition: background 0.3s;
+
+        .product-price {
+            color: var(--primary-gold);
+            font-weight: bold;
+            font-size: 1.4em;
+            margin-bottom: 15px;
         }
-        .btn:hover { background: #a8422e; }
+
+        .add-to-cart-btn {
+            background-color: var(--primary-gold);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #b8925a;
+        }
+        /* تنسيقات الناف بار الجديد */
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .nav-icons a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+        .nav-icons a:hover {
+            color: var(--primary-gold);
+        }
+        .cart-count {
+            background: var(--primary-gold);
+            color: #000;
+            padding: 2px 7px;
+            border-radius: 50%;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        /* تنسيقات الفوتر */
+        .site-footer {
+            background-color: #000;
+            border-top: 1px solid #333;
+            padding: 50px 5% 20px;
+            margin-top: 60px;
+        }
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-section h4 {
+            color: var(--primary-gold);
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-family: 'Aref Ruqaa', serif;
+        }
+        .footer-section p, .footer-section a {
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 12px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .footer-section a:hover, .footer-section p i {
+            color: var(--text-light);
+        }
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        .social-icons a {
+            font-size: 1.5em;
+        }
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #222;
+            color: #555;
+            font-size: 0.9em;
+        }
+        /* تنسيقات السلايدر الجديد */
+        .hero-slider {
+            width: 100%;
+            background-color: #080808;
+            border-bottom: 2px solid var(--primary-gold);
+            position: relative;
+            overflow: hidden;
+        }
+        .slide-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 80vh; /* التعديل هنا: خليناه ياخد 80% من طول الشاشة */
+            padding: 0 5%;
+        }
+        .slide-text {
+            flex: 1;
+            padding: 40px;
+        }
+        .slide-text h2 {
+            font-size: 3.5em;
+            color: var(--text-light);
+            font-family: 'Aref Ruqaa', serif;
+            margin-bottom: 15px;
+        }
+        .slide-text p {
+            font-size: 1.2em;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .slide-btn {
+            background-color: var(--primary-gold);
+            color: #000;
+            padding: 12px 30px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: 0.3s;
+            display: inline-block;
+        }
+        .slide-btn:hover {
+            background-color: #b8925a;
+            transform: scale(1.05);
+        }
+        .slide-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide-image img {
+            width: 100%;
+            max-width: 700px; /* كبرنا العرض */
+            height: 550px; /* كبرنا الطول */
+            object-fit: cover; /* عشان الصورة تملى المساحة من غير ما تتمط */
+            border-radius: 16px; /* حواف مدورة شيك */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5); /* ضل فخم للصورة */
+        }
+        /* للموبايل */
+        @media (max-width: 768px) {
+            .slide-content {
+                flex-direction: column-reverse;
+                text-align: center;
+                padding: 40px 5%;
+            }
+            .slide-image img {
+                height: 300px;
+                margin-bottom: 20px;
+            }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="/" class="logo">مُــهــاجــر</a>
-        <div class="nav-links">
+        <a href="/" class="brand-logo">مُهاجر</a>
+        <nav class="nav-links">
             <a href="/">الرئيسية</a>
-            <a href="#">التيشيرتات</a>
-            <a href="#">الهوديز</a>
-            <a href="#">عربة التسوق (0)</a>
+            <a href="#">المنتجات</a>
+        </nav>
+        <div class="nav-icons">
+            <a href="#" title="تغيير اللغة"><i class="fas fa-globe"></i> EN</a>
+            <a href="#" title="تسجيل الدخول"><i class="fas fa-user"></i> دخول</a>
+            <a href="{% url 'cart_detail' %}" title="عربة التسوق" style="color: var(--primary-gold); font-weight: bold;">
+            <i class="fas fa-shopping-cart"></i> السلة <span class="cart-count">{{ cart_count|default:0 }}</span>
+        </a>
         </div>
     </header>
 
-    <div class="container">
-        <h2 class="section-title">أحدث الإصدارات</h2>
-        
-        <div class="grid">
-            {% for product in products %}
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Mohager Item">
-                <h3>{{ product.name_ar }}</h3>
-                <p>القسم: {{ product.category.name_ar }}</p>
-                <a href="#" class="btn">التفاصيل</a>
+    <section class="hero-slider swiper">
+        <div class="swiper-wrapper">
+            {% for slide in slides %}
+            <div class="swiper-slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2>{{ slide.title_ar }}</h2>
+                        <p>{{ slide.subtitle_ar }}</p>
+                        <a href="{{ slide.btn_url }}" class="slide-btn">{{ slide.btn_text_ar }}</a>
+                    </div>
+                    <div class="slide-image">
+                        <img src="{{ slide.image.url }}" alt="{{ slide.title_ar }}">
+                    </div>
+                </div>
             </div>
             {% empty %}
-            <p style="text-align: center; width: 100%; color: var(--sand);">جاري إضافة كوليكشن مُهاجر الجديد قريباً...</p>
+            <div class="swiper-slide">
+                <div class="slide-content" style="justify-content: center;">
+                    <h2 style="color: var(--primary-gold);">مرحباً بك في مُهاجر</h2>
+                </div>
+            </div>
             {% endfor %}
         </div>
-    </div>
+        <div class="swiper-button-next" style="color: var(--primary-gold);"></div>
+        <div class="swiper-button-prev" style="color: var(--primary-gold);"></div>
+        <div class="swiper-pagination"></div>
+    </section>
+
+    <section class="products-grid">
+        {% if products %}
+            {% for product in products %}
+                <div class="product-card" data-aos="zoom-in" data-aos-duration="800" data-aos-offset="100">
+                   <a href="{% url 'product_detail' product.id %}" style="text-decoration: none; color: inherit;">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name_ar }}" style="width: 100%; height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
+                {% else %}
+                    <div class="product-image-placeholder" style="height: 350px;">لا توجد صورة</div>
+                {% endif %}
+                
+                <h3>{{ product.name_ar }}</h3>
+            </a>
+</a>
+                    <p class="product-price">{{ product.price }} ج.م</p>
+                    <button class="add-to-cart-btn">أضف للسلة</button>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 50px;">
+                <h2>جاري إضافة كوليكشن مُهاجر الجديد قريباً...</h2>
+            </div>
+        {% endif %}
+        </section>
+        <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>تواصل معنا</h4>
+                <p><i class="fas fa-phone" style="margin-left: 8px;"></i> 19966</p>
+                <p><i class="fas fa-envelope" style="margin-left: 8px;"></i> support@mohager.com</p>
+            </div>
+            <div class="footer-section">
+                <h4>معلومات تهمك</h4>
+                <a href="#">سياسة الاسترجاع</a>
+                <a href="#">الشروط والأحكام</a>
+                <a href="#">عن مُهاجر</a>
+            </div>
+            <div class="footer-section">
+                <h4>تابعنا</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 متجر مُهاجر. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper(".hero-slider", {
+            loop: true,
+            autoplay: { delay: 4000, disableOnInteraction: false },
+            pagination: { el: ".swiper-pagination", clickable: true },
+            navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+        });
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // تشغيل أنميشن السكرول
+        AOS.init({
+            once: true, // الأنميشن يحصل مرة واحدة بس لما تنزل عشان ميوجعش العين طالع نازل
+        });
+    </script>
 
 </body>
 </html>

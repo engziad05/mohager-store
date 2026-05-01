@@ -1,5 +1,12 @@
-venv/
-*.sqlite3
-__pycache__/
+# Environments
 .env
+.venv/
+env/
+venv/
+
+# Python & Django
+__pycache__/
+*.pyc
+db.sqlite3
 media/
+staticfiles/
