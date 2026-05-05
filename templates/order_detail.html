@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}مُهاجر | تفاصيل الطلب #{{ order.id }}{% endblock %}
+
+{% block content %}
+<style>
+    .order-container {
+        max-width: 900px; margin: 50px auto; padding: 30px;
+        background-color: var(--bg-surface); border-radius: 15px;
+        border: 1px solid #333; color: #fff; font-family: var(--font-body);
+    }
+    /* تنسيق شريط التتبع */
+    .track-stepper {
+        display: flex; justify-content: space-between; list-style: none; padding: 0; margin: 40px 0; position: relative;
+    }
+    .track-stepper::before {
+        content: ''; position: absolute; top: 15px; left: 0; right: 0; height: 3px; background: #333; z-index: 1;
+    }
+    .step {
+        text-align: center; position: relative; z-index: 2; flex: 1;
+    }
+    .step .icon {
+        width: 35px; height: 35px; background: #222; border: 3px solid #444; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: #666; font-size: 0.9rem; transition: 0.3s;
+    }
+    /* التعديل السحري هنا: شلنا السطر اللي كان بيعكس الألوان وزودنا قوة الـ active */
+    .track-stepper .step.active .icon {
+        background: var(--gold); border-color: var(--gold); color: #000;
+    }
+    .track-stepper .step.active p { 
+        color: var(--gold); 
+    }
+    .step p { color: #888; font-size: 0.9rem; font-weight: bold; margin: 0; }
+</style>
+
+<div class="order-container">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 20px;">
+        <h2 style="color: var(--gold); margin: 0;">طلب رقم #{{ order.id }}</h2>
+        <a href="/dashboard" style="color: #aaa; text-decoration: none;"><i class="fas fa-arrow-right"></i> عودة للوحة التحكم</a>
+    </div>
+
+    <!-- شريط التتبع -->
+    <ul class="track-stepper">
+        <!-- قيد الانتظار -->
+        <li class="step {% if order.status in 'Pending,Processing,Shipped,Delivered' %}active{% endif %}">
+            <div class="icon"><i class="fas fa-clipboard-list"></i></div>
+            <p>قيد الانتظار</p>
+        </li>
+        <!-- جاري التجهيز -->
+        <li class="step {% if order.status in 'Processing,Shipped,Delivered' %}active{% endif %}">
+            <div class="icon"><i class="fas fa-box-open"></i></div>
+            <p>قيد التجهيز</p>
+        </li>
+        <!-- تم الشحن -->
+        <li class="step {% if order.status in 'Shipped,Delivered' %}active{% endif %}">
+            <div class="icon"><i class="fas fa-truck"></i></div>
+            <p>تم الشحن</p>
+        </li>
+        <!-- تم التوصيل -->
+        <li class="step {% if order.status == 'Delivered' %}active{% endif %}">
+            <div class="icon"><i class="fas fa-home"></i></div>
+            <p>تم التوصيل</p>
+        </li>
+    </ul>
+
+    <!-- لو الطلب ملغي -->
+    {% if order.status == 'Cancelled' %}
+    <div style="background: #4a0000; padding: 15px; border-radius: 8px; text-align: center; color: #ff6b6b; margin-bottom: 30px;">
+        <i class="fas fa-times-circle"></i> تم إلغاء هذا الطلب.
+    </div>
+    {% endif %}
+
+    <!-- تفاصيل المنتجات (هتظهر هنا لما نربطها) -->
+    <div style="background: #1a1a1a; padding: 20px; border-radius: 10px; border: 1px solid #333;">
+        <h3 style="color: var(--cream); margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px;">تفاصيل الدفع والتوصيل</h3>
+        <p style="color: #ccc;"><strong>الإجمالي:</strong> {{ order.total_price }} ج.م</p>
+        <p style="color: #ccc;"><strong>العنوان:</strong> {{ order.address }}, {{ order.region }}</p>
+        <p style="color: #ccc;"><strong>التاريخ:</strong> {{ order.created_at|date:"Y-m-d H:i" }}</p>
+    </div>
+</div>
+{% endblock %}

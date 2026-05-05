@@ -30,3 +30,47 @@ a {
 a:hover {
     color: var(--gold);
 }
+/* ستايل العلامة المائية (اللوجو في الخلفية) */
+/* ستايل العلامة المائية (اللوجو في الخلفية) */
+.bg-watermark {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    
+    /* التعديل السحري هنا: اسم الصورة وامتدادها الصح */
+    background-image: url('/static/images/logo.png'); 
+    
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50%; 
+    
+    /* هنخليها 0.5 مؤقتاً عشان تبقى واضحة جداً ونتأكد إنها اشتغلت */
+    opacity: 0.5; 
+    
+    z-index: -1; 
+    pointer-events: none; 
+}
+
+/* للموبايل */
+@media (max-width: 768px) {
+    .bg-watermark {
+        background-size: 90%; 
+        opacity: 0.5; 
+    }
+}
+/* تعديلات خاصة للصفحة الرئيسية ومتجر المنتجات (مثل الصورة الأولى والثالثة) */
+/* إذا لم تستخدم كلاس، يمكنك تعديل القيم الأساسية أعلاه */
+/* سنستخدم calc لنضعه بدقة في الربع الأيسر */
+.bg-watermark {
+    background-position: calc(25vw) center; /* يضعه في منتصف الربع الأيسر */
+    background-size: 35%; /* حجم أصغر ليتناسب مع المنطقة */
+}
+
+/* تعديلات خاصة لصفحة المنتج (مثل الصورة الثانية - تحريك شمال أكثر) */
+/* نحتاج إلى كلاس .page-product على body */
+.page-product .bg-watermark {
+    background-position: calc(12vw) center; /* يتحرك شمال أكثر (نحو 12% من اليسار) */
+    background-size: 45%; /* حجم أكبر قليلاً ليتناسب مع التحريك */
+}

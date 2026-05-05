@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ['https://web-production-e59a2.up.railway.app']
@@ -38,19 +38,28 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'accounts',
     'store',
+    # ضيف السطرين دول هنا
+    'cloudinary_storage',
+    'cloudinary',
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # مكانه الصح هنا
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -75,16 +84,29 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default='5432'),
+# ==========================================
+# إعدادات قاعدة البيانات (ذكية بتفصل بين اللاب توب والسيرفر)
+# ==========================================
+if DEBUG == True:
+    # 1. وإنت شغال على جهازك (SQLite - سريعة جداً وبتشتغل في جزء من الثانية)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    # 2. لما الموقع يترفع على Railway (PostgreSQL - قوية وتستحمل الضغط)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST', default='localhost'),
+            'PORT': config('DB_PORT', default='5432'),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -121,14 +143,85 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Custom user model
 AUTH_USER_MODEL = 'accounts.CustomUser'
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
+# ==========================================
+# إعدادات Cloudinary لرفع الصور أونلاين
+# ==========================================
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dxvdsiauj',
+    'API_KEY': '157295236115861',
+    'API_SECRET': 'UdZjDRbRbrIcyQtNjaXy-YxEsUA',
 }
 
-# Media files
+# ==========================================
+# إعدادات التخزين (ذكية بتفصل بين اللاب توب والسيرفر)
+# ==========================================
+if DEBUG == True:
+    # 1. وإنت شغال على جهازك (خفيف وسريع من غير ضغط)
+    STORAGES = {
+        "default": {
+            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+else:
+    # 2. لما الموقع يترفع على Railway (مضغوط ومحمي)
+    STORAGES = {
+        "default": {
+            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+
+# مسار الصور
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# (شيلنا الـ MEDIA_ROOT لأن كلاوديناري بيخزن أونلاين مش على الجهاز)
+# إيقاف ضغط ملفات الـ CSS وإنت شغال على جهازك عشان الموقع يبقى سريع
+# DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = False
+import os
+RESEND_API_KEY = "re_SobrL6rk_3V1LjFUMwLA2JLHM19SUXHpp"
+# Allauth Settings
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email', 'password1', 'password2']
+ACCOUNT_EMAIL_VERIFICATION = 'none' # هنخليها none مؤقتاً لحد ما نظبط إيميلات التأكيد
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+# السطر ده بيعرف allauth إنها تستخدم الدالة بتاعتنا عشان تجيب اسم العميل
+ACCOUNT_USER_DISPLAY = 'store.forms.custom_user_display'
+# السطر الجديد ده عشان نربط فورم التسجيل بتاعنا
+ACCOUNT_FORMS = {
+    'signup': 'store.forms.CustomSignupForm',
+}
+ACCOUNT_FORMS = {'signup': 'store.forms.CustomSignupForm'}
+# السطر ده بيخلي ديجانجو يطبع إيميلات استعادة الباسورد في التيرمينال عشان نختبرها
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# إعدادات الـ Cache عشان مكتبة ratelimit تشتغل
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
+import sentry_sdk
+
+# إعدادات المراقبة وتتبع الأخطاء
+sentry_sdk.init(
+    dsn="https://1ba0ced8739c1b36b76fb859936600ac@o4511337997729792.ingest.de.sentry.io/4511338007568272",
+    send_default_pii=True,
+    # عشان يراقب الأداء بنسبة 100% (نقدر نقللها بعدين لو حابب)
+    traces_sample_rate=1.0,
+)

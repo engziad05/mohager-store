@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block title %} مُهاجر | سياسة الاستبدال والاسترجاع {% endblock %}
+
+{% block content %}
+<style>
+    /* تنسيقات صفحة السياسات */
+    .policy-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 60px 20px;
+        direction: rtl;
+        color: var(--cream);
+        font-family: var(--font-body);
+        line-height: 1.8;
+    }
+
+    .policy-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .policy-title {
+        color: var(--gold);
+        font-family: var(--font-heading);
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+
+    .policy-intro {
+        font-size: 1.2rem;
+        color: #ccc;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .policy-section {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--umber);
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .policy-section:hover {
+        border-color: rgba(200, 169, 110, 0.5);
+        transform: translateY(-5px);
+    }
+
+    .section-heading {
+        color: var(--gold);
+        font-family: var(--font-heading);
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .section-heading i {
+        font-size: 1.5rem;
+        background-color: rgba(200, 169, 110, 0.1);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+    }
+
+    .policy-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .policy-list li {
+        position: relative;
+        padding-right: 30px;
+        margin-bottom: 15px;
+        font-size: 1.15rem;
+        color: #ddd;
+    }
+
+    /* نقطة الدهبي اللي قبل كل سطر */
+    .policy-list li::before {
+        content: "\f00c"; /* أيقونة صح من FontAwesome */
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        color: var(--gold);
+        font-size: 1rem;
+        position: absolute;
+        right: 0;
+        top: 4px;
+    }
+
+    .policy-note {
+        background-color: rgba(200, 169, 110, 0.1);
+        border-right: 4px solid var(--gold);
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-top: 20px;
+        font-size: 1.1rem;
+        color: #ccc;
+    }
+</style>
+
+<div class="policy-container">
+    
+    <!-- الهيدر -->
+    <div class="policy-header">
+        <h1 class="policy-title">سياسة الاستبدال والاسترجاع</h1>
+        <p class="policy-intro">في متجر <strong>مُهاجر</strong>، نضع رضاكم في مقدمة أولوياتنا. إذا لم تكن راضياً تماماً عن مشترياتك، فنحن هنا للمساعدة وفقاً للضوابط التالية:</p>
+    </div>
+
+    <!-- 1. فترة الإرجاع المسموحة -->
+    <div class="policy-section">
+        <h2 class="section-heading"><i class="fas fa-clock"></i> فترة الإرجاع المسموحة</h2>
+        <p style="font-size: 1.15rem; color: #ddd;">تتيح لك سياستنا إرجاع المنتجات خلال <strong>14 يوماً</strong> من تاريخ استلام الشحنة في معظم الحالات.</p>
+    </div>
+
+    <!-- 2. الحالات المشمولة بالإرجاع -->
+    <div class="policy-section">
+        <h2 class="section-heading"><i class="fas fa-box-open"></i> الحالات المشمولة بالإرجاع</h2>
+        <p style="font-size: 1.15rem; color: #ddd; margin-bottom: 20px;">يحق للعميل طلب الاسترجاع خلال الفترة المحددة في حال:</p>
+        <ul class="policy-list">
+            <li>استلام منتج تالف أو به عيب مصنعي.</li>
+            <li>استلام منتج مستخدم مسبقاً أو تنقصه بعض الأجزاء.</li>
+            <li>استلام منتج لا يطابق الوصف أو المواصفات المذكورة في الموقع.</li>
+        </ul>
+    </div>
+
+    <!-- 3. شروط قبول طلب الاسترجاع -->
+    <div class="policy-section">
+        <h2 class="section-heading"><i class="fas fa-clipboard-check"></i> شروط قبول طلب الاسترجاع</h2>
+        <p style="font-size: 1.15rem; color: #ddd; margin-bottom: 20px;">لضمان معالجة طلبك بسلاسة، لن يتم قبول أو معالجة أي طلب إرجاع إلا في حال استيفاء الشروط الآتية:</p>
+        <ul class="policy-list">
+            <li><strong style="color: var(--cream);">الحالة الأصلية:</strong> أن يكون المنتج بحالته الأصلية تماماً ولم يتعرض لأي ضرر أو استخدام من قِبل العميل.</li>
+            <li><strong style="color: var(--cream);">تطابق المنتج:</strong> أن يكون المنتج المرتجع هو ذات المنتج الذي تم شحنه إليك دون أي تغيير أو تبديل.</li>
+            <li><strong style="color: var(--cream);">التغليف والملحقات:</strong> يجب إرجاع المنتج في صندوقه أو غلافه الأصلي الخاص بالعلامة التجارية، مرفقاً معه كافة الملحقات (مثل: الكروت التعريفية، بطاقة الضمان، وأي إكسسوارات أخرى إن وجدت).</li>
+        </ul>
+    </div>
+
+    <!-- 4. سياسة تكاليف الشحن -->
+    <div class="policy-section">
+        <h2 class="section-heading"><i class="fas fa-shipping-fast"></i> سياسة تكاليف الشحن</h2>
+        <ul class="policy-list">
+            <li><strong style="color: var(--cream);">أخطاء وعيوب المنتج:</strong> في حال كان سبب الإرجاع هو استلام منتج (تالف، معيب، أو خاطئ)، يتحمل متجر مُهاجر كافة مصاريف الشحن بالكامل.</li>
+            <li><strong style="color: var(--cream);">تغيير الرغبة:</strong> في حال كان الإرجاع لأسباب أخرى تخص العميل (مثل عدم الرغبة في المنتج)، يتم خصم مصاريف الشحن من إجمالي المبلغ المسترد للعميل.</li>
+        </ul>
+        <div class="policy-note">
+            <strong style="color: var(--gold);">ملاحظة:</strong> قد تطبق سياسات أو متطلبات استرجاع مختلفة على بعض المنتجات الخاصة، وسيتم توضيح ذلك في صفحة المنتج إن وجد.
+        </div>
+    </div>
+
+    <!-- 5. آلية وطرق استرداد الأموال -->
+    <div class="policy-section">
+        <h2 class="section-heading"><i class="fas fa-wallet"></i> آلية وطرق استرداد الأموال</h2>
+        <p style="font-size: 1.15rem; color: #ddd; margin-bottom: 20px;">حرصاً منا على راحتكم وسرعة إتمام الإجراءات، يتم معالجة المبالغ المستردة فور استلامنا للمنتج المرتجع وفحصه للتأكد من مطابقته للشروط.<br><br> تتم عملية تحويل المبلغ المسترد (حسب رغبة العميل) عبر إحدى الطرق السريعة التالية:</p>
+        <ul class="policy-list">
+            <li>محفظة فودافون كاش (Vodafone Cash).</li>
+            <li>التحويل البنكي اللحظي عبر تطبيق إنستاباي (InstaPay).</li>
+        </ul>
+        <div class="policy-note">
+            <strong style="color: var(--gold);">ملاحظة هامة:</strong> تستغرق عملية الفحص وتحويل المبلغ من 3 إلى 5 أيام عمل من تاريخ استلامنا للمنتج المرتجع.
+        </div>
+    </div>
+
+</div>
+{% endblock %}

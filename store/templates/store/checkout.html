@@ -4,90 +4,228 @@
 {% block title %} مُهاجر | إتمام الطلب {% endblock %}
 
 {% block content %}
-<div style="padding: 60px 5%; direction: rtl; max-width: 800px; margin: auto;">
+<style>
+    /* نقلنا كل الستايلات هنا عشان صيانة الكود تكون أسهل */
+    .checkout-container { padding: 60px 5%; direction: rtl; max-width: 800px; margin: auto; }
+    .checkout-title { font-family: var(--font-heading); color: var(--gold); font-size: 2.5rem; margin-bottom: 40px; text-align: center; }
     
-    <h1 style="font-family: var(--font-ar); color: var(--gold); font-size: 2.5rem; margin-bottom: 40px; text-align: center;">إتمام الطلب</h1>
+    .checkout-form { 
+        background: var(--bg-surface); padding: 40px; border-radius: 15px; 
+        border: 1px solid var(--umber); box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+    }
     
-   <form method="POST" action="{% url 'checkout' %}" style="background: var(--bg-surface); padding: 40px; border-radius: 15px; border: 1px solid var(--umber); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+    .section-title { 
+        color: var(--gold); font-family: var(--font-heading); 
+        border-bottom: 1px solid var(--umber); padding-bottom: 10px; 
+        margin-bottom: 20px; margin-top: 40px; 
+    }
+    .section-title:first-of-type { margin-top: 0; }
+    
+    .form-group { margin-bottom: 20px; }
+    .form-group-large { margin-bottom: 30px; }
+    
+    .form-label { 
+        color: var(--cream); font-family: var(--font-body); display: block; 
+        margin-bottom: 8px; font-weight: 600; cursor: pointer; 
+    }
+    
+    .form-input { 
+        width: 100%; padding: 15px; background: var(--bg-base); 
+        border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; 
+        font-family: var(--font-body); font-size: 1.1rem; box-sizing: border-box; 
+        outline: none; transition: 0.3s; 
+    }
+    .form-input:focus { border-color: var(--gold); }
+    
+    .form-row { display: flex; gap: 15px; margin-bottom: 20px; }
+    .form-row .form-group { flex: 1; margin-bottom: 0; }
+    
+    .payment-box { 
+        background: var(--bg-base); border: 1px solid var(--gold); padding: 15px 20px; 
+        border-radius: 8px; display: flex; align-items: center; justify-content: space-between; 
+        margin-bottom: 40px; cursor: pointer; transition: 0.3s;
+    }
+    .payment-box:hover { background: rgba(200, 169, 110, 0.05); }
+    
+    .submit-btn { 
+        width: 100%; background-color: var(--bg-base); border: 2px solid var(--gold); 
+        color: var(--gold); padding: 20px; border-radius: 10px; font-weight: bold; 
+        font-size: 1.5rem; font-family: var(--font-body); cursor: pointer; transition: 0.3s; 
+        display: flex; justify-content: space-between; align-items: center; 
+        box-shadow: 0 4px 15px rgba(200, 169, 110, 0.2); 
+    }
+    .submit-btn:hover { background-color: var(--gold); color: var(--bg-base); }
+
+    /* ستايل الرسالة اللي هتظهر تحت الحقل الفاضي */
+    .custom-error-msg {
+        color: #ff4d4d;
+        font-size: 0.95rem;
+        margin-top: 8px;
+        display: block;
+        font-family: var(--font-body);
+        animation: fadeInDown 0.3s ease;
+    }
+    
+    /* الإطار الأحمر اللي هينور حوالين المربع */
+    .input-error-glow {
+        border-color: #ff4d4d !important;
+        box-shadow: 0 0 8px rgba(255, 77, 77, 0.2) !important;
+    }
+
+    @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="checkout-container">
+    
+    <h1 class="checkout-title">إتمام الطلب</h1>
+    
+    <form method="POST" action="{% url 'checkout' %}" class="checkout-form">
         {% csrf_token %}
         
         <!-- قسم التواصل -->
-        <h3 style="color: var(--gold); font-family: var(--font-ar); border-bottom: 1px solid var(--umber); padding-bottom: 10px; margin-bottom: 20px;">تواصل</h3>
+        <h3 class="section-title">بيانات التواصل</h3>
         
-        <div style="margin-bottom: 20px;">
-            <label style="color: var(--cream); font-family: var(--font-ar); display: block; margin-bottom: 8px;">رقم التليفون <span style="color: #ff4d4d;">*</span></label>
-            <input type="tel" name="phone" placeholder="+201xxxxxxxxx" required style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-en); font-size: 1.1rem; box-sizing: border-box;">
+        <div class="form-group">
+            <label for="phone_input" class="form-label">رقم التليفون <span style="color: #ff4d4d;">*</span></label>
+            <input type="tel" id="phone_input" name="phone" value="{{ saved_address.phone|default:'' }}" placeholder="01xxxxxxxxx" required class="form-input">
         </div>
 
-        <div style="margin-bottom: 30px;">
-            <label style="color: var(--cream); font-family: var(--font-ar); display: block; margin-bottom: 8px;">الإيميل <span style="color: #888; font-size: 0.9rem;">(اختياري)</span></label>
-            <input type="email" name="email" placeholder="أدخل عنوان بريدك الإلكتروني" style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box;">
-            <small style="display: block; margin-top: 8px; color: #aaa; font-family: 'Cairo', sans-serif; font-size: 0.9rem; font-weight: 600;">
-    سنرسل ملخص الطلب إلى بريدك الإلكتروني.
-</small>
+        <div class="form-group-large">
+            <label for="email_input" class="form-label">الإيميل <span style="color: #888; font-size: 0.9rem;">(اختياري)</span></label>
+            <input type="email" id="email_input" name="email" value="{{ request.user.email|default:'' }}" placeholder="أدخل عنوان بريدك الإلكتروني" class="form-input">
+            <small style="display: block; margin-top: 8px; color: #888; font-family: var(--font-body); font-size: 0.9rem;">
+                سنرسل ملخص الفاتورة إلى بريدك الإلكتروني.
+            </small>
         </div>
 
         <!-- قسم عنوان الشحن -->
-        <h3 style="color: var(--gold); font-family: var(--font-ar); border-bottom: 1px solid var(--umber); padding-bottom: 10px; margin-bottom: 20px;">عنوان الشحن</h3>
+        <h3 class="section-title">عنوان الشحن</h3>
         
-        <div style="margin-bottom: 20px;">
-            <label style="color: var(--cream); font-family: var(--font-ar); display: block; margin-bottom: 8px;">الاسم كامل <span style="color: #ff4d4d;">*</span></label>
-            <input type="text" name="full_name" placeholder="الاسم الأول والأخير" required style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box;">
+        <div class="form-group">
+            <label for="name_input" class="form-label">الاسم بالكامل <span style="color: #ff4d4d;">*</span></label>
+            <input type="text" id="name_input" name="full_name" value="{{ request.user.get_full_name|default:'' }}" placeholder="الاسم الأول والأخير" required class="form-input">
         </div>
 
-        <div style="margin-bottom: 20px;">
-            <label style="color: var(--cream); font-family: var(--font-ar); display: block; margin-bottom: 8px;">العنوان <span style="color: #ff4d4d;">*</span></label>
-            <input type="text" name="address" placeholder="اسم الشارع أو الكمباوند" required style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box;">
+        <div class="form-group">
+            <label for="address_input" class="form-label">العنوان <span style="color: #ff4d4d;">*</span></label>
+            <input type="text" id="address_input" name="address" value="{{ saved_address.address|default:'' }}" placeholder="اسم الشارع أو الكمباوند" required class="form-input">
         </div>
 
-        <!-- عمارة، دور، شقة (جنب بعض) -->
-        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
-            <div style="flex: 1;">
-                <input type="text" name="building" placeholder="عمارة" required style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box;">
+        <!-- عمارة، دور، شقة -->
+        <div class="form-row">
+            <div class="form-group">
+                <input type="text" name="building" value="{{ saved_address.building|default:'' }}" placeholder="عمارة" required class="form-input">
             </div>
-            <div style="flex: 1;">
-                <input type="text" name="floor" placeholder="دور" required style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box;">
+            <div class="form-group">
+                <input type="text" name="floor" value="{{ saved_address.floor|default:'' }}" placeholder="دور" required class="form-input">
             </div>
-            <div style="flex: 1;">
-                <input type="text" name="apartment" placeholder="شقة" required style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box;">
+            <div class="form-group">
+                <input type="text" name="apartment" value="{{ saved_address.apartment|default:'' }}" placeholder="شقة" required class="form-input">
             </div>
         </div>
 
-        <div style="margin-bottom: 20px;">
-            <input type="text" name="landmark" placeholder="علامة مميزة (اختياري)" style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box;">
+        <div class="form-group">
+            <input type="text" name="landmark" value="{{ saved_address.landmark|default:'' }}" placeholder="علامة مميزة (اختياري)" class="form-input">
         </div>
 
-        <div style="margin-bottom: 30px;">
-            <label style="color: var(--cream); font-family: var(--font-ar); display: block; margin-bottom: 8px;">المحافظة / المنطقة <span style="color: #ff4d4d;">*</span></label>
-            <select name="region" required style="width: 100%; padding: 15px; background: var(--bg-base); border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; font-family: var(--font-ar); font-size: 1.1rem; box-sizing: border-box; outline: none; cursor: pointer;">
-                <option value="" disabled selected>اختر المحافظة...</option>
+        <div class="form-group-large">
+            <label for="region_input" class="form-label">المحافظة / المنطقة <span style="color: #ff4d4d;">*</span></label>
+            <select id="region_input" name="region" required class="form-input" style="cursor: pointer;">
+                <option value="" disabled {% if not saved_address or not saved_address.region %}selected{% endif %}>اختر المحافظة...</option>
                 {% for province in provinces %}
-                    <option value="{{ province }}">{{ province }}</option>
+                    <option value="{{ province }}" {% if saved_address and saved_address.region == province %}selected{% endif %}>{{ province }}</option>
+                {% empty %}
+                    <option value="القاهرة" {% if saved_address.region == 'القاهرة' %}selected{% endif %}>القاهرة</option>
+                    <option value="الجيزة" {% if saved_address.region == 'الجيزة' %}selected{% endif %}>الجيزة</option>
+                    <option value="الشرقية" {% if saved_address.region == 'الشرقية' %}selected{% endif %}>الشرقية</option>
+                    <option value="الإسكندرية" {% if saved_address.region == 'الإسكندرية' %}selected{% endif %}>الإسكندرية</option>
                 {% endfor %}
             </select>
         </div>
 
         <!-- طريقة الدفع -->
-        <h3 style="color: var(--gold); font-family: var(--font-ar); border-bottom: 1px solid var(--umber); padding-bottom: 10px; margin-bottom: 20px;">طريقة الدفع</h3>
+        <h3 class="section-title">طريقة الدفع</h3>
         
-        <div style="background: var(--bg-base); border: 1px solid var(--gold); padding: 15px 20px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px;">
+        <label for="payment_cod" class="payment-box">
             <div style="display: flex; align-items: center; gap: 15px;">
-                <input type="radio" checked style="accent-color: var(--gold); width: 20px; height: 20px;">
-                <span style="color: var(--cream); font-family: var(--font-ar); font-size: 1.2rem; font-weight: bold;">دفع عند الاستلام</span>
+                <input type="radio" id="payment_cod" name="payment_method" value="cod" checked style="accent-color: var(--gold); width: 20px; height: 20px; cursor: pointer;">
+                <span style="color: var(--cream); font-family: var(--font-body); font-size: 1.2rem; font-weight: bold;">دفع عند الاستلام</span>
             </div>
             <i class="fas fa-money-bill-wave" style="color: var(--gold); font-size: 1.5rem;"></i>
-        </div>
+        </label>
 
         <!-- زرار التأكيد -->
-        <button type="submit" style="width: 100%; background-color: #000; border: 2px solid var(--gold); color: var(--gold); padding: 20px; border-radius: 10px; font-weight: bold; font-size: 1.5rem; font-family: var(--font-ar); cursor: pointer; transition: 0.3s; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(200, 169, 110, 0.2);" onmouseover="this.style.backgroundColor='var(--gold)'; this.style.color='#000';" onmouseout="this.style.backgroundColor='#000'; this.style.color='var(--gold)';">
+        <button type="submit" class="submit-btn">
             <span>تأكيد الطلب</span>
-            <span style="font-family: var(--font-en);">{{ total_price }} EGP</span>
+            <span style="font-family: var(--font-en);">{{ total_price|default:"0" }} EGP</span>
         </button>
 
-        <p style="text-align: center; color: #888; font-family: var(--font-ar); margin-top: 20px;">
+        <p style="text-align: center; color: #888; font-family: var(--font-body); margin-top: 20px;">
             <i class="fas fa-lock" style="margin-left: 5px;"></i> يتم تخزين بياناتك بأمان.
         </p>
 
     </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkoutForm = document.querySelector('form');
+
+        if (checkoutForm) {
+            checkoutForm.setAttribute('novalidate', '');
+
+            checkoutForm.addEventListener('submit', function(e) {
+                let isFormValid = true;
+
+                document.querySelectorAll('.custom-error-msg').forEach(el => el.remove());
+                document.querySelectorAll('.input-error-glow').forEach(el => el.classList.remove('input-error-glow'));
+
+                const requiredInputs = checkoutForm.querySelectorAll('[required]');
+
+                requiredInputs.forEach(function(input) {
+                    if (!input.value.trim()) {
+                        isFormValid = false;
+                        
+                        input.classList.add('input-error-glow');
+
+                        let fieldName = "هذا الحقل";
+                        const label = document.querySelector(`label[for="${input.id}"]`);
+                        if (label) {
+                            fieldName = label.innerText.replace('*', '').trim();
+                        } else if (input.placeholder) {
+                            fieldName = input.placeholder;
+                        }
+
+                        const errorSpan = document.createElement('span');
+                        errorSpan.className = 'custom-error-msg';
+                        errorSpan.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-left: 4px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> برجاء إدخال ${fieldName}`;
+
+                        input.parentNode.insertBefore(errorSpan, input.nextSibling);
+                    }
+                });
+
+                if (!isFormValid) {
+                    e.preventDefault(); 
+                    const firstError = document.querySelector('.input-error-glow');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            });
+
+            checkoutForm.addEventListener('input', function(e) {
+                if (e.target.hasAttribute('required') && e.target.value.trim() !== '') {
+                    e.target.classList.remove('input-error-glow');
+                    const nextSibling = e.target.nextElementSibling;
+                    if (nextSibling && nextSibling.classList.contains('custom-error-msg')) {
+                        nextSibling.remove();
+                    }
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

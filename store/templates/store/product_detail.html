@@ -1,21 +1,24 @@
 {% extends 'base.html' %}
+{% block extra_css %}
+<style>
+    /* التعديل ده هيتطبق على الصفحة دي بس وهيمسح الافتراضي */
+    .bg-watermark {
+        background-position: 10% 10% !important; 
+    }
+</style>
+{% endblock %}
 {% load static %}
 
 {% block title %} مُهاجر | {{ product.name_ar }} {% endblock %}
 
 {% block content %}
+<!-- استدعاء مكتبة SweetAlert2 للرسايل الفخمة -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <style>
-    <!-- رسالة التحذير لو نسي يختار المقاس -->
-    <div id="size-warning" style="position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background-color: #6a1a1a; color: var(--cream); border: 1px solid #ff4d4d; padding: 15px 30px; border-radius: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); font-family: var(--font-ar); font-size: 1.2rem; font-weight: bold; z-index: 10000; display: flex; align-items: center; gap: 12px; transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);">
-        <i class="fas fa-exclamation-triangle" style="color: #ff4d4d;"></i>
-        <span>من فضلك اختر المقاس أولاً!</span>
-    </div>
-    /* ستايل مربعات المقاسات الفخمة */
     /* ستايل مربعات المقاسات الفخمة */
     .variant-box {
-        position: absolute;
-        opacity: 0;
-        pointer-events: none;
+        display: none !important; 
     }
     .variant-label {
         display: inline-flex;
@@ -35,87 +38,99 @@
         background-color: var(--gold);
         color: var(--bg-base);
         font-weight: bold;
-        transform: scale(1.05); /* بيكبر سنة لما تختاره */
+        transform: scale(1.05);
         box-shadow: 0 4px 10px rgba(200, 169, 110, 0.3);
     }
     .variant-label:hover {
         background-color: rgba(200, 169, 110, 0.1);
     }
+    .custom-swal-font {
+        font-family: var(--font-body), sans-serif !important;
+        border: 1px solid var(--umber) !important;
+    }
 </style>
 
-<div class="product-page-container" style="padding: 60px 5%; display: flex; gap: 80px; flex-wrap: wrap; justify-content: center; align-items: flex-start; direction: rtl;">
+<div class="product-page-container" style="padding: 60px 5%; display: flex; gap: 80px; flex-wrap: wrap; justify-content: center; align-items: flex-start;">
 
-    <!-- 1. قسم الصورة -->
-    <div style="flex: 1; min-width: 300px; max-width: 450px; background-color: #e5e5e5; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-        {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.name_ar }}" style="width: 100%; display: block;">
-        {% else %}
-            <div style="width: 100%; height: 500px; display: flex; align-items: center; justify-content: center; color: #333;">
-                لا توجد صورة
-            </div>
+    <!-- 1. قسم الصورة ومعرض الصور -->
+    <div style="flex: 1; min-width: 300px; max-width: 450px;">
+        
+        <!-- الصورة الرئيسية -->
+        <div style="background-color: var(--bg-surface); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 15px;">
+            {% if product.image %}
+                <!-- أهم حاجة هنا الـ id عشان الجافاسكريبت يغيرها -->
+                <img id="main-image" src="{{ product.image.url }}" alt="{{ product.name_ar }}" style="width: 100%; display: block; transition: 0.3s;">
+            {% else %}
+                <div style="width: 100%; height: 500px; display: flex; align-items: center; justify-content: center; color: var(--sand);">
+                    لا توجد صورة
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- معرض الصور المصغرة -->
+        {% if extra_images or product.image %}
+        <div style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;" class="gallery-container">
+            <!-- الصورة الرئيسية كأول صورة مصغرة -->
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name_ar }}" loading="lazy" class="gallery-thumb active-thumb" onclick="changeMainImage(this.src, this)" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid var(--gold); opacity: 1; transition: 0.3s;">
+            {% endif %}
+            
+            <!-- الصور الإضافية -->
+            {% for img in extra_images %}
+                <img src="{{ img.image.url }}" class="gallery-thumb" onclick="changeMainImage(this.src, this)" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; opacity: 0.6; transition: 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="if(!this.classList.contains('active-thumb')) this.style.opacity='0.6'">
+            {% endfor %}
+        </div>
         {% endif %}
     </div>
 
-    <!-- 2. قسم البيانات (مترتب بنظام عشان ميسيحش) -->
+    <!-- 2. قسم البيانات -->
     <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column;">
         
-        <!-- الاسم بالخط التراثي الفخم -->
-        <h1 style="font-family: var(--font-logo), 'Aref Ruqaa', serif; color: var(--cream); font-size: 4.5rem; margin: 0 0 15px 0; font-weight: normal;">{{ product.name_ar }}</h1>
+        <!-- الاسم -->
+        <h1 style="color: var(--gold); font-size: 4rem; margin: 0 0 15px 0; font-family: var(--font-heading);">{{ product.name_ar }}</h1>
         
         <!-- السعر -->
-        <p style="font-size: 2.5rem; color: var(--gold); margin: 0 0 35px 0; font-family: var(--font-ar); font-weight: bold;">{{ product.price }} ج.م</p>
+        <p style="font-size: 2.5rem; color: var(--sand); margin: 0 0 20px 0; font-weight: bold; font-family: var(--font-body);">{{ product.base_price }} ج.م</p>
         
-        <!-- اللون -->
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 35px;">
-            <span style="color: #888; font-size: 1.2rem; font-family: var(--font-ar);">اللون:</span>
-            <span style="color: var(--cream); font-size: 1.5rem; font-family: var(--font-ar); font-weight: bold;">{{ product.color }}</span>
-            <!-- الدائرة هنا أخدت إطار فاتح (border) عشان لو اللون أسود يبان بوضوح -->
-            <span style="display: inline-block; width: 28px; height: 28px; border-radius: 50%; background-color: {{ product.color_code|default:'#000000' }}; border: 2px solid var(--cream); box-shadow: 0 0 8px rgba(0,0,0,0.5);"></span>
-        </div>
-
-        <!-- الوصف (واخد مسافة فوق وتحت عشان يفصل عن الباقي) -->
-        <div style="color: #bbb; margin-bottom: 45px; font-size: 1.2rem; font-family: var(--font-ar); line-height: 1.8; max-width: 500px;">
+        <!-- الوصف -->
+        <div style="color: #bbb; margin-bottom: 30px; font-size: 1.2rem; line-height: 1.8; max-width: 500px; font-family: var(--font-body);">
             {{ product.description_ar|linebreaks }}
         </div>
 
+        <!-- اللون (نزل تحت الوصف بفونت الموقع العربي) -->
+        {% if variants %}
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 25px; font-family: var(--font-body) !important; font-size: 1.3rem; color: #ccc;">
+            <span style="font-family: var(--font-body) !important;">اللون: <strong style="color: #fff; font-weight: bold; font-family: var(--font-body) !important;">{{ variants.0.color_ar }}</strong></span>
+            <!-- دائرة اللون -->
+            <div style="width: 22px; height: 22px; border-radius: 50%; background-color: {{ variants.0.color_code|default:'#000000' }}; border: 2px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>
+        </div>
+        {% endif %}
+
         <!-- فورم الإضافة للسلة -->
-        <form action="{% url 'add_to_cart' product.id %}" method="POST" style="margin: 0; width: 100%; max-width: 400px;">
+        <form hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-drawer-content" style="margin: 0; width: 100%; max-width: 400px;">
             {% csrf_token %}
             
-            <p style="margin-bottom: 15px; color: #888; font-size: 1.1rem; font-family: var(--font-ar);">اختر المقاس:</p>
+            <p style="margin-bottom: 15px; color: #888; font-size: 1.1rem; font-family: var(--font-body);">اختر المقاس:</p>
             <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 40px;">
                 {% for variant in variants %}
                     <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box">
                     <label for="variant_{{ variant.id }}" class="variant-label">{{ variant.size }}</label>
                 {% empty %}
-                    <p style="color: var(--terracotta);">عفواً، لا توجد مقاسات متاحة</p>
+                    <p style="color: var(--gold); font-family: var(--font-body);">عفواً، لا توجد مقاسات متاحة حالياً</p>
                 {% endfor %}
             </div>
 
-            <button type="submit" style="width: 100%; background-color: var(--gold); color: var(--bg-base); padding: 18px; border: none; border-radius: 10px; font-weight: bold; font-size: 1.4rem; cursor: pointer; font-family: var(--font-ar); transition: 0.3s; box-shadow: 0 4px 15px rgba(200, 169, 110, 0.2);">
+            <button type="submit" style="width: 100%; background-color: var(--gold); color: var(--bg-base); padding: 18px; border: none; border-radius: 10px; font-weight: bold; font-size: 1.4rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(200, 169, 110, 0.2); font-family: var(--font-body);">
                 أضف إلى السلة
             </button>
         </form>
 
     </div>
 </div>
-<!-- سكريبت فك ارتباط المقاس (عشان تدوس عليه يطفي) -->
-<!-- استدعاء مكتبة SweetAlert2 للرسايل الفخمة -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<!-- ستايل عشان نخفي الدواير البيضا الرخمة بتاعت المتصفح ونظبط فونت الرسالة -->
-<style>
-    .variant-box {
-        display: none !important; 
-    }
-    .custom-swal-font {
-        font-family: var(--font-ar), sans-serif !important;
-        border: 1px solid var(--umber) !important;
-    }
-</style>
+</div>
 
 <script>
-    // 1. كود فك ارتباط المقاس (عشان لو داس عليه تاني يطفي)
+    // 1. كود فك ارتباط المقاس
     document.querySelectorAll('.variant-label').forEach(label => {
         label.addEventListener('click', function(e) {
             const radio = document.getElementById(this.getAttribute('for'));
@@ -126,29 +141,55 @@
         });
     });
 
-    // 2. كود التحذير الاحترافي قبل الإضافة للسلة
+    // 2. كود التحذير القاطع قبل الإضافة للسلة 
     const form = document.querySelector('form');
-
-    form.addEventListener('submit', function(e) {
-        const isSizeSelected = document.querySelector('input[name="variant_id"]:checked');
-        
-        if (!isSizeSelected) {
-            e.preventDefault(); // نمنع الفورم يتبعت
+    if (form) {
+        // رجعناها لـ submit العادية بس ضفنا السطر السحري
+        form.addEventListener('submit', function(e) {
+            const isSizeSelected = document.querySelector('input[name="variant_id"]:checked');
             
-            // إظهار نافذة التحذير الفخمة
-            Swal.fire({
-                icon: 'warning',
-                title: 'عذراً...',
-                text: 'من فضلك اختر المقاس أولاً قبل الإضافة للحقيبة!',
-                confirmButtonColor: 'var(--gold)', 
-                background: 'var(--bg-surface)', 
-                color: 'var(--cream)', 
-                confirmButtonText: 'حسناً',
-                customClass: {
-                    popup: 'custom-swal-font'
-                }
-            });
-        }
-    });
+            if (!isSizeSelected) {
+                e.preventDefault(); // بيوقف الفورم العادية
+                e.stopImmediatePropagation(); // السطر السحري اللي بيخرس HTMX تماماً ويمنعه يبعت حاجة
+                
+                // بنظهر رسالتنا الفخمة
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'عذراً...',
+                    text: 'من فضلك اختر المقاس أولاً قبل الإضافة للحقيبة!',
+                    confirmButtonColor: 'var(--gold)', 
+                    background: 'var(--bg-surface)', 
+                    color: 'var(--cream)', 
+                    confirmButtonText: 'حسناً',
+                    customClass: {
+                        popup: 'custom-swal-font'
+                    }
+                });
+            }
+        });
+    }
+
+    // 3. كود تقليب الصور في المعرض
+    function changeMainImage(newSrc, clickedThumb) {
+        const mainImg = document.getElementById('main-image');
+        if (!mainImg) return; 
+        
+        mainImg.style.opacity = '0.5';
+        setTimeout(() => {
+            mainImg.src = newSrc;
+            mainImg.style.opacity = '1';
+        }, 150);
+        
+        let thumbs = document.querySelectorAll('.gallery-thumb');
+        thumbs.forEach(thumb => {
+            thumb.style.borderColor = 'transparent';
+            thumb.style.opacity = '0.6';
+            thumb.classList.remove('active-thumb');
+        });
+        
+        clickedThumb.style.borderColor = 'var(--gold)';
+        clickedThumb.style.opacity = '1';
+        clickedThumb.classList.add('active-thumb');
+    }
 </script>
 {% endblock %}

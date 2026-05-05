@@ -1,0 +1,32 @@
+<div style="font-family: Arial, sans-serif; direction: rtl; text-align: right; background-color: #1a1a1a; padding: 40px 20px; color: #f4ecd8;">
+    <div style="max-width: 600px; margin: auto; background-color: #242424; padding: 30px; border-radius: 10px; border: 1px solid #c8a96e;">
+        
+        <h1 style="color: #c8a96e; text-align: center; margin-bottom: 30px;">مُهاجر | MOHAGER</h1>
+        <h2 style="color: #f4ecd8;">مرحباً {{ order.full_name }}،</h2>
+        <p style="font-size: 16px; color: #cccccc; line-height: 1.6;">
+            شكراً لتسوقك من مُهاجر! لقد استلمنا طلبك بنجاح وجاري تجهيزه.
+            <br>رقم الطلب الخاص بك هو: <strong style="color: #c8a96e;">#{{ order.id }}</strong>
+        </p>
+
+        <h3 style="color: #c8a96e; border-bottom: 1px solid #444; padding-bottom: 10px; margin-top: 30px;">ملخص الطلب:</h3>
+        <ul style="list-style-type: none; padding: 0;">
+            {% for item in cart_items %}
+            <li style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #333;">
+                <strong style="color: #f4ecd8; font-size: 18px;">{{ item.product.name_ar }}</strong><br>
+                <span style="color: #aaa;">المقاس: {{ item.variant.size }} | الكمية: {{ item.quantity }}</span><br>
+                
+                <!-- السطر ده اللي غيرنا فيه EGP وخليناه يعرض اللون -->
+                <span style="color: #aaa;">اللون: {{ item.variant.color_ar }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <div style="font-size: 20px; font-weight: bold; color: #c8a96e; margin-top: 20px;">
+            الإجمالي: {{ order.total_price }} ج.م
+        </div>
+
+        <p style="font-size: 14px; color: #888; margin-top: 40px; text-align: center;">
+            سنتواصل معك قريباً على الرقم {{ order.phone }} لتأكيد تفاصيل الشحن.
+        </p>
+    </div>
+</div>

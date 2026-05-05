@@ -6,7 +6,7 @@
 {% block content %}
 <div class="cart-container" style="padding: 60px 5%; direction: rtl; max-width: 1400px; margin: auto;">
     
-    <h1 style="font-family: var(--font-ar); color: var(--gold); font-size: 3rem; margin-bottom: 40px; text-align: right;">حقيبة المشتريات</h1>
+    <h1 style="font-family: var(--font-heading); color: var(--gold); font-size: 3rem; margin-bottom: 40px; text-align: right;">حقيبة المشتريات</h1>
     
     {% if cart_items %}
     <div style="display: flex; gap: 50px; flex-wrap: wrap; align-items: flex-start;">
@@ -20,14 +20,15 @@
                     {% if item.product.image %}
                         <img src="{{ item.product.image.url }}" alt="{{ item.product.name_ar }}" style="width: 110px; height: 110px; object-fit: cover; border-radius: 10px; border: 1px solid var(--umber);">
                     {% else %}
-                        <div style="width: 110px; height: 110px; background: #e5e5e5; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #333;">لا توجد صورة</div>
+                        <div style="width: 110px; height: 110px; background: var(--bg-base); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--sand);">لا توجد صورة</div>
                     {% endif %}
                     
                     <div>
-                        <h3 style="font-family: var(--font-ar); color: var(--cream); margin: 0 0 10px 0; font-size: 1.6rem;">{{ item.product.name_ar }}</h3>
-                        <p style="color: #aaa; margin: 0; font-family: var(--font-ar); font-size: 1.1rem;">
-                            المقاس: <span style="color: var(--gold); font-family: var(--font-en); font-weight: bold; margin-left: 15px;">{{ item.variant.size }}</span>
-                            اللون: <span style="color: var(--gold); font-family: var(--font-ar); font-weight: bold;">{{ item.product.color }}</span>
+                        <h3 style="font-family: var(--font-heading); color: var(--cream); margin: 0 0 10px 0; font-size: 1.6rem;">{{ item.product.name_ar }}</h3>
+                        <p style="color: #aaa; margin: 0; font-family: var(--font-body); font-size: 1.1rem;">
+                            المقاس: <span style="color: var(--gold); font-family: var(--font-en); font-weight: bold; margin-left: 15px;">{{ item.variant.size|default:"-" }}</span>
+                            <!-- التعديل هنا: سحبنا اللون من الـ Variant -->
+                            اللون: <span style="color: var(--gold); font-family: var(--font-body); font-weight: bold;">{{ item.variant.color_ar|default:"-" }}</span>
                         </p>
                     </div>
                 </div>
@@ -36,14 +37,15 @@
                     <div style="display: flex; align-items: center; gap: 15px; background: var(--bg-base); padding: 8px 15px; border-radius: 10px; border: 1px solid var(--gold);">
                         <a href="{% url 'update_quantity' item.id 'increase' %}" style="color: var(--gold); text-decoration: none; font-size: 1.5rem; width: 30px; text-align: center; transition: 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--gold)'">+</a>
                         
-                        <span style="color: var(--cream); font-size: 1.3rem; font-weight: bold; min-width: 20px; text-align: center;">{{ item.quantity }}</span>
+                        <span style="color: var(--cream); font-family: var(--font-body); font-size: 1.3rem; font-weight: bold; min-width: 20px; text-align: center;">{{ item.quantity }}</span>
                         
                         <a href="{% url 'update_quantity' item.id 'decrease' %}" style="color: var(--gold); text-decoration: none; font-size: 1.5rem; width: 30px; text-align: center; transition: 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--gold)'">-</a>
                     </div>
 
                     <div style="display: flex; align-items: center; gap: 30px;">
                         <span style="color: var(--gold); font-size: 1.5rem; font-weight: bold; font-family: var(--font-en);">
-                            {% widthratio item.product.price 1 item.quantity %} EGP
+                            <!-- التعديل هنا: استخدمنا دالة total_price الجاهزة من الموديل -->
+                            {{ item.total_price }} EGP
                         </span>
                         
                         <a href="{% url 'remove_cart_item' item.id %}" style="color: #ff4d4d; font-size: 1.5rem; transition: 0.3s; background: rgba(255, 77, 77, 0.1); padding: 10px 15px; border-radius: 8px;" title="حذف من الحقيبة" onmouseover="this.style.background='rgba(255, 77, 77, 0.2)'" onmouseout="this.style.background='rgba(255, 77, 77, 0.1)'">
@@ -58,20 +60,19 @@
 
         <!-- 2. ملخص الطلب - الفاتورة (الجزء الشمال) -->
         <div style="flex: 1; min-width: 300px; background: var(--bg-surface); padding: 35px; border-radius: 15px; border: 1px solid var(--umber); position: sticky; top: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <h2 style="font-family: var(--font-ar); color: var(--gold); margin-top: 0; border-bottom: 1px solid var(--umber); padding-bottom: 20px; margin-bottom: 30px; font-size: 2rem;">ملخص الطلب</h2>
+            <h2 style="font-family: var(--font-heading); color: var(--gold); margin-top: 0; border-bottom: 1px solid var(--umber); padding-bottom: 20px; margin-bottom: 30px; font-size: 2rem;">ملخص الطلب</h2>
             
-            <div style="display: flex; justify-content: space-between; margin-bottom: 30px; color: var(--cream); font-size: 1.3rem; font-family: var(--font-ar);">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 30px; color: var(--cream); font-size: 1.3rem; font-family: var(--font-body);">
                 <span>المجموع الفرعي:</span>
-                <span style="font-family: var(--font-en); font-weight: bold;">{{ total_price }} EGP</span>
+                <span style="font-family: var(--font-en); font-weight: bold;">{{ total_price|default:"0" }} EGP</span>
             </div>
             
-            <div style="display: flex; justify-content: space-between; margin-bottom: 40px; color: var(--gold); font-size: 1.8rem; font-weight: bold; border-top: 1px solid var(--umber); padding-top: 20px; font-family: var(--font-ar);">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 40px; color: var(--gold); font-size: 1.8rem; font-weight: bold; border-top: 1px solid var(--umber); padding-top: 20px; font-family: var(--font-body);">
                 <span>الإجمالي:</span>
-                <span style="font-family: var(--font-en);">{{ grand_total }} EGP</span>
+                <span style="font-family: var(--font-en);">{{ grand_total|default:"0" }} EGP</span>
             </div>
 
-            <!-- زرار إتمام الطلب المتصلح -->
-            <a href="{% url 'checkout' %}" style="display: block; text-align: center; background-color: var(--gold); color: var(--bg-base); padding: 18px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 1.4rem; font-family: var(--font-ar); transition: 0.3s; box-shadow: 0 4px 15px rgba(200, 169, 110, 0.2);" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+            <a href="{% url 'checkout' %}" style="display: block; text-align: center; background-color: var(--gold); color: var(--bg-base); padding: 18px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 1.4rem; font-family: var(--font-body); transition: 0.3s; box-shadow: 0 4px 15px rgba(200, 169, 110, 0.2);" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
                 إتمام الطلب <i class="fas fa-lock" style="margin-right: 10px;"></i>
             </a>
         </div>
@@ -81,9 +82,9 @@
     <!-- حالة السلة فارغة -->
     <div style="text-align: center; padding: 100px 20px; background: var(--bg-surface); border-radius: 20px; border: 1px solid var(--umber); max-width: 600px; margin: 50px auto;">
         <i class="fas fa-shopping-bag" style="font-size: 6rem; color: var(--umber); margin-bottom: 30px;"></i>
-        <h2 style="font-family: var(--font-ar); color: var(--cream); font-size: 2.5rem; margin-bottom: 20px;">حقيبتك فارغة!</h2>
-        <p style="color: #888; font-size: 1.3rem; margin-bottom: 40px; font-family: var(--font-ar);">لم تقم بإضافة أي قطع فنية إلى حقيبتك حتى الآن.</p>
-        <a href="/" style="display: inline-block; background-color: var(--gold); color: var(--bg-base); padding: 15px 40px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 1.3rem; font-family: var(--font-ar); transition: 0.3s;">
+        <h2 style="font-family: var(--font-heading); color: var(--cream); font-size: 2.5rem; margin-bottom: 20px;">حقيبتك فارغة!</h2>
+        <p style="color: #888; font-size: 1.3rem; margin-bottom: 40px; font-family: var(--font-body);">لم تقم بإضافة أي قطع فنية إلى حقيبتك حتى الآن.</p>
+        <a href="/" style="display: inline-block; background-color: var(--gold); color: var(--bg-base); padding: 15px 40px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 1.3rem; font-family: var(--font-body); transition: 0.3s;">
             تصفح المتجر
         </a>
     </div>

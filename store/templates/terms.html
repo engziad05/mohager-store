@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %} مُهاجر | الشروط والأحكام {% endblock %}
+
+{% block content %}
+<style>
+    .policy-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 60px 20px;
+        direction: rtl;
+        color: var(--cream);
+        font-family: var(--font-body);
+        line-height: 1.8;
+    }
+
+    .policy-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .policy-title {
+        color: var(--gold);
+        font-family: var(--font-heading);
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+
+    .policy-intro {
+        font-size: 1.2rem;
+        color: #ccc;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .policy-section {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--umber);
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .policy-section:hover {
+        border-color: rgba(200, 169, 110, 0.5);
+        transform: translateY(-5px);
+    }
+
+    .section-heading {
+        color: var(--gold);
+        font-family: var(--font-heading);
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .section-heading i {
+        font-size: 1.5rem;
+        background-color: rgba(200, 169, 110, 0.1);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+    }
+
+    .policy-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .policy-list li {
+        position: relative;
+        padding-right: 30px;
+        margin-bottom: 15px;
+        font-size: 1.15rem;
+        color: #ddd;
+    }
+
+    .policy-list li::before {
+        content: "\f00c"; 
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        color: var(--gold);
+        font-size: 1rem;
+        position: absolute;
+        right: 0;
+        top: 4px;
+    }
+</style>
+
+<div class="policy-container">
+    
+    <div class="policy-header">
+        <h1 class="policy-title">الشروط والأحكام</h1>
+        <p class="policy-intro">مرحباً بك في متجر <strong>مُهاجر</strong>. باستخدامك لهذا الموقع، فإنك توافق على الالتزام بالشروط والأحكام التالية. يُرجى قراءتها بعناية قبل إتمام أي عملية شراء.</p>
+    </div>
+
+    <!-- 1. الحسابات والبيانات الشخصية -->
+    <div class="policy-section">
+        <h2 class="section-heading"><i class="fas fa-user-shield"></i> 1. الحسابات والبيانات الشخصية</h2>
+        <ul class="policy-list">
+            <li>عند إنشاء حساب أو إتمام طلب، يلتزم العميل بتقديم معلومات صحيحة ودقيقة (الاسم، العنوان، رقم الهاتف).</li>
+            <li>نحن نلتزم في <strong>مُهاجر</strong> بالحفاظ على سرية بياناتك الشخصية وعدم مشاركتها مع أي جهة خارجية إلا لأغراض الشحن والتوصيل.</li>
+        </ul>
+    </div>
+
+    <!-- 2. المنتجات والأسعار -->
+    <div class="policy-section">
+        <h2 class="section-heading"><i class="fas fa-tags"></i> 2. المنتجات والأسعار</h2>
+        <ul class="policy-list">
+            <li>جميع الأسعار المعروضة على الموقع بالجنيه المصري (EGP).</li>
+            <li>نحن نبذل قصارى جهدنا لعرض ألوان وتفاصيل المنتجات بدقة، ولكن قد تختلف الألوان قليلاً حسب شاشة العرض الخاصة بك.</li>
+            <li>يحتفظ متجر مُهاجر بالحق في تعديل أسعار المنتجات في أي وقت دون إشعار مسبق. الأسعار المطبقة هي تلك المعروضة وقت إتمام الطلب.</li>
+            <li>في حالة وجود خطأ غير مقصود في تسعير منتج ما، يحق للمتجر إلغاء الطلب وإبلاغ العميل بذلك.</li>
+        </ul>
+    </div>
+
+    <!-- 3. الطلبات والدفع -->
+    <div class="policy-section">
+        <h2 class="section-heading"><i class="fas fa-money-check-alt"></i> 3. الطلبات والدفع</h2>
+        <ul class="policy-list">
+            <li>يُعتبر الطلب مؤكداً بمجرد إتمامه على الموقع ووصول رسالة التأكيد.</li>
+            <li>نوفر خيارات دفع آمنة تشمل: الدفع عند الاستلام (COD)، المحافظ الإلكترونية (مثل فودافون كاش)، والتحويل البنكي (إنستاباي).</li>
+            <li>يحتفظ المتجر بالحق في رفض أو إلغاء أي طلب في حال الاشتباه في نشاط احتيالي أو عدم توفر الكمية المطلوبة.</li>
+        </ul>
+    </div>
+
+    <!-- 4. الشحن والتوصيل -->
+    <div class="policy-section">
+        <h2 class="section-heading"><i class="fas fa-truck"></i> 4. الشحن والتوصيل</h2>
+        <ul class="policy-list">
+            <li>يتم شحن الطلبات إلى العنوان الذي يحدده العميل أثناء عملية الشراء.</li>
+            <li>تختلف مدة التوصيل وتكلفة الشحن بناءً على المحافظة والمنطقة الجغرافية، وسيتم توضيحها قبل إتمام الطلب.</li>
+            <li>المتجر غير مسؤول عن أي تأخير ناتج عن ظروف خارجة عن إرادتنا (مثل سوء الأحوال الجوية أو تأخيرات شركات الشحن)، ولكننا نتابع الشحنة حتى وصولها بأمان.</li>
+        </ul>
+    </div>
+
+    <!-- 5. حقوق الملكية الفكرية -->
+    <div class="policy-section">
+        <h2 class="section-heading"><i class="fas fa-copyright"></i> 5. حقوق الملكية الفكرية</h2>
+        <p style="font-size: 1.15rem; color: #ddd; margin-bottom: 0;">جميع المحتويات المعروضة على الموقع، بما في ذلك التصاميم، اللوجو، الصور، والنصوص، هي ملكية حصرية لعلامة <strong>مُهاجر</strong> ولا يُسمح باستخدامها أو نسخها أو إعادة نشرها بأي شكل دون إذن كتابي مسبق.</p>
+    </div>
+
+    <!-- 6. التعديل على الشروط -->
+    <div class="policy-section">
+        <h2 class="section-heading"><i class="fas fa-file-signature"></i> 6. التعديل على الشروط</h2>
+        <p style="font-size: 1.15rem; color: #ddd; margin-bottom: 0;">نحتفظ بالحق في تحديث أو تعديل هذه الشروط والأحكام في أي وقت. استمرارك في استخدام الموقع بعد إجراء أي تغييرات يُعد موافقة ضمنية منك على الشروط الجديدة.</p>
+    </div>
+
+</div>
+{% endblock %}

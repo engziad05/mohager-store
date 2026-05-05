@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}مُهاجر | تسجيل الخروج{% endblock %}
+
+{% block content %}
+<div style="min-height: 60vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background-color: var(--bg-surface); padding: 40px; border-radius: 15px; border: 1px solid #333; text-align: center; max-width: 450px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        
+        <!-- الأيقونة (اختياري بس بتدي شكل حلو) -->
+        <div style="width: 60px; height: 60px; background-color: rgba(200, 169, 110, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+            <svg width="30" height="30" fill="var(--gold)" viewBox="0 0 24 24">
+                <path d="M16 17v-3H9v-4h7V7l5 5-5 5M14 2a2 2 0 012 2v2h-2V4H5v16h9v-2h2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V4a2 2 0 012-2h9z"></path>
+            </svg>
+        </div>
+
+        <h2 style="color: var(--gold); font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 15px;">إلى اللقاء!</h2>
+        
+        <p style="color: #bbb; font-family: var(--font-body); font-size: 1.2rem; margin-bottom: 30px;">
+            هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟
+        </p>
+
+        <!-- فورم الخروج -->
+        <form method="post" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
+            
+            <button type="submit" style="width: 100%; background-color: var(--gold); color: var(--bg-base); padding: 15px; border: none; border-radius: 8px; font-weight: bold; font-size: 1.2rem; font-family: var(--font-body); cursor: pointer; transition: 0.3s; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(200, 169, 110, 0.2);">
+                نعم، تسجيل الخروج
+            </button>
+        </form>
+        
+        <!-- زرار الإلغاء -->
+        <a href="{% url 'index' %}" style="display: block; color: var(--gold); text-decoration: none; font-family: var(--font-body); border: 1px solid var(--gold); padding: 12px; border-radius: 8px; transition: 0.3s;" onmouseover="this.style.backgroundColor='var(--gold)'; this.style.color='var(--bg-base)';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--gold)';">
+            إلغاء والعودة للمتجر
+        </a>
+    </div>
+</div>
+{% endblock %}

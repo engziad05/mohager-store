@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<style>
+    /* التعديل ده هيتطبق على الصفحة دي بس */
+    .bg-watermark {
+        background-position: 50% 40% !important; 
+    }
+</style>
+{% endblock %} 
+
+{% load static %}
+
+
+{% block watermark_position %}15% 0%{% endblock %}
+{% load static %}
+
+{% block title %} مُهاجر | المتجر {% endblock %}
+
+{% block content %}
+<div style="padding: 60px 5%; min-height: 70vh;">
+    
+    <h1 style="font-family: var(--font-heading); color: var(--gold); text-align: center; font-size: 3rem; margin-bottom: 40px;">تسوق مجموعتنا</h1>
+
+    <!-- شريط البحث وفلتر الأقسام -->
+    <div style="margin-bottom: 50px; text-align: center;">
+        
+        <form method="GET" action="{% url 'shop' %}" style="max-width: 600px; margin: 0 auto 30px; display: flex; gap: 10px;">
+            <input type="text" name="q" placeholder="ابحث عن منتج، لون، أو تصميم..." value="{{ request.GET.q }}" style="flex: 1; padding: 15px; border-radius: 8px; border: 1px solid var(--umber); background: var(--bg-surface); color: var(--cream); font-family: var(--font-body); font-size: 1.1rem; outline: none;">
+            <button type="submit" style="background: var(--gold); color: var(--bg-base); border: none; padding: 0 25px; border-radius: 8px; font-size: 1.2rem; cursor: pointer; transition: 0.3s;">
+                <i class="fas fa-search"></i>
+            </button>
+            {% if request.GET.q or request.GET.category %}
+                <a href="{% url 'shop' %}" style="background: var(--umber); color: var(--cream); padding: 15px 20px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; transition: 0.3s;" title="إلغاء الفلتر">
+                    <i class="fas fa-times"></i>
+                </a>
+            {% endif %}
+        </form>
+
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'shop' %}" style="padding: 8px 20px; border-radius: 50px; font-family: var(--font-body); font-weight: bold; text-decoration: none; transition: 0.3s; {% if not request.GET.category %}background: var(--gold); color: var(--bg-base);{% else %}background: var(--bg-surface); color: var(--sand); border: 1px solid var(--umber);{% endif %}">
+                الكل
+            </a>
+            {% for category in categories %}
+                <a href="?category={{ category.slug }}" style="padding: 8px 20px; border-radius: 50px; font-family: var(--font-body); font-weight: bold; text-decoration: none; transition: 0.3s; {% if request.GET.category == category.slug %}background: var(--gold); color: var(--bg-base);{% else %}background: var(--bg-surface); color: var(--sand); border: 1px solid var(--umber);{% endif %}">
+                    {{ category.name_ar }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- شبكة المنتجات -->
+    <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+        {% if products %}
+            <div class="products-grid">
+    {% for product in products %}
+    <div class="product-card">
+        <!-- الصورة المربعة -->
+        <a href="{% url 'product_detail' product.id %}" class="product-img-wrapper">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name_ar }}" loading="lazy">
+            {% else %}
+                <span style="color: var(--sand);">لا توجد صورة</span>
+            {% endif %}
+        </a>
+        
+        <!-- تفاصيل المنتج والزرار -->
+        <div class="product-details">
+            <h3 style="color: var(--gold); font-size: 1.6rem; margin: 0 0 10px 0; font-family: var(--font-heading);">{{ product.name_ar }}</h3>
+            <p style="color: var(--sand); font-size: 1.3rem; font-weight: bold; margin: 0 0 15px 0; font-family: var(--font-body);">{{ product.base_price }} ج.م</p>
+            
+            <!-- margin-top: auto بتزق الزرار دايماً لآخر الكارت تحت حتى لو الاسم سطرين -->
+            <a href="{% url 'product_detail' product.id %}" style="margin-top: auto; display: block; width: 100%; box-sizing: border-box; text-align: center; background-color: var(--gold); color: var(--bg-base); padding: 12px; text-decoration: none; border-radius: 8px; font-weight: bold; font-family: var(--font-body); font-size: 1.1rem; transition: 0.3s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+    عرض التفاصيل
+</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+        {% else %}
+            <div style="grid-column: 1 / -1; text-align: center; color: var(--sand); padding: 50px;">
+                <h2 style="font-family: var(--font-heading);">لم نتمكن من العثور على منتجات تطابق بحثك.</h2>
+            </div>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock %}

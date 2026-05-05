@@ -1,21 +1,30 @@
+from django_ratelimit.decorators import ratelimit
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, HeroSlide, ProductVariant, Cart, CartItem, Order, OrderItem
 from django.contrib import messages
+from django.db.models import Q
+from .models import Product, HeroSlide, ProductVariant, Cart, CartItem, Order, OrderItem, Category, ProductImage
+from django.db import transaction
+import resend
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.contrib.auth.decorators import login_required
+from .forms import SavedAddressForm
+from .models import  SavedAddress
+from django.shortcuts import get_object_or_404
+
 
 def index(request):
-    products = Product.objects.all()
+    # بنجيب أول 8 منتجات بس في الصفحة الرئيسية
+    products = Product.objects.filter(is_active=True)[:8] 
     slides = HeroSlide.objects.filter(is_active=True).order_by('order')
 
-    # --- الكود الجديد لعد المنتجات في السلة ---
+    # حساب عدد المنتجات في السلة
     cart_id = request.session.get('cart_id')
     cart_count = 0
     if cart_id:
         cart = Cart.objects.filter(id=cart_id).first()
         if cart:
-            # هنا استخدمنا الفلتر المباشر والمضمون 100%
-            cart_items = CartItem.objects.filter(cart=cart)
-            cart_count = sum(item.quantity for item in cart_items)
-    # ----------------------------------------
+            cart_count = sum(item.quantity for item in CartItem.objects.filter(cart=cart))
 
     context = {
         'products': products,
@@ -24,84 +33,79 @@ def index(request):
     }
     return render(request, 'store/index.html', context)
 
-def product_detail(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    # السطر ده بيجيب كل المقاسات المربوطة بالتيشيرت ده بس
-    variants = ProductVariant.objects.filter(product=product)
+def shop(request):
+    # صفحة المتجر اللي فيها البحث والفلترة 
+    products = Product.objects.filter(is_active=True)
+    categories = Category.objects.filter(is_active=True)
 
-    # --- الكود الجديد لعد المنتجات في السلة ---
+    query = request.GET.get('q')
+    category_slug = request.GET.get('category')
+
+    # الفلترة بالقسم
+    if category_slug:
+        products = products.filter(category__slug=category_slug)
+    
+    # البحث بالاسم أو الوصف
+    if query:
+        products = products.filter(
+            Q(name_ar__icontains=query) | 
+            Q(name_en__icontains=query) | 
+            Q(description_ar__icontains=query)
+        )
+
+    # حساب عدد المنتجات في السلة
     cart_id = request.session.get('cart_id')
     cart_count = 0
     if cart_id:
         cart = Cart.objects.filter(id=cart_id).first()
         if cart:
-            cart_items = CartItem.objects.filter(cart=cart)
-            cart_count = sum(item.quantity for item in cart_items)
-    # ----------------------------------------
+            cart_count = sum(item.quantity for item in CartItem.objects.filter(cart=cart))
+
+    context = {
+        'products': products,
+        'categories': categories,
+        'cart_count': cart_count,
+    }
+    return render(request, 'store/shop.html', context)
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    variants = ProductVariant.objects.filter(product=product)
+    extra_images = ProductImage.objects.filter(product=product)
+
+    # حساب عدد المنتجات في السلة
+    cart_id = request.session.get('cart_id')
+    cart_count = 0
+    if cart_id:
+        cart = Cart.objects.filter(id=cart_id).first()
+        if cart:
+            cart_count = sum(item.quantity for item in CartItem.objects.filter(cart=cart))
 
     context = {
         'product': product,
         'variants': variants,
-        'cart_count': cart_count, # بعتنا العدد للصفحة
+        'extra_images': extra_images,
+        'cart_count': cart_count,
     }
     return render(request, 'store/product_detail.html', context)
 
-def add_to_cart(request, product_id):
-    if request.method == 'POST':
-        # 1. نستلم رقم المقاس اللي الجافاسكريبت بعته
-        variant_id = request.POST.get('variant_id')
-        product = get_object_or_404(Product, id=product_id)
-        variant = get_object_or_404(ProductVariant, id=variant_id)
-        
-        # 2. نشوف لو الزبون ده ليه سلة شغالة، لو ملوش نفتحله سلة جديدة
-        cart_id = request.session.get('cart_id')
-        if cart_id:
-            cart = Cart.objects.filter(id=cart_id).first()
-            if not cart:
-                cart = Cart.objects.create()
-                request.session['cart_id'] = cart.id
-        else:
-            cart = Cart.objects.create()
-            request.session['cart_id'] = cart.id
-            
-        # 3. نحط التيشيرت بالمقاس في السلة
-        cart_item, created = CartItem.objects.get_or_create(
-            cart=cart, 
-            product=product, 
-            variant=variant,
-        )
-        
-        # لو التيشيرت بنفس المقاس موجود قبل كده، نزود الكمية بس
-        if not created:
-            cart_item.quantity += 1
-            cart_item.save()
-            
-        # السطر الجديد بتاع رسالة النجاح
-        messages.success(request, 'تم إضافة القطعة للسلة بنجاح! 🛒')
-        
-        # 4. نرجعه تاني لصفحة التيشيرت
-        return redirect('product_detail', product_id=product.id)
-        
-    return redirect('index')
+
+
 def cart_detail(request):
     cart_id = request.session.get('cart_id')
     cart = None
     cart_items = []
-    total_price = 0  # ثمن المنتجات بس
-    grand_total = 0 # الإجمالي النهائي
+    total_price = 0
+    grand_total = 0 
     
     if cart_id:
         cart = Cart.objects.filter(id=cart_id).first()
         if cart:
             cart_items = CartItem.objects.filter(cart=cart)
-            for item in cart_items:
-                total_price += item.product.price * item.quantity
+            total_price = sum(item.total_price for item in cart_items)
     
-    # الإجمالي النهائي هو هو المجموع الفرعي (لغينا الشحن خالص)
     if total_price > 0:
         grand_total = total_price
-    else:
-        grand_total = 0
             
     context = {
         'cart': cart,
@@ -111,7 +115,6 @@ def cart_detail(request):
     }
     return render(request, 'store/cart.html', context)
 
-# دالة الحذف الجديدة
 def remove_cart_item(request, item_id):
     cart_item = get_object_or_404(CartItem, id=item_id)
     cart_item.delete()
@@ -122,23 +125,184 @@ def update_quantity(request, item_id, action):
     cart_item = get_object_or_404(CartItem, id=item_id)
     
     if action == 'increase':
-        cart_item.quantity += 1
-        cart_item.save()
+        # 🛑 الحماية التالتة: نمنعه يزود الكمية في السلة لو خلصت من المخزن
+        if cart_item.quantity + 1 > cart_item.variant.stock:
+            messages.error(request, f'عفواً، لا يوجد سوى {cart_item.variant.stock} قطع متاحة في المخزون.')
+        else:
+            cart_item.quantity += 1
+            cart_item.save()
+            
     elif action == 'decrease':
         if cart_item.quantity > 1:
             cart_item.quantity -= 1
             cart_item.save()
         else:
-            # لو الكمية 1 وهو داس ناقص (-)، هنمسح التيشيرت خالص من السلة
             cart_item.delete()
             messages.success(request, 'تم حذف القطعة من السلة 🗑️')
             
+    # لو الطلب جاي من HTMX (عشان الدرج)
+    if request.headers.get('HX-Request'):
+        cart = cart_item.cart
+        cart_items = CartItem.objects.filter(cart=cart)
+        total_price = sum(item.total_price for item in cart_items)
+        cart_count = sum(item.quantity for item in cart_items)
+
+        context = {
+            'cart': cart,
+            'cart_items': cart_items,
+            'total_price': total_price,
+            'grand_total': total_price,
+            'cart_count': cart_count,
+        }
+        return render(request, 'store/partials/cart_items.html', context)
+            
     return redirect('cart_detail')
-# الفنكشن الجديدة بتاعت الدفع (على الحرف خالص أهي)
+
+
+    
+def order_success(request):
+    return render(request, 'store/order_success.html')
+def cart_drawer(request):
+    cart_id = request.session.get('cart_id')
+    cart = None
+    cart_items = []
+    total_price = 0
+    grand_total = 0 
+    cart_count = 0 # <-- ضفنا دي عشان نحدث الرقم
+
+    if cart_id:
+        cart = Cart.objects.filter(id=cart_id).first()
+        if cart:
+            cart_items = CartItem.objects.filter(cart=cart)
+            total_price = sum(item.total_price for item in cart_items)
+            grand_total = total_price
+            cart_count = sum(item.quantity for item in cart_items) # <-- بنحسب عدد القطع
+            
+    context = {
+        'cart': cart,
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'grand_total': grand_total, 
+        'cart_count': cart_count, # <-- بعتناها للـ HTML
+    }
+    return render(request, 'store/partials/cart_items.html', context)
+
+
+def add_to_cart(request, product_id):
+    if request.method == 'POST':
+        variant_id = request.POST.get('variant_id')
+        
+        if not variant_id:
+            messages.error(request, 'من فضلك اختر المقاس أولاً!')
+            return redirect('product_detail', product_id=product_id)
+
+        product = get_object_or_404(Product, id=product_id)
+        variant = get_object_or_404(ProductVariant, id=variant_id)
+
+        # 🛑 الحماية الأولى: التأكد من وجود مخزون أصلاً
+        if variant.stock <= 0:
+            messages.error(request, 'عفواً، هذا المقاس نفد من المخزون حالياً!')
+            return redirect('product_detail', product_id=product.id)
+        
+        cart_id = request.session.get('cart_id')
+        if cart_id:
+            cart = Cart.objects.filter(id=cart_id).first()
+            if not cart:
+                cart = Cart.objects.create()
+                request.session['cart_id'] = cart.id
+        else:
+            cart = Cart.objects.create()
+            request.session['cart_id'] = cart.id
+            
+        cart_item, created = CartItem.objects.get_or_create(
+            cart=cart, 
+            product=product, 
+            variant=variant,
+        )
+        
+        # 🛑 الحماية التانية: التأكد إن الكمية المطلوبة مش هتعدي المخزون
+        if not created:
+            if cart_item.quantity + 1 > variant.stock:
+                messages.error(request, f'عفواً، أقصى كمية متاحة من هذا المقاس هي {variant.stock} قطع!')
+                return redirect('product_detail', product_id=product.id)
+            
+            cart_item.quantity += 1
+            cart_item.save()
+
+        # كود الـ HTMX بتاعنا زي ما هو
+        if request.headers.get('HX-Request'):
+            cart_items = CartItem.objects.filter(cart=cart)
+            total_price = sum(item.total_price for item in cart_items)
+            cart_count = sum(item.quantity for item in cart_items)
+
+            context = {
+                'cart': cart,
+                'cart_items': cart_items,
+                'total_price': total_price,
+                'grand_total': total_price,
+                'cart_count': cart_count,
+            }
+            return render(request, 'store/partials/cart_items.html', context)
+            
+        messages.success(request, 'تم إضافة القطعة للسلة بنجاح! 🛒')
+        return redirect('product_detail', product_id=product.id)
+        
+    return redirect('index')
+
+
+
+@login_required(login_url='/accounts/login/')
+def dashboard(request):
+    # سحبنا الأوردرات بالـ user ورتبناها بـ created_at
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    
+    context = {
+        'orders': orders
+    }
+    return render(request, 'dashboard.html', context)
+@login_required(login_url='/accounts/login/')
+def dashboard(request):
+    # 1. بنجيب الأوردرات زي ما عملنا قبل كده
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    
+    # 2. بنحاول نجيب عنوان العميل لو كان مسجله قبل كده
+    try:
+        saved_address = request.user.saved_address
+    except SavedAddress.DoesNotExist:
+        saved_address = None
+
+    # 3. لو العميل داس على زرار "حفظ العنوان"
+    if request.method == 'POST':
+        form = SavedAddressForm(request.POST, instance=saved_address)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user # بنربط العنوان بالعميل اللي فاتح الحساب
+            address.save()
+            # هنا ممكن نضيف رسالة نجاح بعدين
+    else:
+        # لو دي أول مرة يفتح الصفحة، بنعرضله الفورم (فاضية أو فيها بياناته القديمة)
+        form = SavedAddressForm(instance=saved_address)
+    
+    context = {
+        'orders': orders,
+        'form': form, # بعتنا الفورم للـ HTML
+    }
+    return render(request, 'dashboard.html', context)
+
+@login_required(login_url='/accounts/login/')
+def order_detail(request, order_id):
+    # بنجيب الأوردر، ولازم نتأكد إنه يخص العميل اللي مسجل دخول عشان محدش يشوف أوردرات غيره
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    
+    context = {
+        'order': order,
+    }
+    return render(request, 'order_detail.html', context)
+
+@ratelimit(key='ip', rate='5/m', block=True)
 def checkout(request):
     cart_id = request.session.get('cart_id')
     
-    # الثلاث سطور دول عشان لو السلة فاضية يرجعه للرئيسية (ماتغيرهمش)
     if not cart_id:
         return redirect('index')
         
@@ -150,47 +314,102 @@ def checkout(request):
     if not cart_items.exists():
         return redirect('index')
 
-    total_price = sum(item.product.price * item.quantity for item in cart_items)
+    total_price = sum(item.total_price for item in cart_items)
+    
+    # --- 1. هنجيب العنوان المحفوظ لو العميل مسجل دخول ---
+    saved_address = None
+    if request.user.is_authenticated:
+        saved_address = SavedAddress.objects.filter(user=request.user).first()
+    # ---------------------------------------------------
     
     if request.method == 'POST':
-        # تسجيل الأوردر
-        order = Order.objects.create(
-            full_name=request.POST.get('full_name'),
-            phone=request.POST.get('phone'),
-            email=request.POST.get('email'),
-            address=request.POST.get('address'),
-            building=request.POST.get('building'),
-            floor=request.POST.get('floor'),
-            apartment=request.POST.get('apartment'),
-            landmark=request.POST.get('landmark'),
-            region=request.POST.get('region'),
-            total_price=total_price
-        )
+        try:
+            with transaction.atomic():
+                for item in cart_items:
+                    variant = ProductVariant.objects.select_for_update().get(id=item.variant.id)
+                    
+                    if variant.stock < item.quantity:
+                        raise ValueError(f"عفواً، الكمية المتاحة من {item.product.name_ar} مقاس {variant.size} لم تعد تكفي.")
+                    
+                    variant.stock -= item.quantity
+                    variant.save()
 
-        for item in cart_items:
-            OrderItem.objects.create(
-                order=order,
-                product=item.product,
-                variant=item.variant,
-                quantity=item.quantity,
-                price=item.product.price
-            )
-        
-        # مسح السلة
-        cart.delete()
-        if 'cart_id' in request.session:
-            del request.session['cart_id']
+                order = Order.objects.create(
+                    user=request.user if request.user.is_authenticated else None, 
+                    full_name=request.POST.get('full_name'),
+                    phone=request.POST.get('phone'),
+                    email=request.POST.get('email'),
+                    address=request.POST.get('address'),
+                    building=request.POST.get('building'),
+                    floor=request.POST.get('floor'),
+                    apartment=request.POST.get('apartment'),
+                    landmark=request.POST.get('landmark'),
+                    region=request.POST.get('region'),
+                    total_price=total_price,
+                    status='Pending' 
+                )
+                
+                # --- 2. نحفظ أو نحدث العنوان أوتوماتيك عشان المرات الجاية ---
+                if request.user.is_authenticated:
+                    address_record, created = SavedAddress.objects.get_or_create(user=request.user)
+                    address_record.phone = request.POST.get('phone')
+                    address_record.region = request.POST.get('region')
+                    address_record.address = request.POST.get('address')
+                    address_record.building = request.POST.get('building')
+                    address_record.floor = request.POST.get('floor')
+                    address_record.apartment = request.POST.get('apartment')
+                    address_record.landmark = request.POST.get('landmark')
+                    address_record.save()
+                # --------------------------------------------------
 
-        # السطر ده هو اللي هيحدفه على صفحة النجاح الفخمة اللي عملناها!
-        return redirect('order_success')
+                for item in cart_items:
+                    OrderItem.objects.create(
+                        order=order,
+                        product=item.product,
+                        variant=item.variant,
+                        quantity=item.quantity,
+                        price=item.variant.price if item.variant else item.product.base_price
+                    )
+                
+                if order.email:
+                    resend.api_key = settings.RESEND_API_KEY
+                    html_content = render_to_string('store/emails/order_confirm.html', {
+                        'order': order,
+                        'cart_items': cart_items
+                    })
+                    
+                    try:
+                        resend.Emails.send({
+                            "from": "onboarding@resend.dev", 
+                            "to": order.email,
+                            "subject": f"تم تأكيد طلبك بنجاح من مُهاجر - رقم #{order.id}",
+                            "html": html_content
+                        })
+                    except Exception as e:
+                        print(f"Error sending email: {e}")
+            
+                cart.delete()
+                if 'cart_id' in request.session:
+                    del request.session['cart_id']
+
+                return redirect('order_success')
+                
+        except ValueError as e:
+            messages.error(request, str(e))
+            return redirect('cart_detail')
 
     egypt_provinces = sorted(['القاهرة', 'الجيزة', 'الإسكندرية', 'الدقهلية', 'الشرقية', 'المنوفية', 'القليوبية', 'البحيرة', 'الغربية', 'بورسعيد', 'دمياط', 'الإسماعيلية', 'السويس', 'كفر الشيخ', 'الفيوم', 'بني سويف', 'المنيا', 'أسيوط', 'سوهاج', 'قنا', 'الأقصر', 'أسوان', 'البحر الأحمر', 'الوادي الجديد', 'مطروح', 'شمال سيناء', 'جنوب سيناء'])
 
     return render(request, 'store/checkout.html', {
         'total_price': total_price,
-        'provinces': egypt_provinces
+        'provinces': egypt_provinces,
+        'saved_address': saved_address # --- 3. نبعت العنوان للـ HTML عشان نعرضه ---
     })
-    
-def order_success(request):
-    return render(request, 'store/order_success.html')
-    
+def return_policy(request):
+    return render(request, 'store/return_policy.html')
+def terms(request):
+    return render(request, 'terms.html')
+def about(request):
+    return render(request, 'about.html')
+
+

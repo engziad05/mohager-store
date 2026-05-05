@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %} مُهاجر | عن البراند {% endblock %}
+
+{% block content %}
+<style>
+    .policy-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 60px 20px;
+        direction: rtl;
+        color: var(--cream);
+        font-family: var(--font-body);
+        line-height: 1.8;
+    }
+
+    .policy-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .policy-title {
+        color: var(--gold);
+        font-family: var(--font-heading);
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+
+    .policy-intro {
+        font-size: 1.2rem;
+        color: #ccc;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .policy-section {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--umber);
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .policy-section:hover {
+        border-color: rgba(200, 169, 110, 0.5);
+        transform: translateY(-5px);
+    }
+
+    .section-heading {
+        color: var(--gold);
+        font-family: var(--font-heading);
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .section-heading i {
+        font-size: 1.5rem;
+        background-color: rgba(200, 169, 110, 0.1);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+    }
+
+    .policy-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .policy-list li {
+        position: relative;
+        padding-right: 30px;
+        margin-bottom: 15px;
+        font-size: 1.15rem;
+        color: #ddd;
+    }
+
+    .policy-list li::before {
+        content: "\f00c"; 
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        color: var(--gold);
+        font-size: 1rem;
+        position: absolute;
+        right: 0;
+        top: 4px;
+    }
+</style>
+
+<div class="policy-container">
+    
+    <!-- الهيدر -->
+    <div class="policy-header">
+        <h1 class="policy-title">عن مُهاجر</h1>
+        <p class="policy-intro">أكثر من مجرد ملابس.. نحن نصنع هوية تلبسها بفخر، وتاريخاً يمشي معك في شوارع اليوم.</p>
+    </div>
+
+    <!-- 1. القصة -->
+    <div class="policy-section">
+        <h2 class="section-heading"><i class="fas fa-book-open"></i> حكايتنا</h2>
+        <p style="font-size: 1.15rem; color: #ddd; margin-bottom: 0;">
+            بدأت فكرة <strong>مُهاجر</strong> من إيماننا العميق بأن ما نرتديه يعبر عن هويتنا. لاحظنا الفجوة بين ملابس الشارع العصرية (Streetwear) وبين جذورنا الثقافية، فقررنا أن نكون الجسر الذي يربط بين عراقة التاريخ العربي والإسلامي، وروح العصر الحديث المتمردة والسريعة. "مُهاجر" هو رحلة للبحث عن الذات، وتعبير جريء عن الأصالة في قالب عصري.
+        </p>
+    </div>
+
+    <!-- 2. الرؤية -->
+    <div class="policy-section">
+        <h2 class="section-heading"><i class="fas fa-eye"></i> رؤيتنا</h2>
+        <p style="font-size: 1.15rem; color: #ddd; margin-bottom: 0;">
+            نطمح في <strong>مُهاجر</strong> أن نكون العلامة التجارية الرائدة التي تعيد تعريف الأزياء الشبابية. لا نريد فقط أن نصنع ملابس بجودة عالمية، بل نسعى لأن تكون كل قطعة بمثابة "لوحة فنية" تحكي قصة، وتلهم الشباب للتمسك بجذورهم والافتخار بثقافتهم أثناء اندماجهم في الثقافة العالمية.
+        </p>
+    </div>
+
+    <!-- 3. ليه مُهاجر؟ -->
+    <div class="policy-section">
+        <h2 class="section-heading"><i class="fas fa-tshirt"></i> لماذا مُهاجر؟</h2>
+        <ul class="policy-list">
+            <li><strong style="color: var(--cream);">تصاميم ذات معنى:</strong> ندمج الخط العربي، الرموز التاريخية، والأنماط الإسلامية مع أحدث قصات الـ Streetwear الأوفر سايز.</li>
+            <li><strong style="color: var(--cream);">جودة استثنائية:</strong> نستخدم أفضل خامات القطن الممشط لنضمن لك الراحة والمتانة لتصمد القطعة وتدوم طويلاً.</li>
+            <li><strong style="color: var(--cream);">هوية لا تُقلد:</strong> كل إصدار (Drop) له قصة فريدة، مما يجعلك تتميز بأسلوب لا يشبه أحد.</li>
+            <li><strong style="color: var(--cream);">صُنع بفخر:</strong> نهتم بأدق التفاصيل، من أول رسمة السكيتش وحتى التغليف الفاخر الذي يصل إلى باب بيتك.</li>
+        </ul>
+    </div>
+
+</div>
+{% endblock %}

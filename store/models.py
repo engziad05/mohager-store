@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.db import models
+from django.conf import settings
+
 
 # 1. جدول الأقسام (Categories)
 class Category(models.Model):
@@ -49,6 +51,7 @@ class ProductVariant(models.Model):
     color_code = models.CharField(max_length=20, verbose_name="كود اللون (Hex)", default="#111111")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="السعر الفعلي")
     stock_quantity = models.PositiveIntegerField(default=0, verbose_name="الكمية في المخزن")
+    stock = models.PositiveIntegerField(default=0, verbose_name="المخزون")
 
     def __str__(self):
         return f"{self.product.name_en} - {self.size} - {self.color_en}"
@@ -127,14 +130,35 @@ class Order(models.Model):
 
     def __str__(self):
         return f"طلب رقم {self.id} - {self.full_name}"
-
-# 9. تفاصيل الطلب (Order Items - دمجنا المرتين برضه)
+# 9. جدول عناصر الطلب (Order Items - المنتجات اللي جوه الأوردر)
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-    variant = models.ForeignKey(ProductVariant, on_delete=models.SET_NULL, null=True, blank=True)
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE, verbose_name="الطلب")
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, verbose_name="المنتج")
+    variant = models.ForeignKey(ProductVariant, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="المتغير (مقاس/لون)")
     quantity = models.PositiveIntegerField(default=1, verbose_name="الكمية")
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="السعر وقت الشراء")
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="السعر وقت الشراء")
 
     def __str__(self):
-        return f"{self.product.name_en} (x{self.quantity})"
+        if self.product:
+            return f"{self.quantity} x {self.product.name_en} - طلب #{self.order.id}"
+        return f"عنصر محذوف - طلب #{self.order.id}"
+# 10. جدول العنوان المحفوظ للعميل (عشان يملى صفحة الدفع أوتوماتيك)
+class SavedAddress(models.Model):
+    # بنربط العنوان بالعميل، وكل عميل ليه عنوان واحد متسجل
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='saved_address')
+    
+    phone = models.CharField(max_length=20, verbose_name="رقم التليفون")
+    region = models.CharField(max_length=100, verbose_name="المحافظة")
+    address = models.CharField(max_length=500, verbose_name="العنوان التفصيلي")
+    building = models.CharField(max_length=50, blank=True, null=True, verbose_name="عمارة")
+    floor = models.CharField(max_length=50, blank=True, null=True, verbose_name="دور")
+    apartment = models.CharField(max_length=50, blank=True, null=True, verbose_name="شقة")
+    landmark = models.CharField(max_length=255, blank=True, null=True, verbose_name="علامة مميزة")
+
+    def __str__(self):
+        return f"عنوان {self.user.first_name or self.user.email}"
+
+
+
+    
+    
