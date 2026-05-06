@@ -172,14 +172,19 @@ ACCOUNT_FORMS = {
 # ==========================================
 # إعدادات إرسال الإيميلات (Gmail) - البورت الرسمي
 # ==========================================
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587                 # رجعنا للبورت الرسمي المفتوح
-EMAIL_USE_TLS = True             # شغلنا الـ TLS
-EMAIL_USE_SSL = False            # قفلنا الـ SSL
-EMAIL_HOST_USER = 'zeiad0453@gmail.com' 
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='') 
-DEFAULT_FROM_EMAIL = 'zeiad0453@gmail.com'
+EEMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
+
+EMAIL_USE_SSL = False
+
+DEFAULT_FROM_EMAIL = f"Mohager <{EMAIL_HOST_USER}>"
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
 
 # Cache Configuration
 CACHES = {
