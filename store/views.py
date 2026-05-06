@@ -387,7 +387,7 @@ def checkout(request):
                     def send_bg_email_api(to_email, html, order_id):
                         url = "https://api.brevo.com/v3/smtp/email"
                         # بنسحب الباسورد بتاع برافو لأنه هو هو الـ API Key
-                        api_key = settings.EMAIL_HOST_PASSWORD 
+                        api_key = str(settings.EMAIL_HOST_PASSWORD).strip()
                         
                         data = {
                             "sender": {"name": "Mohager Store", "email": settings.DEFAULT_FROM_EMAIL},
