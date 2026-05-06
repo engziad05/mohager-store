@@ -170,21 +170,18 @@ ACCOUNT_FORMS = {
 
 # ==========================================
 # ==========================================
-# إعدادات إرسال الإيميلات (Gmail) - البورت الرسمي
 # ==========================================
-EEMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_PORT = config('EMAIL_PORT', cast=int)
-
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-
-
+# إعدادات إرسال الإيميلات (Brevo SMTP)
+# ==========================================
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-relay.brevo.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-
-DEFAULT_FROM_EMAIL = f"Mohager <{EMAIL_HOST_USER}>"
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+# هنسحب الإيميل والباسورد من Railway
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='')
 
 # Cache Configuration
 CACHES = {
