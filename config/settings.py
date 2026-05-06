@@ -123,6 +123,7 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': 'UdZjDRbRbrIcyQtNjaXy-YxEsUA',
 }
 
+
 # إعدادات التخزين
 if DEBUG == True:
     STORAGES = {
@@ -139,7 +140,8 @@ else:
             "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
         },
         "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+            # غيرنا السطر ده عشان السيرفر مايضربش لو في صورة ناقصة
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage", 
         },
     }
 
