@@ -11,9 +11,9 @@ from django.contrib.auth.decorators import login_required
 from .forms import SavedAddressForm
 from .models import  SavedAddress
 from django.shortcuts import get_object_or_404
+import threading
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
-
 
 def index(request):
     # بنجيب أول 8 منتجات بس في الصفحة الرئيسية
@@ -385,10 +385,14 @@ def checkout(request):
                             subject=f"تأكيد طلبك بنجاح من مُهاجر - رقم #{order.id}",
                             body=text_content,
                             from_email=settings.DEFAULT_FROM_EMAIL,
-                            to=[order.email], # هيبعت لإيميل الزبون اللي بيكتبه في الطلب
+                            to=[order.email],
                         )
                         msg.attach_alternative(html_content, "text/html")
-                        msg.send()
+                        
+                        # السحر هنا: الإيميل هيتبعت في "الخلفية" والموقع هيكمل تحميل في ثانية
+                        email_thread = threading.Thread(target=msg.send)
+                        email_thread.start()
+                        
                     except Exception as e:
                         print(f"Error sending email: {e}")
             
