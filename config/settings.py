@@ -168,14 +168,13 @@ ACCOUNT_FORMS = {
     'signup': 'store.forms.CustomSignupForm',
 }
 
-# ==========================================
-# ==========================================
+
 # ==========================================
 # إعدادات إرسال الإيميلات (Brevo SMTP)
 # ==========================================
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp-relay.brevo.com'
-EMAIL_PORT = 587
+EMAIL_PORT = 2525                # 👈 سحر الهروب من حظر Railway
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 # هنسحب الإيميل والباسورد من Railway
