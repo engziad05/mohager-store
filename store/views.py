@@ -380,6 +380,14 @@ def checkout(request):
                     })
                     text_content = strip_tags(html_content)
                     
+                    # عملنا دالة صغيرة تصطاد الإيرور جوه الخلفية وتطبعهولنا
+                    def send_bg_email(message):
+                        try:
+                            message.send()
+                            print("✅✅✅ تم إرسال الإيميل بنجاح! ✅✅✅")
+                        except Exception as e:
+                            print(f"❌❌❌ مشكلة في الإيميل بالخلفية: {e} ❌❌❌")
+
                     try:
                         msg = EmailMultiAlternatives(
                             subject=f"تأكيد طلبك بنجاح من مُهاجر - رقم #{order.id}",
@@ -389,13 +397,11 @@ def checkout(request):
                         )
                         msg.attach_alternative(html_content, "text/html")
                         
-                        # السحر هنا: الإيميل هيتبعت في "الخلفية" والموقع هيكمل تحميل في ثانية
-                        email_thread = threading.Thread(target=msg.send)
+                        email_thread = threading.Thread(target=send_bg_email, args=(msg,))
                         email_thread.start()
                         
                     except Exception as e:
-                        print(f"Error sending email: {e}")
-            
+                        print(f"Error creating email: {e}")
                 cart.delete()
                 if 'cart_id' in request.session:
                     del request.session['cart_id']
