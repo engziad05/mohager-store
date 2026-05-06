@@ -171,14 +171,17 @@ ACCOUNT_FORMS = {
 # ==========================================
 # إعدادات إرسال الإيميلات الحقيقية للزباين (Gmail)
 # ==========================================
+# ==========================================
+# إعدادات إرسال الإيميلات الحقيقية للزباين (Gmail)
+# ==========================================
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-# حط إيميلك بتاع جيميل هنا
+EMAIL_PORT = 465                 # غيرنا البورت لـ 465
+EMAIL_USE_SSL = True             # شغلنا الـ SSL المباشر
+EMAIL_USE_TLS = False            # قفلنا الـ TLS عشان ميحصلش تعارض
 EMAIL_HOST_USER = 'zeiad0453@gmail.com' 
-# الباسورد هنسحبه من سيرفر Railway للأمان
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = 'zeiad0453@gmail.com'
 
 # Cache Configuration
 CACHES = {
