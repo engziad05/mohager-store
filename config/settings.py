@@ -123,7 +123,7 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': 'UdZjDRbRbrIcyQtNjaXy-YxEsUA',
 }
 
-
+# إعدادات التخزين
 # إعدادات التخزين
 if DEBUG == True:
     STORAGES = {
@@ -168,20 +168,8 @@ ACCOUNT_FORMS = {
     'signup': 'store.forms.CustomSignupForm',
 }
 
-# ==========================================
-# إعدادات إرسال الإيميلات الحقيقية للزباين (Gmail)
-# ==========================================
-# ==========================================
-# إعدادات إرسال الإيميلات الحقيقية للزباين (Gmail)
-# ==========================================
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 465                 # غيرنا البورت لـ 465
-EMAIL_USE_SSL = True             # شغلنا الـ SSL المباشر
-EMAIL_USE_TLS = False            # قفلنا الـ TLS عشان ميحصلش تعارض
-EMAIL_HOST_USER = 'zeiad0453@gmail.com' 
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
-DEFAULT_FROM_EMAIL = 'zeiad0453@gmail.com'
+# Email Backend for Testing
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Cache Configuration
 CACHES = {
