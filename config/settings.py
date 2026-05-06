@@ -168,8 +168,17 @@ ACCOUNT_FORMS = {
     'signup': 'store.forms.CustomSignupForm',
 }
 
-# Email Backend for Testing
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# ==========================================
+# إعدادات إرسال الإيميلات الحقيقية للزباين (Gmail)
+# ==========================================
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+# حط إيميلك بتاع جيميل هنا
+EMAIL_HOST_USER = 'zeiad0453@gmail.com' 
+# الباسورد هنسحبه من سيرفر Railway للأمان
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 
 # Cache Configuration
 CACHES = {

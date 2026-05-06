@@ -11,6 +11,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import SavedAddressForm
 from .models import  SavedAddress
 from django.shortcuts import get_object_or_404
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
 
 
 def index(request):
@@ -372,19 +374,21 @@ def checkout(request):
                     )
                 
                 if order.email:
-                    resend.api_key = settings.RESEND_API_KEY
                     html_content = render_to_string('store/emails/order_confirm.html', {
                         'order': order,
                         'cart_items': cart_items
                     })
+                    text_content = strip_tags(html_content)
                     
                     try:
-                        resend.Emails.send({
-                            "from": "onboarding@resend.dev", 
-                            "to": order.email,
-                            "subject": f"تم تأكيد طلبك بنجاح من مُهاجر - رقم #{order.id}",
-                            "html": html_content
-                        })
+                        msg = EmailMultiAlternatives(
+                            subject=f"تأكيد طلبك بنجاح من مُهاجر - رقم #{order.id}",
+                            body=text_content,
+                            from_email=settings.EMAIL_HOST_USER,
+                            to=[order.email], # بيبعت للزبون اللي كتب إيميله
+                        )
+                        msg.attach_alternative(html_content, "text/html")
+                        msg.send()
                     except Exception as e:
                         print(f"Error sending email: {e}")
             
