@@ -184,7 +184,7 @@ MEDIA_URL = '/media/'
 # (شيلنا الـ MEDIA_ROOT لأن كلاوديناري بيخزن أونلاين مش على الجهاز)
 # إيقاف ضغط ملفات الـ CSS وإنت شغال على جهازك عشان الموقع يبقى سريع
 # DEBUG = config('DEBUG', default=True, cast=bool)
-DEBUG = False
+DEBUG = True
 import os
 RESEND_API_KEY = "re_SobrL6rk_3V1LjFUMwLA2JLHM19SUXHpp"
 # Allauth Settings
