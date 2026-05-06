@@ -4,7 +4,6 @@ from django.contrib import messages
 from django.db.models import Q
 from .models import Product, HeroSlide, ProductVariant, Cart, CartItem, Order, OrderItem, Category, ProductImage
 from django.db import transaction
-import resend
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
@@ -14,6 +13,11 @@ from django.shortcuts import get_object_or_404
 import threading
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
+import json
+import urllib.request
+
+
+
 
 def index(request):
     # بنجيب أول 8 منتجات بس في الصفحة الرئيسية
@@ -378,30 +382,37 @@ def checkout(request):
                         'order': order,
                         'cart_items': cart_items
                     })
-                    text_content = strip_tags(html_content)
                     
-                    # عملنا دالة صغيرة تصطاد الإيرور جوه الخلفية وتطبعهولنا
-                    def send_bg_email(message):
+                    # دالة بتبعت الإيميل عن طريق الـ API من ورا ضهر Railway
+                    def send_bg_email_api(to_email, html, order_id):
+                        url = "https://api.brevo.com/v3/smtp/email"
+                        # بنسحب الباسورد بتاع برافو لأنه هو هو الـ API Key
+                        api_key = settings.EMAIL_HOST_PASSWORD 
+                        
+                        data = {
+                            "sender": {"name": "Mohager Store", "email": settings.DEFAULT_FROM_EMAIL},
+                            "to": [{"email": to_email}],
+                            "subject": f"تأكيد طلبك بنجاح من مُهاجر - رقم #{order_id}",
+                            "htmlContent": html
+                        }
+                        
+                        req = urllib.request.Request(url, data=json.dumps(data).encode('utf-8'))
+                        req.add_header('accept', 'application/json')
+                        req.add_header('api-key', api_key)
+                        req.add_header('content-type', 'application/json')
+                        
                         try:
-                            message.send()
-                            print("✅✅✅ تم إرسال الإيميل بنجاح! ✅✅✅")
+                            with urllib.request.urlopen(req) as response:
+                                print("✅✅✅ تم إرسال الإيميل بنجاح عن طريق API! ✅✅✅")
                         except Exception as e:
-                            print(f"❌❌❌ مشكلة في الإيميل بالخلفية: {e} ❌❌❌")
+                            print(f"❌❌❌ مشكلة في الـ API: {e} ❌❌❌")
 
+                    # تشغيل الإرسال في الخلفية
                     try:
-                        msg = EmailMultiAlternatives(
-                            subject=f"تأكيد طلبك بنجاح من مُهاجر - رقم #{order.id}",
-                            body=text_content,
-                            from_email=settings.DEFAULT_FROM_EMAIL,
-                            to=[order.email],
-                        )
-                        msg.attach_alternative(html_content, "text/html")
-                        
-                        email_thread = threading.Thread(target=send_bg_email, args=(msg,))
+                        email_thread = threading.Thread(target=send_bg_email_api, args=(order.email, html_content, order.id))
                         email_thread.start()
-                        
                     except Exception as e:
-                        print(f"Error creating email: {e}")
+                        print(f"Error starting email thread: {e}")
                 cart.delete()
                 if 'cart_id' in request.session:
                     del request.session['cart_id']
