@@ -15,6 +15,49 @@
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 <style>
+    /* ========================================== */
+    /* الـ Glow السينمائي الفخم خلف المنتجات */
+    /* ========================================== */
+    section { /* السيكشن اللي جواه الجريد بتاع المنتجات */
+        position: relative;
+        z-index: 1;
+    }
+    
+    section::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        height: 80%;
+        /* ده الـ Glow: إضاءة دهبي خفيفة جداً بتختفي بالتدريج */
+        background: radial-gradient(circle, rgba(200, 169, 110, 0.05) 0%, transparent 65%);
+        z-index: -1;
+        pointer-events: none; /* عشان ميأثرش على الكليكات */
+    }
+
+    /* عشان نضمن إن لو منتج واحد يجي في النص أو يترص بشياكة */
+    .products-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 20px;
+        justify-content: center; /* بيخلي المنتجات تتوسطن لو هما قليلين */
+    }
+    
+    /* عرض الكارت ثابت عشان ميمطش */
+    .product-card {
+        width: 280px; 
+        background: transparent;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.4s ease;
+        position: relative;
+    }
     /* 1. شبكة المنتجات (الجريد متجمعة ونضيفة) */
     ./* ========================================== */
     /* قسم المنتجات (Premium Fashion Grid) */
@@ -90,25 +133,32 @@
     }
 
     /* الزرار الجديد: Minimalist Outline Button */
+    /* ========================================== */
+    /* زرار التفاصيل المحدث (أوضح وأفخم) */
+    /* ========================================== */
     .premium-btn {
         display: block;
         width: 100%;
-        background: transparent;
-        color: var(--gold);
-        border: 1px solid rgba(200, 169, 110, 0.4); /* خط دهبي هادي جداً */
-        padding: 10px;
+        background: rgba(200, 169, 110, 0.08); /* خلفية شفافة منورة سِنة */
+        color: var(--sand); /* لون فاتح عشان يقرأ بسهولة */
+        border: 1px solid rgba(200, 169, 110, 0.5); /* برواز دهبي أوضح */
+        padding: 12px;
         text-decoration: none;
-        border-radius: 4px;
-        font-weight: bold;
-        font-size: 1rem;
+        border-radius: 6px;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
         transition: all 0.3s ease;
+        margin-top: auto;
     }
 
     .premium-btn:hover {
         background: var(--gold);
         color: var(--bg-base);
         border-color: var(--gold);
-        box-shadow: 0 0 15px rgba(201,167,92,0.2);
+        box-shadow: 0 0 20px rgba(201, 167, 92, 0.35); /* إضاءة لما تقف عليه بالماوس */
+        transform: translateY(-2px);
     }
     
     .product-card:hover {
