@@ -115,11 +115,59 @@
     }
 
     /* النصوص (محاذاة لليمين زي المجلات، بدون Paddings جانبية) */
-   .product-details {
-        padding: 20px 0 0 0 !important; /* مسافة واضحة بين الصورة والاسم */
-        text-align: right;
+   /* ========================================== */
+    /* تفاصيل المنتج (متسنترة وفيها مساحة أمان للزرار) */
+    /* ========================================== */
+    /* ========================================== */
+    /* شبكة المنتجات */
+    /* ========================================== */
+    .products-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px 20px 80px 20px !important; 
+        direction: rtl;
+    }
+
+    /* ========================================== */
+    /* كارت المنتج (Clean, Minimal, Aligned) */
+    /* ========================================== */
+    .product-card {
+        width: 260px !important; /* مقاس ثابت ومعقول جداً */
+        background: transparent !important;
+        border: none !important;
         display: flex;
         flex-direction: column;
+        align-items: center; /* بيسنتر كل حاجة عمودياً بالمسطرة */
+    }
+
+    /* الصورة */
+    .product-img-wrapper {
+        width: 100%;
+        border-radius: 8px; /* حواف ناعمة كلاسيكية */
+        overflow: hidden;
+        margin-bottom: 15px; /* مسافة نظيفة تفصلها عن الاسم */
+        background-color: transparent;
+    }
+
+    .product-img-wrapper img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 8px;
+    }
+
+    /* التفاصيل (الاسم والسعر) */
+    .product-details {
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 !important;
     }
 
     .product-details h3 {
@@ -128,43 +176,38 @@
         margin: 0 0 5px 0;
         font-family: var(--font-body);
         font-weight: 600;
-        letter-spacing: 0.3px;
     }
 
     .product-details p.price {
-        color: rgba(200, 169, 110, 0.7);
+        color: rgba(200, 169, 110, 0.9);
         font-size: 1.05rem;
-        margin: 0 0 15px 0;
+        margin: 0 0 20px 0; /* مسافة صريحة قبل الزرار */
         font-family: var(--font-body);
     }
 
-    /* زرار التفاصيل (Minimalist Slim Button) */
+    /* ========================================== */
+    /* الزرار (Classic Premium Button) */
+    /* ========================================== */
     .premium-btn {
         box-sizing: border-box !important;
-        display: inline-block;
-        width: 100%; /* خليناه ياخد عرض الكارت عشان يدي إحساس بالقوة والفخامة */
+        display: block;
+        width: 100%; /* واخد عرض الكارت كله بشكل نظيف ومستحيل يتقص */
         background-color: transparent !important;
         color: var(--gold) !important;
-        border: 1px solid rgba(200, 169, 110, 0.6) !important; /* برواز دهبي صريح بس مش فج */
-        padding: 10px 0; /* مساحة ممتازة للكلمة */
+        border: 1px solid var(--gold) !important;
+        border-radius: 6px !important; /* نفس نعومة حواف الصورة */
+        padding: 10px 0;
         text-align: center;
-        border-radius: 0px !important; /* حواف حادة (Sharp Edges) */
         font-family: var(--font-body);
         font-weight: 600;
         font-size: 1rem;
-        letter-spacing: 0.5px;
-        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         text-decoration: none;
-        margin-top: 15px; /* مسافة محترمة بينه وبين السعر */
-        position: relative;
+        transition: all 0.3s ease;
     }
 
     .premium-btn:hover {
         background-color: var(--gold) !important;
-        color: var(--bg-base) !important; /* الكلام يقلب غامق */
-        border-color: var(--gold) !important;
-        box-shadow: 0 0 20px rgba(200, 169, 110, 0.35); /* الـ Glow السينمائي رجع تاني */
-        transform: translateY(-3px); /* نطة شيك لفوق */
+        color: var(--bg-base) !important;
     }
     
     .product-card:hover {
