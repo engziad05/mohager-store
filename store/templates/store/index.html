@@ -65,10 +65,12 @@
     
     /* تظبيط الجريد عشان المنتجات تتوسطن وتاخد مساحتها */
     /* تظبيط الجريد عشان يرص من اليمين للشمال */
+   /* ========================================== */
+    /* شبكة المنتجات (الحل النهائي بحجم ثابت من اليمين) */
+    /* ========================================== */
     .products-grid {
-        display: grid;
-        /* السر هنا: ثبتنا العرض بـ 280 بيكسل عشان ميكبرش يملى الشاشة لو منتج واحد */
-        grid-template-columns: repeat(auto-fill, 280px);
+        display: flex; /* استخدمنا فليكس بدل جريد عشان نتحكم في الحجم بصرامة */
+        flex-wrap: wrap;
         justify-content: flex-start; /* هيبدأ رص من اليمين للشمال */
         gap: 30px;
         max-width: 1200px;
@@ -77,22 +79,22 @@
         direction: rtl; /* اتجاه عربي */
     }
 
-    
-    /* الكارت نفسه (التصميم الفخم من غير براويز) */
+    /* الكارت نفسه (مقاس ثابت ومستحيل يكبر) */
     .product-card {
+        width: 280px !important; /* إجبار العرض على 280 بيكسل */
+        max-width: 280px;
+        flex: 0 0 auto; /* السطر السحري اللي بيمنع التمدد تماماً */
         background: transparent;
         border: none;
         display: flex;
         flex-direction: column;
         transition: transform 0.4s ease;
-        width: 100%;
     }
 
-    product-card:hover {
-        transform: translateY(-8px); /* نطة خفيفة لفوق */
+    .product-card:hover {
+        transform: translateY(-8px); 
     }
 
-    
     /* صورة المنتج (مقاس الفاشون 4:5) */
     .product-img-wrapper {
         width: 100%;
@@ -111,10 +113,11 @@
     }
 
     .product-card:hover .product-img-wrapper img {
-        transform: scale(1.04); /* زووم خفيف للصورة */
+        transform: scale(1.04); 
     }
 
-    product-details {
+    /* النصوص */
+    .product-details {
         padding: 15px 5px 5px;
         text-align: center;
         display: flex;
@@ -127,7 +130,7 @@
         font-size: 1.4rem;
         margin: 0 0 8px 0;
         font-family: var(--font-heading);
-    } 
+    }
 
     .product-details p.price {
         color: var(--sand);
@@ -137,9 +140,7 @@
         font-family: var(--font-body);
     }
 
-    
-    /* ========================================== */
-    /* زرار التفاصيل المحدث (نقي وواضح جداً) */
+    /* زرار التفاصيل (شفاف ومنور) */
     .premium-btn {
         display: block;
         width: 100%;
@@ -153,7 +154,7 @@
         font-weight: bold;
         font-size: 1.1rem;
         transition: all 0.3s ease;
-        margin-top: auto; /* بيزق الزرار لتحت دايماً */
+        margin-top: auto; 
     }
 
     .premium-btn:hover {
