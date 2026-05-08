@@ -18,6 +18,83 @@
     <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;600&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/htmx.org@1.9.11"></script>
     <style>
+        /* ========================================== */
+/* تحديثات الـ Navbar (Glassmorphism & Premium UI) */
+/* ========================================== */
+
+/* 1. الشفافية، الـ Blur، وتقليل الارتفاع وتركيبها فوق الـ Hero */
+.navbar {
+    position: absolute !important; /* دي الكلمة السحرية اللي هتخليها طايرة فوق السلايدر بدل ما تكون Box مفصول */
+    top: 0;
+    width: 100%;
+    z-index: 1050;
+    background-color: rgba(10, 10, 10, 0.7) !important; /* أغمق سِنة من الخلفية مع شفافية */
+    backdrop-filter: blur(12px); /* تأثير الزجاج (الـ Blur المودرن) */
+    -webkit-backdrop-filter: blur(12px); /* لدعم متصفحات سفاري */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important; /* خط خفيييف جداً بيدي شياكة */
+    padding: 8px 0 !important; /* تقليل الارتفاع عشان متبقاش Bulky */
+}
+
+/* 2. تكبير كلمة/لوجو مُهاجر (الـ Anchor البصري) */
+.navbar-brand {
+    font-size: 2.5rem !important; /* تكبير واضح */
+    font-family: var(--font-heading) !important;
+    color: var(--gold) !important;
+    transition: transform 0.3s ease;
+}
+.navbar-brand:hover {
+    transform: scale(1.05); /* حركة خفيفة لما الماوس ييجي على اللوجو */
+}
+
+/* 3. تضييق المسافات بين العناصر (Tightening) */
+.navbar-nav {
+    gap: 15px !important; 
+}
+
+/* 4. الـ Hover Animation (الخط الدهبي والـ Glow الناعم) */
+.nav-link {
+    position: relative;
+    padding-bottom: 5px;
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+/* الخط المخفي اللي هيظهر مع الـ Hover */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 50%; /* بيبدأ من النص عشان يناسب العربي */
+    transform: translateX(50%);
+    width: 0;
+    height: 2px;
+    background-color: var(--gold);
+    box-shadow: 0 0 8px transparent; 
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--gold) !important;
+}
+
+.nav-link:hover::after {
+    width: 80%; /* الخط بيفرش تحت الكلمة */
+    box-shadow: 0 0 10px var(--gold); /* الـ Glow الناعم */
+}
+
+/* 5. تكبير الأيقونات (الباسكت واليوزر) */
+.navbar i, .navbar svg, .navbar .fa-shopping-bag, .navbar .fa-user {
+    font-size: 1.4rem !important; /* الأيقونات هتبقى أوضح بكتير */
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+
+.navbar a:hover i, .navbar a:hover svg {
+    color: var(--gold) !important;
+    transform: translateY(-2px); /* نطة خفيفة لفوق للأيقونة */
+    filter: drop-shadow(0 0 5px rgba(201,167,92,0.5));
+}
     
     /* السطر ده مهم عشان اللوجو يعرف إنه مطبوع على الصفحة دي */
     body {
