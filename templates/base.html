@@ -18,6 +18,64 @@
     <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;600&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/htmx.org@1.9.11"></script>
     <style>
+        
+    
+    /* السطر ده مهم عشان اللوجو يعرف إنه مطبوع على الصفحة دي */
+    body {
+        position: relative;
+    }
+
+    /* ده الأساس بتاع اللوجو لكل الموقع */
+    .bg-watermark {
+        position: absolute !important; 
+        top: 0;
+        left: 0;
+        width: 100vw;
+        
+        /* التعديل هنا: 100% بدل 100vh عشان ياخد طول الصفحة بالكامل */
+        height: 100% !important; 
+        
+        background-image: url('/static/images/logo-Photoroom.png');
+        background-repeat: no-repeat;
+        background-size: 40%;
+        opacity: 0.5 !important;
+        z-index: -9999;
+        pointer-events: none;
+        background-position: center center; 
+    }
+</style>
+
+<!-- البلوك ده سحري: ده المكان اللي كل صفحة هتحط فيه التعديل بتاعها -->
+{% block extra_css %}{% endblock %}
+
+<!-- البلوك ده سحري: ده المكان اللي كل صفحة هتحط فيه التعديل بتاعها -->
+
+
+    <meta charset="UTF-8">
+    <!-- تحسين محركات البحث (SEO) -->
+    <meta name="description" content="مُهاجر | Mohager - علامة تجارية رائدة في عالم الموضة تدمج بين الأصالة العربية والتصميم العصري. تسوق أحدث الأزياء الآن.">
+    <meta name="keywords" content="مهاجر, أزياء, ملابس, موضة عربية, تيشيرتات, تسوق أونلاين, أزياء ستريت وير, مصر">
+    <meta name="author" content="مُهاجر">
+
+    <!-- إعدادات المشاركة على السوشيال ميديا والواتساب (Open Graph) -->
+    <meta property="og:title" content="مُهاجر | أزياء تعبر عن هويتك">
+    <meta property="og:description" content="اكتشف أحدث الكوليكشنز من مُهاجر. جودة استثنائية وتصاميم عربية عصرية تناسب يومك.">
+    <!-- حط مسار صورة اللوجو بتاعك هنا عشان تظهر في الشير -->
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.jpg' %}"> 
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:type" content="website">
+
+    <!-- إعدادات المشاركة على تويتر/X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="مُهاجر | أزياء تعبر عن هويتك">
+    <meta name="twitter:description" content="اكتشف أحدث الكوليكشنز من مُهاجر. جودة استثنائية وتصاميم عربية عصرية تناسب يومك.">
+    <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.jpg' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}مُهاجر | Mohager{% endblock %}</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
         /* ========================================== */
 /* تحديثات الـ Navbar (Glassmorphism & Premium UI) */
 /* ========================================== */
@@ -95,63 +153,6 @@
     transform: translateY(-2px); /* نطة خفيفة لفوق للأيقونة */
     filter: drop-shadow(0 0 5px rgba(201,167,92,0.5));
 }
-    
-    /* السطر ده مهم عشان اللوجو يعرف إنه مطبوع على الصفحة دي */
-    body {
-        position: relative;
-    }
-
-    /* ده الأساس بتاع اللوجو لكل الموقع */
-    .bg-watermark {
-        position: absolute !important; 
-        top: 0;
-        left: 0;
-        width: 100vw;
-        
-        /* التعديل هنا: 100% بدل 100vh عشان ياخد طول الصفحة بالكامل */
-        height: 100% !important; 
-        
-        background-image: url('/static/images/logo-Photoroom.png');
-        background-repeat: no-repeat;
-        background-size: 40%;
-        opacity: 0.5 !important;
-        z-index: -9999;
-        pointer-events: none;
-        background-position: center center; 
-    }
-</style>
-
-<!-- البلوك ده سحري: ده المكان اللي كل صفحة هتحط فيه التعديل بتاعها -->
-{% block extra_css %}{% endblock %}
-
-<!-- البلوك ده سحري: ده المكان اللي كل صفحة هتحط فيه التعديل بتاعها -->
-
-
-    <meta charset="UTF-8">
-    <!-- تحسين محركات البحث (SEO) -->
-    <meta name="description" content="مُهاجر | Mohager - علامة تجارية رائدة في عالم الموضة تدمج بين الأصالة العربية والتصميم العصري. تسوق أحدث الأزياء الآن.">
-    <meta name="keywords" content="مهاجر, أزياء, ملابس, موضة عربية, تيشيرتات, تسوق أونلاين, أزياء ستريت وير, مصر">
-    <meta name="author" content="مُهاجر">
-
-    <!-- إعدادات المشاركة على السوشيال ميديا والواتساب (Open Graph) -->
-    <meta property="og:title" content="مُهاجر | أزياء تعبر عن هويتك">
-    <meta property="og:description" content="اكتشف أحدث الكوليكشنز من مُهاجر. جودة استثنائية وتصاميم عربية عصرية تناسب يومك.">
-    <!-- حط مسار صورة اللوجو بتاعك هنا عشان تظهر في الشير -->
-    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.jpg' %}"> 
-    <meta property="og:url" content="{{ request.build_absolute_uri }}">
-    <meta property="og:type" content="website">
-
-    <!-- إعدادات المشاركة على تويتر/X -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="مُهاجر | أزياء تعبر عن هويتك">
-    <meta name="twitter:description" content="اكتشف أحدث الكوليكشنز من مُهاجر. جودة استثنائية وتصاميم عربية عصرية تناسب يومك.">
-    <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.jpg' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}مُهاجر | Mohager{% endblock %}</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <style>
         /* ستايل العلامة المائية (اللوجو في الخلفية) */
 .bg-watermark {
         /* السطر ده هو اللي بيثبته في الشاشة وميخليهوش ينزل مع السكرول */
