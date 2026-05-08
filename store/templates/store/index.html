@@ -386,18 +386,9 @@ var(--bg-base);
 
 <!-- سلايدر العروض -->
 <section class="hero-slider swiper">
-    <section class="hero-slider swiper">
     
     <div class="slider-watermark"></div>
 
-    <div class="swiper-wrapper">
-        {% for slide in slides %}
-        ```
-
-**الخلاصة:**
-الطريقة دي بتجبر اللوجو إنه يكون "يافطة" محطوطة في ضهر السلايدر بالظبط. مستحيل يهرب يمين أو شمال، ولما تنزل بالسكرول لتحت عند المنتجات، السلايدر هياخد اللوجو معاه ويطلع لفوق طبيعي جداً.
-
-ارفع التعديل واضرب `Ctrl + F5`، دي الضربة القاضية للحوار ده! 🚀 مستنيك تفرحني.
     <div class="swiper-wrapper">
         {% for slide in slides %}
         <div class="swiper-slide">
@@ -405,15 +396,11 @@ var(--bg-base);
                 
                 <div class="slide-text">
                     <h2>{{ slide.title_ar }}</h2>
-                    
                     <p class="slide-desc">{{ slide.subtitle_ar }}</p>
-                    
                     <div class="slide-divider"></div>
-                    
                     {% if slide.action_hint_ar %}
                         <p class="slide-action-hint">{{ slide.action_hint_ar }}</p>
                     {% endif %}
-                    
                     <a href="{{ slide.btn_url }}" class="slide-btn">{{ slide.btn_text_ar }}</a>
                 </div>
 
@@ -427,12 +414,12 @@ var(--bg-base);
         </div>
         {% empty %}
         <div class="swiper-slide">
-            <div class="slide-content" style="justify-content: center;">
+            <div class="slide-content" style="justify-content: center; text-align: center;">
                 <h2 style="color: var(--gold); font-family: var(--font-heading);">مرحباً بك في مُهاجر</h2>
             </div>
         </div>
-        {% endfor %}
-    </div>
+        {% endfor %} </div>
+    
     <div class="swiper-button-next" style="color: var(--gold);"></div>
     <div class="swiper-button-prev" style="color: var(--gold);"></div>
     <div class="swiper-pagination"></div>
