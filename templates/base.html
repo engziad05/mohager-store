@@ -77,82 +77,84 @@
     
     <style>
         /* ========================================== */
-/* تحديثات الـ Navbar (Glassmorphism & Premium UI) */
-/* ========================================== */
+        /* ستايل الهيدر (Navbar) - Glassmorphism & Premium UI */
+        /* ========================================== */
+        nav {
+            position: absolute; /* طايرة فوق الموقع */
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1050;
+            background-color: rgba(10, 10, 10, 0.4) !important; /* شفافة أغمق من الخلفية سِنة */
+            backdrop-filter: blur(12px); /* الـ Blur المودرن */
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(200, 169, 110, 0.15); /* خط دهبي خفييييف تحتها */
+            padding: 10px 5%; /* صغرنا الارتفاع */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-/* 1. الشفافية، الـ Blur، وتقليل الارتفاع وتركيبها فوق الـ Hero */
-.navbar {
-    position: absolute !important; /* دي الكلمة السحرية اللي هتخليها طايرة فوق السلايدر بدل ما تكون Box مفصول */
-    top: 0;
-    width: 100%;
-    z-index: 1050;
-    background-color: rgba(10, 10, 10, 0.7) !important; /* أغمق سِنة من الخلفية مع شفافية */
-    backdrop-filter: blur(12px); /* تأثير الزجاج (الـ Blur المودرن) */
-    -webkit-backdrop-filter: blur(12px); /* لدعم متصفحات سفاري */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important; /* خط خفيييف جداً بيدي شياكة */
-    padding: 8px 0 !important; /* تقليل الارتفاع عشان متبقاش Bulky */
-}
+        /* تكبير كلمة مُهاجر (Anchor بصري) */
+        .logo {
+            font-family: var(--font-ar);
+            font-size: 2.9rem; /* كبرناها أكتر */
+            color: var(--gold);
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(200, 169, 110, 0.3);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .logo:hover {
+            transform: scale(1.05);
+        }
 
-/* 2. تكبير كلمة/لوجو مُهاجر (الـ Anchor البصري) */
-.navbar-brand {
-    font-size: 2.5rem !important; /* تكبير واضح */
-    font-family: var(--font-heading) !important;
-    color: var(--gold) !important;
-    transition: transform 0.3s ease;
-}
-.navbar-brand:hover {
-    transform: scale(1.05); /* حركة خفيفة لما الماوس ييجي على اللوجو */
-}
+        /* تضييق المسافات بين اللينكات (الرئيسية - المتجر) */
+        .nav-links-container {
+            display: flex;
+            gap: 15px; /* المسافات أضيق وأشيك */
+            align-items: center;
+            font-size: 1.1rem;
+        }
 
-/* 3. تضييق المسافات بين العناصر (Tightening) */
-.navbar-nav {
-    gap: 15px !important; 
-}
+        /* حركة الخط الدهبي والـ Glow تحت اللينكات */
+        .nav-link-item {
+            position: relative;
+            color: var(--cream);
+            text-decoration: none;
+            padding-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+        .nav-link-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 50%;
+            transform: translateX(50%);
+            width: 0;
+            height: 2px;
+            background-color: var(--gold);
+            box-shadow: 0 0 8px var(--gold); 
+            transition: all 0.3s ease;
+        }
+        .nav-link-item:hover {
+            color: var(--gold);
+        }
+        .nav-link-item:hover::after {
+            width: 100%;
+        }
 
-/* 4. الـ Hover Animation (الخط الدهبي والـ Glow الناعم) */
-.nav-link {
-    position: relative;
-    padding-bottom: 5px;
-    color: rgba(255, 255, 255, 0.85) !important;
-    font-size: 1.1rem;
-    transition: color 0.3s ease;
-}
-
-/* الخط المخفي اللي هيظهر مع الـ Hover */
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: 50%; /* بيبدأ من النص عشان يناسب العربي */
-    transform: translateX(50%);
-    width: 0;
-    height: 2px;
-    background-color: var(--gold);
-    box-shadow: 0 0 8px transparent; 
-    transition: all 0.3s ease;
-}
-
-.nav-link:hover {
-    color: var(--gold) !important;
-}
-
-.nav-link:hover::after {
-    width: 80%; /* الخط بيفرش تحت الكلمة */
-    box-shadow: 0 0 10px var(--gold); /* الـ Glow الناعم */
-}
-
-/* 5. تكبير الأيقونات (الباسكت واليوزر) */
-.navbar i, .navbar svg, .navbar .fa-shopping-bag, .navbar .fa-user {
-    font-size: 1.4rem !important; /* الأيقونات هتبقى أوضح بكتير */
-    color: rgba(255, 255, 255, 0.9);
-    transition: all 0.3s ease;
-}
-
-.navbar a:hover i, .navbar a:hover svg {
-    color: var(--gold) !important;
-    transform: translateY(-2px); /* نطة خفيفة لفوق للأيقونة */
-    filter: drop-shadow(0 0 5px rgba(201,167,92,0.5));
-}
+        /* تكبير الأيقونات (الباسكت واليوزر) */
+        .nav-icon {
+            font-size: 1.6rem !important; /* الأيقونات بقت واضحة */
+            color: var(--gold);
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        .nav-icon:hover {
+            transform: translateY(-3px);
+            filter: drop-shadow(0 0 8px rgba(201,167,92,0.6));
+        }
         /* ستايل العلامة المائية (اللوجو في الخلفية) */
 .bg-watermark {
         /* السطر ده هو اللي بيثبته في الشاشة وميخليهوش ينزل مع السكرول */
@@ -451,14 +453,13 @@
     <!-- Navbar -->
     <nav>
         <div style="display: flex; gap: 20px; align-items: center;">
-            <!-- أيقونة السلة (HTMX) -->
             <a href="#" 
                hx-get="{% url 'cart_drawer' %}" 
                hx-target="#cart-drawer-content" 
                hx-trigger="click" 
                onclick="openCart()" 
-               style="position: relative; color: var(--gold); font-size: 1.2rem; text-decoration: none; display: flex; align-items: center;">
-                <i class="fas fa-shopping-bag"></i>
+               style="position: relative; text-decoration: none; display: flex; align-items: center;">
+                <i class="fas fa-shopping-bag nav-icon"></i>
                 <span id="cart-badge" style="position: absolute; top: -8px; right: -12px; background: var(--gold); color: var(--bg-base); font-size: 0.7rem; padding: 2px 6px; border-radius: 50%; font-weight: bold; font-family: var(--font-en);">
                     {{ cart_count|default:"0" }}
                 </span>
@@ -467,27 +468,20 @@
 
         <div class="logo">مُهاجر</div>
 
-        <div style="display: flex; gap: 25px; font-size: 1.1rem; align-items: center;">
-            <a href="/">الرئيسية</a>
-            <a href="/shop">المتجر</a>
+        <div class="nav-links-container">
+            <a href="/" class="nav-link-item">الرئيسية</a>
+            <a href="/shop" class="nav-link-item">المتجر</a>
             
-            <!-- فاصل شيك عشان يفصل المنيو عن الحسابات -->
-            <span style="color: #444;">|</span> 
+            <span style="color: rgba(255,255,255,0.2);">|</span> 
             
-            <!-- حالة تسجيل الدخول -->
             {% if user.is_authenticated %}
-                <!-- عرض اسم المستخدم بدل كلمة حسابي -->
-                <a href="{% url 'dashboard' %}" style="color: var(--gold); display: flex; align-items: center; gap: 5px; text-decoration: none; font-family: var(--font-en); font-weight: bold;">
-    <i class="fas fa-user" style="font-size: 0.9rem;"></i> {{ user.first_name }}
-</a>
-                <!-- زرار تسجيل الخروج -->
-                <a href="{% url 'account_logout' %}" style="color: #aaa; font-size: 0.9rem; text-decoration: none; transition: 0.3s;" onmouseover="this.style.color='#ff4c4c'" onmouseout="this.style.color='#aaa'">
-                    خروج
+                <a href="{% url 'dashboard' %}" class="nav-link-item" style="display: flex; align-items: center; gap: 5px; font-family: var(--font-en); font-weight: bold;">
+                    <i class="fas fa-user nav-icon" style="font-size: 1.2rem !important;"></i> {{ user.first_name }}
                 </a>
+                <a href="{% url 'account_logout' %}" class="nav-link-item" style="color: #aaa; font-size: 0.9rem;">خروج</a>
             {% else %}
-                <!-- زرار الدخول للزوار -->
-                <a href="{% url 'account_login' %}" style="display: flex; align-items: center; gap: 5px; text-decoration: none; transition: 0.3s; color: var(--cream);" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--cream)'">
-                    <i class="fas fa-user"></i> الدخول
+                <a href="{% url 'account_login' %}" class="nav-link-item" style="display: flex; align-items: center; gap: 5px;">
+                    <i class="fas fa-user nav-icon" style="font-size: 1.3rem !important;"></i> الدخول
                 </a>
             {% endif %}
         </div>
