@@ -115,30 +115,30 @@
    /* ========================================== */
     /* تفاصيل المنتج (متسنترة وفيها مساحة أمان للزرار) */
     /* ========================================== */
-    /* ========================================== */
-    /* شبكة المنتجات */
-    /* ========================================== */
     .products-grid {
         display: flex;
         flex-wrap: wrap;
-        justify-content: flex-start;
-        gap: 30px;
+        justify-content: center !important; /* السر هنا: هيسحب الكارت للنص بالظبط */
+        gap: 40px;
         max-width: 1200px;
         margin: 0 auto;
-        padding: 20px 20px 80px 20px !important; 
+        padding: 10px 20px 80px 20px !important; /* قللنا البادينج اللي فوق */
         direction: rtl;
     }
 
     /* ========================================== */
-    /* كارت المنتج (Clean, Minimal, Aligned) */
+    /* كارت المنتج (حيوي، متزن، وفيه مساحة للشادو) */
     /* ========================================== */
     .product-card {
-        width: 260px !important; /* مقاس ثابت ومعقول جداً */
+        width: 290px !important;
         background: transparent !important;
-        border: none !important;
+        border: 1px solid transparent !important; /* برواز وهمي عشان الحركة تكون ناعمة */
+        border-radius: 12px;
+        padding: 15px; /* مهم جداً: مسافة داخلية عشان الشادو مياكلش حواف الصورة */
         display: flex;
         flex-direction: column;
-        align-items: center; /* بيسنتر كل حاجة عمودياً بالمسطرة */
+        align-items: center;
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     /* الصورة */
@@ -208,10 +208,11 @@
     }
     
     .product-card:hover {
-        transform: translateY(-10px);
-        border-color: var(--gold);
+        transform: translateY(-6px) scale(1.02); /* نطة خفيفة مع تكبير لا يذكر */
+        background-color: rgba(200, 169, 110, 0.02) !important; /* لمحة دهبي في الخلفية */
+        box-shadow: 0 15px 40px rgba(200, 169, 110, 0.08); /* الشادو الناعم اللي طلبته */
+        border-color: rgba(200, 169, 110, 0.06) !important; /* تحديد خفي جداً للكارت */
     }
-
     /* 3. السحر اللي بيصغر الصورة ويخليها مربعة زي الريفرنس */
     .product-img-wrapper img {
         width: 100% !important;
@@ -428,7 +429,7 @@ var(--bg-base);
 </section>
 
 <!-- عنوان سيكشن المنتجات -->
-<h2 style="text-align: center; color: var(--gold); font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 20px;">أحدث الإصدارات</h2>
+<h2 style="text-align: center; color: var(--gold); font-family: var(--font-heading); margin-top: 40px; margin-bottom: 10px; font-size: 2.5rem;">أحدث الإصدارات</h2>
 
 <!-- شبكة المنتجات -->
 <section>
