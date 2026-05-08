@@ -631,6 +631,27 @@ body {
         font-size: 0.8rem; 
         font-family: var(--font-body);
     }
+    /* ========================================== */
+    /* تظبيط الموبايل للأساسيات والفوتر */
+    /* ========================================== */
+    @media (max-width: 768px) {
+        .footer-container {
+            flex-direction: column; /* بنرص العواميد تحت بعضها بدل جنب بعض */
+            align-items: center;
+            gap: 40px;
+        }
+        .footer-section {
+            width: 100%;
+            align-items: center !important;
+            text-align: center !important;
+        }
+        .footer-section p, .footer-section a {
+            justify-content: center; /* توسيط الكلام والأيقونات */
+        }
+        .social-icons {
+            justify-content: center;
+        }
+    }
     </style>
 
     <!-- Footer -->

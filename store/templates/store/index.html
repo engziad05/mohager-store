@@ -382,6 +382,44 @@ var(--bg-base);
         padding: 14px 20px;
         font-size: 1rem;
     }
+    /* ========================================== */
+    /* تظبيط الموبايل للهيرو سلايدر والمنتجات */
+    /* ========================================== */
+    @media (max-width: 768px) {
+        /* 1. الهيرو سلايدر (ترتيب عمودي بدل الزنقة) */
+        .slide-content {
+            flex-direction: column; /* النص فوق والصورة تحته */
+            text-align: center;
+            gap: 30px;
+            padding: 40px 20px;
+        }
+        .slide-text, .slide-image {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .slide-image img {
+            max-width: 75%; /* بنصغر الحصان شوية عشان الشاشة */
+            margin: 0 auto;
+        }
+        
+        /* بنلغي الفراغ الأسود الضخم اللي فوق السلايدر */
+        .hero-slider {
+            min-height: auto !important;
+            padding-top: 20px;
+        }
+
+        /* 2. المنتجات (تكبير الكارت وتقليل الفراغات) */
+        .products-grid {
+            padding: 10px 10px 40px 10px !important;
+            gap: 30px;
+        }
+        .product-card {
+            width: 90% !important; /* بنخلي الكارت ياخد عرض شاشة الموبايل بشكل مريح */
+            max-width: 340px;
+        }
+    }
 }
 
 </style>
@@ -429,7 +467,7 @@ var(--bg-base);
 </section>
 
 <!-- عنوان سيكشن المنتجات -->
-<h2 style="text-align: center; color: var(--gold); font-family: var(--font-heading); margin-top: 40px; margin-bottom: 10px; font-size: 2.5rem;">أحدث الإصدارات</h2>
+<h2 style="text-align: center; color: var(--gold); font-family: var(--font-heading); margin-top: 10px; margin-bottom: 10px; font-size: 2.5rem;">أحدث الإصدارات</h2>
 
 <!-- شبكة المنتجات -->
 <section>
