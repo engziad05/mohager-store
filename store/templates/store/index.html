@@ -94,17 +94,14 @@
     .slide-btn:hover { background-color: var(--gold-dark); transform: scale(1.05); color: #fff;}
     .slide-image { flex: 1; display: flex; justify-content: center; align-items: center; }
     .slide-image img {
-        width: 100%;
-        max-width: 700px;
-        height: 550px; 
-        object-fit: cover; 
-        border-radius: 16px; 
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5); 
-    }
-    @media (max-width: 768px) {
-        .slide-content { flex-direction: column-reverse; text-align: center; padding: 40px 5%; }
-        .slide-image img { height: 300px; margin-bottom: 20px; }
-    }
+    width: 100%;
+    max-width: 600px;
+    height: auto;               /* ارتفاع تلقائي مش ثابت */
+    object-fit: contain;        /* يظهر الصورة كاملة من غير قص */
+    border-radius: 0;           /* امسح الـ box */
+    box-shadow: none;           /* امسح الظل */
+    filter: sepia(0.5) saturate(1.8) brightness(0.85); /* Golden tint */
+}
 </style>
 
 <!-- سلايدر العروض -->
