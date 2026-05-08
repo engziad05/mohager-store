@@ -73,47 +73,67 @@ var(--bg-base);
     padding: 0 7%;
 }
     .slide-text {
-    flex: 1;
-    max-width: 520px;
-    padding: 20px;
-}
+        flex: 1;
+        max-width: 520px;
+        padding: 20px;
+        /* التعديلات الجديدة: لتوسيط العناصر بشكل عمودي وأفقي */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
     .slide-text h2 {
-    font-size: 5.2rem;
-    line-height: 1;
-    color: var(--gold);
-    font-family: var(--font-heading);
-    margin-bottom: 25px;
-}
-    .slide-text p {
-    font-size: 1.3rem;
-    color: rgba(255,255,255,0.82);
-    margin-bottom: 35px;
-    line-height: 1.8;
-}
+        font-size: 5.5rem; /* كبرنا الخط سِنة بسيطة */
+        line-height: 1;
+        color: var(--gold);
+        font-family: var(--font-heading);
+        margin-bottom: 10px;
+        text-shadow: 0 4px 15px rgba(201, 167, 92, 0.15); /* إضافة توهج خفيف للكلمة */
+    }
+
+    .slide-text p.main-subtitle {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.85);
+        margin-bottom: 20px;
+        line-height: 1.8;
+    }
+
+    /* كلاس جديد للخط الفاصل الذهبي */
+    .slide-divider {
+        width: 60px;
+        height: 2px;
+        background-color: var(--gold);
+        margin: 10px 0 20px 0;
+        opacity: 0.6;
+    }
+
+    /* كلاس جديد للنص اللي فوق الزرار */
+    .slide-text p.action-text {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 15px;
+    }
+
     .slide-btn {
-    background-color: var(--gold);
-    color: var(--bg-base);
-    padding: 16px 46px;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 12px;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    transition: 0.3s;
-    display: inline-block;
-}
-    .slide-btn:hover { background-color: var(--gold-dark); transform: scale(1.05); color: #fff;}
-    .slide-image { flex: 1; display: flex; justify-content: center; align-items: center; }
-    .slide-image img {
-    width: 100%;
-    max-width: 540px;
-    height: auto;
-    object-fit: contain;
-    position: relative;
-    z-index: 2;
-    filter: drop-shadow(0 0 25px rgba(201,167,92,0.15));
-}
-    @media (max-width: 768px) {
+        background-color: var(--gold);
+        color: var(--bg-base);
+        padding: 12px 40px;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 8px; /* تقليل الدوران شوية بيدي طابع أفخم */
+        font-size: 1.1rem;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(201, 167, 92, 0.15); /* إضافة ظل خفيف للزرار */
+    }
+
+    .slide-btn:hover { 
+        background-color: var(--gold-dark); 
+        transform: translateY(-3px); /* حركة خفيفة لفوق بدل التكبير المبالغ فيه */
+        color: #fff;
+    }
+    @media (max-width: 768px) 
 
     .slide-content {
         flex-direction: column-reverse;
@@ -181,7 +201,13 @@ var(--bg-base);
             <div class="slide-content">
                 <div class="slide-text">
                     <h2>{{ slide.title_ar }}</h2>
-                    <p>{{ slide.subtitle_ar }}</p>
+                    
+                    <p class="main-subtitle">{{ slide.subtitle_ar }}</p>
+                    
+                    <div class="slide-divider"></div>
+                    
+                    <p class="action-text">لطلب مُهاجر الآن</p>
+                    
                     <a href="{{ slide.btn_url }}" class="slide-btn">{{ slide.btn_text_ar }}</a>
                 </div>
                 <div class="slide-image">
