@@ -195,11 +195,14 @@ body {
     }
         /* نظام الشبكة اللي هيرص الكروت جنب بعض */
     .products-grid {
-        display: grid;
-        /* السطر ده بيخلي الكارت عرضه 250 بيكسل، ولو الشاشة كبرت بيحط كروت اكتر جنب بعض */
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 25px;
-        padding: 20px 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px 20px 80px 20px !important; /* زودنا 80 بيكسل مساحة تنفس كاملة من تحت */
+        direction: rtl;
     }
 
     /* ديزاين كارت المنتج نفسه */
@@ -519,15 +522,22 @@ body {
     /* ستايل الفوتر (Cinematic & Premium) */
     /* ========================================== */
 
+   /* ========================================== */
+    /* الفوتر (أهدى، أفخم، وبيغطي على العلامة المائية) */
+    /* ========================================== */
     .site-footer {
-        /* 1. الجراديانت السينمائي (إضاءة خفيفة من فوق بتسحب لغامق تحت) */
-        background: radial-gradient(ellipse at top, #23231c 0%, var(--bg-surface) 70%);
+        /* 1. الجراديانت بقى أنعم بكتير (مجرد إيحاء بالإضاءة مش ضباب) */
+        background: radial-gradient(ellipse at top, rgba(35, 35, 28, 0.9) 0%, var(--bg-surface) 60%);
+        background-color: var(--bg-surface); /* لون صريح عشان يمنع اللوجو يبان من تحته */
         
-        /* 2. خط دهبي خفيف جداً مع Glow داخلي ناعم */
-        border-top: 1px solid rgba(200, 169, 110, 0.15);
-        box-shadow: inset 0 20px 40px -20px rgba(200, 169, 110, 0.08);
+        /* 2. الخط الفاصل والـ Glow بقوا Subtle جداً */
+        border-top: 1px solid rgba(200, 169, 110, 0.08); 
+        box-shadow: inset 0 10px 20px -10px rgba(200, 169, 110, 0.03); 
         
-        /* 3. تقليل الفراغ الرأسي الضخم */
+        /* 3. السر في الإخفاء: الفوتر بقى طبقة عليا تغطي أي لوجو وراها */
+        position: relative;
+        z-index: 10; 
+        
         padding: 40px 5% 15px; 
         width: 100%;
         box-sizing: border-box;
@@ -586,26 +596,29 @@ body {
     }
 
     /* 5. الأيقونات (تصميم أهدى مع Glow فخم في الهوفر) */
+    /* أيقونات السوشيال - Cinematic Hover */
     .social-icons a {
         font-size: 1.1rem;
-        color: var(--sand);
-        background-color: rgba(200, 169, 110, 0.03); /* خلفية شبه شفافة */
-        border: 1px solid rgba(200, 169, 110, 0.2); /* برواز هادي جداً */
-        width: 38px; /* حجم ألم وأشيك */
+        color: rgba(232, 213, 176, 0.7); /* لون دهبي مطفي هادي جداً */
+        background: transparent;
+        border: 1px solid rgba(200, 169, 110, 0.15); /* برواز خفيف أوي */
+        width: 38px;
         height: 38px;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* Animation ناعم جداً وبطيء سِنة */
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .social-icons a:hover {
-        color: var(--bg-base) !important;
-        background-color: var(--gold) !important;
+        color: var(--bg-base) !important; /* الأيقونة تقلب أسود */
+        background-color: var(--gold) !important; /* الخلفية تقلب دهبي صريح */
         border-color: var(--gold) !important;
-        box-shadow: 0 0 15px rgba(200, 169, 110, 0.6); /* الـ Glow الدهبي */
-        transform: translateY(-4px) scale(1.05); /* نطة خفيفة لفوق */
+        /* الـ Glow السحري */
+        box-shadow: 0 0 18px rgba(200, 169, 110, 0.35); 
+        transform: translateY(-4px) scale(1.05); /* نطة خفيفة لفوق مع تكبير لا يذكر */
     }
 
     /* 6. حقوق النشر (أصغر، ملمومة، وتباين أوضح) */
