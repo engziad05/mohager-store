@@ -155,14 +155,21 @@
             transform: translateY(-3px);
             filter: drop-shadow(0 0 8px rgba(201,167,92,0.6));
         }
-        /* ستايل العلامة المائية (اللوجو في الخلفية) */
-.bg-watermark {
-        /* السطر ده هو اللي بيثبته في الشاشة وميخليهوش ينزل مع السكرول */
-        position: fixed; 
+        /* العلامة المائية (اللوجو مطبوع عالصفحة وبيتحرك مع السكرول) */
+    .bg-watermark {
+        position: absolute !important; /* الكلمة السحرية اللي هتخليه يسكرول معاك */
         top: 0;
         left: 0;
         width: 100vw;
-        height: 100vh;
+        height: 100vh; 
+        background-image: url('/static/images/logo-Photoroom.png');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 45%; 
+        opacity: 0.05 !important; 
+        z-index: -9999;
+        pointer-events: none;
+    }
         
         background-image: url('/static/images/logo-Photoroom.png');
         background-repeat: no-repeat;
