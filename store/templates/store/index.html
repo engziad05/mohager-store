@@ -72,37 +72,75 @@ var(--bg-base);
     min-height: 88vh;
     padding: 0 7%;
 }
+    /* ========================================== */
+    /* تنسيقات النص والزرار الجديدة (ستايل الريفرنس) */
+    /* ========================================== */
     .slide-text {
-    flex: 1;
-    max-width: 520px;
-    padding: 20px;
-}
+        flex: 1;
+        max-width: 520px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* توسيط كل حاجة في النص */
+        text-align: center;
+    }
+    
+    /* لو هتستخدم صورة للمخطوطة مستقبلاً */
+    .calligraphy-img {
+        width: 280px;
+        margin-bottom: 20px;
+        filter: drop-shadow(0 0 10px rgba(201,167,92,0.2));
+    }
+
     .slide-text h2 {
-    font-size: 5.2rem;
-    line-height: 1;
-    color: var(--gold);
-    font-family: var(--font-heading);
-    margin-bottom: 25px;
-}
-    .slide-text p {
-    font-size: 1.3rem;
-    color: rgba(255,255,255,0.82);
-    margin-bottom: 35px;
-    line-height: 1.8;
-}
+        font-size: 5.5rem;
+        line-height: 1;
+        color: var(--gold);
+        font-family: var(--font-heading);
+        margin-bottom: 15px;
+    }
+    
+    .slide-text p.slide-desc {
+        font-size: 1.2rem;
+        color: rgba(255,255,255,0.85);
+        margin-bottom: 20px;
+        font-family: var(--font-body);
+    }
+
+    /* الخط الذهبي الفاصل */
+    .slide-divider {
+        width: 60px;
+        height: 2px;
+        background-color: var(--gold);
+        margin: 15px auto 25px auto;
+        opacity: 0.8;
+    }
+
+    .slide-text p.slide-action-hint {
+        font-size: 1.1rem;
+        color: rgba(255,255,255,0.9);
+        margin-bottom: 15px;
+        font-family: var(--font-body);
+    }
+
     .slide-btn {
-    background-color: var(--gold);
-    color: var(--bg-base);
-    padding: 16px 46px;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 12px;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    transition: 0.3s;
-    display: inline-block;
-}
-    .slide-btn:hover { background-color: var(--gold-dark); transform: scale(1.05); color: #fff;}
+        background-color: var(--gold);
+        color: var(--bg-base); /* النص أسود/غامق زي الصورة */
+        padding: 12px 50px;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 8px; /* حواف ناعمة زي الريفرنس */
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        font-family: var(--font-body);
+    }
+
+    .slide-btn:hover { 
+        background-color: #e6c072; /* درجة أفتح شوية لما تقف عليه */
+        transform: translateY(-3px); 
+        color: var(--bg-base);
+        box-shadow: 0 5px 15px rgba(201,167,92,0.3);
+    }
     .slide-image { flex: 1; display: flex; justify-content: center; align-items: center; }
     .slide-image img {
     width: 100%;
@@ -179,16 +217,25 @@ var(--bg-base);
         {% for slide in slides %}
         <div class="swiper-slide">
             <div class="slide-content">
+                
                 <div class="slide-text">
                     <h2>{{ slide.title_ar }}</h2>
-                    <p>{{ slide.subtitle_ar }}</p>
+                    
+                    <p class="slide-desc">{{ slide.subtitle_ar }}</p>
+                    
+                    <div class="slide-divider"></div>
+                    
+                    <p class="slide-action-hint">لطلب مُهاجر الآن</p>
+                    
                     <a href="{{ slide.btn_url }}" class="slide-btn">{{ slide.btn_text_ar }}</a>
                 </div>
+
                 <div class="slide-image">
                     {% if slide.image %}
                         <img src="{{ slide.image.url }}" alt="{{ slide.title_ar }}">
                     {% endif %}
                 </div>
+                
             </div>
         </div>
         {% empty %}
