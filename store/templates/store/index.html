@@ -67,37 +67,39 @@
     /* تظبيط الجريد عشان يرص من اليمين للشمال */
     .products-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 40px;
-        max-width: 1100px;
+        /* السر هنا: ثبتنا العرض بـ 280 بيكسل عشان ميكبرش يملى الشاشة لو منتج واحد */
+        grid-template-columns: repeat(auto-fill, 280px);
+        justify-content: flex-start; /* هيبدأ رص من اليمين للشمال */
+        gap: 30px;
+        max-width: 1200px;
         margin: 0 auto;
         padding: 20px;
-        direction: rtl; /* تأكيد الاتجاه من اليمين */
+        direction: rtl; /* اتجاه عربي */
     }
 
-    /* تظبيط عرض الكارت عشان يملى المساحة صح */
+    
+    /* الكارت نفسه (التصميم الفخم من غير براويز) */
     .product-card {
         background: transparent;
         border: none;
         display: flex;
         flex-direction: column;
         transition: transform 0.4s ease;
-        position: relative;
         width: 100%;
     }
 
-    /* تأثير الهوفر: حركة ناعمة جداً لفوق من غير ظل أوفر */
-    .product-card:hover {
-        transform: translateY(-8px);
+    product-card:hover {
+        transform: translateY(-8px); /* نطة خفيفة لفوق */
     }
 
-    /* صورة المنتج: مقاس الفاشون (4:5) أطول سِنة من المربع */
+    
+    /* صورة المنتج (مقاس الفاشون 4:5) */
     .product-img-wrapper {
         width: 100%;
         aspect-ratio: 4 / 5; 
-        background-color: #111; /* لون رمادي غامق جداً ورا الصورة بيدي عمق */
+        background-color: #111;
         overflow: hidden;
-        border-radius: 6px; /* حواف ناعمة جداً مش دائرية أوي */
+        border-radius: 6px;
         position: relative;
     }
 
@@ -105,25 +107,27 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.7s ease; /* زووم بطيء وفخم */
+        transition: transform 0.7s ease;
     }
 
     .product-card:hover .product-img-wrapper img {
-        transform: scale(1.04);
+        transform: scale(1.04); /* زووم خفيف للصورة */
     }
 
-    /* تفاصيل المنتج (النصوص) */
-    .product-details {
-        padding: 20px 5px 5px; /* مسافة أوسع بين الصورة والاسم */
+    product-details {
+        padding: 15px 5px 5px;
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
     }
 
     .product-details h3 {
-        color: var(--cream); /* الاسم بلون فاتح هادي مش دهبي فاقع */
+        color: var(--cream);
         font-size: 1.4rem;
         margin: 0 0 8px 0;
         font-family: var(--font-heading);
-    }
+    } 
 
     .product-details p.price {
         color: var(--sand);
@@ -131,20 +135,17 @@
         font-weight: bold;
         margin: 0 0 15px 0;
         font-family: var(--font-body);
-        letter-spacing: 1px;
     }
 
-    /* الزرار الجديد: Minimalist Outline Button */
-    /* ========================================== */
-    /* زرار التفاصيل المحدث (أوضح وأفخم) */
+    
     /* ========================================== */
     /* زرار التفاصيل المحدث (نقي وواضح جداً) */
     .premium-btn {
         display: block;
         width: 100%;
-        background-color: transparent !important; /* شفاف تماماً */
-        color: var(--gold) !important; /* النص دهبي منور */
-        border: 1px solid var(--gold) !important; /* برواز دهبي صريح */
+        background-color: transparent !important;
+        color: var(--gold) !important;
+        border: 1px solid var(--gold) !important;
         padding: 10px;
         text-align: center;
         border-radius: 4px;
@@ -152,7 +153,7 @@
         font-weight: bold;
         font-size: 1.1rem;
         transition: all 0.3s ease;
-        margin-top: 15px; /* زقيناه لتحت شوية عن السعر */
+        margin-top: auto; /* بيزق الزرار لتحت دايماً */
     }
 
     .premium-btn:hover {

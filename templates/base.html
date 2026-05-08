@@ -25,23 +25,21 @@
         position: relative;
     }
 
-    /* ده الأساس بتاع اللوجو لكل الموقع */
+    
+    /* العلامة المائية (اللوجو في الخلفية) */
     .bg-watermark {
-        position: absolute !important; 
+        position: fixed !important; /* عشان يفضل ثابت وإنت بتنزل في الصفحة */
         top: 0;
         left: 0;
         width: 100vw;
-        
-        /* التعديل هنا: 100% بدل 100vh عشان ياخد طول الصفحة بالكامل */
-        height: 100% !important; 
-        
+        height: 100vh;
         background-image: url('/static/images/logo-Photoroom.png');
         background-repeat: no-repeat;
-        background-size: 40%;
-        opacity: 0.5 !important;
+        background-position: center center;
+        background-size: 45%; /* حجم اللوجو */
+        opacity: 0.05 !important; /* السر هنا: خليناها 5% بس عشان تدي فخامة من غير دوشة */
         z-index: -9999;
         pointer-events: none;
-        background-position: center center; 
     }
 </style>
 
