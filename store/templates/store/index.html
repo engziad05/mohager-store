@@ -73,67 +73,47 @@ var(--bg-base);
     padding: 0 7%;
 }
     .slide-text {
-        flex: 1;
-        max-width: 520px;
-        padding: 20px;
-        /* التعديلات الجديدة: لتوسيط العناصر بشكل عمودي وأفقي */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
+    flex: 1;
+    max-width: 520px;
+    padding: 20px;
+}
     .slide-text h2 {
-        font-size: 5.5rem; /* كبرنا الخط سِنة بسيطة */
-        line-height: 1;
-        color: var(--gold);
-        font-family: var(--font-heading);
-        margin-bottom: 10px;
-        text-shadow: 0 4px 15px rgba(201, 167, 92, 0.15); /* إضافة توهج خفيف للكلمة */
-    }
-
-    .slide-text p.main-subtitle {
-        font-size: 1.1rem;
-        color: rgba(255, 255, 255, 0.85);
-        margin-bottom: 20px;
-        line-height: 1.8;
-    }
-
-    /* كلاس جديد للخط الفاصل الذهبي */
-    .slide-divider {
-        width: 60px;
-        height: 2px;
-        background-color: var(--gold);
-        margin: 10px 0 20px 0;
-        opacity: 0.6;
-    }
-
-    /* كلاس جديد للنص اللي فوق الزرار */
-    .slide-text p.action-text {
-        font-size: 1rem;
-        color: rgba(255, 255, 255, 0.7);
-        margin-bottom: 15px;
-    }
-
+    font-size: 5.2rem;
+    line-height: 1;
+    color: var(--gold);
+    font-family: var(--font-heading);
+    margin-bottom: 25px;
+}
+    .slide-text p {
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.82);
+    margin-bottom: 35px;
+    line-height: 1.8;
+}
     .slide-btn {
-        background-color: var(--gold);
-        color: var(--bg-base);
-        padding: 12px 40px;
-        text-decoration: none;
-        font-weight: bold;
-        border-radius: 8px; /* تقليل الدوران شوية بيدي طابع أفخم */
-        font-size: 1.1rem;
-        letter-spacing: 0.5px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(201, 167, 92, 0.15); /* إضافة ظل خفيف للزرار */
-    }
-
-    .slide-btn:hover { 
-        background-color: var(--gold-dark); 
-        transform: translateY(-3px); /* حركة خفيفة لفوق بدل التكبير المبالغ فيه */
-        color: #fff;
-    }
-    
+    background-color: var(--gold);
+    color: var(--bg-base);
+    padding: 16px 46px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 12px;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    display: inline-block;
+}
+    .slide-btn:hover { background-color: var(--gold-dark); transform: scale(1.05); color: #fff;}
+    .slide-image { flex: 1; display: flex; justify-content: center; align-items: center; }
+    .slide-image img {
+    width: 100%;
+    max-width: 540px;
+    height: auto;
+    object-fit: contain;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 0 25px rgba(201,167,92,0.15));
+}
+    @media (max-width: 768px) 
 
     .slide-content {
         flex-direction: column-reverse;
@@ -149,7 +129,7 @@ var(--bg-base);
     }
 
     .slide-text h2 {
-        font-size: 2.5rem;
+        font-size: 3rem;
         line-height: 1.2;
         margin-bottom: 15px;
     }
@@ -181,62 +161,15 @@ var(--bg-base);
     filter: blur(50px);
     z-index: 1;
 }
-/* --- تنسيقات الموبايل --- */
-    @media (max-width: 768px) {
-        .slide-content {
-            flex-direction: column-reverse;
-            text-align: center;
-            padding: 20px 5%;
-            gap: 10px;
-            min-height: auto;
-        }
+@media (max-width: 768px) {
 
-        .slide-text {
-            max-width: 100%;
-            padding: 10px;
-        }
-
-        .slide-text h2 {
-            font-size: 2.5rem;
-            line-height: 1.2;
-            margin-bottom: 15px;
-        }
-
-        .slide-text p.main-subtitle {
-            font-size: 1rem;
-            margin-bottom: 20px;
-        }
-
-        .slide-image {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: visible;
-        }
-
-        .slide-image::before {
-            content: "";
-            position: absolute;
-            width: 100%; /* تم التعديل هنا ليتناسب مع الموبايل بدل 520px */
-            height: 100%;
-            background: radial-gradient(
-                circle,
-                rgba(201,167,92,0.14),
-                transparent 70%
-            );
-            filter: blur(50px);
-            z-index: 1;
-        }
-
-        .slide-btn {
-            width: 100%;
-            max-width: 260px;
-            padding: 14px 20px;
-            font-size: 1rem;
-        }
+    .slide-btn {
+        width: 100%;
+        max-width: 260px;
+        padding: 14px 20px;
+        font-size: 1rem;
     }
+}
 
 </style>
 
@@ -248,13 +181,7 @@ var(--bg-base);
             <div class="slide-content">
                 <div class="slide-text">
                     <h2>{{ slide.title_ar }}</h2>
-                    
-                    <p class="main-subtitle">{{ slide.subtitle_ar }}</p>
-                    
-                    <div class="slide-divider"></div>
-                    
-                    <p class="action-text">لطلب مُهاجر الآن</p>
-                    
+                    <p>{{ slide.subtitle_ar }}</p>
                     <a href="{{ slide.btn_url }}" class="slide-btn">{{ slide.btn_text_ar }}</a>
                 </div>
                 <div class="slide-image">
