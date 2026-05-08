@@ -62,19 +62,22 @@
         /* ========================================== */
     /* العلامة المائية (مطبوعة على الصفحة وبتتحرك مع السكرول) */
     /* ========================================== */
+    /* العلامة المائية المظبوطة (بتتحرك معاك ومش مستخبية) */
     .bg-watermark {
-        position: absolute !important; /* ده اللي بيخليه يتحرك معاك */
+        position: absolute !important; 
         top: 0;
         left: 0;
         width: 100%;
-        height: 100vh !important; /* بياخد طول أول شاشة بس عشان يتوسطن في النص بالظبط */
+        height: 100vh !important; 
         background-image: url('/static/images/logo-Photoroom.png');
         background-repeat: no-repeat;
         background-position: center center;
         background-size: 45%; 
-        opacity: 0.5 !important; /* هادي جداً عشان ميأثرش على القراءة */
-        z-index: -9999;
-        pointer-events: none;
+        
+        /* التعديل هنا: */
+        opacity: 0.15 !important; /* زودنا الوضوح عشان يبان كويس */
+        z-index: 0 !important; /* طلعناه قدام سِنة عشان ميستخباش ورا الخلفية */
+        pointer-events: none; /* عشان ميأثرش على أي كليك في الموقع */
     }
         /* ========================================== */
         /* ستايل الهيدر (Navbar) - Glassmorphism & Premium UI */
