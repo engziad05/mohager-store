@@ -107,13 +107,17 @@ var(--bg-base);
         font-family: var(--font-body);
     }
 
-    /* الخط الذهبي الفاصل */
+    
+    /* الخط الذهبي الفاصل (ستايل فخم متدرج) */
     .slide-divider {
-        width: 60px;
-        height: 2px;
-        background-color: var(--gold);
-        margin: 15px auto 25px auto;
-        opacity: 0.8;
+        width: 120px; /* كبرنا العرض شوية */
+        height: 1.5px; /* رفعناه عشان يبان أرقى */
+        /* عملنا تدرج لوني: شفاف -> دهبي -> شفاف */
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        margin: 20px auto 30px auto;
+        opacity: 0.9;
+        /* ضفنا توهج خفيف للخط */
+        box-shadow: 0 0 8px rgba(201,167,92,0.4);
     }
 
     .slide-text p.slide-action-hint {
@@ -225,7 +229,13 @@ var(--bg-base);
                     
                     <div class="slide-divider"></div>
                     
-                    <p class="slide-action-hint">لطلب مُهاجر الآن</p>
+                    <div class="slide-divider"></div>
+                    
+                    {% if slide.action_hint_ar %}
+                        <p class="slide-action-hint">{{ slide.action_hint_ar }}</p>
+                    {% endif %}
+                    
+                    <a href="{{ slide.btn_url }}" class="slide-btn">{{ slide.btn_text_ar }}</a>
                     
                     <a href="{{ slide.btn_url }}" class="slide-btn">{{ slide.btn_text_ar }}</a>
                 </div>
