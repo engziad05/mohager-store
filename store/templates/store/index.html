@@ -142,27 +142,29 @@
     .premium-btn {
         box-sizing: border-box !important;
         display: inline-block;
-        width: max-content; /* الزرار على قد الكلمة بس */
+        width: 100%; /* خليناه ياخد عرض الكارت عشان يدي إحساس بالقوة والفخامة */
         background-color: transparent !important;
-        color: var(--sand) !important;
-        border-bottom: 1px solid rgba(200, 169, 110, 0.4) !important; /* ستايل اللينك الراقي بدل البوكس */
-        border-top: none !important;
-        border-left: none !important;
-        border-right: none !important;
-        padding: 2px 0;
+        color: var(--gold) !important;
+        border: 1px solid rgba(200, 169, 110, 0.6) !important; /* برواز دهبي صريح بس مش فج */
+        padding: 10px 0; /* مساحة ممتازة للكلمة */
         text-align: center;
+        border-radius: 0px !important; /* حواف حادة (Sharp Edges) */
         font-family: var(--font-body);
-        font-weight: 500;
-        font-size: 0.95rem;
-        transition: all 0.3s ease;
+        font-weight: 600;
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         text-decoration: none;
-        margin-top: 5px;
+        margin-top: 15px; /* مسافة محترمة بينه وبين السعر */
+        position: relative;
     }
 
     .premium-btn:hover {
-        color: var(--gold) !important;
-        border-bottom-color: var(--gold) !important;
-        letter-spacing: 1px; /* حركة خفيفة بتدي إحساس بالتفاعل */
+        background-color: var(--gold) !important;
+        color: var(--bg-base) !important; /* الكلام يقلب غامق */
+        border-color: var(--gold) !important;
+        box-shadow: 0 0 20px rgba(200, 169, 110, 0.35); /* الـ Glow السينمائي رجع تاني */
+        transform: translateY(-3px); /* نطة شيك لفوق */
     }
     
     .product-card:hover {
