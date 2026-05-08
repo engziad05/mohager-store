@@ -526,19 +526,18 @@ body {
     /* الفوتر (أهدى، أفخم، وبيغطي على العلامة المائية) */
     /* ========================================== */
     .site-footer {
-        /* 1. الجراديانت بقى أنعم بكتير (مجرد إيحاء بالإضاءة مش ضباب) */
         background: radial-gradient(ellipse at top, rgba(35, 35, 28, 0.9) 0%, var(--bg-surface) 60%);
-        background-color: var(--bg-surface); /* لون صريح عشان يمنع اللوجو يبان من تحته */
+        background-color: var(--bg-surface);
         
-        /* 2. الخط الفاصل والـ Glow بقوا Subtle جداً */
-        border-top: 1px solid rgba(200, 169, 110, 0.08); 
-        box-shadow: inset 0 10px 20px -10px rgba(200, 169, 110, 0.03); 
+        /* 1. الخط الدهبي بقى شعرة خفيفة جداً تكاد تُرى (0.04 بدل 0.08) */
+        border-top: 1px solid rgba(200, 169, 110, 0.04); 
+        box-shadow: inset 0 10px 20px -10px rgba(200, 169, 110, 0.02); 
         
-        /* 3. السر في الإخفاء: الفوتر بقى طبقة عليا تغطي أي لوجو وراها */
         position: relative;
         z-index: 10; 
         
-        padding: 40px 5% 15px; 
+        /* 2. قللنا الـ Padding من فوق ومن تحت عشان نلم الفراغ الرأسي */
+        padding: 30px 5% 10px; 
         width: 100%;
         box-sizing: border-box;
         margin-top: auto; 
@@ -624,13 +623,13 @@ body {
     /* 6. حقوق النشر (أصغر، ملمومة، وتباين أوضح) */
     .footer-bottom {
         text-align: center;
-        margin-top: 30px; /* قللنا الفراغ */
-        padding-top: 15px;
-        border-top: 1px solid rgba(200, 169, 110, 0.1);
-        color: rgba(242, 237, 228, 0.6); /* لون كريمي مطفي بيدي كونتراست شيك */
-        font-size: 0.85rem; /* حجم أصغر */
+        /* 3. لمينا المسافات حوالين جملة حقوق النشر */
+        margin-top: 20px; 
+        padding-top: 10px;
+        border-top: 1px solid rgba(200, 169, 110, 0.04); /* خط أنعم بكتير */
+        color: rgba(242, 237, 228, 0.4); /* لون أهدى سِنة */
+        font-size: 0.8rem; 
         font-family: var(--font-body);
-        letter-spacing: 0.5px;
     }
     </style>
 
