@@ -54,57 +54,107 @@
     /* تنسيقات السلايدر */
     .hero-slider {
         width: 100%;
-        background-color: var(--bg-base);
+        background:
+radial-gradient(circle at center,
+rgba(201,167,92,0.08),
+transparent 65%),
+var(--bg-base);
         border-bottom: 2px solid var(--gold);
         position: relative;
         overflow: hidden;
         margin-bottom: 60px;
     }
     .slide-content {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        min-height: 80vh; 
-        padding: 0 5%;
-    }
-    .slide-text { flex: 1; padding: 40px; }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 100px;
+    min-height: 88vh;
+    padding: 0 7%;
+}
+    .slide-text {
+    flex: 1;
+    max-width: 520px;
+    padding: 20px;
+}
     .slide-text h2 {
-        font-size: 3.5em;
-        color: var(--cream);
-        font-family: var(--font-heading);
-        margin-bottom: 15px;
-    }
+    font-size: 5.2rem;
+    line-height: 1;
+    color: var(--gold);
+    font-family: var(--font-heading);
+    margin-bottom: 25px;
+}
     .slide-text p {
-        font-size: 1.2em;
-        color: #ccc;
-        margin-bottom: 30px;
-        line-height: 1.6;
-    }
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.82);
+    margin-bottom: 35px;
+    line-height: 1.8;
+}
     .slide-btn {
-        background-color: var(--gold);
-        color: var(--bg-base);
-        padding: 12px 30px;
-        text-decoration: none;
-        font-weight: bold;
-        border-radius: 8px;
-        font-size: 1.1em;
-        transition: 0.3s;
-        display: inline-block;
-    }
+    background-color: var(--gold);
+    color: var(--bg-base);
+    padding: 16px 46px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 12px;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    display: inline-block;
+}
     .slide-btn:hover { background-color: var(--gold-dark); transform: scale(1.05); color: #fff;}
     .slide-image { flex: 1; display: flex; justify-content: center; align-items: center; }
     .slide-image img {
-        width: 100%;
-        max-width: 700px;
-        height: 550px; 
-        object-fit: cover; 
-        border-radius: 16px; 
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5); 
-    }
+    width: 100%;
+    max-width: 620px;
+    height: 520px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 1px solid rgba(201,167,92,0.15);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
     @media (max-width: 768px) {
-        .slide-content { flex-direction: column-reverse; text-align: center; padding: 40px 5%; }
-        .slide-image img { height: 300px; margin-bottom: 20px; }
+
+    .slide-content {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding: 40px 5%;
+        gap: 20px;
+        min-height: auto;
     }
+
+    .slide-text {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .slide-text h2 {
+        font-size: 3rem;
+        line-height: 1.2;
+        margin-bottom: 15px;
+    }
+
+    .slide-text p {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .slide-image img {
+        
+        height: 260px;
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .slide-btn {
+        width: 100%;
+        max-width: 260px;
+        padding: 14px 20px;
+        font-size: 1rem;
+    }
+}
+
 </style>
 
 <!-- سلايدر العروض -->
