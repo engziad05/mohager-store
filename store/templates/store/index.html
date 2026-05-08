@@ -59,38 +59,35 @@
         transition: transform 0.4s ease;
         position: relative;
     }
-    /* 1. شبكة المنتجات (الجريد متجمعة ونضيفة) */
-    ./* ========================================== */
-    /* قسم المنتجات (Premium Fashion Grid) */
     /* ========================================== */
-    
-    /* تظبيط الجريد عشان المنتجات تتوسطن وتاخد مساحتها */
-    /* تظبيط الجريد عشان يرص من اليمين للشمال */
-   /* ========================================== */
-    /* شبكة المنتجات (الحل النهائي بحجم ثابت من اليمين) */
+    /* شبكة المنتجات (متوازنة وفي السنتر) */
     /* ========================================== */
     .products-grid {
         display: flex;
         flex-wrap: wrap;
-        justify-content: flex-start;
-        gap: 50px; /* زودنا المسافة بين الكروت لراحة العين */
+        
+        /* السر هنا: سنترنا المنتجات عشان ميبقاش في فراغ شمال */
+        justify-content: center; 
+        
+        gap: 40px;
         max-width: 1200px;
         margin: 0 auto;
-        padding: 40px 20px 100px 20px !important; /* مساحة ضخمة تحت لراحة السيكشن */
+        padding: 20px 20px 80px 20px !important; 
         direction: rtl;
     }
 
     /* ========================================== */
-    /* كارت المنتج (حجم ثابت وفخم) */
-   .product-card {
-        width: 280px !important;
-        max-width: 280px;
-        flex: 0 0 auto;
+    /* كارت المنتج (أكبر، أوضح، هو البطل) */
+    /* ========================================== */
+    .product-card {
+        /* كبرناه من 260 لـ 310 عشان يملى العين */
+        width: 310px !important; 
+        
         background: transparent !important;
-        border: none !important; /* لغينا البوردر تماماً لزيادة الفخامة */
+        border: none !important;
         display: flex;
         flex-direction: column;
-        transition: opacity 0.3s ease;
+        align-items: center; 
     }
 
     /* الصورة (بطل الحكاية) */
