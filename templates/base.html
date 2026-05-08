@@ -62,42 +62,46 @@
         /* ========================================== */
 /* ستايل العلامة المائية الموحد للموقع كله */
 /* ========================================== */
-
-/* السطر ده مهم جداً عشان اللوجو يتربط بالصفحة مش بالشاشة */
-body {
-    position: relative;
-    min-height: 100vh;
-    overflow-x: hidden; /* عشان نمنع أي سكرول بالعرض */
-}
-
 /* ========================================== */
 /* ستايل العلامة المائية الموحد للموقع كله */
 /* ========================================== */
 
+
+
+/* ========================================== */
+/* العلامة المائية الاحترافية (تبدأ بعد السلايدر وتتحرك مع السكرول) */
+/* ========================================== */
+
 body {
     position: relative;
-    min-height: 100vh;
-    overflow-x: hidden; 
+    /* تأكد إن مفيش body { position: relative } تانية متكررة تحت */
 }
 
 .bg-watermark {
+    /* 1. بتتحرك مع الصفحة مش ثابتة في الشاشة */
     position: absolute !important; 
-    top: 0;
+    
+    /* 2. تبدأ بالظبط من بعد السلايدر (بعد أول 100vh) */
+    top: 100vh; 
     left: 0;
     width: 100%;
     
-    /* الضربة القاضية هنا: 100vh بتخليه ياخد طول الشاشة الأولى بس */
-    height: 100vh !important; 
+    /* 3. تغطي باقي طول الصفحة مهما كان عدد المنتجات */
+    height: calc(100% - 100vh) !important; 
     
     background-image: url('/static/images/logo-Photoroom.png');
-    background-repeat: no-repeat;
     
-    /* خليناه في السنتر بالظبط */
-    background-position: center center; 
-    background-size: 45%; 
-    opacity: 0.04 !important; 
+    /* 4. خليناها تتكرر بشكل عمودي عشان لو المنتجات كتير تفضل موجودة */
+    background-repeat: repeat-y; 
+    background-position: center top; 
+    background-size: 40%; /* حجم اللوجو */
+    
+    /* 5. زودنا الوضوح سِنة عشان تكون "ظاهرة" زي ما طلبت */
+    opacity: 0.1 !important; 
+    
+    /* 6. في الخلفية تماماً ومبتعطلش الكليكات */
     z-index: -1; 
-    pointer-events: none; 
+    pointer-events: none;
 }
    
     
