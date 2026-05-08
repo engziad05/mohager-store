@@ -77,32 +77,25 @@ body {
     /* تأكد إن مفيش body { position: relative } تانية متكررة تحت */
 }
 
-.bg-watermark {
-    /* 1. بتتحرك مع الصفحة مش ثابتة في الشاشة */
-    position: absolute !important; 
-    
-    /* 2. تبدأ بالظبط من بعد السلايدر (بعد أول 100vh) */
-    top: 100vh; 
-    left: 0;
-    width: 100%;
-    
-    /* 3. تغطي باقي طول الصفحة مهما كان عدد المنتجات */
-    height: calc(100% - 100vh) !important; 
-    
-    background-image: url('/static/images/logo-Photoroom.png');
-    
-    /* 4. خليناها تتكرر بشكل عمودي عشان لو المنتجات كتير تفضل موجودة */
-    background-repeat: repeat-y; 
-    background-position: center top; 
-    background-size: 40%; /* حجم اللوجو */
-    
-    /* 5. زودنا الوضوح سِنة عشان تكون "ظاهرة" زي ما طلبت */
-    opacity: 0.1 !important; 
-    
-    /* 6. في الخلفية تماماً ومبتعطلش الكليكات */
-    z-index: -1; 
-    pointer-events: none;
-}
+/* ========================================== */
+    /* العلامة المائية النضيفة (طيف واحد بيتحرك مع السكرول) */
+    /* ========================================== */
+    .bg-watermark {
+        position: absolute !important; /* عشان تتحرك معاك مع السكرول */
+        top: 100vh; /* بتبدأ من بعد السلايدر بالظبط (مختفية من فوق) */
+        left: 0;
+        width: 100%;
+        height: 100vh !important; /* بتاخد مقاس شاشة واحدة بس عشان متتمددش */
+        
+        background-image: url('/static/images/logo-Photoroom.png');
+        background-repeat: no-repeat !important; /* لغينا التكرار اللي بوظ الدنيا تماماً */
+        background-position: center 50px; /* متسنترة ونازلة سِنة صغيرة عشان تبعد عن كلمة أحدث الإصدارات */
+        background-size: 50%; /* حجم كبير وفخم */
+        
+        opacity: 0.1 !important; /* ظاهرة وواضحة زي ما طلبت */
+        z-index: 0; 
+        pointer-events: none;
+    }
    
     
         /* ========================================== */
