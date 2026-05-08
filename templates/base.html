@@ -59,25 +59,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* ========================================== */
-    /* العلامة المائية (مطبوعة على الصفحة وبتتحرك مع السكرول) */
-    /* ========================================== */
-    /* العلامة المائية المظبوطة (بتتحرك معاك ومش مستخبية) */
+   
+    /* العلامة المائية (طيف فوق الموقع بيتحرك مع السكرول) */
     .bg-watermark {
         position: absolute !important; 
         top: 0;
         left: 0;
-        width: 100%;
+        width: 100vw;
         height: 100vh !important; 
         background-image: url('/static/images/logo-Photoroom.png');
         background-repeat: no-repeat;
         background-position: center center;
         background-size: 45%; 
         
-        /* التعديل هنا: */
-        opacity: 0.15 !important; /* زودنا الوضوح عشان يبان كويس */
-        z-index: 0 !important; /* طلعناه قدام سِنة عشان ميستخباش ورا الخلفية */
-        pointer-events: none; /* عشان ميأثرش على أي كليك في الموقع */
+        opacity: 0.15 !important; 
+        /* السر هنا: زقناه فوق كل حاجة في الموقع */
+        z-index: 999 !important; 
+        /* السطر ده بيخلي الماوس يخترقه كأنه هوا وميعطلش الزراير */
+        pointer-events: none !important; 
     }
         /* ========================================== */
         /* ستايل الهيدر (Navbar) - Glassmorphism & Premium UI */
