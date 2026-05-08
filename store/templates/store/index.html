@@ -252,8 +252,11 @@ var(--bg-base);
         padding: 20px;
         display: flex;
         flex-direction: column;
-        align-items: center; /* توسيط كل حاجة في النص */
+        align-items: center;
         text-align: center;
+        /* السطرين الجداد أهم ضفناهم هنا */
+        position: relative;
+        z-index: 10;
     }
     
     /* لو هتستخدم صورة للمخطوطة مستقبلاً */
@@ -300,7 +303,7 @@ var(--bg-base);
 
     .slide-btn {
         background-color: var(--gold);
-        color: var(--bg-base); /* النص أسود/غامق زي الصورة */
+        color: var(--bg-base); /* اللون أسود/غامق زي الصورة */
         padding: 12px 50px;
         text-decoration: none;
         font-weight: bold;
@@ -308,6 +311,11 @@ var(--bg-base);
         font-size: 1.2rem;
         transition: all 0.3s ease;
         font-family: var(--font-body);
+        /* الأربع سطور الجداد أهم عشان الكليك يشتغل على الموبايل */
+        position: relative !important;
+        z-index: 999 !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
     }
 
     .slide-btn:hover { 
