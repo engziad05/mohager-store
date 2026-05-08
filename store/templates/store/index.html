@@ -64,24 +64,26 @@
     /* ========================================== */
     
     /* تظبيط الجريد عشان المنتجات تتوسطن وتاخد مساحتها */
+    /* تظبيط الجريد عشان يرص من اليمين للشمال */
     .products-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
         gap: 40px;
-        max-width: 1100px; /* لمينا العرض شوية عشان يبان أشيك */
+        max-width: 1100px;
         margin: 0 auto;
         padding: 20px;
-        justify-content: center;
+        direction: rtl; /* تأكيد الاتجاه من اليمين */
     }
 
-    /* الكارت الجديد: مفيش براويز، مفيش دوشة */
+    /* تظبيط عرض الكارت عشان يملى المساحة صح */
     .product-card {
-        background: transparent; /* خلفية شفافة تماماً */
-        border: none; /* شلنا البوردر الرخيص */
+        background: transparent;
+        border: none;
         display: flex;
         flex-direction: column;
         transition: transform 0.4s ease;
         position: relative;
+        width: 100%;
     }
 
     /* تأثير الهوفر: حركة ناعمة جداً لفوق من غير ظل أوفر */
@@ -136,29 +138,27 @@
     /* ========================================== */
     /* زرار التفاصيل المحدث (أوضح وأفخم) */
     /* ========================================== */
+    /* زرار التفاصيل المحدث (نقي وواضح جداً) */
     .premium-btn {
         display: block;
         width: 100%;
-        background: rgba(200, 169, 110, 0.08); /* خلفية شفافة منورة سِنة */
-        color: var(--sand); /* لون فاتح عشان يقرأ بسهولة */
-        border: 1px solid rgba(200, 169, 110, 0.5); /* برواز دهبي أوضح */
-        padding: 12px;
-        text-decoration: none;
-        border-radius: 6px;
+        background-color: transparent !important; /* شفاف تماماً */
+        color: var(--gold) !important; /* النص دهبي منور */
+        border: 1px solid var(--gold) !important; /* برواز دهبي صريح */
+        padding: 10px;
+        text-align: center;
+        border-radius: 4px;
         font-family: var(--font-body);
-        font-weight: 600;
+        font-weight: bold;
         font-size: 1.1rem;
-        letter-spacing: 1px;
         transition: all 0.3s ease;
-        margin-top: auto;
+        margin-top: 15px; /* زقيناه لتحت شوية عن السعر */
     }
 
     .premium-btn:hover {
-        background: var(--gold);
-        color: var(--bg-base);
-        border-color: var(--gold);
-        box-shadow: 0 0 20px rgba(201, 167, 92, 0.35); /* إضاءة لما تقف عليه بالماوس */
-        transform: translateY(-2px);
+        background-color: var(--gold) !important;
+        color: var(--bg-base) !important;
+        box-shadow: 0 0 15px rgba(201, 167, 92, 0.4);
     }
     
     .product-card:hover {
