@@ -133,7 +133,7 @@ var(--bg-base);
         transform: translateY(-3px); /* حركة خفيفة لفوق بدل التكبير المبالغ فيه */
         color: #fff;
     }
-    @media (max-width: 768px) 
+    
 
     .slide-content {
         flex-direction: column-reverse;
@@ -181,15 +181,62 @@ var(--bg-base);
     filter: blur(50px);
     z-index: 1;
 }
-@media (max-width: 768px) {
+/* --- تنسيقات الموبايل --- */
+    @media (max-width: 768px) {
+        .slide-content {
+            flex-direction: column-reverse;
+            text-align: center;
+            padding: 20px 5%;
+            gap: 10px;
+            min-height: auto;
+        }
 
-    .slide-btn {
-        width: 100%;
-        max-width: 260px;
-        padding: 14px 20px;
-        font-size: 1rem;
+        .slide-text {
+            max-width: 100%;
+            padding: 10px;
+        }
+
+        .slide-text h2 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+
+        .slide-text p.main-subtitle {
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .slide-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: visible;
+        }
+
+        .slide-image::before {
+            content: "";
+            position: absolute;
+            width: 100%; /* تم التعديل هنا ليتناسب مع الموبايل بدل 520px */
+            height: 100%;
+            background: radial-gradient(
+                circle,
+                rgba(201,167,92,0.14),
+                transparent 70%
+            );
+            filter: blur(50px);
+            z-index: 1;
+        }
+
+        .slide-btn {
+            width: 100%;
+            max-width: 260px;
+            padding: 14px 20px;
+            font-size: 1rem;
+        }
     }
-}
 
 </style>
 
