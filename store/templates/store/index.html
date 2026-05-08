@@ -73,33 +73,33 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
-        gap: 40px;
+        gap: 50px; /* زودنا المسافة بين الكروت لراحة العين */
         max-width: 1200px;
         margin: 0 auto;
-        padding: 20px 20px 80px 20px !important; 
+        padding: 40px 20px 100px 20px !important; /* مساحة ضخمة تحت لراحة السيكشن */
         direction: rtl;
     }
 
     /* ========================================== */
     /* كارت المنتج (حجم ثابت وفخم) */
-    /* ========================================== */
-    .product-card {
-        width: 280px !important; /* السطر السحري اللي قفل الحجم ورجعه طبيعي */
+   .product-card {
+        width: 280px !important;
         max-width: 280px;
-        flex: 0 0 auto; /* بيمنع الكارت إنه يتمط أو يكبر عن حده */
+        flex: 0 0 auto;
         background: transparent !important;
-        border: none !important;
+        border: none !important; /* لغينا البوردر تماماً لزيادة الفخامة */
         display: flex;
         flex-direction: column;
+        transition: opacity 0.3s ease;
     }
 
-    /* صورة المنتج (حواف حادة ومقاس فاشون 3:4) */
+    /* الصورة (بطل الحكاية) */
     .product-img-wrapper {
         width: 100%;
-        aspect-ratio: 3 / 4; 
-        background-color: #0a0a08; /* خلفية ضلمة شيك جداً للصورة */
+        aspect-ratio: 3 / 4; /* مقاس فاشون عالمي */
+        background-color: #0a0a08;
         overflow: hidden;
-        border-radius: 0px !important; /* حواف حادة للستريتوير */
+        border-radius: 0px; /* حواف حادة بتدي طابع Streetwear عصري */
         position: relative;
     }
 
@@ -107,8 +107,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        /* زووم سينمائي بطيء جداً وناعم */
-        transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+        transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     .product-card:hover .product-img-wrapper img {
@@ -116,27 +115,25 @@
     }
 
     /* النصوص (محاذاة لليمين زي المجلات، بدون Paddings جانبية) */
-    .product-details {
-        padding: 15px 0 5px 0 !important; /* مسافة من فوق بس */
-        text-align: right; /* محاذاة لليمين بتدي شكل مجلات الموضة */
+   .product-details {
+        padding: 20px 0 0 0 !important; /* مسافة واضحة بين الصورة والاسم */
+        text-align: right;
         display: flex;
         flex-direction: column;
-        flex-grow: 1;
     }
 
     .product-details h3 {
         color: var(--cream);
-        font-size: 1.2rem;
+        font-size: 1.15rem;
         margin: 0 0 5px 0;
-        font-family: var(--font-body); /* استخدمنا خط القراءة العادي عشان يبقى Modern */
+        font-family: var(--font-body);
         font-weight: 600;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.3px;
     }
 
     .product-details p.price {
-        color: rgba(200, 169, 110, 0.8); /* دهبي مطفي شوية */
-        font-size: 1.1rem;
-        font-weight: normal;
+        color: rgba(200, 169, 110, 0.7);
+        font-size: 1.05rem;
         margin: 0 0 15px 0;
         font-family: var(--font-body);
     }
@@ -145,25 +142,27 @@
     .premium-btn {
         box-sizing: border-box !important;
         display: inline-block;
-        width: max-content; /* الزرار هياخد مساحة الكلمة بس مش هيفرش بعرض الكارت */
+        width: max-content; /* الزرار على قد الكلمة بس */
         background-color: transparent !important;
         color: var(--sand) !important;
-        border: 1px solid rgba(200, 169, 110, 0.3) !important; /* برواز خفيف جداً */
-        padding: 6px 25px; /* رفيع وشيك */
+        border-bottom: 1px solid rgba(200, 169, 110, 0.4) !important; /* ستايل اللينك الراقي بدل البوكس */
+        border-top: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        padding: 2px 0;
         text-align: center;
-        border-radius: 0px !important; /* حواف حادة */
         font-family: var(--font-body);
-        font-weight: 600;
-        font-size: 0.9rem;
-        transition: all 0.4s ease;
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
         text-decoration: none;
+        margin-top: 5px;
     }
 
     .premium-btn:hover {
-        background-color: var(--gold) !important;
-        color: var(--bg-base) !important;
-        border-color: var(--gold) !important;
-        /* لغينا الـ Glow من الزرار عشان نحافظ على الستايل الـ Matte/Minimal */
+        color: var(--gold) !important;
+        border-bottom-color: var(--gold) !important;
+        letter-spacing: 1px; /* حركة خفيفة بتدي إحساس بالتفاعل */
     }
     
     .product-card:hover {
