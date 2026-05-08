@@ -60,24 +60,7 @@
     
     <style>
    
-    /* العلامة المائية (طيف فوق الموقع بيتحرك مع السكرول) */
-    .bg-watermark {
-        position: absolute !important; 
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh !important; 
-        background-image: url('/static/images/logo-Photoroom.png');
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: 45%; 
-        
-        opacity: 0.15 !important; 
-        /* السر هنا: زقناه فوق كل حاجة في الموقع */
-        z-index: 999 !important; 
-        /* السطر ده بيخلي الماوس يخترقه كأنه هوا وميعطلش الزراير */
-        pointer-events: none !important; 
-    }
+    
         /* ========================================== */
         /* ستايل الهيدر (Navbar) - Glassmorphism & Premium UI */
         /* ========================================== */
@@ -411,7 +394,6 @@
     <!-- خلفية الحصان المائية (ثابتة بالمسامير) -->
 <!-- خلفية الحصان المائية (مطبوعة في الصفحة ومش بتتحرك معاك) -->
 <!-- خلفية الحصان المائية (متغيرة حسب الصفحة) -->
-<div class="bg-watermark"></div>    <!-- نافذة النجاح الكاملة في منتصف الشاشة -->
     {% if messages %}
         <div id="success-modal-overlay" class="custom-modal-overlay">
             <div class="custom-modal-box">
