@@ -78,25 +78,26 @@ body {
 }
 
 /* ========================================== */
-    /* العلامة المائية النضيفة (طيف واحد بيتحرك مع السكرول) */
-    /* ========================================== */
+   /* القاعدة الأساسية في البيز */
     .bg-watermark {
-        position: absolute !important; /* عشان تتحرك معاك مع السكرول */
-        top: 100vh; /* بتبدأ من بعد السلايدر بالظبط (مختفية من فوق) */
+        position: fixed !important;
+        top: 0;
         left: 0;
-        width: 100%;
-        height: 100vh !important; /* بتاخد مقاس شاشة واحدة بس عشان متتمددش */
-        
+        width: 100vw;
+        height: 100vh;
         background-image: url('/static/images/logo-Photoroom.png');
-        background-repeat: no-repeat !important; /* لغينا التكرار اللي بوظ الدنيا تماماً */
-        background-position: center 50px; /* متسنترة ونازلة سِنة صغيرة عشان تبعد عن كلمة أحدث الإصدارات */
-        background-size: 50%; /* حجم كبير وفخم */
+        background-repeat: no-repeat;
         
-        opacity: 0.3 !important; /* ظاهرة وواضحة زي ما طلبت */
-        z-index: 0; 
+        /* السر هنا: هيقرأ القيمة من متغير اسمه watermark-pos */
+        /* ولو الصفحة مفيهاش متغير، هيهرب للقيمة الافتراضية (center) */
+        background-position: var(--watermark-pos, center center) !important;
+        
+        background-size: 35%; 
+        opacity: 0.05 !important;
+        z-index: -9999;
         pointer-events: none;
+        transition: background-position 0.5s ease; /* حركة ناعمة لما يتنقل بين الصفحات */
     }
-   
     
         /* ========================================== */
         /* ستايل الهيدر (Navbar) - Glassmorphism & Premium UI */
