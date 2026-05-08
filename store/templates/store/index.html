@@ -70,28 +70,27 @@
     /* شبكة المنتجات (الحل النهائي بحجم ثابت من اليمين) */
     /* ========================================== */
     .products-grid {
-        display: flex; /* استخدمنا فليكس بدل جريد عشان نتحكم في الحجم بصرامة */
+        display: flex;
         flex-wrap: wrap;
-        justify-content: flex-start; /* هيبدأ رص من اليمين للشمال */
-        gap: 30px;
+        justify-content: flex-start;
+        gap: 40px;
         max-width: 1200px;
         margin: 0 auto;
-        padding: 20px;
-        direction: rtl; /* اتجاه عربي */
+        padding: 20px 20px 80px 20px !important; 
+        direction: rtl;
     }
 
-    /* الكارت نفسه (مقاس ثابت ومستحيل يكبر) */
     /* ========================================== */
-    /* كروت المنتجات (High-End Editorial Style) */
+    /* كارت المنتج (حجم ثابت وفخم) */
     /* ========================================== */
-    
     .product-card {
+        width: 280px !important; /* السطر السحري اللي قفل الحجم ورجعه طبيعي */
+        max-width: 280px;
+        flex: 0 0 auto; /* بيمنع الكارت إنه يتمط أو يكبر عن حده */
         background: transparent !important;
         border: none !important;
         display: flex;
         flex-direction: column;
-        width: 100%;
-        /* لغينا حركة الـ translateY عشان الكارت يفضل ثابت وتقيل */
     }
 
     /* صورة المنتج (حواف حادة ومقاس فاشون 3:4) */
