@@ -16,22 +16,29 @@
     /* ========================================== */
     /* العلامة المائية المدمجة جوه السلايدر (بتتحرك معاه طبيعي) */
     /* ========================================== */
-    .hero-slider::before {
-        content: '';
+    /* ========================================== */
+    /* العلامة المائية الثابتة جوه السلايدر (طريقة مضمونة 100%) */
+    /* ========================================== */
+    .slider-watermark {
         position: absolute;
         top: 0;
-        left: 0;
+        right: 0; /* استخدمنا right بدل left عشان الموقع عربي */
         width: 100%;
         height: 100%;
         background-image: url('/static/images/logo-Photoroom.png');
         background-repeat: no-repeat;
-        background-position: center center;
-        background-size: 45%; /* حجم اللوجو */
-        opacity: 0.12; /* درجة الشفافية الفخمة */
-        z-index: 1; /* عشان يكون فوق لون الخلفية */
+        background-position: center; /* هيتوسطن غصب عنه */
+        background-size: 45%; 
+        opacity: 0.12; 
+        z-index: 1; 
         pointer-events: none;
     }
 
+    /* تأكيد إن محتوى السلايدر فوق اللوجو */
+    .swiper-wrapper {
+        position: relative;
+        z-index: 2;
+    }
     /* تأكيد إن محتوى السلايدر (الكلام والصور) فوق العلامة المائية */
     .slide-content {
         position: relative;
@@ -379,6 +386,18 @@ var(--bg-base);
 
 <!-- سلايدر العروض -->
 <section class="hero-slider swiper">
+    <section class="hero-slider swiper">
+    
+    <div class="slider-watermark"></div>
+
+    <div class="swiper-wrapper">
+        {% for slide in slides %}
+        ```
+
+**الخلاصة:**
+الطريقة دي بتجبر اللوجو إنه يكون "يافطة" محطوطة في ضهر السلايدر بالظبط. مستحيل يهرب يمين أو شمال، ولما تنزل بالسكرول لتحت عند المنتجات، السلايدر هياخد اللوجو معاه ويطلع لفوق طبيعي جداً.
+
+ارفع التعديل واضرب `Ctrl + F5`، دي الضربة القاضية للحوار ده! 🚀 مستنيك تفرحني.
     <div class="swiper-wrapper">
         {% for slide in slides %}
         <div class="swiper-slide">
