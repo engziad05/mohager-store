@@ -515,94 +515,110 @@ body {
     <!-- ستايل الفوتر المتكامل المتناسق مع الهيدر -->
     <style>
         /* إجبار الصفحة إنها تاخد الطول كله وتزق الفوتر لتحت */
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        main {
-            flex: 1; /* بياخد المساحة الفاضية كلها */
-        }
+        /* ========================================== */
+    /* ستايل الفوتر (Cinematic & Premium) */
+    /* ========================================== */
 
-        .site-footer {
-            background-color: var(--bg-surface); /* نفس لون الهيدر بالظبط */
-            border-top: 1px solid var(--umber); /* نفس خط الهيدر */
-            padding: 60px 5% 20px;
-            width: 100%;
-            box-sizing: border-box;
-            margin-top: auto; /* بيلزق الفوتر في القاع */
-        }
-        .footer-container {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .footer-section {
-            display: flex;
-            flex-direction: column;
-        }
+    .site-footer {
+        /* 1. الجراديانت السينمائي (إضاءة خفيفة من فوق بتسحب لغامق تحت) */
+        background: radial-gradient(ellipse at top, #23231c 0%, var(--bg-surface) 70%);
         
-        /* تظبيط المحاذاة */
-        .footer-section:nth-child(1) { align-items: flex-start; text-align: right; }
-        .footer-section:nth-child(2) { align-items: center; text-align: center; }
-        .footer-section:nth-child(3) { align-items: flex-end; text-align: left; }
+        /* 2. خط دهبي خفيف جداً مع Glow داخلي ناعم */
+        border-top: 1px solid rgba(200, 169, 110, 0.15);
+        box-shadow: inset 0 20px 40px -20px rgba(200, 169, 110, 0.08);
+        
+        /* 3. تقليل الفراغ الرأسي الضخم */
+        padding: 40px 5% 15px; 
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: auto; 
+    }
 
-        .footer-section h4 {
-            color: var(--gold);
-            margin-bottom: 25px;
-            font-size: 1.6rem;
-            font-family: var(--font-heading);
-            font-weight: normal;
-        }
-        .footer-section p, .footer-section a {
-            color: var(--sand);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-            text-decoration: none;
-            transition: 0.3s;
-            font-size: 1.1rem;
-            font-family: var(--font-body);
-        }
-        .footer-section a:hover {
-            color: var(--gold);
-            transform: translateX(-5px); /* بيتحرك يمين سنة فخمة لما تقف عليه */
-        }
-        .social-icons {
-            display: flex;
-            gap: 15px;
-        }
-        .social-icons a {
-            font-size: 1.3rem;
-            color: var(--sand);
-            background-color: var(--bg-base); /* دايرة حوالين الأيقونة */
-            border: 1px solid var(--umber);
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: 0.3s;
-        }
-        .social-icons a:hover {
-            color: var(--gold);
-            border-color: var(--gold);
-            transform: translateY(-5px);
-        }
-        .footer-bottom {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid var(--umber);
-            color: #777;
-            font-size: 1rem;
-            font-family: var(--font-body);
-        }
+    .footer-container {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 20px;
+        /* 4. تقليل العرض عشان نلم الأعمدة وتقرب من بعضها */
+        max-width: 950px; 
+        margin: 0 auto;
+    }
+
+    .footer-section {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .footer-section:nth-child(1) { align-items: flex-start; text-align: right; }
+    .footer-section:nth-child(2) { align-items: center; text-align: center; }
+    .footer-section:nth-child(3) { align-items: flex-end; text-align: left; }
+
+    .footer-section h4 {
+        color: var(--gold);
+        margin-bottom: 20px; /* قللنا المسافة تحت العنوان */
+        font-size: 1.4rem;
+        font-family: var(--font-heading);
+        font-weight: normal;
+        text-shadow: 0 0 10px rgba(200, 169, 110, 0.2); /* Glow خفيف للعنوان */
+    }
+
+    .footer-section p, .footer-section a {
+        color: var(--sand);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1.05rem;
+        font-family: var(--font-body);
+    }
+
+    .footer-section a:hover {
+        color: var(--gold);
+        transform: translateX(-5px);
+        text-shadow: 0 0 8px rgba(200, 169, 110, 0.4);
+    }
+
+    .social-icons {
+        display: flex;
+        gap: 15px;
+    }
+
+    /* 5. الأيقونات (تصميم أهدى مع Glow فخم في الهوفر) */
+    .social-icons a {
+        font-size: 1.1rem;
+        color: var(--sand);
+        background-color: rgba(200, 169, 110, 0.03); /* خلفية شبه شفافة */
+        border: 1px solid rgba(200, 169, 110, 0.2); /* برواز هادي جداً */
+        width: 38px; /* حجم ألم وأشيك */
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .social-icons a:hover {
+        color: var(--bg-base) !important;
+        background-color: var(--gold) !important;
+        border-color: var(--gold) !important;
+        box-shadow: 0 0 15px rgba(200, 169, 110, 0.6); /* الـ Glow الدهبي */
+        transform: translateY(-4px) scale(1.05); /* نطة خفيفة لفوق */
+    }
+
+    /* 6. حقوق النشر (أصغر، ملمومة، وتباين أوضح) */
+    .footer-bottom {
+        text-align: center;
+        margin-top: 30px; /* قللنا الفراغ */
+        padding-top: 15px;
+        border-top: 1px solid rgba(200, 169, 110, 0.1);
+        color: rgba(242, 237, 228, 0.6); /* لون كريمي مطفي بيدي كونتراست شيك */
+        font-size: 0.85rem; /* حجم أصغر */
+        font-family: var(--font-body);
+        letter-spacing: 0.5px;
+    }
     </style>
 
     <!-- Footer -->
