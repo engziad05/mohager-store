@@ -65,6 +65,13 @@ class HeroSlide(models.Model):
     btn_url = models.CharField(max_length=255, default="/", verbose_name="رابط الزر")
     order = models.PositiveIntegerField(default=0, verbose_name="ترتيب العرض")
     is_active = models.BooleanField(default=True, verbose_name="تفعيل؟")
+    action_hint_ar = models.CharField(
+        max_length=100, 
+        blank=True, 
+        null=True, 
+        default="لطلب مُهاجر الآن", 
+        verbose_name="الجملة التحفيزية فوق الزر (عربي)"
+    )
 
     class Meta:
         ordering = ['order']
