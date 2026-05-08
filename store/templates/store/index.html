@@ -16,25 +16,99 @@
 
 <style>
     /* 1. شبكة المنتجات (الجريد متجمعة ونضيفة) */
+    ./* ========================================== */
+    /* قسم المنتجات (Premium Fashion Grid) */
+    /* ========================================== */
+    
+    /* تظبيط الجريد عشان المنتجات تتوسطن وتاخد مساحتها */
     .products-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 30px;
-        max-width: 1200px; 
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 40px;
+        max-width: 1100px; /* لمينا العرض شوية عشان يبان أشيك */
         margin: 0 auto;
         padding: 20px;
+        justify-content: center;
     }
 
-    /* 2. كارت المنتج */
+    /* الكارت الجديد: مفيش براويز، مفيش دوشة */
     .product-card {
-        background-color: var(--bg-surface);
-        border: 1px solid var(--umber);
-        border-radius: 12px;
-        padding: 15px;
-        text-align: center;
-        transition: transform 0.3s, border-color 0.3s;
+        background: transparent; /* خلفية شفافة تماماً */
+        border: none; /* شلنا البوردر الرخيص */
         display: flex;
         flex-direction: column;
+        transition: transform 0.4s ease;
+        position: relative;
+    }
+
+    /* تأثير الهوفر: حركة ناعمة جداً لفوق من غير ظل أوفر */
+    .product-card:hover {
+        transform: translateY(-8px);
+    }
+
+    /* صورة المنتج: مقاس الفاشون (4:5) أطول سِنة من المربع */
+    .product-img-wrapper {
+        width: 100%;
+        aspect-ratio: 4 / 5; 
+        background-color: #111; /* لون رمادي غامق جداً ورا الصورة بيدي عمق */
+        overflow: hidden;
+        border-radius: 6px; /* حواف ناعمة جداً مش دائرية أوي */
+        position: relative;
+    }
+
+    .product-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.7s ease; /* زووم بطيء وفخم */
+    }
+
+    .product-card:hover .product-img-wrapper img {
+        transform: scale(1.04);
+    }
+
+    /* تفاصيل المنتج (النصوص) */
+    .product-details {
+        padding: 20px 5px 5px; /* مسافة أوسع بين الصورة والاسم */
+        text-align: center;
+    }
+
+    .product-details h3 {
+        color: var(--cream); /* الاسم بلون فاتح هادي مش دهبي فاقع */
+        font-size: 1.4rem;
+        margin: 0 0 8px 0;
+        font-family: var(--font-heading);
+    }
+
+    .product-details p.price {
+        color: var(--sand);
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin: 0 0 15px 0;
+        font-family: var(--font-body);
+        letter-spacing: 1px;
+    }
+
+    /* الزرار الجديد: Minimalist Outline Button */
+    .premium-btn {
+        display: block;
+        width: 100%;
+        background: transparent;
+        color: var(--gold);
+        border: 1px solid rgba(200, 169, 110, 0.4); /* خط دهبي هادي جداً */
+        padding: 10px;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .premium-btn:hover {
+        background: var(--gold);
+        color: var(--bg-base);
+        border-color: var(--gold);
+        box-shadow: 0 0 15px rgba(201,167,92,0.2);
     }
     
     .product-card:hover {
@@ -268,23 +342,20 @@ var(--bg-base);
             <!-- ضفنا الأنيمشن هنا (data-aos) -->
             <div class="product-card" data-aos="fade-up" data-aos-duration="800">
                 
-                <!-- الصورة المربعة -->
                 <a href="{% url 'product_detail' product.id %}" class="product-img-wrapper">
                     {% if product.image %}
                         <img src="{{ product.image.url }}" alt="{{ product.name_ar }}" loading="lazy">
                     {% else %}
-                        <span style="color: var(--sand); display: block; padding: 50px 0;">لا توجد صورة</span>
+                        <span style="color: #444; display: flex; height:100%; align-items:center; justify-content:center;">لا توجد صورة</span>
                     {% endif %}
                 </a>
                 
-                <!-- تفاصيل المنتج والزرار -->
-                <div style="display: flex; flex-direction: column; flex-grow: 1;">
-                    <h3 style="color: var(--gold); font-size: 1.6rem; margin: 0 0 10px 0; font-family: var(--font-heading);">{{ product.name_ar }}</h3>
-                    <p style="color: var(--sand); font-size: 1.3rem; font-weight: bold; margin: 0 0 15px 0; font-family: var(--font-body);">{{ product.base_price }} ج.م</p>
-                    
-                    <a href="{% url 'product_detail' product.id %}" style="margin-top: auto; display: block; width: 100%; box-sizing: border-box; text-align: center; background-color: var(--gold); color: var(--bg-base); padding: 12px; text-decoration: none; border-radius: 8px; font-weight: bold; font-family: var(--font-body); font-size: 1.1rem; transition: 0.3s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
-    عرض التفاصيل
-</a>
+                <div class="product-details">
+                    <h3>{{ product.name_ar }}</h3>
+                    <p class="price">{{ product.base_price }} ج.م</p>
+                    <a href="{% url 'product_detail' product.id %}" class="premium-btn">
+                        التفاصيل
+                    </a>
                 </div>
             </div>
             {% endfor %}
