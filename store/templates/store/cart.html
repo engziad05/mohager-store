@@ -386,20 +386,15 @@
                             <p>المقاس: <span>{{ item.variant.size|default:"-" }}</span></p>
                             
                             <!-- السطر السحري: بيلف على كل احتمالات اسم اللون عندك في الداتابيز -->
-                            <p>اللون: <span>
-                                {% if item.variant.color_ar %}
-                                    {{ item.variant.color_ar }}
-                                {% elif item.variant.color.name_ar %}
-                                    {{ item.variant.color.name_ar }}
-                                {% elif item.variant.color %}
-                                    {{ item.variant.color }}
-                                {% elif item.product.color_ar %}
-                                    {{ item.product.color_ar }}
-                                {% else %}
-                                    <!-- لو كل ده ملقاش لون، هيحط أسود كافتراضي لحد ما تظبطها في الداتابيز -->
-                                    أسود
-                                {% endif %}
-                            </span></p>
+                            <p style="display: flex; align-items: center; gap: 8px;">اللون: 
+    <span style="color: var(--gold); font-weight: bold; font-family: var(--font-body);">
+        {{ item.variant.color_ar|default:"-" }}
+    </span>
+    <!-- دايرة اللون السحرية -->
+    {% if item.variant.color_code %}
+    <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: {{ item.variant.color_code }}; border: 1px solid rgba(255,255,255,0.2);"></span>
+    {% endif %}
+</p>
                         </div>
                     </div>
 
