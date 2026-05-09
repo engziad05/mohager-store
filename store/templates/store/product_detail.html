@@ -12,23 +12,22 @@
 {% endblock %}
 
 {% block content %}
-<!-- استدعاء مكتبة SweetAlert2 للرسايل الفخمة -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
     /* ========================================== */
-    /* ستايل صفحة المنتج (High-End Premium) */
+    /* ستايل صفحة المنتج */
     /* ========================================== */
     .premium-product-section {
-        max-width: 1200px; /* عرضنا الكونتينر شوية لراحة العين */
-        margin: 40px auto 100px auto;
+        max-width: 1100px;
+        margin: 40px auto 80px auto;
         direction: rtl; 
         padding: 0 20px;
     }
     
     .product-main-layout {
         display: flex;
-        gap: 80px; /* زودنا الفراغ بين الصورة والنص */
+        gap: 60px;
         align-items: flex-start;
         flex-direction: row-reverse; 
     }
@@ -41,7 +40,6 @@
         display: flex;
         flex-direction: column;
         align-items: center; 
-        padding-top: 20px; /* نزلنا النص شوية عشان يتوسط مع الصورة */
     }
 
     .prod-title {
@@ -80,16 +78,14 @@
 
     .prod-desc {
         color: #bbb;
-        font-size: 1.15rem;
-        line-height: 2.3; /* مسافة أوسع بين السطور لسهولة القراءة */
+        font-size: 1.1rem;
+        line-height: 2.2; 
         text-align: right; 
         width: 100%;
-        max-width: 500px; /* منعنا النص إنه يفرش بعرض الشاشة */
-        margin-bottom: 40px;
+        margin-bottom: 30px;
         font-family: var(--font-body);
     }
 
-    /* كلاس سحري للكلمات الإنجليزي في الوصف */
     .en-word {
         font-family: var(--font-en);
         color: var(--gold);
@@ -99,10 +95,8 @@
         letter-spacing: 0.5px;
     }
 
-    /* خيارات المقاس واللون */
     .options-section {
         width: 100%;
-        max-width: 500px;
         border-top: 1px solid rgba(255,255,255,0.05);
         border-bottom: 1px solid rgba(255,255,255,0.05);
         padding: 30px 0;
@@ -110,7 +104,7 @@
         flex-direction: column;
         gap: 30px;
         align-items: center;
-        margin-bottom: 40px;
+        margin-bottom: 30px;
     }
 
     .option-group {
@@ -122,7 +116,7 @@
 
     .option-label {
         color: #888;
-        font-size: 1rem;
+        font-size: 0.95rem;
         font-family: var(--font-body);
     }
 
@@ -156,7 +150,7 @@
         background: transparent;
         border: 1px solid rgba(200, 169, 110, 0.4);
         color: var(--sand);
-        padding: 10px 24px;
+        padding: 8px 22px;
         border-radius: 8px;
         cursor: pointer;
         transition: all 0.3s ease;
@@ -176,58 +170,45 @@
         box-shadow: 0 4px 10px rgba(200, 169, 110, 0.3);
     }
 
-    .size-btn:hover:not(.out-of-stock) {
+    .size-btn:hover {
         border-color: var(--gold);
         color: var(--gold);
-        background-color: rgba(200, 169, 110, 0.05);
     }
 
-    /* ستايل المقاس لو خلصان من المخزن */
-    .size-btn.out-of-stock {
-        opacity: 0.3;
-        cursor: not-allowed;
-        text-decoration: line-through;
-        border-color: #555;
-        color: #555;
-    }
-
-    /* زرار السلة وتأثير الضغط القوي (Click effect) */
     .add-to-cart-premium {
-        width: 100%;
-        max-width: 400px;
+        width: 80%;
         background: transparent;
         border: 1px solid var(--gold);
         color: var(--gold);
-        padding: 16px;
+        padding: 15px;
         border-radius: 12px;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         font-weight: bold;
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 12px;
         cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        transition: all 0.2s ease; 
         font-family: var(--font-body);
     }
 
     .add-to-cart-premium:hover {
         background: var(--gold);
         color: var(--bg-base);
-        box-shadow: 0 8px 30px rgba(200, 169, 110, 0.35); /* Shadow أسطوري */
-        transform: translateY(-3px);
+        box-shadow: 0 0 20px rgba(200, 169, 110, 0.2);
     }
 
     .add-to-cart-premium:active {
-        transform: scale(0.96) translateY(0);
-        box-shadow: 0 2px 10px rgba(200, 169, 110, 0.2);
+        transform: scale(0.96);
+        box-shadow: none;
     }
 
     /* ---------------------------------- */
-    /* 2. عمود الصور (اليمين - تم التحجيم) */
+    /* 2. عمود الصور (اليمين) */
     /* ---------------------------------- */
     .product-gallery-col {
-        flex: 0 0 380px; /* 🔥 صغرنا العرض لـ 380 بيكسل لوزن الصفحة */
+        flex: 0 0 380px; 
         max-width: 380px;
         width: 100%;
         display: flex;
@@ -238,20 +219,20 @@
     .main-img-container {
         width: 100%;
         border-radius: 20px;
-        background-color: #fff; /* خلفية بيضاء عشان تليق مع صورة التيشيرت */
+        background-color: #fff; 
         overflow: hidden;
         aspect-ratio: 4/5;
         display: flex;
         justify-content: center;
         align-items: center;
-        cursor: zoom-in; 
-        padding: 15px; /* 🔥 مساحة تنفس داخلية عشان التيشيرت ميبقاش لازق في الحواف */
+        cursor: zoom-in; /* مؤشر الزووم بيعرف الزبون إنها بتتفتح */
+        padding: 15px;
     }
 
     .main-img-container img {
         width: 100%;
         height: 100%;
-        object-fit: contain; /* 🔥 دي هتعرض الصورة بالكامل من غير ما تنفخها وتقصها */
+        object-fit: contain; 
         transition: transform 0.5s ease; 
     }
 
@@ -276,7 +257,7 @@
         overflow: hidden;
         transition: 0.3s;
         opacity: 0.6;
-        padding: 5px; /* مساحة تنفس للصور المصغرة كمان */
+        padding: 5px;
     }
 
     .thumb-item.active-thumb {
@@ -289,6 +270,58 @@
         height: 100%;
         object-fit: contain;
     }
+
+    /* ---------------------------------- */
+    /* شاشة عرض الصورة (Lightbox) */
+    /* ---------------------------------- */
+    .lightbox-modal {
+        display: none; /* مخفي بشكل افتراضي */
+        position: fixed;
+        z-index: 999999;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.85); /* خلفية سوداء شفافة */
+        backdrop-filter: blur(8px); /* ضباب خفيف للموقع ورا الصورة */
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .lightbox-modal img {
+        max-width: 90%;
+        max-height: 85vh;
+        border-radius: 15px;
+        object-fit: contain;
+        animation: zoomIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* حركة دخول فخمة */
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+
+    .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: #fff;
+        font-size: 45px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+        line-height: 1;
+    }
+
+    .lightbox-close:hover {
+        color: var(--gold);
+        transform: scale(1.1);
+    }
+
+    @keyframes zoomIn {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
     /* ---------------------------------- */
     /* 3. المميزات (تحت) */
     /* ---------------------------------- */
@@ -299,7 +332,7 @@
         border: 1px solid rgba(200, 169, 110, 0.05);
         border-radius: 15px;
         padding: 30px 20px;
-        margin-top: 120px; /* 🔥 زودنا المسافة جداً عشان تفصل بين الشراء والمميزات */
+        margin-top: 90px; 
     }
 
     .feature-box {
@@ -330,36 +363,34 @@
     }
 
     /* ========================================== */
-    /* تظبيط الموبايل (Touch Targets) */
+    /* تظبيط الموبايل (الصور فوق) */
     /* ========================================== */
     @media (max-width: 768px) {
         .product-main-layout {
-            flex-direction: column; 
+            /* 🔥 السر هنا: column-reverse بتخلي تاني عنصر (الصور) يطلع فوق أول عنصر (النصوص) */
+            flex-direction: column-reverse; 
             gap: 40px;
             align-items: center;
         }
         
-        /* بنخليها تاخد عرض الموبايل براحتها ومتبقاش 400 بيكسل */
         .product-gallery-col {
             flex: 1;
             width: 100%;
-            max-width: 350px; /* حجم مثالي للموبايل */
+            max-width: 350px; /* مقاس مناسب لشاشة الموبايل */
         }
 
         .main-img-container {
-            aspect-ratio: auto; /* بنلغي الـ 4/5 في الموبايل عشان متمطش */
-            max-height: 500px;
+            aspect-ratio: auto; 
+            height: 400px;
         }
         
-        /* تكبير زراير المقاسات عشان اللمس بالصباع */
         .size-btn {
-            padding: 14px 32px; 
+            padding: 12px 28px; 
             font-size: 1.2rem;
         }
         
         .add-to-cart-premium {
             width: 100%;
-            max-width: 100%;
             padding: 18px; 
         }
 
@@ -367,7 +398,7 @@
             flex-direction: column;
             gap: 30px;
             align-items: flex-start;
-            margin-top: 80px;
+            margin-top: 60px;
         }
     }
 </style>
@@ -403,7 +434,6 @@
                         <span class="option-label">اختر المقاس:</span>
                         <div class="sizes-grid">
                             {% for variant in variants %}
-                                <!-- لو حابب تخلي زرار نفذت الكمية، ضيف كلاس out-of-stock للـ label وشيل الـ input -->
                                 <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box">
                                 <label for="variant_{{ variant.id }}" class="size-btn">{{ variant.size }}</label>
                             {% empty %}
@@ -421,7 +451,8 @@
 
         <!-- قسم الصور -->
         <div class="product-gallery-col">
-            <div class="main-img-container">
+            <!-- 🔥 ضفنا هنا onclick لفتح شاشة العرض -->
+            <div class="main-img-container" onclick="openLightbox()">
                 {% if product.image %}
                     <img src="{{ product.image.url }}" alt="{{ product.name_ar }}" id="main-product-image">
                 {% else %}
@@ -474,7 +505,17 @@
     </div>
 </div>
 
+<!-- ========================================== -->
+<!-- شاشة الـ Lightbox (هتفضل مخفية لحد ما العميل يدوس) -->
+<!-- ========================================== -->
+<div id="imageLightbox" class="lightbox-modal" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <!-- onclick="event.stopPropagation()" عشان لو داس على الصورة نفسها متقفلش -->
+    <img id="lightboxImg" src="" alt="Product Full View" onclick="event.stopPropagation()">
+</div>
+
 <script>
+    // 1. تقليب الصور المصغرة
     function changeMainImage(element, src) {
         const mainImg = document.getElementById('main-product-image');
         if (!mainImg) return;
@@ -490,13 +531,24 @@
         element.classList.add('active-thumb');
     }
 
+    // 2. وظايف الـ Lightbox (فتح وقفل الصورة)
+    function openLightbox() {
+        const mainImgSrc = document.getElementById('main-product-image').src;
+        document.getElementById('lightboxImg').src = mainImgSrc;
+        document.getElementById('imageLightbox').style.display = 'flex';
+        // منع السكرول في الصفحة لما الصورة تتفتح
+        document.body.style.overflow = 'hidden'; 
+    }
+
+    function closeLightbox() {
+        document.getElementById('imageLightbox').style.display = 'none';
+        // إرجاع السكرول للصفحة
+        document.body.style.overflow = 'auto'; 
+    }
+
+    // 3. فك ارتباط المقاس
     document.querySelectorAll('.size-btn').forEach(label => {
         label.addEventListener('click', function(e) {
-            // منع الضغط لو المقاس خلصان
-            if(this.classList.contains('out-of-stock')){
-                e.preventDefault();
-                return;
-            }
             const radio = document.getElementById(this.getAttribute('for'));
             if (radio && radio.checked) {
                 e.preventDefault(); 
@@ -505,6 +557,7 @@
         });
     });
 
+    // 4. تحذير عدم اختيار المقاس
     const form = document.getElementById('add-to-cart-form');
     if (form) {
         form.addEventListener('submit', function(e) {
@@ -521,10 +574,7 @@
                     confirmButtonColor: 'var(--gold)', 
                     background: 'var(--bg-surface)', 
                     color: 'var(--cream)', 
-                    confirmButtonText: 'حسناً',
-                    customClass: {
-                        popup: 'custom-swal-font'
-                    }
+                    confirmButtonText: 'حسناً'
                 });
             }
         });
