@@ -3,88 +3,490 @@
 
 {% block title %} مُهاجر | حقيبة المشتريات {% endblock %}
 
+{% block extra_css %}
+<style>
+    /* ========================================== */
+    /* الهيكل الأساسي لصفحة السلة */
+    /* ========================================== */
+    .cart-page-container {
+        padding: 60px 5%;
+        direction: rtl;
+        max-width: 1300px;
+        margin: 0 auto;
+        min-height: 70vh;
+    }
+
+    .page-header {
+        text-align: right;
+        margin-bottom: 40px;
+    }
+
+    .page-title {
+        font-family: var(--font-heading);
+        color: var(--gold);
+        font-size: 3rem;
+        margin: 0 0 10px 0;
+        text-shadow: 0 0 15px rgba(200, 169, 110, 0.2);
+    }
+
+    .breadcrumbs {
+        color: #888;
+        font-family: var(--font-body);
+        font-size: 1rem;
+    }
+
+    .breadcrumbs span {
+        color: var(--gold);
+    }
+
+    /* ========================================== */
+    /* التخطيط (يمين منتجات - شمال ملخص) */
+    /* ========================================== */
+    .cart-layout {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .cart-items-wrapper {
+        flex: 1.8;
+        min-width: 300px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .cart-summary-wrapper {
+        flex: 1;
+        min-width: 300px;
+        max-width: 420px;
+        position: sticky;
+        top: 30px;
+    }
+
+    /* ========================================== */
+    /* البوكس الشفاف (Glass Panel) */
+    /* ========================================== */
+    .glass-panel {
+        background: rgba(20, 20, 15, 0.6);
+        border: 1px solid rgba(200, 169, 110, 0.15);
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ========================================== */
+    /* جدول المنتجات (اليمين) */
+    /* ========================================== */
+    /* رأس الجدول */
+    .cart-table-header {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr 40px;
+        gap: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(200, 169, 110, 0.3);
+        margin-bottom: 20px;
+        color: #888;
+        font-family: var(--font-body);
+        font-weight: bold;
+        text-align: center;
+    }
+    .cart-table-header div:first-child { text-align: right; }
+
+    /* صف المنتج */
+    .cart-item-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr 40px;
+        gap: 20px;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: 0.3s;
+    }
+
+    .cart-item-row:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    /* تفاصيل المنتج (الصورة والاسم) */
+    .item-info-col {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .item-img {
+        width: 90px;
+        height: 110px;
+        background-color: #e5e5e5; /* رمادي فاتح عشان يبرز التيشيرت */
+        border-radius: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .item-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        mix-blend-mode: multiply; /* بيشيل الخلفية البيضا */
+    }
+
+    .item-details h3 {
+        color: var(--cream);
+        font-family: var(--font-heading);
+        font-size: 1.3rem;
+        margin: 0 0 5px 0;
+    }
+
+    .item-details p {
+        color: #888;
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        margin: 0 0 5px 0;
+    }
+
+    .item-details p span {
+        color: var(--gold);
+        font-weight: bold;
+        font-family: var(--font-en);
+    }
+
+    /* الأعمدة المشتركة (السعر والإجمالي) */
+    .item-price-col, .item-total-col {
+        color: var(--cream);
+        font-family: var(--font-en);
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    .item-total-col {
+        color: var(--gold);
+        font-weight: bold;
+    }
+
+    /* أزرار الكمية */
+    .qty-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(200, 169, 110, 0.3);
+        border-radius: 8px;
+        padding: 5px 10px;
+        width: 100px;
+        margin: 0 auto;
+    }
+
+    .qty-btn {
+        color: var(--sand);
+        text-decoration: none;
+        font-size: 1.2rem;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+
+    .qty-btn:hover { color: var(--gold); }
+
+    .qty-number {
+        color: var(--cream);
+        font-family: var(--font-en);
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+
+    /* زرار الحذف */
+    .item-delete-btn {
+        color: #ff4d4d;
+        background: rgba(255, 77, 77, 0.1);
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .item-delete-btn:hover {
+        background: #ff4d4d;
+        color: #fff;
+    }
+
+    /* ========================================== */
+    /* ملخص الطلب (الشمال) */
+    /* ========================================== */
+    .summary-title {
+        color: var(--gold);
+        font-family: var(--font-heading);
+        font-size: 1.8rem;
+        margin: 0 0 20px 0;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(200, 169, 110, 0.2);
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        color: #bbb;
+        font-family: var(--font-body);
+        font-size: 1.1rem;
+    }
+
+    .summary-row span:last-child {
+        font-family: var(--font-en);
+        color: var(--cream);
+    }
+
+    .summary-total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(200, 169, 110, 0.2);
+        color: var(--gold);
+        font-family: var(--font-body);
+        font-size: 1.4rem;
+        font-weight: bold;
+    }
+
+    .summary-total-row span:last-child {
+        font-family: var(--font-en);
+    }
+
+    .checkout-btn {
+        display: block;
+        width: 100%;
+        background-color: var(--gold);
+        color: var(--bg-base);
+        text-align: center;
+        padding: 15px;
+        border-radius: 10px;
+        font-family: var(--font-body);
+        font-size: 1.3rem;
+        font-weight: bold;
+        text-decoration: none;
+        margin-top: 30px;
+        transition: 0.3s;
+    }
+
+    .checkout-btn:hover {
+        background-color: var(--cream);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(200, 169, 110, 0.3);
+    }
+
+    /* مميزات أسفل الملخص (زي الصورة) */
+    .summary-features {
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .s-feature {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        color: #888;
+    }
+
+    .s-feature i {
+        color: var(--gold);
+        font-size: 1.4rem;
+    }
+
+    .s-feature div h5 {
+        color: var(--cream);
+        margin: 0 0 3px 0;
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+    }
+
+    .s-feature div p {
+        margin: 0;
+        font-size: 0.8rem;
+        font-family: var(--font-body);
+    }
+
+    /* ========================================== */
+    /* تظبيط الموبايل */
+    /* ========================================== */
+    @media (max-width: 900px) {
+        .cart-layout { flex-direction: column; }
+        .cart-summary-wrapper { max-width: 100%; position: relative; top: 0; }
+        .cart-table-header { display: none; } /* إخفاء الرأس في الموبايل */
+        
+        .cart-item-row {
+            grid-template-columns: 1fr; /* كل حاجة تحت بعض */
+            gap: 15px;
+            position: relative;
+        }
+
+        .item-delete-btn {
+            position: absolute;
+            top: 20px;
+            left: 0;
+        }
+
+        .item-price-col { display: none; } /* إخفاء السعر المفرد لتوفير المساحة */
+        
+        .item-total-col { text-align: right; margin-top: 10px; }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="cart-container" style="padding: 60px 5%; direction: rtl; max-width: 1400px; margin: auto;">
+<div class="cart-page-container">
     
-    <h1 style="font-family: var(--font-heading); color: var(--gold); font-size: 3rem; margin-bottom: 40px; text-align: right;">حقيبة المشتريات</h1>
+    <div class="page-header">
+        <h1 class="page-title">حقيبة مشترياتك</h1>
+        <div class="breadcrumbs">الرئيسية > <span>حقيبة المشتريات</span></div>
+    </div>
     
     {% if cart_items %}
-    <div style="display: flex; gap: 50px; flex-wrap: wrap; align-items: flex-start;">
+    <div class="cart-layout">
         
         <!-- 1. قائمة المنتجات (الجزء اليمين) -->
-        <div style="flex: 2; min-width: 300px; display: flex; flex-direction: column; gap: 25px;">
-            {% for item in cart_items %}
-            <div style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-surface); padding: 20px 25px; border-radius: 15px; border: 1px solid var(--umber); box-shadow: 0 5px 15px rgba(0,0,0,0.3); flex-wrap: wrap; gap: 20px;">
+        <div class="cart-items-wrapper">
+            <div class="glass-panel" style="padding: 20px 30px;">
                 
-                <div style="display: flex; align-items: center; gap: 25px;">
-                    {% if item.product.image %}
-                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name_ar }}" style="width: 110px; height: 110px; object-fit: cover; border-radius: 10px; border: 1px solid var(--umber);">
-                    {% else %}
-                        <div style="width: 110px; height: 110px; background: var(--bg-base); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--sand);">لا توجد صورة</div>
-                    {% endif %}
-                    
-                    <div>
-                        <h3 style="font-family: var(--font-heading); color: var(--cream); margin: 0 0 10px 0; font-size: 1.6rem;">{{ item.product.name_ar }}</h3>
-                        <p style="color: #aaa; margin: 0; font-family: var(--font-body); font-size: 1.1rem;">
-                            المقاس: <span style="color: var(--gold); font-family: var(--font-en); font-weight: bold; margin-left: 15px;">{{ item.variant.size|default:"-" }}</span>
-                            <!-- التعديل هنا: سحبنا اللون من الـ Variant -->
-                            اللون: <span style="color: var(--gold); font-family: var(--font-body); font-weight: bold;">{{ item.variant.color_ar|default:"-" }}</span>
-                        </p>
-                    </div>
+                <!-- رأس الجدول (بيختفي في الموبايل) -->
+                <div class="cart-table-header">
+                    <div>المنتج</div>
+                    <div>السعر</div>
+                    <div>الكمية</div>
+                    <div>الإجمالي</div>
+                    <div></div>
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 40px; flex-wrap: wrap;">
-                    <div style="display: flex; align-items: center; gap: 15px; background: var(--bg-base); padding: 8px 15px; border-radius: 10px; border: 1px solid var(--gold);">
-                        <a href="{% url 'update_quantity' item.id 'increase' %}" style="color: var(--gold); text-decoration: none; font-size: 1.5rem; width: 30px; text-align: center; transition: 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--gold)'">+</a>
-                        
-                        <span style="color: var(--cream); font-family: var(--font-body); font-size: 1.3rem; font-weight: bold; min-width: 20px; text-align: center;">{{ item.quantity }}</span>
-                        
-                        <a href="{% url 'update_quantity' item.id 'decrease' %}" style="color: var(--gold); text-decoration: none; font-size: 1.5rem; width: 30px; text-align: center; transition: 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--gold)'">-</a>
+                <!-- المنتجات -->
+                {% for item in cart_items %}
+                <div class="cart-item-row">
+                    
+                    <!-- الصورة والاسم -->
+                    <div class="item-info-col">
+                        <div class="item-img">
+                            {% if item.product.image %}
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name_ar }}">
+                            {% else %}
+                                <span style="color: #888; font-size: 0.8rem;">لا توجد</span>
+                            {% endif %}
+                        </div>
+                        <div class="item-details">
+                            <h3>{{ item.product.name_ar }}</h3>
+                            <p>المقاس: <span>{{ item.variant.size|default:"-" }}</span></p>
+                            <p>اللون: <span>{{ item.variant.color_ar|default:"-" }}</span></p>
+                        </div>
                     </div>
 
-                    <div style="display: flex; align-items: center; gap: 30px;">
-                        <span style="color: var(--gold); font-size: 1.5rem; font-weight: bold; font-family: var(--font-en);">
-                            <!-- التعديل هنا: استخدمنا دالة total_price الجاهزة من الموديل -->
-                            {{ item.total_price }} EGP
-                        </span>
-                        
-                        <a href="{% url 'remove_cart_item' item.id %}" style="color: #ff4d4d; font-size: 1.5rem; transition: 0.3s; background: rgba(255, 77, 77, 0.1); padding: 10px 15px; border-radius: 8px;" title="حذف من الحقيبة" onmouseover="this.style.background='rgba(255, 77, 77, 0.2)'" onmouseout="this.style.background='rgba(255, 77, 77, 0.1)'">
+                    <!-- السعر المفرد -->
+                    <div class="item-price-col">
+                        EGP {{ item.product.base_price }}
+                    </div>
+
+                    <!-- الكمية -->
+                    <div>
+                        <div class="qty-controls">
+                            <a href="{% url 'update_quantity' item.id 'decrease' %}" class="qty-btn">-</a>
+                            <span class="qty-number">{{ item.quantity }}</span>
+                            <a href="{% url 'update_quantity' item.id 'increase' %}" class="qty-btn">+</a>
+                        </div>
+                    </div>
+
+                    <!-- السعر الإجمالي للمنتج -->
+                    <div class="item-total-col">
+                        EGP {{ item.total_price }}
+                    </div>
+
+                    <!-- الحذف -->
+                    <div>
+                        <a href="{% url 'remove_cart_item' item.id %}" class="item-delete-btn" title="حذف المنتج">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </div>
+
+                </div>
+                {% endfor %}
+
+                <!-- زرار العودة للتسوق (أسفل المنتجات) -->
+                <div style="margin-top: 30px; text-align: left;">
+                    <a href="{% url 'shop' %}" style="display: inline-block; padding: 12px 25px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; border-radius: 8px; font-family: var(--font-body); transition: 0.3s;" onmouseover="this.style.background='var(--gold)'; this.style.color='var(--bg-base)';" onmouseout="this.style.background='transparent'; this.style.color='var(--gold)';">
+                        المتابعة للتسوق <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
+                    </a>
                 </div>
 
             </div>
-            {% endfor %}
         </div>
 
-        <!-- 2. ملخص الطلب - الفاتورة (الجزء الشمال) -->
-        <div style="flex: 1; min-width: 300px; background: var(--bg-surface); padding: 35px; border-radius: 15px; border: 1px solid var(--umber); position: sticky; top: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <h2 style="font-family: var(--font-heading); color: var(--gold); margin-top: 0; border-bottom: 1px solid var(--umber); padding-bottom: 20px; margin-bottom: 30px; font-size: 2rem;">ملخص الطلب</h2>
-            
-            <div style="display: flex; justify-content: space-between; margin-bottom: 30px; color: var(--cream); font-size: 1.3rem; font-family: var(--font-body);">
-                <span>المجموع الفرعي:</span>
-                <span style="font-family: var(--font-en); font-weight: bold;">{{ total_price|default:"0" }} EGP</span>
-            </div>
-            
-            <div style="display: flex; justify-content: space-between; margin-bottom: 40px; color: var(--gold); font-size: 1.8rem; font-weight: bold; border-top: 1px solid var(--umber); padding-top: 20px; font-family: var(--font-body);">
-                <span>الإجمالي:</span>
-                <span style="font-family: var(--font-en);">{{ grand_total|default:"0" }} EGP</span>
-            </div>
+        <!-- 2. ملخص الطلب (الجزء الشمال) -->
+        <div class="cart-summary-wrapper">
+            <div class="glass-panel">
+                <h2 class="summary-title">ملخص الطلب</h2>
+                
+                <div class="summary-row">
+                    <span>المجموع الفرعي:</span>
+                    <span>EGP {{ total_price|default:"0" }}</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>الشحن:</span>
+                    <span style="color: #4caf50; font-family: var(--font-body);">مجاناً</span>
+                </div>
+                
+                <div class="summary-total-row">
+                    <span>الإجمالي:</span>
+                    <span>EGP {{ grand_total|default:"0" }}</span>
+                </div>
 
-            <a href="{% url 'checkout' %}" style="display: block; text-align: center; background-color: var(--gold); color: var(--bg-base); padding: 18px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 1.4rem; font-family: var(--font-body); transition: 0.3s; box-shadow: 0 4px 15px rgba(200, 169, 110, 0.2);" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-                إتمام الطلب <i class="fas fa-lock" style="margin-right: 10px;"></i>
-            </a>
+                <a href="{% url 'checkout' %}" class="checkout-btn">
+                    إتمام الطلب <i class="fas fa-lock" style="margin-right: 8px;"></i>
+                </a>
+
+                <!-- شريط مميزات الثقة -->
+                <div class="summary-features">
+                    <div class="s-feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <h5>خامة عالية الجودة</h5>
+                            <p>قماش ناعم ومتين يدوم طويلاً</p>
+                        </div>
+                    </div>
+                    <div class="s-feature">
+                        <i class="fas fa-truck"></i>
+                        <div>
+                            <h5>شحن سريع</h5>
+                            <p>توصيل لجميع المحافظات</p>
+                        </div>
+                    </div>
+                    <div class="s-feature">
+                        <i class="fas fa-sync-alt"></i>
+                        <div>
+                            <h5>إرجاع سهل</h5>
+                            <p>ضمان استرجاع خلال 14 يوم</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
     </div>
     {% else %}
     <!-- حالة السلة فارغة -->
-    <div style="text-align: center; padding: 100px 20px; background: var(--bg-surface); border-radius: 20px; border: 1px solid var(--umber); max-width: 600px; margin: 50px auto;">
-        <i class="fas fa-shopping-bag" style="font-size: 6rem; color: var(--umber); margin-bottom: 30px;"></i>
+    <div style="text-align: center; padding: 80px 20px; background: rgba(20, 20, 15, 0.6); border: 1px solid rgba(200, 169, 110, 0.15); border-radius: 20px; max-width: 600px; margin: 50px auto;">
+        <i class="fas fa-shopping-bag" style="font-size: 5rem; color: rgba(200, 169, 110, 0.3); margin-bottom: 30px;"></i>
         <h2 style="font-family: var(--font-heading); color: var(--cream); font-size: 2.5rem; margin-bottom: 20px;">حقيبتك فارغة!</h2>
-        <p style="color: #888; font-size: 1.3rem; margin-bottom: 40px; font-family: var(--font-body);">لم تقم بإضافة أي قطع فنية إلى حقيبتك حتى الآن.</p>
-        <a href="/" style="display: inline-block; background-color: var(--gold); color: var(--bg-base); padding: 15px 40px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 1.3rem; font-family: var(--font-body); transition: 0.3s;">
+        <p style="color: #888; font-size: 1.2rem; margin-bottom: 40px; font-family: var(--font-body);">لم تقم بإضافة أي قطع فنية إلى حقيبتك حتى الآن.</p>
+        <a href="{% url 'shop' %}" style="display: inline-block; background-color: var(--gold); color: var(--bg-base); padding: 15px 40px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 1.2rem; font-family: var(--font-body); transition: 0.3s;">
             تصفح المتجر
         </a>
     </div>
