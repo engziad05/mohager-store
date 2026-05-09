@@ -227,7 +227,7 @@
     /* 2. عمود الصور (اليمين - تم التحجيم) */
     /* ---------------------------------- */
     .product-gallery-col {
-        flex: 0 0 400px; /* 
+        flex: 0 0 480px; /* 🔥 كبرناها سيكة هنا (480 بدل 400) */
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -237,24 +237,24 @@
     .main-img-container {
         width: 100%;
         border-radius: 20px;
-        background-color: #d8d8d8; 
+        background-color: #e5e5e5; /* رمادي فاتح شيك جداً ينور الصورة */
         overflow: hidden;
         aspect-ratio: 4/5;
         display: flex;
         justify-content: center;
         align-items: center;
-        cursor: zoom-in; /* علامة العدسة المكبرة */
-    }
-
-    .main-img-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        mix-blend-mode: multiply; 
-        transition: transform 0.5s ease; /* سرعة الزووم */
+        cursor: zoom-in; 
     }
 
     /* 🔥 تأثير الزووم لما تقف بالماوس */
+   .main-img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* 🔥 مسحنا الـ mix-blend-mode عشان الصورة ترجع لألوانها الطبيعية ومتضلمش */
+        transition: transform 0.5s ease; 
+    }
+
     .main-img-container:hover img {
         transform: scale(1.12);
     }
@@ -270,7 +270,7 @@
         width: 80px;
         height: 80px;
         border-radius: 10px;
-        background-color: #d8d8d8;
+        background-color: #e5e5e5;
         border: 2px solid transparent;
         cursor: pointer;
         overflow: hidden;
@@ -287,9 +287,8 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        mix-blend-mode: multiply;
+        /* 🔥 مسحنا الـ mix-blend-mode من هنا كمان */
     }
-
     /* ---------------------------------- */
     /* 3. المميزات (تحت) */
     /* ---------------------------------- */
