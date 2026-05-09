@@ -1,171 +1,452 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}المتجر | مُهاجر{% endblock %}
+{% block title %} مُهاجر | المتجر {% endblock %}
 
 {% block extra_css %}
 <style>
     /* ========================================== */
-    /* شبكة المنتجات (توسيط وتوزيع مريح) */
+    /* ستايل صفحة المتجر (Premium UI) */
     /* ========================================== */
-    .products-grid {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center !important; 
-        gap: 30px; 
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 40px 20px 80px 20px !important;
-        direction: rtl;
+    .shop-header {
+        text-align: center;
+        margin-bottom: 40px;
     }
 
-    /* ========================================== */
-    /* كارت المنتج (Premium Glass Card) */
-    /* ========================================== */
+    .shop-title {
+        font-family: var(--font-heading);
+        color: var(--gold);
+        font-size: 3.2rem;
+        margin-bottom: 15px;
+        text-shadow: 0 0 15px rgba(200, 169, 110, 0.2);
+    }
+
+    .shop-subtitle {
+        color: #bbb;
+        font-family: var(--font-body);
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.8;
+    }
+
+    /* ---------------------------------- */
+    /* شريط البحث (Search Bar) */
+    /* ---------------------------------- */
+    .search-container {
+        max-width: 550px;
+        margin: 0 auto 30px auto;
+        position: relative;
+    }
+
+    .search-input {
+        width: 100%;
+        background-color: rgba(20, 20, 15, 0.6);
+        border: 1px solid rgba(200, 169, 110, 0.2);
+        color: var(--cream);
+        padding: 16px 20px 16px 60px; /* مساحة للزرار على الشمال */
+        border-radius: 12px;
+        font-family: var(--font-body);
+        font-size: 1.05rem;
+        outline: none;
+        transition: 0.3s;
+        box-sizing: border-box;
+    }
+
+    .search-input:focus {
+        border-color: var(--gold);
+        box-shadow: 0 0 15px rgba(200, 169, 110, 0.1);
+    }
+
+    .search-btn {
+        position: absolute;
+        left: 8px;
+        top: 8px;
+        bottom: 8px;
+        background-color: var(--gold);
+        color: var(--bg-base);
+        border: none;
+        border-radius: 8px;
+        width: 50px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: 0.3s;
+    }
+
+    .search-btn:hover {
+        background-color: var(--cream);
+        transform: scale(1.05);
+    }
+
+    /* ---------------------------------- */
+    /* فلتر الأقسام (Categories Pills) */
+    /* ---------------------------------- */
+    .categories-filter {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 50px;
+    }
+
+    .cat-pill {
+        padding: 8px 25px;
+        border-radius: 50px;
+        font-family: var(--font-body);
+        font-weight: bold;
+        text-decoration: none;
+        transition: 0.3s;
+        font-size: 1rem;
+        border: 1px solid rgba(200, 169, 110, 0.3);
+    }
+
+    .cat-pill.active {
+        background: var(--gold);
+        color: var(--bg-base);
+        border-color: var(--gold);
+        box-shadow: 0 0 15px rgba(200, 169, 110, 0.3);
+    }
+
+    .cat-pill:not(.active) {
+        background: transparent;
+        color: var(--sand);
+    }
+
+    .cat-pill:not(.active):hover {
+        border-color: var(--gold);
+        color: var(--gold);
+    }
+
+    /* ---------------------------------- */
+    /* عنوان قسم المنتجات (المنتجات المميزة) */
+    /* ---------------------------------- */
+    .section-divider {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    
+    .section-divider h3 {
+        color: var(--gold);
+        font-family: var(--font-heading);
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
+
+    .diamond-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .diamond-line::before, .diamond-line::after {
+        content: '';
+        height: 1px;
+        background: rgba(200, 169, 110, 0.3);
+        width: 60px;
+    }
+
+    .diamond-shape {
+        width: 6px;
+        height: 6px;
+        background: transparent;
+        border: 1px solid var(--gold);
+        transform: rotate(45deg);
+    }
+
+    /* ---------------------------------- */
+    /* شبكة وكروت المنتجات */
+    /* ---------------------------------- */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+        justify-content: center;
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding-bottom: 60px;
+    }
+
     .product-card {
-        width: 310px !important; 
-        background: rgba(25, 25, 20, 0.4) !important; 
-        border: 1px solid rgba(200, 169, 110, 0.15) !important; 
-        border-radius: 16px; 
-        overflow: hidden; 
+        background: rgba(20, 20, 15, 0.6);
+        border: 1px solid rgba(200, 169, 110, 0.15);
+        border-radius: 16px;
+        overflow: hidden;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        padding: 0 !important; 
+        transition: all 0.4s ease;
+        position: relative;
     }
 
     .product-card:hover {
         transform: translateY(-8px);
-        background: rgba(25, 25, 20, 0.8) !important;
-        border-color: rgba(200, 169, 110, 0.4) !important;
+        border-color: rgba(200, 169, 110, 0.5);
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(200, 169, 110, 0.1);
     }
 
-    /* ---------------------------------- */
-    /* 1. جزء الصورة (فوق) */
-    /* ---------------------------------- */
+    /* الصورة الفخمة (الخلفية الرمادي) */
     .product-img-wrapper {
         width: 100%;
-        height: 320px; 
-        background-color: #d8d8d8; 
+        height: 320px;
+        background-color: #e5e5e5 !important; /* رمادي فاتح عشان يبرز التيشيرت الأسود */
         display: flex;
         align-items: center;
         justify-content: center;
-        overflow: hidden;
         position: relative;
+        overflow: hidden;
+        text-decoration: none;
     }
 
     .product-img-wrapper img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        mix-blend-mode: multiply; 
-        transition: transform 0.6s ease;
+        width: 90%;
+        height: 90%;
+        object-fit: contain;
+        mix-blend-mode: multiply; /* بيشيل البياض ويدمج التيشيرت في الرمادي */
+        transition: transform 0.5s ease;
     }
 
     .product-card:hover .product-img-wrapper img {
-        transform: scale(1.08); 
+        transform: scale(1.08);
     }
 
-    /* ---------------------------------- */
-    /* 2. جزء النصوص والزرار (تحت) */
-    /* ---------------------------------- */
+    /* أيقونة القلب (شكل بس للفخامة) */
+    .heart-icon {
+        position: absolute;
+        top: 15px;
+        left: 15px; /* شمال لأننا RTL */
+        color: var(--gold);
+        font-size: 1.4rem;
+        cursor: pointer;
+        transition: 0.3s;
+        z-index: 10;
+    }
+    .heart-icon:hover {
+        transform: scale(1.2);
+    }
+
+    /* التفاصيل تحت الصورة */
     .product-details {
-        padding: 25px 20px; 
+        padding: 20px;
         text-align: center;
         display: flex;
         flex-direction: column;
-        width: 100%;
-        box-sizing: border-box;
+        flex-grow: 1;
     }
 
     .product-title {
         color: var(--cream);
         font-family: var(--font-heading);
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         margin: 0 0 5px 0;
-        font-weight: normal;
+    }
+
+    .product-subtitle {
+        color: #888;
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+        margin: 0 0 15px 0;
+        line-height: 1.4;
     }
 
     .product-price {
         color: var(--gold);
-        font-size: 1.4rem;
-        font-weight: bold;
         font-family: var(--font-en);
-        margin: 0 0 25px 0;
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin: 0 0 20px 0;
     }
 
-    .product-action-btn {
+    /* زرار الإضافة (مفرغ Outline) */
+    .btn-outline-gold {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
         width: 100%;
-        background: transparent;
-        border: 1px solid rgba(200, 169, 110, 0.5); 
-        color: var(--sand);
         padding: 12px;
-        border-radius: 10px; 
+        background: transparent;
+        border: 1px solid rgba(200, 169, 110, 0.5);
+        color: var(--sand);
+        border-radius: 10px;
         font-family: var(--font-body);
         font-size: 1.05rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
         text-decoration: none;
-        display: inline-block;
+        transition: all 0.3s ease;
         box-sizing: border-box;
     }
 
-    .product-action-btn:hover {
+    .btn-outline-gold:hover {
         background: var(--gold);
         color: var(--bg-base);
         border-color: var(--gold);
         font-weight: bold;
     }
 
+    /* ---------------------------------- */
+    /* شريط المميزات (تحت المنتجات) */
+    /* ---------------------------------- */
+    .features-banner {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 20px;
+        border-top: 1px solid rgba(200, 169, 110, 0.1);
+        padding: 40px 20px;
+        margin-top: 40px;
+    }
+
+    .feature-box {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        text-align: right;
+    }
+
+    .feature-icon {
+        font-size: 2.2rem;
+        color: var(--gold);
+        opacity: 0.9;
+    }
+
+    .feature-text h4 {
+        color: var(--cream);
+        margin: 0 0 5px 0;
+        font-size: 1.1rem;
+        font-family: var(--font-body);
+    }
+
+    .feature-text p {
+        color: #888;
+        margin: 0;
+        font-size: 0.9rem;
+        font-family: var(--font-body);
+    }
+
     @media (max-width: 768px) {
-        .product-card {
-            width: 90% !important; 
-            max-width: 350px;
-        }
-        .product-img-wrapper {
-            height: 350px; 
+        .features-banner {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 30px;
         }
     }
 </style>
-{% endblock %}
+{% endblock %} 
+
 
 {% block content %}
-<div class="shop-container" style="padding-top: 40px; min-height: 60vh;">
+<div style="padding: 60px 5% 0; min-height: 70vh;">
     
-    <!-- عنوان الصفحة -->
-    <h2 style="text-align: center; color: var(--gold); font-family: var(--font-heading); font-size: 2.8rem; margin-bottom: 10px;">تسوق مجموعتنا</h2>
-    <p style="text-align: center; color: #888; font-family: var(--font-body); font-size: 1.1rem; margin-bottom: 50px;">تيشرتات Oversized بتصميمات عصرية وخامات فاخرة تناسب أسلوبك.</p>
+    <!-- 1. الهيدر والبحث -->
+    <div class="shop-header">
+        <h1 class="shop-title">تسوق مجموعتنا</h1>
+        <p class="shop-subtitle">تيشرتات Oversized بتصميمات عصرية وخامات فاخرة تناسب أسلوبك اليومي وتعكس شخصيتك.</p>
+    </div>
 
-    <!-- شبكة المنتجات -->
-    <div class="products-grid">
-        {% for product in products %}
-            <div class="product-card">
-                <!-- الصورة -->
-                <a href="{% url 'product_detail' product.id %}" class="product-img-wrapper">
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name_ar }}">
-                    {% else %}
-                        <div style="color: #666; font-family: var(--font-body);">لا توجد صورة</div>
-                    {% endif %}
-                </a>
-                
-                <!-- التفاصيل -->
-                <div class="product-details">
-                    <h3 class="product-title">{{ product.name_ar }}</h3>
-                    <p class="product-price">{{ product.base_price }} ج.م</p>
-                    
-                    <!-- زرار الذهاب للتفاصيل -->
-                    <a href="{% url 'product_detail' product.id %}" class="product-action-btn">
-                        عرض التفاصيل
-                    </a>
-                </div>
-            </div>
-        {% empty %}
-            <p style="color: var(--sand); font-family: var(--font-body); text-align: center; width: 100%; font-size: 1.2rem;">عفواً، لا توجد منتجات متاحة حالياً.</p>
+    <!-- شريط البحث -->
+    <div class="search-container">
+        <form method="GET" action="{% url 'shop' %}">
+            <input type="text" name="q" class="search-input" placeholder="ابحث عن منتج، لون، أو تصميم..." value="{{ request.GET.q }}">
+            <button type="submit" class="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+            <!-- زرار تفريغ البحث لو فيه نتيجة -->
+            {% if request.GET.q %}
+            <a href="{% url 'shop' %}" style="position: absolute; right: 15px; top: 16px; color: #888; text-decoration: none;" title="إلغاء البحث">
+                <i class="fas fa-times"></i>
+            </a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- فلتر الأقسام -->
+    <div class="categories-filter">
+        <a href="{% url 'shop' %}" class="cat-pill {% if not request.GET.category %}active{% endif %}">
+            الكل
+        </a>
+        {% for category in categories %}
+            <a href="?category={{ category.slug }}" class="cat-pill {% if request.GET.category == category.slug %}active{% endif %}">
+                {{ category.name_ar }}
+            </a>
         {% endfor %}
     </div>
 
+    <!-- 2. عنوان المنتجات المميزة -->
+    <div class="section-divider">
+        <h3>المنتجات المميزة</h3>
+        <div class="diamond-line">
+            <div class="diamond-shape"></div>
+        </div>
+    </div>
+
+    <!-- 3. شبكة الكروت الفخمة -->
+    <section class="products-grid">
+        {% if products %}
+            {% for product in products %}
+            <div class="product-card">
+                
+                <!-- الصورة والخلفية الرمادي -->
+                <div class="product-img-wrapper">
+                    <!-- أيقونة القلب للفخامة -->
+                    <i class="far fa-heart heart-icon"></i>
+                    
+                    <a href="{% url 'product_detail' product.id %}" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name_ar }}" loading="lazy">
+                        {% else %}
+                            <span style="color: #888; font-family: var(--font-body);">لا توجد صورة</span>
+                        {% endif %}
+                    </a>
+                </div>
+                
+                <!-- التفاصيل والزرار المفرغ -->
+                <div class="product-details">
+                    <h3 class="product-title">{{ product.name_ar }}</h3>
+                    <!-- لو عندك وصف قصير بيظهر هنا، لو مفيش بيسحب أول 40 حرف من الوصف الأساسي -->
+                    <p class="product-subtitle">{{ product.description_ar|truncatechars:45|default:"خامة فاخرة - تصميم مميز" }}</p>
+                    <p class="product-price">{{ product.base_price }} ج.م</p>
+                    
+                    <a href="{% url 'product_detail' product.id %}" class="btn-outline-gold">
+                        <i class="fas fa-shopping-bag"></i> أضف إلى السلة
+                    </a>
+                </div>
+
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- رسالة لو ملقاش منتجات -->
+            <div style="grid-column: 1 / -1; text-align: center; color: var(--sand); padding: 50px;">
+                <i class="fas fa-box-open" style="font-size: 4rem; color: rgba(200, 169, 110, 0.3); margin-bottom: 20px;"></i>
+                <h2 style="font-family: var(--font-heading); font-size: 2rem;">لم نتمكن من العثور على منتجات.</h2>
+            </div>
+        {% endif %}
+    </section>
+
 </div>
+
+<!-- 4. شريط المميزات (بيظهر في آخر صفحة المتجر) -->
+<div class="features-banner">
+    <div class="feature-box">
+        <i class="fas fa-sync-alt feature-icon"></i>
+        <div class="feature-text">
+            <h4>إرجاع سهل</h4>
+            <p>ضمان استرجاع خلال 14 يوم</p>
+        </div>
+    </div>
+    <div class="feature-box">
+        <i class="fas fa-truck feature-icon"></i>
+        <div class="feature-text">
+            <h4>شحن سريع</h4>
+            <p>توصيل لجميع المحافظات</p>
+        </div>
+    </div>
+    <div class="feature-box">
+        <i class="fas fa-shield-alt feature-icon"></i>
+        <div class="feature-text">
+            <h4>خامة عالية الجودة</h4>
+            <p>قماش ناعم ومتين يدوم طويلاً</p>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
