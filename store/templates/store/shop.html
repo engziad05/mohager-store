@@ -369,16 +369,14 @@
     </div>
 
     <!-- 3. شبكة الكروت الفخمة -->
+    <!-- 3. شبكة الكروت الفخمة -->
     <section class="products-grid">
         {% if products %}
             {% for product in products %}
             <div class="product-card">
                 
-                <!-- الصورة والخلفية الرمادي -->
+                <!-- الصورة والخلفية الرمادي (شيلنا القلب من هنا) -->
                 <div class="product-img-wrapper">
-                    <!-- أيقونة القلب للفخامة -->
-                    <i class="far fa-heart heart-icon"></i>
-                    
                     <a href="{% url 'product_detail' product.id %}" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
                         {% if product.image %}
                             <img src="{{ product.image.url }}" alt="{{ product.name_ar }}" loading="lazy">
@@ -388,15 +386,16 @@
                     </a>
                 </div>
                 
-                <!-- التفاصيل والزرار المفرغ -->
+                <!-- التفاصيل والزرار -->
+                <!-- التفاصيل والزرار -->
                 <div class="product-details">
                     <h3 class="product-title">{{ product.name_ar }}</h3>
-                    <!-- لو عندك وصف قصير بيظهر هنا، لو مفيش بيسحب أول 40 حرف من الوصف الأساسي -->
                     <p class="product-subtitle">{{ product.description_ar|truncatechars:45|default:"خامة فاخرة - تصميم مميز" }}</p>
                     <p class="product-price">{{ product.base_price }} ج.م</p>
                     
-                    <a href="{% url 'product_detail' product.id %}" class="btn-outline-gold">
-                        <i class="fas fa-shopping-bag"></i> التفاصيل
+                    <!-- رجعناه لينك بس محتفظ بشياكة وفخامة الزرار اللي فات -->
+                    <a href="{% url 'product_detail' product.id %}" class="btn-outline-gold" style="width: 100%;">
+                        <i class="fas fa-sliders-h"></i> اختر المقاس
                     </a>
                 </div>
 
