@@ -369,10 +369,11 @@
                 </div>
 
                 <!-- المنتجات -->
+                <!-- المنتجات -->
                 {% for item in cart_items %}
                 <div class="cart-item-row">
                     
-                    <!-- الصورة والاسم -->
+                    <!-- 1. الصورة والاسم (العمود الأول) -->
                     <div class="item-info-col">
                         <div class="item-img">
                             {% if item.product.image %}
@@ -385,25 +386,24 @@
                             <h3>{{ item.product.name_ar }}</h3>
                             <p>المقاس: <span>{{ item.variant.size|default:"-" }}</span></p>
                             
-                            <!-- السطر السحري: بيلف على كل احتمالات اسم اللون عندك في الداتابيز -->
+                            <!-- سطر اللون بالدايرة السحرية -->
                             <p style="display: flex; align-items: center; gap: 8px;">اللون: 
-    <span style="color: var(--gold); font-weight: bold; font-family: var(--font-body);">
-        {{ item.variant.color_ar|default:"-" }}
-    </span>
-    <!-- دايرة اللون السحرية -->
-    {% if item.variant.color_code %}
-    <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: {{ item.variant.color_code }}; border: 1px solid rgba(255,255,255,0.2);"></span>
-    {% endif %}
-</p>
+                                <span style="color: var(--gold); font-weight: bold; font-family: var(--font-body);">
+                                    {{ item.variant.color_ar|default:"-" }}
+                                </span>
+                                {% if item.variant.color_code %}
+                                <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: {{ item.variant.color_code }}; border: 1px solid rgba(255,255,255,0.2);"></span>
+                                {% endif %}
+                            </p>
                         </div>
-                    </div>
+                    </div> <!-- 🔥 قفلة الديف دي اللي كانت ضايعة وعملت الأزمة! -->
 
-                    <!-- السعر المفرد -->
+                    <!-- 2. السعر المفرد -->
                     <div class="item-price-col">
                         EGP {{ item.product.base_price }}
                     </div>
 
-                    <!-- الكمية -->
+                    <!-- 3. الكمية -->
                     <div>
                         <div class="qty-controls">
                             <a href="{% url 'update_quantity' item.id 'decrease' %}" class="qty-btn">-</a>
@@ -412,12 +412,12 @@
                         </div>
                     </div>
 
-                    <!-- السعر الإجمالي للمنتج -->
+                    <!-- 4. السعر الإجمالي للمنتج -->
                     <div class="item-total-col">
                         EGP {{ item.total_price }}
                     </div>
 
-                    <!-- الحذف -->
+                    <!-- 5. الحذف -->
                     <div>
                         <a href="{% url 'remove_cart_item' item.id %}" class="item-delete-btn" title="حذف المنتج">
                             <i class="fas fa-trash-alt"></i>
