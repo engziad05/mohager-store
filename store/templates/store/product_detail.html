@@ -227,7 +227,8 @@
     /* 2. عمود الصور (اليمين - تم التحجيم) */
     /* ---------------------------------- */
     .product-gallery-col {
-        flex: 0 0 480px; /* 🔥 كبرناها سيكة هنا (480 بدل 400) */
+        flex: 0 0 380px; /* 🔥 صغرنا العرض لـ 380 بيكسل لوزن الصفحة */
+        max-width: 380px;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -237,21 +238,20 @@
     .main-img-container {
         width: 100%;
         border-radius: 20px;
-        background-color: #e5e5e5; /* رمادي فاتح شيك جداً ينور الصورة */
+        background-color: #fff; /* خلفية بيضاء عشان تليق مع صورة التيشيرت */
         overflow: hidden;
         aspect-ratio: 4/5;
         display: flex;
         justify-content: center;
         align-items: center;
         cursor: zoom-in; 
+        padding: 15px; /* 🔥 مساحة تنفس داخلية عشان التيشيرت ميبقاش لازق في الحواف */
     }
 
-    /* 🔥 تأثير الزووم لما تقف بالماوس */
-   .main-img-container img {
+    .main-img-container img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        /* 🔥 مسحنا الـ mix-blend-mode عشان الصورة ترجع لألوانها الطبيعية ومتضلمش */
+        object-fit: contain; /* 🔥 دي هتعرض الصورة بالكامل من غير ما تنفخها وتقصها */
         transition: transform 0.5s ease; 
     }
 
@@ -270,12 +270,13 @@
         width: 80px;
         height: 80px;
         border-radius: 10px;
-        background-color: #e5e5e5;
+        background-color: #fff;
         border: 2px solid transparent;
         cursor: pointer;
         overflow: hidden;
         transition: 0.3s;
         opacity: 0.6;
+        padding: 5px; /* مساحة تنفس للصور المصغرة كمان */
     }
 
     .thumb-item.active-thumb {
@@ -286,8 +287,7 @@
     .thumb-item img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        /* 🔥 مسحنا الـ mix-blend-mode من هنا كمان */
+        object-fit: contain;
     }
     /* ---------------------------------- */
     /* 3. المميزات (تحت) */
