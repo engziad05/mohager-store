@@ -61,23 +61,34 @@
     <style>
      
 
+ 
+    
+    /* 1. بنهدي النافبار خالص */
     header, 
     .navbar,
     .site-header {
-        z-index: 1000 !important; 
-        position: relative;
+        z-index: 99 !important; 
     }
 
-    /* 2. السلة الجانبية (لو مسمي كلاس السلة اسم تاني غير cart-sidebar غيره هنا) */
+    /* 2. بنجبر السلة تبدأ من سقف الشاشة وتغطي على الكل */
     .cart-sidebar, 
     #cart-sidebar {
-        z-index: 99999 !important; /* بنخلي السلة أعلى حاجة في الموقع كله */
+        position: fixed !important;
+        top: 0 !important; /* السر هنا: بنلغي أي مسافة من فوق */
+        right: 0 !important;
+        height: 100vh !important;
+        z-index: 999999 !important; /* أعلى رقم ممكن */
     }
 
-    /* 3. الضباب أو الخلفية السودة اللي بتظهر ورا السلة */
+    /* 3. الضباب الأسود يغطي الموقع كله ما عدا السلة */
     .cart-overlay,
     .overlay {
-        z-index: 99998 !important; /* الضباب بيكون تحت السلة وفوق النافبار */
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 999998 !important; 
     }
 
 body {
@@ -494,8 +505,8 @@ body {
         </div>
 
         <div <!-- حوطنا اللوجو باللينك ده -->
-<a href="/" style="text-decoration: none; color: inherit; cursor: pointer;">
-    <h1 class="logo-text">مهاجر</h1> <!-- أو أي كود إنت كاتبه للوجو بتاعك هنا -->
+<a href="/" style="text-decoration: none; color: inherit; display: inline-flex; align-items: center; margin: 0; padding: 0; height: fit-content;">
+    <h1 class="logo-text">مهاجر</h1> <!-- كود اللوجو بتاعك زي ما هو -->
 </a></div>
 
         <div class="nav-links-container">
