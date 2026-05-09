@@ -1,196 +1,400 @@
-{% extends 'base.html' %}
-{% block extra_css %}
-.bg-watermark {
-        background-position: 20% 10% !important; 
-    }
-</style>
-<style>
-    
-</style>
-{% endblock %}
+{% extends 'store/base.html' %} <!-- تأكد إن ده اسم ملف البيز بتاعك -->
 {% load static %}
 
-{% block title %} مُهاجر | {{ product.name_ar }} {% endblock %}
-
 {% block content %}
-<!-- استدعاء مكتبة SweetAlert2 للرسايل الفخمة -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <style>
-    /* ستايل مربعات المقاسات الفخمة */
-    .variant-box {
-        display: none !important; 
+    /* ========================================== */
+    /* ستايل صفحة المنتج (High-End Premium) */
+    /* ========================================== */
+    .premium-product-section {
+        max-width: 1100px;
+        margin: 40px auto 80px auto;
+        direction: rtl; 
+        padding: 0 20px;
     }
-    .variant-label {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 50px;
-        height: 50px;
+    
+    .product-main-layout {
+        display: flex;
+        gap: 60px;
+        align-items: flex-start;
+        /* السر هنا: بنعكس الرصة عشان الصورة تيجي يمين والكلام شمال */
+        flex-direction: row-reverse; 
+    }
+
+    /* ---------------------------------- */
+    /* 1. عمود النصوص والتفاصيل (الشمال) */
+    /* ---------------------------------- */
+    .product-info-col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+    }
+
+    .prod-title {
+        color: var(--gold);
+        font-family: var(--font-heading);
+        font-size: 2.8rem;
+        margin: 0 0 5px 0;
+        text-shadow: 0 0 15px rgba(200, 169, 110, 0.2);
+    }
+
+    .prod-price {
+        color: var(--sand);
+        font-size: 1.4rem;
+        margin: 0;
+        font-family: var(--font-en);
+    }
+
+    /* الخط الفاصل اللي فيه ألماظة */
+    .diamond-divider {
+        width: 60%;
+        height: 1px;
+        background: rgba(200, 169, 110, 0.2);
+        position: relative;
+        margin: 30px 0 40px 0;
+    }
+
+    .diamond-divider::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(45deg);
+        width: 8px;
+        height: 8px;
         border: 1px solid var(--gold);
+        background: var(--bg-base);
+    }
+
+    .prod-desc {
+        color: #bbb;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        text-align: right; /* محاذاة لليمين زي الريفرنس */
+        width: 100%;
+        margin-bottom: 30px;
+    }
+
+    /* منطقة اختيار المقاس واللون */
+    .options-section {
+        width: 100%;
+        border-top: 1px solid rgba(255,255,255,0.05);
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        padding: 30px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .option-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .option-label {
+        color: #888;
+        font-size: 0.95rem;
+    }
+
+    .color-preview {
+        display: flex;
+        align-items: center;
+        gap: 10px;
         color: var(--cream);
+    }
+
+    .color-swatch {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        border: 1px solid var(--gold);
+        background-color: #111; 
+    }
+
+    .sizes-grid {
+        display: flex;
+        gap: 15px;
+    }
+
+    .size-btn {
+        background: transparent;
+        border: 1px solid rgba(200, 169, 110, 0.4);
+        color: var(--sand);
+        padding: 8px 22px;
         border-radius: 8px;
         cursor: pointer;
-        font-family: var(--font-en);
-        font-size: 1.2rem;
         transition: all 0.3s ease;
+        font-family: var(--font-en);
+        font-size: 1.1rem;
     }
-    .variant-box:checked + .variant-label {
-        background-color: var(--gold);
-        color: var(--bg-base);
+
+    .size-btn:hover, .size-btn.active {
+        border-color: var(--gold);
+        color: var(--gold);
+    }
+
+    /* زرار الإضافة للسلة المفرغ */
+    .add-to-cart-premium {
+        width: 80%;
+        background: transparent;
+        border: 1px solid var(--gold);
+        color: var(--gold);
+        padding: 15px;
+        border-radius: 12px;
+        font-size: 1.1rem;
         font-weight: bold;
-        transform: scale(1.05);
-        box-shadow: 0 4px 10px rgba(200, 169, 110, 0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: all 0.4s ease;
     }
-    .variant-label:hover {
-        background-color: rgba(200, 169, 110, 0.1);
+
+    .add-to-cart-premium:hover {
+        background: var(--gold);
+        color: var(--bg-base);
+        box-shadow: 0 0 20px rgba(200, 169, 110, 0.2);
     }
-    .custom-swal-font {
-        font-family: var(--font-body), sans-serif !important;
-        border: 1px solid var(--umber) !important;
+
+    /* ---------------------------------- */
+    /* 2. عمود الصور (اليمين) */
+    /* ---------------------------------- */
+    .product-gallery-col {
+        flex: 1.2;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .main-img-container {
+        width: 100%;
+        border-radius: 20px;
+        background-color: #d8d8d8; /* لون رمادي فاتح للخلفية */
+        overflow: hidden;
+        aspect-ratio: 4/5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .main-img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* تريكه سحرية: بتشيل أي خلفية بيضاء من صورة التيشيرت وتدمجه مع الخلفية الرمادي */
+        mix-blend-mode: multiply; 
+    }
+
+    .thumbnails-container {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .thumb-item {
+        width: 80px;
+        height: 80px;
+        border-radius: 10px;
+        background-color: #d8d8d8;
+        border: 2px solid transparent;
+        cursor: pointer;
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+    .thumb-item.active {
+        border-color: var(--gold);
+    }
+
+    .thumb-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        mix-blend-mode: multiply;
+    }
+
+    /* ---------------------------------- */
+    /* 3. شريط المميزات (تحت) */
+    /* ---------------------------------- */
+    .features-banner {
+        display: flex;
+        justify-content: space-around;
+        background: rgba(15, 15, 12, 0.6);
+        border: 1px solid rgba(200, 169, 110, 0.05);
+        border-radius: 15px;
+        padding: 30px 20px;
+        margin-top: 60px;
+    }
+
+    .feature-box {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        text-align: right;
+    }
+
+    .feature-icon {
+        font-size: 2.2rem;
+        color: var(--gold);
+        opacity: 0.9;
+    }
+
+    .feature-text h4 {
+        color: var(--cream);
+        margin: 0 0 5px 0;
+        font-size: 1.1rem;
+    }
+
+    .feature-text p {
+        color: #888;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    /* تظبيط الموبايل */
+    @media (max-width: 768px) {
+        .product-main-layout {
+            flex-direction: column; /* يرجع الصورة فوق والكلام تحت في الموبايل */
+            gap: 40px;
+        }
+        .features-banner {
+            flex-direction: column;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        .add-to-cart-premium {
+            width: 100%;
+        }
     }
 </style>
 
-<div class="product-page-container" style="padding: 60px 5%; display: flex; gap: 80px; flex-wrap: wrap; justify-content: center; align-items: flex-start;">
-
-    <!-- 1. قسم الصورة ومعرض الصور -->
-    <div style="flex: 1; min-width: 300px; max-width: 450px;">
+<div class="premium-product-section">
+    
+    <div class="product-main-layout">
         
-        <!-- الصورة الرئيسية -->
-        <div style="background-color: var(--bg-surface); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 15px;">
-            {% if product.image %}
-                <!-- أهم حاجة هنا الـ id عشان الجافاسكريبت يغيرها -->
-                <img id="main-image" src="{{ product.image.url }}" alt="{{ product.name_ar }}" style="width: 100%; display: block; transition: 0.3s;">
-            {% else %}
-                <div style="width: 100%; height: 500px; display: flex; align-items: center; justify-content: center; color: var(--sand);">
-                    لا توجد صورة
+        <!-- ======================= -->
+        <!-- قسم التفاصيل والزراير -->
+        <!-- ======================= -->
+        <div class="product-info-col">
+            <h1 class="prod-title">{{ product.name }}</h1>
+            <p class="prod-price">{{ product.price }} ج.م</p>
+            
+            <div class="diamond-divider"></div>
+            
+            <p class="prod-desc">
+                {{ product.description }}
+            </p>
+
+            <div class="options-section">
+                <!-- اختيار اللون -->
+                <div class="option-group">
+                    <span class="option-label">اللون: اسود</span>
+                    <div class="color-preview">
+                        <span>اسود</span>
+                        <div class="color-swatch"></div>
+                    </div>
                 </div>
-            {% endif %}
-        </div>
-
-        <!-- معرض الصور المصغرة -->
-        {% if extra_images or product.image %}
-        <div style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;" class="gallery-container">
-            <!-- الصورة الرئيسية كأول صورة مصغرة -->
-            {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.name_ar }}" loading="lazy" class="gallery-thumb active-thumb" onclick="changeMainImage(this.src, this)" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid var(--gold); opacity: 1; transition: 0.3s;">
-            {% endif %}
-            
-            <!-- الصور الإضافية -->
-            {% for img in extra_images %}
-                <img src="{{ img.image.url }}" class="gallery-thumb" onclick="changeMainImage(this.src, this)" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; opacity: 0.6; transition: 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="if(!this.classList.contains('active-thumb')) this.style.opacity='0.6'">
-            {% endfor %}
-        </div>
-        {% endif %}
-    </div>
-
-    <!-- 2. قسم البيانات -->
-    <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column;">
-        
-        <!-- الاسم -->
-        <h1 style="color: var(--gold); font-size: 4rem; margin: 0 0 15px 0; font-family: var(--font-heading);">{{ product.name_ar }}</h1>
-        
-        <!-- السعر -->
-        <p style="font-size: 2.5rem; color: var(--sand); margin: 0 0 20px 0; font-weight: bold; font-family: var(--font-body);">{{ product.base_price }} ج.م</p>
-        
-        <!-- الوصف -->
-        <div style="color: #bbb; margin-bottom: 30px; font-size: 1.2rem; line-height: 1.8; max-width: 500px; font-family: var(--font-body);">
-            {{ product.description_ar|linebreaks }}
-        </div>
-
-        <!-- اللون (نزل تحت الوصف بفونت الموقع العربي) -->
-        {% if variants %}
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 25px; font-family: var(--font-body) !important; font-size: 1.3rem; color: #ccc;">
-            <span style="font-family: var(--font-body) !important;">اللون: <strong style="color: #fff; font-weight: bold; font-family: var(--font-body) !important;">{{ variants.0.color_ar }}</strong></span>
-            <!-- دائرة اللون -->
-            <div style="width: 22px; height: 22px; border-radius: 50%; background-color: {{ variants.0.color_code|default:'#000000' }}; border: 2px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>
-        </div>
-        {% endif %}
-
-        <!-- فورم الإضافة للسلة -->
-        <form hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-drawer-content" style="margin: 0; width: 100%; max-width: 400px;">
-            {% csrf_token %}
-            
-            <p style="margin-bottom: 15px; color: #888; font-size: 1.1rem; font-family: var(--font-body);">اختر المقاس:</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 40px;">
-                {% for variant in variants %}
-                    <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box">
-                    <label for="variant_{{ variant.id }}" class="variant-label">{{ variant.size }}</label>
-                {% empty %}
-                    <p style="color: var(--gold); font-family: var(--font-body);">عفواً، لا توجد مقاسات متاحة حالياً</p>
-                {% endfor %}
+                
+                <!-- اختيار المقاس -->
+                <div class="option-group">
+                    <span class="option-label">اختر المقاس:</span>
+                    <div class="sizes-grid">
+                        <button type="button" class="size-btn">M</button>
+                        <button type="button" class="size-btn">L</button>
+                        <button type="button" class="size-btn active">XL</button>
+                        <button type="button" class="size-btn">XXL</button>
+                    </div>
+                </div>
             </div>
 
-            <button type="submit" style="width: 100%; background-color: var(--gold); color: var(--bg-base); padding: 18px; border: none; border-radius: 10px; font-weight: bold; font-size: 1.4rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(200, 169, 110, 0.2); font-family: var(--font-body);">
-                أضف إلى السلة
-            </button>
-        </form>
+            <!-- زرار الإضافة للسلة (مربوط بالفورم بتاعتك) -->
+            <form action="{% url 'add_to_cart' product.id %}" method="POST" style="width: 100%; display: flex; justify-content: center;">
+                {% csrf_token %}
+                <button type="submit" class="add-to-cart-premium">
+                    أضف إلى السلة <i class="fas fa-shopping-bag"></i>
+                </button>
+            </form>
+
+        </div>
+
+        <!-- ======================= -->
+        <!-- قسم الصور -->
+        <!-- ======================= -->
+        <div class="product-gallery-col">
+            <!-- الصورة الرئيسية -->
+            <div class="main-img-container">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" id="main-product-image">
+            </div>
+            
+            <!-- الصور المصغرة (لو عندك صور تانية للمنتج حطها هنا) -->
+            <div class="thumbnails-container">
+                <div class="thumb-item active" onclick="changeImage(this, '{{ product.image.url }}')">
+                    <img src="{{ product.image.url }}" alt="thumb">
+                </div>
+                <!-- مثال لصور تانية (غير المسار بالصور الإضافية لو متوفرة عندك) -->
+                <!--
+                <div class="thumb-item" onclick="changeImage(this, '/static/images/other-view.jpg')">
+                    <img src="/static/images/other-view.jpg" alt="thumb">
+                </div>
+                -->
+            </div>
+        </div>
 
     </div>
-</div>
+
+    <!-- ======================= -->
+    <!-- شريط المميزات السفلي -->
+    <!-- ======================= -->
+    <div class="features-banner">
+        <div class="feature-box">
+            <i class="fas fa-sync-alt feature-icon"></i>
+            <div class="feature-text">
+                <h4>إرجاع سهل</h4>
+                <p>ضمان استرجاع خلال 14 يوم</p>
+            </div>
+        </div>
+        <div class="feature-box">
+            <i class="fas fa-truck feature-icon"></i>
+            <div class="feature-text">
+                <h4>شحن سريع</h4>
+                <p>توصيل لجميع المحافظات</p>
+            </div>
+        </div>
+        <div class="feature-box">
+            <i class="fas fa-shield-alt feature-icon"></i>
+            <div class="feature-text">
+                <h4>خامة عالية الجودة</h4>
+                <p>قماش ناعم ومتين يدوم طويلاً</p>
+            </div>
+        </div>
+    </div>
+
 </div>
 
+<!-- سكريبت تبديل الصور والمقاسات -->
 <script>
-    // 1. كود فك ارتباط المقاس
-    document.querySelectorAll('.variant-label').forEach(label => {
-        label.addEventListener('click', function(e) {
-            const radio = document.getElementById(this.getAttribute('for'));
-            if (radio.checked) {
-                e.preventDefault(); 
-                radio.checked = false; 
-            }
+    // تغيير الصورة الرئيسية لما تدوس على الصور المصغرة
+    function changeImage(element, src) {
+        document.getElementById('main-product-image').src = src;
+        let thumbs = document.querySelectorAll('.thumb-item');
+        thumbs.forEach(t => t.classList.remove('active'));
+        element.classList.add('active');
+    }
+
+    // تفعيل الـ Hover كليك على زراير المقاسات
+    let sizeBtns = document.querySelectorAll('.size-btn');
+    sizeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            sizeBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            // هنا تقدر تربطها بـ input مخفي عشان تبعت المقاس مع الفورم
         });
     });
-
-    // 2. كود التحذير القاطع قبل الإضافة للسلة 
-    const form = document.querySelector('form');
-    if (form) {
-        // رجعناها لـ submit العادية بس ضفنا السطر السحري
-        form.addEventListener('submit', function(e) {
-            const isSizeSelected = document.querySelector('input[name="variant_id"]:checked');
-            
-            if (!isSizeSelected) {
-                e.preventDefault(); // بيوقف الفورم العادية
-                e.stopImmediatePropagation(); // السطر السحري اللي بيخرس HTMX تماماً ويمنعه يبعت حاجة
-                
-                // بنظهر رسالتنا الفخمة
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'عذراً...',
-                    text: 'من فضلك اختر المقاس أولاً قبل الإضافة للحقيبة!',
-                    confirmButtonColor: 'var(--gold)', 
-                    background: 'var(--bg-surface)', 
-                    color: 'var(--cream)', 
-                    confirmButtonText: 'حسناً',
-                    customClass: {
-                        popup: 'custom-swal-font'
-                    }
-                });
-            }
-        });
-    }
-
-    // 3. كود تقليب الصور في المعرض
-    function changeMainImage(newSrc, clickedThumb) {
-        const mainImg = document.getElementById('main-image');
-        if (!mainImg) return; 
-        
-        mainImg.style.opacity = '0.5';
-        setTimeout(() => {
-            mainImg.src = newSrc;
-            mainImg.style.opacity = '1';
-        }, 150);
-        
-        let thumbs = document.querySelectorAll('.gallery-thumb');
-        thumbs.forEach(thumb => {
-            thumb.style.borderColor = 'transparent';
-            thumb.style.opacity = '0.6';
-            thumb.classList.remove('active-thumb');
-        });
-        
-        clickedThumb.style.borderColor = 'var(--gold)';
-        clickedThumb.style.opacity = '1';
-        clickedThumb.classList.add('active-thumb');
-    }
 </script>
 {% endblock %}
