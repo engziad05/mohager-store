@@ -29,9 +29,10 @@
         display: flex;
         gap: 60px;
         align-items: flex-start;
-        flex-direction: row-reverse; 
+        /* 🔥 السر هنا: شيلنا كلمة reverse عشان الصورة تيجي شمال والنص يمين */
+        flex-direction: row; 
+        justify-content: center;
     }
-
     /* ---------------------------------- */
     /* 1. عمود النصوص (الشمال) */
     /* ---------------------------------- */
@@ -219,20 +220,20 @@
     .main-img-container {
         width: 100%;
         border-radius: 20px;
-        background-color: #fff; 
+        background-color: transparent; /* شيلنا اللون الأبيض */
         overflow: hidden;
         aspect-ratio: 4/5;
         display: flex;
         justify-content: center;
         align-items: center;
-        cursor: zoom-in; /* مؤشر الزووم بيعرف الزبون إنها بتتفتح */
-        padding: 15px;
+        cursor: zoom-in; 
+        padding: 0; /* 🔥 شيلنا الـ padding عشان الصورة تلزق في الحواف */
     }
 
     .main-img-container img {
         width: 100%;
         height: 100%;
-        object-fit: contain; 
+        object-fit: cover; /* 🔥 دي هتخلي الصورة تفرش وتملى البوكس بالكامل بدون أي حواف */
         transition: transform 0.5s ease; 
     }
 
@@ -251,13 +252,13 @@
         width: 80px;
         height: 80px;
         border-radius: 10px;
-        background-color: #fff;
+        background-color: transparent;
         border: 2px solid transparent;
         cursor: pointer;
         overflow: hidden;
         transition: 0.3s;
         opacity: 0.6;
-        padding: 5px;
+        padding: 0; /* 🔥 شيلنا الحواف من الصور الصغيرة كمان */
     }
 
     .thumb-item.active-thumb {
@@ -268,7 +269,7 @@
     .thumb-item img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover; /* عشان تملى المربع الصغير بالكامل */
     }
 
     /* ---------------------------------- */
