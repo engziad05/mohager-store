@@ -44,7 +44,7 @@
     <meta property="og:title" content="مُهاجر | أزياء تعبر عن هويتك">
     <meta property="og:description" content="اكتشف أحدث الكوليكشنز من مُهاجر. جودة استثنائية وتصاميم عربية عصرية تناسب يومك.">
     <!-- حط مسار صورة اللوجو بتاعك هنا عشان تظهر في الشير -->
-    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.jpg' %}"> 
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.png' %}"> 
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta property="og:type" content="website">
 
@@ -59,22 +59,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* ========================================== */
-/* ستايل العلامة المائية الموحد للموقع كله */
-/* ========================================== */
-/* ========================================== */
-/* ستايل العلامة المائية الموحد للموقع كله */
-/* ========================================== */
+     
 
+    header, 
+    .navbar,
+    .site-header {
+        z-index: 1000 !important; 
+        position: relative;
+    }
 
+    /* 2. السلة الجانبية (لو مسمي كلاس السلة اسم تاني غير cart-sidebar غيره هنا) */
+    .cart-sidebar, 
+    #cart-sidebar {
+        z-index: 99999 !important; /* بنخلي السلة أعلى حاجة في الموقع كله */
+    }
 
-/* ========================================== */
-/* العلامة المائية الاحترافية (تبدأ بعد السلايدر وتتحرك مع السكرول) */
-/* ========================================== */
+    /* 3. الضباب أو الخلفية السودة اللي بتظهر ورا السلة */
+    .cart-overlay,
+    .overlay {
+        z-index: 99998 !important; /* الضباب بيكون تحت السلة وفوق النافبار */
+    }
 
 body {
     position: relative;
-    /* تأكد إن مفيش body { position: relative } تانية متكررة تحت */
+   
 }
 
 /* ========================================== */
@@ -485,7 +493,10 @@ body {
             </a>
         </div>
 
-        <div class="logo">مُهاجر</div>
+        <div <!-- حوطنا اللوجو باللينك ده -->
+<a href="/" style="text-decoration: none; color: inherit; cursor: pointer;">
+    <h1 class="logo-text">مهاجر</h1> <!-- أو أي كود إنت كاتبه للوجو بتاعك هنا -->
+</a></div>
 
         <div class="nav-links-container">
             <a href="/" class="nav-link-item">الرئيسية</a>
