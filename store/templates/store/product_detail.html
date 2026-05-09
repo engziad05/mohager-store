@@ -12,6 +12,7 @@
 {% endblock %}
 
 {% block content %}
+<!-- استدعاء مكتبة SweetAlert2 للرسايل الفخمة -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
@@ -19,15 +20,15 @@
     /* ستايل صفحة المنتج (High-End Premium) */
     /* ========================================== */
     .premium-product-section {
-        max-width: 1100px;
-        margin: 40px auto 80px auto;
+        max-width: 1200px; /* عرضنا الكونتينر شوية لراحة العين */
+        margin: 40px auto 100px auto;
         direction: rtl; 
         padding: 0 20px;
     }
     
     .product-main-layout {
         display: flex;
-        gap: 60px;
+        gap: 80px; /* زودنا الفراغ بين الصورة والنص */
         align-items: flex-start;
         flex-direction: row-reverse; 
     }
@@ -40,6 +41,7 @@
         display: flex;
         flex-direction: column;
         align-items: center; 
+        padding-top: 20px; /* نزلنا النص شوية عشان يتوسط مع الصورة */
     }
 
     .prod-title {
@@ -78,11 +80,12 @@
 
     .prod-desc {
         color: #bbb;
-        font-size: 1.1rem;
-        line-height: 2.2; /* زودنا المسافة بين السطور لراحة العين */
+        font-size: 1.15rem;
+        line-height: 2.3; /* مسافة أوسع بين السطور لسهولة القراءة */
         text-align: right; 
         width: 100%;
-        margin-bottom: 30px;
+        max-width: 500px; /* منعنا النص إنه يفرش بعرض الشاشة */
+        margin-bottom: 40px;
         font-family: var(--font-body);
     }
 
@@ -99,6 +102,7 @@
     /* خيارات المقاس واللون */
     .options-section {
         width: 100%;
+        max-width: 500px;
         border-top: 1px solid rgba(255,255,255,0.05);
         border-bottom: 1px solid rgba(255,255,255,0.05);
         padding: 30px 0;
@@ -106,7 +110,7 @@
         flex-direction: column;
         gap: 30px;
         align-items: center;
-        margin-bottom: 30px;
+        margin-bottom: 40px;
     }
 
     .option-group {
@@ -118,7 +122,7 @@
 
     .option-label {
         color: #888;
-        font-size: 0.95rem;
+        font-size: 1rem;
         font-family: var(--font-body);
     }
 
@@ -152,7 +156,7 @@
         background: transparent;
         border: 1px solid rgba(200, 169, 110, 0.4);
         color: var(--sand);
-        padding: 8px 22px;
+        padding: 10px 24px;
         border-radius: 8px;
         cursor: pointer;
         transition: all 0.3s ease;
@@ -172,47 +176,60 @@
         box-shadow: 0 4px 10px rgba(200, 169, 110, 0.3);
     }
 
-    .size-btn:hover {
+    .size-btn:hover:not(.out-of-stock) {
         border-color: var(--gold);
         color: var(--gold);
+        background-color: rgba(200, 169, 110, 0.05);
     }
 
-    /* زرار السلة وتأثير الضغط (Click effect) */
+    /* ستايل المقاس لو خلصان من المخزن */
+    .size-btn.out-of-stock {
+        opacity: 0.3;
+        cursor: not-allowed;
+        text-decoration: line-through;
+        border-color: #555;
+        color: #555;
+    }
+
+    /* زرار السلة وتأثير الضغط القوي (Click effect) */
     .add-to-cart-premium {
-        width: 80%;
+        width: 100%;
+        max-width: 400px;
         background: transparent;
         border: 1px solid var(--gold);
         color: var(--gold);
-        padding: 15px;
+        padding: 16px;
         border-radius: 12px;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         font-weight: bold;
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 12px;
         cursor: pointer;
-        transition: all 0.2s ease; /* سرعنا الترانزيشن عشان يبان وقت الضغط */
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         font-family: var(--font-body);
     }
 
     .add-to-cart-premium:hover {
         background: var(--gold);
         color: var(--bg-base);
-        box-shadow: 0 0 20px rgba(200, 169, 110, 0.2);
+        box-shadow: 0 8px 30px rgba(200, 169, 110, 0.35); /* Shadow أسطوري */
+        transform: translateY(-3px);
     }
 
-    /* التأثير الجديد لما المستخدم يدوس على الزرار */
     .add-to-cart-premium:active {
-        transform: scale(0.96);
-        box-shadow: none;
+        transform: scale(0.96) translateY(0);
+        box-shadow: 0 2px 10px rgba(200, 169, 110, 0.2);
     }
 
     /* ---------------------------------- */
-    /* 2. عمود الصور (اليمين) */
+    /* 2. عمود الصور (اليمين - تم التحجيم) */
     /* ---------------------------------- */
     .product-gallery-col {
-        flex: 1.2;
+        flex: 1;
+        width: 100%;
+        max-width: 480px; /* 🔥 السر هنا: ده اللي هيمنع الصورة إنها تبقى عملاقة */
         display: flex;
         flex-direction: column;
         gap: 15px;
@@ -227,6 +244,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: zoom-in; /* علامة العدسة المكبرة */
     }
 
     .main-img-container img {
@@ -234,7 +252,12 @@
         height: 100%;
         object-fit: cover;
         mix-blend-mode: multiply; 
-        transition: 0.3s ease;
+        transition: transform 0.5s ease; /* سرعة الزووم */
+    }
+
+    /* 🔥 تأثير الزووم لما تقف بالماوس */
+    .main-img-container:hover img {
+        transform: scale(1.12);
     }
 
     .thumbnails-container {
@@ -278,7 +301,7 @@
         border: 1px solid rgba(200, 169, 110, 0.05);
         border-radius: 15px;
         padding: 30px 20px;
-        margin-top: 90px; /* زودنا المسافة هنا زي ما طلبت */
+        margin-top: 120px; /* 🔥 زودنا المسافة جداً عشان تفصل بين الشراء والمميزات */
     }
 
     .feature-box {
@@ -309,36 +332,41 @@
     }
 
     /* ========================================== */
-    /* تظبيط الموبايل (أهم جزء) */
+    /* تظبيط الموبايل (Touch Targets) */
     /* ========================================== */
     @media (max-width: 768px) {
         .product-main-layout {
             flex-direction: column; 
-            gap: 30px;
+            gap: 40px;
+            align-items: center;
         }
         
-        /* 1. تصغير حجم الصورة على الموبايل عشان متخنقش الشاشة */
+        .product-gallery-col {
+            max-width: 100%;
+        }
+
         .main-img-container {
-            max-height: 400px;
-            aspect-ratio: auto; /* بنلغي الـ 4/5 عشان متمطش */
+            aspect-ratio: auto; /* بنلغي الـ 4/5 في الموبايل عشان متمطش */
+            max-height: 500px;
         }
         
-        /* 2. تكبير زراير المقاسات عشان اللمس */
+        /* تكبير زراير المقاسات عشان اللمس بالصباع */
         .size-btn {
-            padding: 12px 28px; /* مساحة أكبر بكتير لسهولة الضغط */
+            padding: 14px 32px; 
             font-size: 1.2rem;
         }
         
         .add-to-cart-premium {
             width: 100%;
-            padding: 18px; /* زرار السلة أعرض وأطول */
+            max-width: 100%;
+            padding: 18px; 
         }
 
         .features-banner {
             flex-direction: column;
             gap: 30px;
             align-items: flex-start;
-            margin-top: 60px;
+            margin-top: 80px;
         }
     }
 </style>
@@ -353,7 +381,6 @@
             
             <div class="diamond-divider"></div>
             
-            <!-- الوصف هنا ضفنا فيه فلتر safe عشان لو حطيت HTML يشتغل -->
             <div class="prod-desc">
                 {{ product.description_ar|linebreaks|safe }}
             </div>
@@ -375,6 +402,7 @@
                         <span class="option-label">اختر المقاس:</span>
                         <div class="sizes-grid">
                             {% for variant in variants %}
+                                <!-- لو حابب تخلي زرار نفذت الكمية، ضيف كلاس out-of-stock للـ label وشيل الـ input -->
                                 <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box">
                                 <label for="variant_{{ variant.id }}" class="size-btn">{{ variant.size }}</label>
                             {% empty %}
@@ -463,6 +491,11 @@
 
     document.querySelectorAll('.size-btn').forEach(label => {
         label.addEventListener('click', function(e) {
+            // منع الضغط لو المقاس خلصان
+            if(this.classList.contains('out-of-stock')){
+                e.preventDefault();
+                return;
+            }
             const radio = document.getElementById(this.getAttribute('for'));
             if (radio && radio.checked) {
                 e.preventDefault(); 
@@ -487,7 +520,10 @@
                     confirmButtonColor: 'var(--gold)', 
                     background: 'var(--bg-surface)', 
                     color: 'var(--cream)', 
-                    confirmButtonText: 'حسناً'
+                    confirmButtonText: 'حسناً',
+                    customClass: {
+                        popup: 'custom-swal-font'
+                    }
                 });
             }
         });
