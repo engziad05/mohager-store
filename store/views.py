@@ -131,7 +131,7 @@ def cart_detail(request):
         'cart': cart,
         'cart_items': cart_items,
         'total_price': total_price,
-        'grand_total': grand_total,
+        'shipping_cost': shipping_cost,
         'grand_total': grand_total, 
     }
     return render(request, 'store/cart.html', context)
