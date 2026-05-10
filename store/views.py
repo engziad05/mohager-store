@@ -27,24 +27,29 @@ from .models import StoreSetting
 
 
 def index(request):
-    # بنجيب أول 8 منتجات بس في الصفحة الرئيسية
-    products = Product.objects.filter(is_active=True)[:8] 
+    products = Product.objects.filter(is_active=True)[:8]
     slides = HeroSlide.objects.filter(is_active=True).order_by('order')
-
-    # حساب عدد المنتجات في السلة
+    
     cart_id = request.session.get('cart_id')
     cart_count = 0
+    
+    # عرفنا المتغيرات دي هنا فاضية عشان الإيرور ميظهرش لو السلة فاضية
+    cart_items = []
+    total_price = 0
+
     if cart_id:
         cart = Cart.objects.filter(id=cart_id).first()
         if cart:
-            cart_count = sum(item.quantity for item in CartItem.objects.filter(cart=cart))
-
+            cart_items = CartItem.objects.filter(cart=cart)
+            cart_count = sum(item.quantity for item in cart_items)
+            total_price = sum(item.total_price for item in cart_items)
+            
     context = {
-        'cart_items': cart_items,
-        'total_price': total_price,
         'products': products,
         'slides': slides,
         'cart_count': cart_count,
+        'cart_items': cart_items,
+        'total_price': total_price,
     }
     return render(request, 'store/index.html', context)
 
@@ -126,6 +131,7 @@ def cart_detail(request):
         'cart': cart,
         'cart_items': cart_items,
         'total_price': total_price,
+        'grand_total': grand_total,
         'grand_total': grand_total, 
     }
     return render(request, 'store/cart.html', context)
