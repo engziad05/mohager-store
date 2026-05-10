@@ -393,10 +393,10 @@
                             <!-- سطر اللون بالدايرة -->
                             <p style="display: flex; align-items: center; gap: 8px;">اللون: 
                                 <span style="color: var(--gold); font-weight: bold; font-family: var(--font-body);">
-                                    {{ item.variant.color_ar|default:"-" }}
+                                    {{ item.product.color_ar|default:"-" }}
                                 </span>
-                                {% if item.variant.color_code %}
-                                <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: {{ item.variant.color_code }}; border: 1px solid rgba(255,255,255,0.2);"></span>
+                                {% if item.product.color_code %}
+                                <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: {{ item.product.color_code }}; border: 1px solid rgba(255,255,255,0.2);"></span>
                                 {% endif %}
                             </p>
                         </div>
