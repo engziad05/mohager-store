@@ -387,7 +387,11 @@
                             {% endif %}
                         </div>
                         <div class="item-details">
-                            <h3>{{ item.product.name_ar }}</h3>
+                            <h3>
+                                <a href="{% url 'product_detail' item.product.id %}" style="color: var(--cream); text-decoration: none; transition: 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--cream)'">
+                                    {{ item.product.name_ar }}
+                                </a>
+                            </h3>
                             <p>المقاس: <span>{{ item.variant.size|default:"-" }}</span></p>
                             
                             <!-- سطر اللون بالدايرة -->
