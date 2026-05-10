@@ -35,9 +35,14 @@
         font-size: 1rem;
     }
 
-    .breadcrumbs span {
-        color: var(--gold);
+    .breadcrumbs a {
+        color: #888;
+        text-decoration: none;
+        transition: 0.3s;
     }
+
+    .breadcrumbs a:hover { color: var(--gold); }
+    .breadcrumbs span { color: var(--gold); }
 
     /* ========================================== */
     /* التخطيط (يمين منتجات - شمال ملخص) */
@@ -81,11 +86,11 @@
     }
 
     /* ========================================== */
-    /* جدول المنتجات (اليمين) - بنظام الجريد الصارم */
+    /* جدول المنتجات (اليمين) */
     /* ========================================== */
     .cart-table-header {
         display: grid;
-        grid-template-columns: 3fr 1fr 1fr 1fr 40px; /* مساحات صارمة لكل عمود */
+        grid-template-columns: 3fr 1fr 1fr 1fr 40px;
         gap: 20px;
         padding-bottom: 15px;
         border-bottom: 1px solid rgba(200, 169, 110, 0.3);
@@ -115,7 +120,6 @@
         padding-bottom: 0;
     }
 
-    /* 1. تفاصيل المنتج (الصورة والاسم) */
     .item-info-col {
         display: flex;
         align-items: center;
@@ -134,47 +138,13 @@
         flex-shrink: 0;
     }
 
-    .item-img img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        mix-blend-mode: multiply; 
-    }
+    .item-img img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+    .item-details h3 { color: var(--cream); font-family: var(--font-heading); font-size: 1.3rem; margin: 0 0 5px 0; }
+    .item-details p { color: #888; font-family: var(--font-body); font-size: 0.95rem; margin: 0 0 5px 0; }
+    .item-details p span { color: var(--gold); font-weight: bold; font-family: var(--font-en); }
+    .item-price-col, .item-total-col { color: var(--cream); font-family: var(--font-en); font-size: 1.2rem; text-align: center; }
+    .item-total-col { color: var(--gold); font-weight: bold; }
 
-    .item-details h3 {
-        color: var(--cream);
-        font-family: var(--font-heading);
-        font-size: 1.3rem;
-        margin: 0 0 5px 0;
-    }
-
-    .item-details p {
-        color: #888;
-        font-family: var(--font-body);
-        font-size: 0.95rem;
-        margin: 0 0 5px 0;
-    }
-
-    .item-details p span {
-        color: var(--gold);
-        font-weight: bold;
-        font-family: var(--font-en);
-    }
-
-    /* 2 و 4. الأعمدة المشتركة (السعر والإجمالي) */
-    .item-price-col, .item-total-col {
-        color: var(--cream);
-        font-family: var(--font-en);
-        font-size: 1.2rem;
-        text-align: center;
-    }
-
-    .item-total-col {
-        color: var(--gold);
-        font-weight: bold;
-    }
-
-    /* 3. أزرار الكمية */
     .qty-controls {
         display: flex;
         align-items: center;
@@ -187,24 +157,10 @@
         margin: 0 auto;
     }
 
-    .qty-btn {
-        color: var(--sand);
-        text-decoration: none;
-        font-size: 1.2rem;
-        transition: 0.3s;
-        cursor: pointer;
-    }
-
+    .qty-btn { color: var(--sand); text-decoration: none; font-size: 1.2rem; transition: 0.3s; cursor: pointer; }
     .qty-btn:hover { color: var(--gold); }
+    .qty-number { color: var(--cream); font-family: var(--font-en); font-weight: bold; font-size: 1.1rem; }
 
-    .qty-number {
-        color: var(--cream);
-        font-family: var(--font-en);
-        font-weight: bold;
-        font-size: 1.1rem;
-    }
-
-    /* 5. زرار الحذف */
     .item-delete-btn {
         color: #ff4d4d;
         background: rgba(255, 77, 77, 0.1);
@@ -219,10 +175,7 @@
         margin: 0 auto;
     }
 
-    .item-delete-btn:hover {
-        background: #ff4d4d;
-        color: #fff;
-    }
+    .item-delete-btn:hover { background: #ff4d4d; color: #fff; }
 
     /* ========================================== */
     /* ملخص الطلب (الشمال) */
@@ -246,10 +199,7 @@
         font-size: 1.1rem;
     }
 
-    .summary-row span:last-child {
-        font-family: var(--font-en);
-        color: var(--cream);
-    }
+    .summary-row span:last-child { font-family: var(--font-en); color: var(--cream); }
 
     .summary-total-row {
         display: flex;
@@ -264,9 +214,7 @@
         font-weight: bold;
     }
 
-    .summary-total-row span:last-child {
-        font-family: var(--font-en);
-    }
+    .summary-total-row span:last-child { font-family: var(--font-en); }
 
     .checkout-btn {
         display: block;
@@ -298,52 +246,17 @@
         gap: 15px;
     }
 
-    .s-feature {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        color: #888;
-    }
+    .s-feature { display: flex; align-items: center; gap: 15px; color: #888; }
+    .s-feature i { color: var(--gold); font-size: 1.4rem; }
+    .s-feature div h5 { color: var(--cream); margin: 0 0 3px 0; font-family: var(--font-body); font-size: 0.95rem; }
+    .s-feature div p { margin: 0; font-size: 0.8rem; font-family: var(--font-body); }
 
-    .s-feature i {
-        color: var(--gold);
-        font-size: 1.4rem;
-    }
-
-    .s-feature div h5 {
-        color: var(--cream);
-        margin: 0 0 3px 0;
-        font-family: var(--font-body);
-        font-size: 0.95rem;
-    }
-
-    .s-feature div p {
-        margin: 0;
-        font-size: 0.8rem;
-        font-family: var(--font-body);
-    }
-
-    /* ========================================== */
-    /* الموبايل */
-    /* ========================================== */
     @media (max-width: 900px) {
         .cart-layout { flex-direction: column; }
         .cart-summary-wrapper { max-width: 100%; position: relative; top: 0; }
         .cart-table-header { display: none; } 
-        
-        .cart-item-row {
-            grid-template-columns: 1fr; 
-            gap: 15px;
-            position: relative;
-        }
-
-        .item-delete-btn {
-            position: absolute;
-            top: 20px;
-            left: 0;
-            margin: 0;
-        }
-
+        .cart-item-row { grid-template-columns: 1fr; gap: 15px; position: relative; }
+        .item-delete-btn { position: absolute; top: 20px; left: 0; margin: 0; }
         .item-price-col { display: none; } 
         .item-total-col { text-align: right; margin-top: 10px; }
     }
@@ -356,15 +269,13 @@
     <div class="page-header">
         <h1 class="page-title">حقيبة مشترياتك</h1>
         <div class="breadcrumbs">
-            <a href="/" style="color: #888; text-decoration: none; transition: 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='#888'">الرئيسية</a> 
-            > <span>حقيبة المشتريات</span>
+            <a href="/">الرئيسية</a> > <span>حقيبة المشتريات</span>
         </div>
     </div>
     
     {% if cart_items %}
     <div class="cart-layout">
         
-        <!-- 1. قائمة المنتجات (الجزء اليمين) -->
         <div class="cart-items-wrapper">
             <div class="glass-panel" style="padding: 20px 30px;">
                 
@@ -376,11 +287,9 @@
                     <div></div>
                 </div>
 
-                <!-- اللوب بتاع المنتجات -->
                 {% for item in cart_items %}
                 <div class="cart-item-row">
                     
-                    <!-- الصورة والاسم واللون -->
                     <div class="item-info-col">
                         <div class="item-img">
                             {% if item.product.image %}
@@ -396,8 +305,6 @@
                                 </a>
                             </h3>
                             <p>المقاس: <span>{{ item.variant.size|default:"-" }}</span></p>
-                            
-                            <!-- سطر اللون بالدايرة -->
                             <p style="display: flex; align-items: center; gap: 8px;">اللون: 
                                 <span style="color: var(--gold); font-weight: bold; font-family: var(--font-body);">
                                     {{ item.product.color_ar|default:"-" }}
@@ -409,12 +316,10 @@
                         </div>
                     </div>
 
-                    <!-- السعر المفرد -->
                     <div class="item-price-col">
                         EGP {{ item.product.base_price }}
                     </div>
 
-                    <!-- الكمية -->
                     <div>
                         <div class="qty-controls">
                             <a href="{% url 'update_quantity' item.id 'decrease' %}" class="qty-btn">-</a>
@@ -423,12 +328,10 @@
                         </div>
                     </div>
 
-                    <!-- الإجمالي -->
                     <div class="item-total-col">
                         EGP {{ item.total_price }}
                     </div>
 
-                    <!-- الحذف -->
                     <div>
                         <a href="{% url 'remove_cart_item' item.id %}" class="item-delete-btn" title="حذف المنتج">
                             <i class="fas fa-trash-alt"></i>
@@ -447,7 +350,6 @@
             </div>
         </div>
 
-        <!-- 2. ملخص الطلب (الجزء الشمال) -->
         <div class="cart-summary-wrapper">
             <div class="glass-panel">
                 <h2 class="summary-title">ملخص الطلب</h2>
