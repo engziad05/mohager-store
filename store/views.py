@@ -33,6 +33,8 @@ def index(request):
             cart_count = sum(item.quantity for item in CartItem.objects.filter(cart=cart))
 
     context = {
+        'cart_items': cart_items,
+        'total_price': total_price,
         'products': products,
         'slides': slides,
         'cart_count': cart_count,
