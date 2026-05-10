@@ -6,6 +6,7 @@ from .models import (
     Product, Category, ProductVariant, HeroSlide, 
     ProductImage, Order, OrderItem, Cart, CartItem
 )
+from .models import StoreSetting
 
 # ==========================================
 # 1. أقسام المنتجات (Inlines first, then Admin)
@@ -83,4 +84,6 @@ class CartItemInline(TabularInline):
 @admin.register(Cart)
 class CartAdmin(ModelAdmin):
     list_display = ['id', 'created_at']
-    inlines = [CartItemInline]
+    inlines = [CartItemInline] 
+    
+admin.site.register(StoreSetting)

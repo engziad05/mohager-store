@@ -165,7 +165,17 @@ class SavedAddress(models.Model):
 
     def __str__(self):
         return f"عنوان {self.user.first_name or self.user.email}"
-
+ 
+ 
+class StoreSetting(models.Model):
+    shipping_cost = models.DecimalField(max_digits=6, decimal_places=2, default=0, verbose_name="تكلفة الشحن")
+    
+    def __str__(self):
+        return "إعدادات المتجر"
+        
+    class Meta:
+        verbose_name = "إعداد المتجر"
+        verbose_name_plural = "إعدادات المتجر"
 
 
     

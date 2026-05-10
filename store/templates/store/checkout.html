@@ -362,15 +362,20 @@
                         <span>المجموع الفرعي:</span>
                         <span>EGP {{ total_price|default:"0" }}</span>
                     </div>
+                    
                     <div class="summary-row">
                         <span>الشحن:</span>
-                        <span style="color: #4caf50; font-family: var(--font-body);">مجاناً</span>
+                        {% if shipping_cost == 0 %}
+                            <span style="color: #4caf50; font-family: var(--font-body);">مجاناً</span>
+                        {% else %}
+                            <span style="color: var(--cream); font-family: var(--font-en);">EGP {{ shipping_cost }}</span>
+                        {% endif %}
                     </div>
+                    
                     <div class="summary-total-row">
                         <span>الإجمالي:</span>
-                        <span>EGP {{ total_price|default:"0" }}</span>
+                        <span>EGP {{ grand_total|default:"0" }}</span>
                     </div>
-
                     <button type="button" class="submit-btn" onclick="document.getElementById('checkout-form').submit();">
                         تأكيد الطلب <i class="fas fa-lock" style="margin-right: 8px;"></i>
                     </button>

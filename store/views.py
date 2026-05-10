@@ -22,6 +22,7 @@ import threading
 import urllib.request
 import json
 from django.conf import settings
+from .models import StoreSetting
 
 
 
@@ -329,7 +330,9 @@ def checkout(request):
         return redirect('index')
 
     total_price = sum(item.total_price for item in cart_items)
-    
+    setting = StoreSetting.objects.first()
+    shipping_cost = setting.shipping_cost if setting else 0
+    grand_total = total_price + shipping_cost
     saved_address = None
     if request.user.is_authenticated:
         saved_address = SavedAddress.objects.filter(user=request.user).first()
@@ -415,10 +418,12 @@ def checkout(request):
     egypt_provinces = sorted(['القاهرة', 'الجيزة', 'الإسكندرية', 'الدقهلية', 'الشرقية', 'المنوفية', 'القليوبية', 'البحيرة', 'الغربية', 'بورسعيد', 'دمياط', 'الإسماعيلية', 'السويس', 'كفر الشيخ', 'الفيوم', 'بني سويف', 'المنيا', 'أسيوط', 'سوهاج', 'قنا', 'الأقصر', 'أسوان', 'البحر الأحمر', 'الوادي الجديد', 'مطروح', 'شمال سيناء', 'جنوب سيناء'])
 
     return render(request, 'store/checkout.html', {
-        'cart_items': cart_items,  # 🔥 ده السطر السحري اللي كان ناقص عشان الصور تظهر!
+        'cart_items': cart_items,
         'total_price': total_price,
+        'shipping_cost': shipping_cost,  # بعتنا سعر الشحن
+        'grand_total': grand_total,      # بعتنا الإجمالي النهائي
+        'saved_address': saved_address,
         'provinces': egypt_provinces,
-        'saved_address': saved_address
     })
 def return_policy(request):
     return render(request, 'store/return_policy.html')
