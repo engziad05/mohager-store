@@ -334,7 +334,6 @@
                 <div class="glass-panel">
                     <h2 class="summary-title">ملخص الطلب</h2>
                     
-                    {% if cart_items %}
                     <div style="max-height: 350px; overflow-y: auto; padding-left: 10px; margin-bottom: 20px;">
                         {% for item in cart_items %}
                         <div class="summary-item">
@@ -354,9 +353,10 @@
                                 EGP {{ item.total_price }}
                             </div>
                         </div>
+                        {% empty %}
+                            <p style="color: #ff4d4d; font-family: var(--font-body); text-align: center;">جاري تحميل المنتجات...</p>
                         {% endfor %}
                     </div>
-                    {% endif %}
 
                     <div class="summary-row">
                         <span>المجموع الفرعي:</span>
@@ -378,6 +378,8 @@
                     <p style="text-align: center; color: #888; font-family: var(--font-body); margin-top: 15px; font-size: 0.9rem;">
                         <i class="fas fa-shield-alt" style="margin-left: 5px;"></i> يتم تخزين بياناتك بأمان.
                     </p>
+                </div>
+            </div>
 
                 </div>
             </div>

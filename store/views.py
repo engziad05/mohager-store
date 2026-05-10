@@ -415,9 +415,10 @@ def checkout(request):
     egypt_provinces = sorted(['القاهرة', 'الجيزة', 'الإسكندرية', 'الدقهلية', 'الشرقية', 'المنوفية', 'القليوبية', 'البحيرة', 'الغربية', 'بورسعيد', 'دمياط', 'الإسماعيلية', 'السويس', 'كفر الشيخ', 'الفيوم', 'بني سويف', 'المنيا', 'أسيوط', 'سوهاج', 'قنا', 'الأقصر', 'أسوان', 'البحر الأحمر', 'الوادي الجديد', 'مطروح', 'شمال سيناء', 'جنوب سيناء'])
 
     return render(request, 'store/checkout.html', {
+        'cart_items': cart_items,  # 🔥 ده السطر السحري اللي كان ناقص عشان الصور تظهر!
         'total_price': total_price,
         'provinces': egypt_provinces,
-        'saved_address': saved_address # --- 3. نبعت العنوان للـ HTML عشان نعرضه ---
+        'saved_address': saved_address
     })
 def return_policy(request):
     return render(request, 'store/return_policy.html')
