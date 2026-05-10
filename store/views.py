@@ -116,24 +116,31 @@ def cart_detail(request):
     cart = None
     cart_items = []
     total_price = 0
-    grand_total = 0 
-    
+    grand_total = 0
+    shipping_cost = 0  # عرفناه هنا بصفر كبداية عشان ميديناش إيرور
+
     if cart_id:
         cart = Cart.objects.filter(id=cart_id).first()
         if cart:
             cart_items = CartItem.objects.filter(cart=cart)
             total_price = sum(item.total_price for item in cart_items)
-    
+
     if total_price > 0:
-        grand_total = total_price
-            
+        # هنجيب الشحن من الداتابيز زي ما عملنا في التشيك أوت
+        setting = StoreSetting.objects.first()
+        shipping_cost = setting.shipping_cost if setting else 0
+        
+        # هنجمع الشحن على الإجمالي
+        grand_total = total_price + shipping_cost
+
     context = {
         'cart': cart,
         'cart_items': cart_items,
         'total_price': total_price,
-        'shipping_cost': shipping_cost,
-        'grand_total': grand_total, 
+        'shipping_cost': shipping_cost,  # دلوقتي بايثون عارفة مين ده ومش هتزعل
+        'grand_total': grand_total,
     }
+
     return render(request, 'store/cart.html', context)
 
 def remove_cart_item(request, item_id):
