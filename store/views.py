@@ -15,7 +15,13 @@ from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 import json
 import urllib.request
-
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.db import transaction
+import threading
+import urllib.request
+import json
+from django.conf import settings
 
 
 
@@ -324,15 +330,14 @@ def checkout(request):
 
     total_price = sum(item.total_price for item in cart_items)
     
-    # --- 1. هنجيب العنوان المحفوظ لو العميل مسجل دخول ---
     saved_address = None
     if request.user.is_authenticated:
         saved_address = SavedAddress.objects.filter(user=request.user).first()
-    # ---------------------------------------------------
     
     if request.method == 'POST':
         try:
             with transaction.atomic():
+                # 1. خصم الكمية من المخزن
                 for item in cart_items:
                     variant = ProductVariant.objects.select_for_update().get(id=item.variant.id)
                     
@@ -342,6 +347,7 @@ def checkout(request):
                     variant.stock -= item.quantity
                     variant.save()
 
+                # 2. إنشاء الطلب
                 order = Order.objects.create(
                     user=request.user if request.user.is_authenticated else None, 
                     full_name=request.POST.get('full_name'),
@@ -357,7 +363,7 @@ def checkout(request):
                     status='Pending' 
                 )
                 
-                # --- 2. نحفظ أو نحدث العنوان أوتوماتيك عشان المرات الجاية ---
+                # 3. حفظ العنوان للمرات القادمة
                 if request.user.is_authenticated:
                     address_record, created = SavedAddress.objects.get_or_create(user=request.user)
                     address_record.phone = request.POST.get('phone')
@@ -365,25 +371,6 @@ def checkout(request):
                     address_record.address = request.POST.get('address')
                     address_record.building = request.POST.get('building')
                     address_record.floor = request.POST.get('floor')
-                    address_record.apartment = request.POST.get('apartment')
-                    address_record.landmark = request.POST.get('landmark')
-                    address_record.save()
-                # --------------------------------------------------
-
-                for item in cart_items:
-                    OrderItem.objects.create(
-                        order=order,
-                        product=item.product,
-                        variant=item.variant,
-                        quantity=item.quantity,
-                        price=item.variant.price if item.variant else item.product.base_price
-                    )
-                
-                if order.email:
-                    html_content = render_to_string('store/emails/order_confirm.html', {
-                        'order': order,
-                        'cart_items': cart_items
-                    })
                     
                     # دالة بتبعت الإيميل عن طريق الـ API من ورا ضهر Railway
                     def send_bg_email_api(to_email, html, order_id):
