@@ -258,6 +258,12 @@
                 <div class="glass-panel">
                     
                     <h3 class="section-title">بيانات التواصل</h3>
+                    
+                    <div class="form-group">
+                        <label for="name_input" class="form-label">الاسم بالكامل <span style="color: #ff4d4d;">*</span></label>
+                        <input type="text" id="name_input" name="full_name" value="{{ request.user.get_full_name|default:'' }}" placeholder="الاسم الأول والأخير" required class="form-input">
+                    </div>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="phone_input" class="form-label">رقم التليفون <span style="color: #ff4d4d;">*</span></label>
@@ -271,10 +277,6 @@
                     <p style="color: #888; font-size: 0.85rem; margin-top: -10px; margin-bottom: 20px; font-family: var(--font-body);">سنرسل ملخص الفاتورة إلى بريدك الإلكتروني.</p>
 
                     <h3 class="section-title">عنوان الشحن</h3>
-                    <div class="form-group">
-                        <label for="name_input" class="form-label">الاسم بالكامل <span style="color: #ff4d4d;">*</span></label>
-                        <input type="text" id="name_input" name="full_name" value="{{ request.user.get_full_name|default:'' }}" placeholder="الاسم الأول والأخير" required class="form-input">
-                    </div>
 
                     <div class="form-group">
                         <label for="address_input" class="form-label">العنوان <span style="color: #ff4d4d;">*</span></label>
@@ -332,6 +334,7 @@
                 <div class="glass-panel">
                     <h2 class="summary-title">ملخص الطلب</h2>
                     
+                    {% if cart_items %}
                     <div style="max-height: 350px; overflow-y: auto; padding-left: 10px; margin-bottom: 20px;">
                         {% for item in cart_items %}
                         <div class="summary-item">
@@ -353,6 +356,7 @@
                         </div>
                         {% endfor %}
                     </div>
+                    {% endif %}
 
                     <div class="summary-row">
                         <span>المجموع الفرعي:</span>
@@ -364,7 +368,7 @@
                     </div>
                     <div class="summary-total-row">
                         <span>الإجمالي:</span>
-                        <span>EGP {{ grand_total|default:"0" }}</span>
+                        <span>EGP {{ total_price|default:"0" }}</span>
                     </div>
 
                     <button type="button" class="submit-btn" onclick="document.getElementById('checkout-form').submit();">
@@ -384,7 +388,6 @@
 </div>
 
 <script>
-    // سكريبت الـ Validation اللي بيطلع رسايل شيك تحت الحقول الفاضية
     document.addEventListener('DOMContentLoaded', function() {
         const checkoutForm = document.getElementById('checkout-form');
 
