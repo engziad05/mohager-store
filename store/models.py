@@ -49,8 +49,6 @@ class ProductImage(models.Model):
 class ProductVariant(models.Model):
     product = models.ForeignKey(Product, related_name='variants', on_delete=models.CASCADE)
     size = models.CharField(max_length=10, blank=True, null=True, verbose_name="المقاس") 
-
-    color_code = models.CharField(max_length=20, verbose_name="كود اللون (Hex)", default="#111111")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="السعر الفعلي")
     stock_quantity = models.PositiveIntegerField(default=0, verbose_name="الكمية في المخزن")
     stock = models.PositiveIntegerField(default=0, verbose_name="المخزون")
