@@ -3,176 +3,390 @@
 
 {% block title %} مُهاجر | إتمام الطلب {% endblock %}
 
-{% block content %}
+{% block extra_css %}
 <style>
-    /* نقلنا كل الستايلات هنا عشان صيانة الكود تكون أسهل */
-    .checkout-container { padding: 60px 5%; direction: rtl; max-width: 800px; margin: auto; }
-    .checkout-title { font-family: var(--font-heading); color: var(--gold); font-size: 2.5rem; margin-bottom: 40px; text-align: center; }
-    
-    .checkout-form { 
-        background: var(--bg-surface); padding: 40px; border-radius: 15px; 
-        border: 1px solid var(--umber); box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+    /* ========================================== */
+    /* الهيكل الأساسي لصفحة الدفع */
+    /* ========================================== */
+    .checkout-page-container {
+        padding: 60px 5%;
+        direction: rtl;
+        max-width: 1300px;
+        margin: 0 auto;
+        min-height: 70vh;
     }
-    
+
+    .page-header {
+        text-align: right;
+        margin-bottom: 40px;
+    }
+
+    .page-title {
+        font-family: var(--font-heading);
+        color: var(--gold);
+        font-size: 3rem;
+        margin: 0 0 10px 0;
+        text-shadow: 0 0 15px rgba(200, 169, 110, 0.2);
+    }
+
+    .breadcrumbs {
+        color: #888;
+        font-family: var(--font-body);
+        font-size: 1rem;
+    }
+
+    .breadcrumbs a {
+        color: #888;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .breadcrumbs a:hover { color: var(--gold); }
+    .breadcrumbs span { color: var(--gold); }
+
+    /* ========================================== */
+    /* التخطيط (يمين فورم - شمال ملخص) */
+    /* ========================================== */
+    .checkout-layout {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .checkout-form-wrapper {
+        flex: 1.8;
+        min-width: 300px;
+        width: 100%;
+    }
+
+    .checkout-summary-wrapper {
+        flex: 1;
+        min-width: 300px;
+        max-width: 420px;
+        position: sticky;
+        top: 30px;
+        width: 100%;
+    }
+
+    .glass-panel {
+        background: rgba(20, 20, 15, 0.6);
+        border: 1px solid rgba(200, 169, 110, 0.15);
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        box-sizing: border-box;
+    }
+
+    /* ========================================== */
+    /* ستايل الفورم (اليمين) */
+    /* ========================================== */
     .section-title { 
-        color: var(--gold); font-family: var(--font-heading); 
-        border-bottom: 1px solid var(--umber); padding-bottom: 10px; 
-        margin-bottom: 20px; margin-top: 40px; 
+        color: var(--gold); 
+        font-family: var(--font-heading); 
+        border-bottom: 1px solid rgba(200, 169, 110, 0.2); 
+        padding-bottom: 10px; 
+        margin-bottom: 25px; 
+        margin-top: 40px; 
+        font-size: 1.5rem;
     }
     .section-title:first-of-type { margin-top: 0; }
     
-    .form-group { margin-bottom: 20px; }
-    .form-group-large { margin-bottom: 30px; }
+    .form-row { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+    .form-group { flex: 1; min-width: 200px; margin-bottom: 20px; }
+    .form-row .form-group { margin-bottom: 0; }
     
     .form-label { 
-        color: var(--cream); font-family: var(--font-body); display: block; 
-        margin-bottom: 8px; font-weight: 600; cursor: pointer; 
+        color: #bbb; 
+        font-family: var(--font-body); 
+        display: block; 
+        margin-bottom: 8px; 
+        font-size: 0.95rem; 
     }
     
     .form-input { 
-        width: 100%; padding: 15px; background: var(--bg-base); 
-        border: 1px solid var(--umber); color: var(--cream); border-radius: 8px; 
-        font-family: var(--font-body); font-size: 1.1rem; box-sizing: border-box; 
-        outline: none; transition: 0.3s; 
+        width: 100%; 
+        padding: 14px; 
+        background: rgba(0, 0, 0, 0.3); 
+        border: 1px solid rgba(200, 169, 110, 0.2); 
+        color: var(--cream); 
+        border-radius: 8px; 
+        font-family: var(--font-body); 
+        font-size: 1rem; 
+        box-sizing: border-box; 
+        outline: none; 
+        transition: 0.3s; 
     }
-    .form-input:focus { border-color: var(--gold); }
-    
-    .form-row { display: flex; gap: 15px; margin-bottom: 20px; }
-    .form-row .form-group { flex: 1; margin-bottom: 0; }
+    .form-input:focus { 
+        border-color: var(--gold); 
+        box-shadow: 0 0 10px rgba(200, 169, 110, 0.1); 
+    }
     
     .payment-box { 
-        background: var(--bg-base); border: 1px solid var(--gold); padding: 15px 20px; 
-        border-radius: 8px; display: flex; align-items: center; justify-content: space-between; 
-        margin-bottom: 40px; cursor: pointer; transition: 0.3s;
+        background: rgba(0, 0, 0, 0.3); 
+        border: 1px solid var(--gold); 
+        padding: 15px 20px; 
+        border-radius: 8px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between; 
+        margin-bottom: 40px; 
+        cursor: pointer; 
+        transition: 0.3s;
     }
-    .payment-box:hover { background: rgba(200, 169, 110, 0.05); }
+    .payment-box:hover { background: rgba(200, 169, 110, 0.1); }
     
-    .submit-btn { 
-        width: 100%; background-color: var(--bg-base); border: 2px solid var(--gold); 
-        color: var(--gold); padding: 20px; border-radius: 10px; font-weight: bold; 
-        font-size: 1.5rem; font-family: var(--font-body); cursor: pointer; transition: 0.3s; 
-        display: flex; justify-content: space-between; align-items: center; 
-        box-shadow: 0 4px 15px rgba(200, 169, 110, 0.2); 
+    /* ========================================== */
+    /* ملخص الطلب (الشمال) */
+    /* ========================================== */
+    .summary-title {
+        color: var(--gold);
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+        margin: 0 0 20px 0;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(200, 169, 110, 0.2);
     }
-    .submit-btn:hover { background-color: var(--gold); color: var(--bg-base); }
 
-    /* ستايل الرسالة اللي هتظهر تحت الحقل الفاضي */
-    .custom-error-msg {
-        color: #ff4d4d;
-        font-size: 0.95rem;
-        margin-top: 8px;
-        display: block;
+    .summary-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .s-item-img {
+        width: 60px;
+        height: 75px;
+        background-color: #e5e5e5;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .s-item-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        mix-blend-mode: multiply;
+    }
+
+    .s-item-details { flex-grow: 1; }
+    .s-item-details h4 { color: var(--cream); margin: 0 0 5px 0; font-family: var(--font-heading); font-size: 1.1rem; }
+    .s-item-details p { color: #888; margin: 0 0 3px 0; font-family: var(--font-body); font-size: 0.85rem; }
+    .s-item-price { color: var(--gold); font-family: var(--font-en); font-weight: bold; font-size: 1.1rem; }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        color: #bbb;
         font-family: var(--font-body);
-        animation: fadeInDown 0.3s ease;
-    }
-    
-    /* الإطار الأحمر اللي هينور حوالين المربع */
-    .input-error-glow {
-        border-color: #ff4d4d !important;
-        box-shadow: 0 0 8px rgba(255, 77, 77, 0.2) !important;
+        font-size: 1rem;
     }
 
-    @keyframes fadeInDown {
-        from { opacity: 0; transform: translateY(-5px); }
-        to { opacity: 1; transform: translateY(0); }
+    .summary-row span:last-child { font-family: var(--font-en); color: var(--cream); }
+
+    .summary-total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(200, 169, 110, 0.2);
+        color: var(--gold);
+        font-family: var(--font-body);
+        font-size: 1.4rem;
+        font-weight: bold;
+    }
+
+    .submit-btn { 
+        width: 100%; 
+        background-color: var(--gold); 
+        color: var(--bg-base); 
+        padding: 16px; 
+        border-radius: 10px; 
+        font-weight: bold; 
+        font-size: 1.3rem; 
+        font-family: var(--font-body); 
+        cursor: pointer; 
+        transition: 0.3s; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        gap: 10px;
+        border: none;
+        margin-top: 30px;
+    }
+    .submit-btn:hover { background-color: var(--cream); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(200, 169, 110, 0.3); }
+
+    /* الإيرورز */
+    .custom-error-msg { color: #ff4d4d; font-size: 0.9rem; margin-top: 8px; display: block; font-family: var(--font-body); animation: fadeInDown 0.3s ease; }
+    .input-error-glow { border-color: #ff4d4d !important; box-shadow: 0 0 8px rgba(255, 77, 77, 0.2) !important; }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 900px) {
+        .checkout-layout { flex-direction: column-reverse; }
+        .checkout-summary-wrapper { max-width: 100%; position: relative; top: 0; }
     }
 </style>
+{% endblock %}
 
-<div class="checkout-container">
+{% block content %}
+<div class="checkout-page-container">
     
-    <h1 class="checkout-title">إتمام الطلب</h1>
-    
-    <form method="POST" action="{% url 'checkout' %}" class="checkout-form">
+    <div class="page-header">
+        <h1 class="page-title">إتمام الطلب</h1>
+        <div class="breadcrumbs">
+            <a href="/">الرئيسية</a> > 
+            <a href="{% url 'cart' %}">حقيبة مشترياتك</a> > 
+            <span>إتمام الطلب</span>
+        </div>
+    </div>
+
+    <form method="POST" action="{% url 'checkout' %}" id="checkout-form">
         {% csrf_token %}
-        
-        <!-- قسم التواصل -->
-        <h3 class="section-title">بيانات التواصل</h3>
-        
-        <div class="form-group">
-            <label for="phone_input" class="form-label">رقم التليفون <span style="color: #ff4d4d;">*</span></label>
-            <input type="tel" id="phone_input" name="phone" value="{{ saved_address.phone|default:'' }}" placeholder="01xxxxxxxxx" required class="form-input">
-        </div>
+        <div class="checkout-layout">
+            
+            <div class="checkout-form-wrapper">
+                <div class="glass-panel">
+                    
+                    <h3 class="section-title">بيانات التواصل</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone_input" class="form-label">رقم التليفون <span style="color: #ff4d4d;">*</span></label>
+                            <input type="tel" id="phone_input" name="phone" value="{{ saved_address.phone|default:'' }}" placeholder="01xxxxxxxxx" required class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="email_input" class="form-label">الإيميل <span style="color: #888; font-size: 0.85rem;">(اختياري)</span></label>
+                            <input type="email" id="email_input" name="email" value="{{ request.user.email|default:'' }}" placeholder="أدخل بريدك الإلكتروني" class="form-input">
+                        </div>
+                    </div>
+                    <p style="color: #888; font-size: 0.85rem; margin-top: -10px; margin-bottom: 20px; font-family: var(--font-body);">سنرسل ملخص الفاتورة إلى بريدك الإلكتروني.</p>
 
-        <div class="form-group-large">
-            <label for="email_input" class="form-label">الإيميل <span style="color: #888; font-size: 0.9rem;">(اختياري)</span></label>
-            <input type="email" id="email_input" name="email" value="{{ request.user.email|default:'' }}" placeholder="أدخل عنوان بريدك الإلكتروني" class="form-input">
-            <small style="display: block; margin-top: 8px; color: #888; font-family: var(--font-body); font-size: 0.9rem;">
-                سنرسل ملخص الفاتورة إلى بريدك الإلكتروني.
-            </small>
-        </div>
+                    <h3 class="section-title">عنوان الشحن</h3>
+                    <div class="form-group">
+                        <label for="name_input" class="form-label">الاسم بالكامل <span style="color: #ff4d4d;">*</span></label>
+                        <input type="text" id="name_input" name="full_name" value="{{ request.user.get_full_name|default:'' }}" placeholder="الاسم الأول والأخير" required class="form-input">
+                    </div>
 
-        <!-- قسم عنوان الشحن -->
-        <h3 class="section-title">عنوان الشحن</h3>
-        
-        <div class="form-group">
-            <label for="name_input" class="form-label">الاسم بالكامل <span style="color: #ff4d4d;">*</span></label>
-            <input type="text" id="name_input" name="full_name" value="{{ request.user.get_full_name|default:'' }}" placeholder="الاسم الأول والأخير" required class="form-input">
-        </div>
+                    <div class="form-group">
+                        <label for="address_input" class="form-label">العنوان <span style="color: #ff4d4d;">*</span></label>
+                        <input type="text" id="address_input" name="address" value="{{ saved_address.address|default:'' }}" placeholder="اسم الشارع أو الكمباوند" required class="form-input">
+                    </div>
 
-        <div class="form-group">
-            <label for="address_input" class="form-label">العنوان <span style="color: #ff4d4d;">*</span></label>
-            <input type="text" id="address_input" name="address" value="{{ saved_address.address|default:'' }}" placeholder="اسم الشارع أو الكمباوند" required class="form-input">
-        </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="region_input" class="form-label">المحافظة / المنطقة <span style="color: #ff4d4d;">*</span></label>
+                            <select id="region_input" name="region" required class="form-input" style="cursor: pointer;">
+                                <option value="" disabled {% if not saved_address or not saved_address.region %}selected{% endif %}>اختر المحافظة...</option>
+                                {% for province in provinces %}
+                                    <option value="{{ province }}" {% if saved_address and saved_address.region == province %}selected{% endif %}>{{ province }}</option>
+                                {% empty %}
+                                    <option value="القاهرة" {% if saved_address.region == 'القاهرة' %}selected{% endif %}>القاهرة</option>
+                                    <option value="الجيزة" {% if saved_address.region == 'الجيزة' %}selected{% endif %}>الجيزة</option>
+                                    <option value="الشرقية" {% if saved_address.region == 'الشرقية' %}selected{% endif %}>الشرقية</option>
+                                    <option value="الإسكندرية" {% if saved_address.region == 'الإسكندرية' %}selected{% endif %}>الإسكندرية</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">علامة مميزة <span style="color: #888; font-size: 0.85rem;">(اختياري)</span></label>
+                            <input type="text" name="landmark" value="{{ saved_address.landmark|default:'' }}" placeholder="أقرب علامة مميزة" class="form-input">
+                        </div>
+                    </div>
 
-        <!-- عمارة، دور، شقة -->
-        <div class="form-row">
-            <div class="form-group">
-                <input type="text" name="building" value="{{ saved_address.building|default:'' }}" placeholder="عمارة" required class="form-input">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" name="building" value="{{ saved_address.building|default:'' }}" placeholder="عمارة" required class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="floor" value="{{ saved_address.floor|default:'' }}" placeholder="دور" required class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="apartment" value="{{ saved_address.apartment|default:'' }}" placeholder="شقة" required class="form-input">
+                        </div>
+                    </div>
+
+                    <h3 class="section-title">طريقة الدفع</h3>
+                    <label for="payment_cod" class="payment-box">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <input type="radio" id="payment_cod" name="payment_method" value="cod" checked style="accent-color: var(--gold); width: 20px; height: 20px; cursor: pointer;">
+                            <span style="color: var(--cream); font-family: var(--font-body); font-size: 1.1rem; font-weight: bold;">الدفع عند الاستلام</span>
+                        </div>
+                        <i class="fas fa-money-bill-wave" style="color: var(--gold); font-size: 1.5rem;"></i>
+                    </label>
+
+                    <button type="submit" class="submit-btn" style="display: none;" id="hidden-submit-btn"></button>
+
+                </div>
             </div>
-            <div class="form-group">
-                <input type="text" name="floor" value="{{ saved_address.floor|default:'' }}" placeholder="دور" required class="form-input">
+
+            <div class="checkout-summary-wrapper">
+                <div class="glass-panel">
+                    <h2 class="summary-title">ملخص الطلب</h2>
+                    
+                    <div style="max-height: 350px; overflow-y: auto; padding-left: 10px; margin-bottom: 20px;">
+                        {% for item in cart_items %}
+                        <div class="summary-item">
+                            <div class="s-item-img">
+                                {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name_ar }}">
+                                {% else %}
+                                    <span style="color: #888; font-size: 0.7rem;">لا توجد</span>
+                                {% endif %}
+                            </div>
+                            <div class="s-item-details">
+                                <h4>{{ item.product.name_ar }}</h4>
+                                <p>اللون: {{ item.product.color_ar|default:"-" }} - المقاس: {{ item.variant.size|default:"-" }}</p>
+                                <p>الكمية: {{ item.quantity }}</p>
+                            </div>
+                            <div class="s-item-price">
+                                EGP {{ item.total_price }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="summary-row">
+                        <span>المجموع الفرعي:</span>
+                        <span>EGP {{ total_price|default:"0" }}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>الشحن:</span>
+                        <span style="color: #4caf50; font-family: var(--font-body);">مجاناً</span>
+                    </div>
+                    <div class="summary-total-row">
+                        <span>الإجمالي:</span>
+                        <span>EGP {{ grand_total|default:"0" }}</span>
+                    </div>
+
+                    <button type="button" class="submit-btn" onclick="document.getElementById('checkout-form').submit();">
+                        تأكيد الطلب <i class="fas fa-lock" style="margin-right: 8px;"></i>
+                    </button>
+                    
+                    <p style="text-align: center; color: #888; font-family: var(--font-body); margin-top: 15px; font-size: 0.9rem;">
+                        <i class="fas fa-shield-alt" style="margin-left: 5px;"></i> يتم تخزين بياناتك بأمان.
+                    </p>
+
+                </div>
             </div>
-            <div class="form-group">
-                <input type="text" name="apartment" value="{{ saved_address.apartment|default:'' }}" placeholder="شقة" required class="form-input">
-            </div>
+
         </div>
-
-        <div class="form-group">
-            <input type="text" name="landmark" value="{{ saved_address.landmark|default:'' }}" placeholder="علامة مميزة (اختياري)" class="form-input">
-        </div>
-
-        <div class="form-group-large">
-            <label for="region_input" class="form-label">المحافظة / المنطقة <span style="color: #ff4d4d;">*</span></label>
-            <select id="region_input" name="region" required class="form-input" style="cursor: pointer;">
-                <option value="" disabled {% if not saved_address or not saved_address.region %}selected{% endif %}>اختر المحافظة...</option>
-                {% for province in provinces %}
-                    <option value="{{ province }}" {% if saved_address and saved_address.region == province %}selected{% endif %}>{{ province }}</option>
-                {% empty %}
-                    <option value="القاهرة" {% if saved_address.region == 'القاهرة' %}selected{% endif %}>القاهرة</option>
-                    <option value="الجيزة" {% if saved_address.region == 'الجيزة' %}selected{% endif %}>الجيزة</option>
-                    <option value="الشرقية" {% if saved_address.region == 'الشرقية' %}selected{% endif %}>الشرقية</option>
-                    <option value="الإسكندرية" {% if saved_address.region == 'الإسكندرية' %}selected{% endif %}>الإسكندرية</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <!-- طريقة الدفع -->
-        <h3 class="section-title">طريقة الدفع</h3>
-        
-        <label for="payment_cod" class="payment-box">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <input type="radio" id="payment_cod" name="payment_method" value="cod" checked style="accent-color: var(--gold); width: 20px; height: 20px; cursor: pointer;">
-                <span style="color: var(--cream); font-family: var(--font-body); font-size: 1.2rem; font-weight: bold;">دفع عند الاستلام</span>
-            </div>
-            <i class="fas fa-money-bill-wave" style="color: var(--gold); font-size: 1.5rem;"></i>
-        </label>
-
-        <!-- زرار التأكيد -->
-        <button type="submit" class="submit-btn">
-            <span>تأكيد الطلب</span>
-            <span style="font-family: var(--font-en);">{{ total_price|default:"0" }} EGP</span>
-        </button>
-
-        <p style="text-align: center; color: #888; font-family: var(--font-body); margin-top: 20px;">
-            <i class="fas fa-lock" style="margin-left: 5px;"></i> يتم تخزين بياناتك بأمان.
-        </p>
-
     </form>
+
 </div>
 
 <script>
+    // سكريبت الـ Validation اللي بيطلع رسايل شيك تحت الحقول الفاضية
     document.addEventListener('DOMContentLoaded', function() {
-        const checkoutForm = document.querySelector('form');
+        const checkoutForm = document.getElementById('checkout-form');
 
         if (checkoutForm) {
             checkoutForm.setAttribute('novalidate', '');
@@ -188,7 +402,6 @@
                 requiredInputs.forEach(function(input) {
                     if (!input.value.trim()) {
                         isFormValid = false;
-                        
                         input.classList.add('input-error-glow');
 
                         let fieldName = "هذا الحقل";
