@@ -361,10 +361,10 @@
                 
                 <div class="summary-row">
                     <span>الشحن:</span>
-                    {% if shipping_cost == 0 %}
-                        <span style="color: #4caf50; font-family: var(--font-body);">مجاناً</span>
-                    {% else %}
+                    {% if shipping_cost and shipping_cost > 0 %}
                         <span style="color: var(--cream); font-family: var(--font-en);">EGP {{ shipping_cost }}</span>
+                    {% else %}
+                        <span style="color: #4caf50; font-family: var(--font-body);">مجاناً</span>
                     {% endif %}
                 </div>
                 
