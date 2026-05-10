@@ -54,7 +54,8 @@ class ProductVariant(models.Model):
     stock = models.PositiveIntegerField(default=0, verbose_name="المخزون")
 
     def __str__(self):
-        return f"{self.product.name_en} - {self.size} - {self.color_en}"
+        # هنا غيرنا self.color_en لـ self.product.color_en
+        return f"{self.product.name_en} - {self.size} - {self.product.color_en}"
 
 # 5. البانر الرئيسي (Hero Slide)
 class HeroSlide(models.Model):
