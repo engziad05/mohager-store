@@ -355,7 +355,10 @@
     
     <div class="page-header">
         <h1 class="page-title">حقيبة مشترياتك</h1>
-        <div class="breadcrumbs">الرئيسية > <span>حقيبة المشتريات</span></div>
+        <div class="breadcrumbs">
+            <a href="/" style="color: #888; text-decoration: none; transition: 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='#888'">الرئيسية</a> 
+            > <span>حقيبة المشتريات</span>
+        </div>
     </div>
     
     {% if cart_items %}
