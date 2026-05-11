@@ -418,36 +418,38 @@
                 {{ product.description_ar|linebreaks|safe }}
             </div>
 
-           <form hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-drawer-content" style="width: 100%; display: flex; flex-direction: column; align-items: flex-start;" id="add-to-cart-form">
+           <form hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-drawer-content" style="width: 100%; display: flex; flex-direction: column; gap: 15px; align-items: flex-start;" id="add-to-cart-form">
             {% csrf_token %}
             
-            <div class="options-section" style="width: 100%;">
+            <div class="options-section" style="width: 100%; display: flex; flex-direction: column; gap: 15px;">
                 
-                <div class="option-group" style="margin-bottom: 25px;">
-                    <span class="option-label" style="display: block; margin-bottom: 10px;">اللون: <span style="color: var(--cream); font-weight: bold;">{{ product.color_ar|default:"-" }}</span></span>
+                <div class="option-group">
+                    <span class="option-label" style="display: block; margin-bottom: 8px;">اللون: <span style="color: var(--cream); font-weight: bold;">{{ product.color_ar|default:"-" }}</span></span>
                     <div class="color-preview">
-                        <div class="color-swatch" style="background-color: {{ product.color_code|default:'#000000' }}; width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 10px rgba(200, 169, 110, 0.2);"></div>
+                        <div class="color-swatch" style="background-color: {{ product.color_code|default:'#000000' }}; width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 5px rgba(200, 169, 110, 0.2);"></div>
                     </div>
                 </div>
                 
-                <div class="option-group" style="margin-bottom: 30px;">
-                    <span class="option-label" style="display: block; margin-bottom: 15px;">اختر المقاس:</span>
+                <div class="option-group">
+                    <span class="option-label" style="display: block; margin-bottom: 10px;">اختر المقاس:</span>
                     <div class="sizes-grid">
                         {% for variant in variants %}
                             <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box" required>
                             <label for="variant_{{ variant.id }}" class="size-btn">{{ variant.size }}</label>
                         {% empty %}
-                            <p style="color: var(--gold); font-family: var(--font-body);">عفواً، لا توجد مقاسات متاحة حالياً.</p>
+                            <p style="color: var(--gold); font-family: var(--font-body); margin: 0;">عفواً، لا توجد مقاسات متاحة حالياً.</p>
                         {% endfor %}
                     </div>
                 </div>
             </div>
 
-            <button type="submit" class="add-to-cart-premium" style="width: 100%; margin-top: 10px;">
+            <button type="submit" class="add-to-cart-premium" style="width: 100%; margin-top: 5px;">
                 أضف إلى السلة <i class="fas fa-shopping-bag" style="margin-right: 8px;"></i>
             </button>
         </form>
-      
+        ```
+
+
 
 
         </div>
