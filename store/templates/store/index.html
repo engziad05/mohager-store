@@ -43,11 +43,10 @@
         background-size: cover; 
         background-position: center bottom; 
         background-repeat: no-repeat;
-        border-bottom: 2px solid rgba(201,167,92,0.3);
         position: relative;
         overflow: hidden;
         margin-bottom: 60px;
-        direction: rtl; /* الترتيب يمين لشمال */
+        direction: rtl; 
     }
 
     .slide-content {
@@ -56,12 +55,13 @@
         justify-content: space-between;
         flex-direction: row; 
         gap: 50px;
-        min-height: 88vh;
-        padding: 0 7% 80px 7%; 
+        min-height: 90vh;
+        /* زودنا الـ padding من تحت عشان شريط المميزات مياكلش المحتوى */
+        padding: 0 7% 100px 7%; 
     }
 
     /* ========================================== */
-    /* تنسيقات النص (الجانب الأيمن الفخم) */
+    /* تنسيقات النص (على اليمين) */
     /* ========================================== */
     .slide-text {
         flex: 1;
@@ -69,113 +69,91 @@
         padding: 20px;
         display: flex;
         flex-direction: column;
-        align-items: flex-start; /* محاذاة كل حاجة لليمين */
+        align-items: flex-start;
         text-align: right; 
         position: relative;
         z-index: 10;
     }
 
-    .top-logo-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center; 
-        margin-bottom: 25px;
-        width: 100%; 
-    }
-
-    .top-logo-wrapper img {
-        width: 140px; 
-        margin-bottom: 5px;
-        filter: drop-shadow(0 0 10px rgba(201,167,92,0.3));
-    }
-
-    .top-logo-text {
-        color: rgba(255,255,255,0.6);
-        font-family: var(--font-en);
-        font-size: 0.85rem;
-        letter-spacing: 6px;
-        margin-bottom: 12px;
-    }
-
-    .custom-divider {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        width: 100%;
-        max-width: 320px;
-        margin: 0 auto;
+    /* اسم البراند الكبير */
+    .main-title {
+        font-size: 5.5rem;
+        color: var(--gold);
+        font-family: var(--font-heading);
+        margin: 0 0 10px 0;
+        line-height: 1;
+        text-shadow: 0 0 20px rgba(201,167,92,0.3);
     }
     
-    .custom-divider::before, .custom-divider::after {
-        content: '';
-        flex: 1;
-        height: 1px;
-        background: rgba(201,167,92,0.3);
-    }
-    
-    .custom-divider .diamond {
-        width: 5px;
-        height: 5px;
-        background: var(--gold);
-        transform: rotate(45deg);
-    }
-
-    .slide-text h2 {
-        font-size: 3.5rem; 
-        line-height: 1.3;
+    /* العنوان الفرعي */
+    .sub-title {
+        font-size: 1.8rem;
         color: var(--cream);
         font-family: var(--font-heading);
         margin: 0 0 15px 0;
-        width: 100%;
+        font-weight: bold;
     }
-    
-    .slide-text p.slide-desc {
+
+    /* الوصف */
+    .slide-desc {
         font-size: 1.05rem;
         line-height: 1.8;
         color: rgba(255,255,255,0.7);
         margin-bottom: 30px;
         font-family: var(--font-body);
-        width: 100%;
+        max-width: 450px;
     }
 
+    /* الزرار الفخم (ستايل الريفرنس) */
     .slide-btn {
-        background-color: #dcb36a; 
+        background: linear-gradient(90deg, #dcb36a, #efc479);
         color: #111;
-        padding: 12px 35px;
-        text-decoration: none;
+        padding: 14px 45px;
+        border-radius: 40px; /* حواف دائرية بالكامل */
         font-weight: 700;
-        border-radius: 6px;
-        font-size: 1.05rem;
-        transition: all 0.3s ease;
-        font-family: var(--font-body);
+        font-size: 1.1rem;
+        text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 15px;
-        position: relative !important;
-        z-index: 999 !important;
-        border: none;
+        gap: 12px;
+        box-shadow: 0 8px 25px rgba(201,167,92,0.3);
+        transition: all 0.3s ease;
+        font-family: var(--font-body);
+        position: relative;
+        z-index: 999;
     }
 
     .slide-btn:hover { 
-        background-color: #efc479;
         transform: translateY(-3px); 
-        box-shadow: 0 5px 20px rgba(201,167,92,0.3);
+        box-shadow: 0 12px 30px rgba(201,167,92,0.5);
     }
 
+    /* تلميح الشحن السريع */
+    .shipping-hint {
+        margin-top: 18px;
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.6);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-body);
+    }
+    .shipping-hint i { color: #dcb36a; font-size: 1.1rem; }
+
     /* ========================================== */
-    /* الصورة (الحصان على الشمال) - الجزء اللي طار منك */
+    /* الصورة (تصغير الحصان زي الاقتراح) */
     /* ========================================== */
     .slide-image {
         flex: 1;
         display: flex;
-        justify-content: flex-end; /* يزق الصورة للشمال */
+        justify-content: flex-end; 
         align-items: center;
         position: relative;
     }
     
     .slide-image img {
         width: 100%;
-        max-width: 500px;
+        max-width: 420px; /* صغرنا الحصان عشان التوازن */
         height: auto;
         object-fit: contain;
         position: relative;
@@ -184,173 +162,70 @@
     }
 
     /* ========================================== */
-    /* شريط المميزات السفلي */
+    /* شريط المميزات السفلي (Glassmorphism Bar) */
     /* ========================================== */
     .hero-features-bar {
         position: absolute;
-        bottom: 30px;
-        left: 0; right: 0;
+        bottom: 0; left: 0; right: 0;
+        background: rgba(10, 10, 8, 0.75); /* لون زجاجي غامق */
+        backdrop-filter: blur(12px); /* تأثير الزجاج */
+        border-top: 1px solid rgba(201,167,92,0.15);
+        padding: 20px 5%;
         display: flex;
         justify-content: center;
-        align-items: center;
-        gap: 50px;
+        gap: 60px;
         z-index: 10;
-        flex-wrap: wrap;
         direction: rtl;
+        flex-wrap: wrap;
     }
 
     .hero-feature {
         display: flex;
         align-items: center;
-        gap: 12px;
-        position: relative;
-    }
-
-    .hero-feature:not(:last-child)::after {
-        content: '';
-        position: absolute;
-        left: -25px; 
-        top: 50%;
-        transform: translateY(-50%);
-        height: 25px;
-        width: 1px;
-        background: rgba(255,255,255,0.15);
+        gap: 15px;
     }
 
     .hero-feature i {
         color: #dcb36a;
-        font-size: 1.6rem;
-        opacity: 0.9;
+        font-size: 1.8rem;
     }
 
-    .hero-feature .feature-text {
+    .feature-text {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
         text-align: right;
     }
 
-    .hero-feature h4 {
-        color: rgba(255,255,255,0.9);
-        margin: 0;
-        font-size: 0.85rem;
-        font-family: var(--font-body);
-        line-height: 1.4;
-    }
-
-    /* ========================================== */
-    /* شبكة المنتجات (الجزء اللي طار منك) */
-    /* ========================================== */
-    .products-grid {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center !important; 
-        gap: 40px;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 10px 20px 80px 20px !important; 
-        direction: rtl;
-    }
-
-    .product-card {
-        width: 290px !important;
-        background: transparent !important;
-        border: 1px solid transparent !important;
-        border-radius: 12px;
-        padding: 15px; 
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-
-    .product-img-wrapper {
-        width: 100%;
-        border-radius: 8px; 
-        overflow: hidden;
-        margin-bottom: 15px; 
-        background-color: transparent;
-    }
-
-    .product-img-wrapper img {
-        width: 100% !important;
-        aspect-ratio: 1 / 1 !important; 
-        object-fit: cover !important; 
-        display: block;
-        border-radius: 8px;
-        transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1);
-    }
-
-    .product-details {
-        width: 100%;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 0 !important;
-    }
-
-    .product-details h3 {
+    .feature-text h4 {
         color: var(--cream);
-        font-size: 1.15rem;
-        margin: 0 0 5px 0;
+        margin: 0 0 4px 0;
+        font-size: 0.95rem;
         font-family: var(--font-body);
         font-weight: 600;
     }
 
-    .product-details p.price {
-        color: rgba(200, 169, 110, 0.9);
-        font-size: 1.05rem;
-        margin: 0 0 20px 0; 
+    .feature-text p {
+        color: rgba(255,255,255,0.5);
+        margin: 0;
+        font-size: 0.8rem;
         font-family: var(--font-body);
-    }
-
-    .premium-btn {
-        box-sizing: border-box !important;
-        display: block;
-        width: 100%; 
-        background-color: transparent !important;
-        color: var(--gold) !important;
-        border: 1px solid var(--gold) !important;
-        border-radius: 6px !important; 
-        padding: 10px 0;
-        text-align: center;
-        font-family: var(--font-body);
-        font-weight: 600;
-        font-size: 1rem;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-
-    .premium-btn:hover {
-        background-color: var(--gold) !important;
-        color: var(--bg-base) !important;
-    }
-    
-    .product-card:hover {
-        transform: translateY(-6px) scale(1.02); 
-        background-color: rgba(200, 169, 110, 0.02) !important; 
-        box-shadow: 0 15px 40px rgba(200, 169, 110, 0.08); 
-    }
-    
-    .product-card:hover .product-img-wrapper img {
-        transform: scale(1.05);
     }
 
     /* ========================================== */
     /* الموبايل */
     /* ========================================== */
     @media (max-width: 992px) {
-        .slide-content { flex-direction: column-reverse; text-align: center; gap: 20px; padding: 40px 20px 120px 20px; }
+        .slide-content { flex-direction: column-reverse; text-align: center; gap: 30px; padding: 40px 20px 140px 20px; }
         .slide-text { align-items: center; text-align: center; }
         .slide-image { justify-content: center; }
-        .slide-image img { max-width: 80%; margin: 0 auto; }
-        .top-logo-wrapper img { width: 110px; }
-        .slide-text h2 { font-size: 2.2rem; text-align: center; }
-        .slide-text p.slide-desc { text-align: center; }
-        .hero-features-bar { gap: 20px; bottom: 15px; }
-        .hero-feature:not(:last-child)::after { display: none; } 
-        .hero-feature { width: 40%; justify-content: center; }
+        .slide-image img { max-width: 70%; margin: 0 auto; }
+        .main-title { font-size: 4rem; }
+        .sub-title { font-size: 1.4rem; }
+        .slide-desc { text-align: center; }
+        .hero-features-bar { gap: 20px; padding: 15px 5%; justify-content: space-around; }
+        .hero-feature { width: 45%; justify-content: center; flex-direction: column; text-align: center; gap: 8px; }
+        .feature-text { align-items: center; text-align: center; }
+        .feature-text p { display: none; } /* اخفاء الوصف في الموبايل للزحمة */
     }
 </style>
 
@@ -361,20 +236,19 @@
             <div class="slide-content">
                 
                 <div class="slide-text">
-                    <div class="top-logo-wrapper">
-                        <img src="{% static 'images/logo.png' %}" alt="مهاجر">
-                        <span class="top-logo-text">M O H A G E R</span>
-                        <div class="custom-divider">
-                            <span class="diamond"></span>
-                        </div>
-                    </div>
-
-                    <h2>{{ slide.title_ar }}</h2>
-                    <p class="slide-desc">{{ slide.subtitle_ar }}</p>
+                    <h1 class="main-title">{{ slide.title_ar }}</h1>
+                    
+                    <h2 class="sub-title">{{ slide.subtitle_ar }}</h2>
+                    
+                    <p class="slide-desc">تصاميم عربية عصرية بخامات فاخرة تعكس هويتك بأسلوب جريء.</p>
                     
                     <a href="{{ slide.btn_url }}" class="slide-btn">
                         <i class="fas fa-arrow-left"></i> {{ slide.btn_text_ar }}
                     </a>
+
+                    <div class="shipping-hint">
+                        <i class="fas fa-truck"></i> شحن سريع لجميع أنحاء الجمهورية
+                    </div>
                 </div>
 
                 <div class="slide-image">
@@ -388,7 +262,7 @@
         {% empty %}
         <div class="swiper-slide">
             <div class="slide-content" style="justify-content: center;">
-                <h2 style="color: var(--gold); font-family: var(--font-heading);">مرحباً بك في مُهاجر</h2>
+                <h1 class="main-title">مهاجر</h1>
             </div>
         </div>
         {% endfor %}
@@ -398,29 +272,29 @@
         <div class="hero-feature">
             <i class="fas fa-shield-alt"></i>
             <div class="feature-text">
-                <h4>هوية</h4>
-                <h4>موثوقة</h4>
+                <h4>هوية موثوقة</h4>
+                <p>علامة تجارية عربية</p>
             </div>
         </div>
         <div class="hero-feature">
             <i class="far fa-lightbulb"></i>
             <div class="feature-text">
-                <h4>تصميم</h4>
-                <h4>مبدع</h4>
+                <h4>تصميم مبدع</h4>
+                <p>تصاميم فريدة ومعاصرة</p>
             </div>
         </div>
         <div class="hero-feature">
             <i class="fas fa-bullseye"></i>
             <div class="feature-text">
-                <h4>فهم</h4>
-                <h4>عميق</h4>
+                <h4>فهم عميق</h4>
+                <p>نهتم بأدق التفاصيل</p>
             </div>
         </div>
         <div class="hero-feature">
             <i class="fas fa-award"></i>
             <div class="feature-text">
-                <h4>جودة</h4>
-                <h4>احترافية</h4>
+                <h4>جودة احترافية</h4>
+                <p>خامات مختارة بعناية</p>
             </div>
         </div>
     </div>
@@ -429,7 +303,6 @@
     <div class="swiper-button-prev" style="color: var(--gold); opacity: 0.5;"></div>
     <div class="swiper-pagination"></div>
 </section>
-
 <!-- عنوان سيكشن المنتجات -->
 <h2 style="text-align: center; color: var(--gold); font-family: var(--font-heading); margin-top: 10px; margin-bottom: 10px; font-size: 2.5rem;">أحدث الإصدارات</h2>
 
