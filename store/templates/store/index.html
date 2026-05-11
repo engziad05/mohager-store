@@ -17,255 +17,211 @@
 
 <style>
     /* ========================================== */
-    /* الـ Glow السينمائي الفخم خلف المنتجات */
+    /* 3. الـ Depth والـ Grain Texture (النغمشة السينمائية) */
     /* ========================================== */
-    section { position: relative; z-index: 1; }
-    
-    section::before {
-        content: '';
+    .noise-overlay {
         position: absolute;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80%; height: 80%;
-        background: radial-gradient(circle, rgba(200, 169, 110, 0.05) 0%, transparent 65%);
-        z-index: -1;
-        pointer-events: none; 
+        top: 0; left: 0; right: 0; bottom: 0;
+        /* سحر الـ CSS: بيعمل نغمشة من غير صورة خارجية */
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        opacity: 0.035; /* خفيفة جداً عشان الفخامة */
+        pointer-events: none;
+        z-index: 5;
     }
 
-    /* ========================================== */
-    /* الهيرو سلايدر (بالخلفية السينمائية الجديدة) */
-    /* ========================================== */
     .hero-slider {
         width: 100%;
         background: 
-            linear-gradient(to bottom, rgba(10, 10, 8, 0.6), rgba(10, 10, 8, 0.2)),
+            linear-gradient(to bottom, rgba(8, 8, 6, 0.7), rgba(8, 8, 6, 0.2)),
             url('{% static "images/hero-bg.jpg" %}');
         background-size: cover; 
         background-position: center bottom; 
-        background-repeat: no-repeat;
         position: relative;
         overflow: hidden;
         margin-bottom: 60px;
         direction: rtl; 
     }
 
+    /* إضاءة ضبابية (Subtle Fog) من تحت */
+    .hero-slider::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 40%;
+        background: linear-gradient(to top, rgba(201,167,92,0.08), transparent);
+        pointer-events: none;
+        z-index: 2;
+    }
+
     .slide-content {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        flex-direction: row; 
         gap: 50px;
         min-height: 90vh;
-        /* زودنا الـ padding من تحت عشان شريط المميزات مياكلش المحتوى */
         padding: 0 7% 100px 7%; 
+        position: relative;
+        z-index: 10;
     }
 
     /* ========================================== */
-    /* تنسيقات النص (على اليمين) */
+    /* 1. Typography (الخطوط والأوزان) */
     /* ========================================== */
     .slide-text {
         flex: 1;
-        max-width: 550px;
-        padding: 20px;
+        max-width: 580px;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         text-align: right; 
-        position: relative;
-        z-index: 10;
     }
 
-    /* اسم البراند الكبير */
     .main-title {
         font-size: 5.5rem;
         color: var(--gold);
         font-family: var(--font-heading);
-        margin: 0 0 10px 0;
+        margin: 0 0 15px 0;
         line-height: 1;
-        text-shadow: 0 0 20px rgba(201,167,92,0.3);
+        text-shadow: 0 10px 30px rgba(201,167,92,0.25);
     }
     
-    /* العنوان الفرعي */
     .sub-title {
-        font-size: 1.8rem;
-        color: var(--cream);
+        font-size: 1.9rem;
+        color: #f5f5f0; /* Off-white فخم */
         font-family: var(--font-heading);
-        margin: 0 0 15px 0;
-        font-weight: bold;
+        font-weight: 800; /* أثقل */
+        line-height: 1.5; /* Spacing أحسن */
+        letter-spacing: 0.5px;
+        margin: 0 0 20px 0;
     }
 
-    /* الوصف */
-    .slide-desc {
-        font-size: 1.05rem;
-        line-height: 1.8;
-        color: rgba(255,255,255,0.7);
-        margin-bottom: 30px;
-        font-family: var(--font-body);
-        max-width: 450px;
-    }
-
-    /* الزرار الفخم (ستايل الريفرنس) */
+    /* ========================================== */
+    /* 6. Button Micro-interactions (لمعة وحركة) */
+    /* ========================================== */
     .slide-btn {
-        background: linear-gradient(90deg, #dcb36a, #efc479);
+        background: linear-gradient(135deg, #dcb36a, #efc479, #dcb36a);
+        background-size: 200% auto;
         color: #111;
-        padding: 14px 45px;
-        border-radius: 40px; /* حواف دائرية بالكامل */
-        font-weight: 700;
-        font-size: 1.1rem;
+        padding: 15px 45px;
+        border-radius: 50px; 
+        font-weight: 800;
+        font-size: 1.15rem;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
         gap: 12px;
-        box-shadow: 0 8px 25px rgba(201,167,92,0.3);
-        transition: all 0.3s ease;
-        font-family: var(--font-body);
+        box-shadow: 0 8px 25px rgba(201,167,92,0.25);
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         position: relative;
+        overflow: hidden; /* عشان اللمعة متخرجش بره */
         z-index: 999;
     }
 
+    /* تأثير اللمعة (Shine Animation) */
+    .slide-btn::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 50%; height: 100%;
+        background: linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent);
+        transform: skewX(-25deg);
+        transition: left 0.6s ease;
+    }
+
     .slide-btn:hover { 
-        transform: translateY(-3px); 
-        box-shadow: 0 12px 30px rgba(201,167,92,0.5);
+        transform: translateY(-4px) scale(1.02); 
+        box-shadow: 0 15px 35px rgba(201,167,92,0.4);
+        background-position: right center;
     }
 
-    /* تلميح الشحن السريع */
-    .shipping-hint {
-        margin-top: 18px;
-        font-size: 0.9rem;
-        color: rgba(255,255,255,0.6);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-family: var(--font-body);
+    .slide-btn:hover::before {
+        left: 150%; /* اللمعة بتعدي على الزرار */
     }
-    .shipping-hint i { color: #dcb36a; font-size: 1.1rem; }
 
     /* ========================================== */
-    /* الصورة (تصغير الحصان زي الاقتراح) */
+    /* 2 & 7. الحصان والمنتج الطاير (Floating Fashion) */
     /* ========================================== */
-    .slide-image {
+    .slide-image-wrapper {
         flex: 1;
+        position: relative;
         display: flex;
-        justify-content: flex-end; 
+        justify-content: flex-end;
         align-items: center;
-        position: relative;
     }
-    
-    .slide-image img {
-        width: 100%;
-        max-width: 420px; /* صغرنا الحصان عشان التوازن */
-        height: auto;
-        object-fit: contain;
-        position: relative;
+
+    /* إضاءة مدمجة ورا الحصان عشان المندمجة */
+    .slide-image-wrapper::before {
+        content: '';
+        position: absolute;
+        width: 400px; height: 400px;
+        background: radial-gradient(circle, rgba(201,167,92,0.15), transparent 60%);
+        filter: blur(40px);
+        z-index: 1;
+    }
+
+    /* ده كلاس المنتج الطاير (هودي أو تيشيرت مقصوص) */
+    .floating-product {
+        position: absolute;
+        top: 10%; right: 40%;
+        width: 350px;
+        opacity: 0.85;
         z-index: 2;
-        filter: drop-shadow(0 0 30px rgba(201,167,92,0.2));
+        filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .horse-img {
+        width: 100%;
+        max-width: 450px;
+        position: relative;
+        z-index: 3;
+        /* Glow ذهبي خفيف جداً على الأطراف */
+        filter: drop-shadow(0 0 25px rgba(201,167,92,0.15)) drop-shadow(0 0 5px rgba(255,255,255,0.05));
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(2deg); }
+        100% { transform: translateY(0px) rotate(0deg); }
     }
 
     /* ========================================== */
-    /* شريط المميزات السفلي (Glassmorphism Bar) */
+    /* 5. شريط المميزات (Glass Strip الواضح) */
     /* ========================================== */
     .hero-features-bar {
         position: absolute;
         bottom: 0; left: 0; right: 0;
-        background: rgba(10, 10, 8, 0.75); /* لون زجاجي غامق */
-        backdrop-filter: blur(12px); /* تأثير الزجاج */
-        border-top: 1px solid rgba(201,167,92,0.15);
-        padding: 20px 5%;
+        background: rgba(15, 15, 12, 0.6); 
+        backdrop-filter: blur(16px); 
+        -webkit-backdrop-filter: blur(16px);
+        /* Top border subtle (تدرج لوني) */
+        border-top: 1px solid;
+        border-image: linear-gradient(90deg, transparent, rgba(201,167,92,0.4), transparent) 1;
+        padding: 22px 5%;
         display: flex;
         justify-content: center;
-        gap: 60px;
-        z-index: 10;
-        direction: rtl;
-        flex-wrap: wrap;
-    }
-
-    .hero-feature {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .hero-feature i {
-        color: #dcb36a;
-        font-size: 1.8rem;
-    }
-
-    .feature-text {
-        display: flex;
-        flex-direction: column;
-        text-align: right;
-    }
-
-    .feature-text h4 {
-        color: var(--cream);
-        margin: 0 0 4px 0;
-        font-size: 0.95rem;
-        font-family: var(--font-body);
-        font-weight: 600;
-    }
-
-    .feature-text p {
-        color: rgba(255,255,255,0.5);
-        margin: 0;
-        font-size: 0.8rem;
-        font-family: var(--font-body);
-    }
-
-    /* ========================================== */
-    /* الموبايل */
-    /* ========================================== */
-    @media (max-width: 992px) {
-        .slide-content { flex-direction: column-reverse; text-align: center; gap: 30px; padding: 40px 20px 140px 20px; }
-        .slide-text { align-items: center; text-align: center; }
-        .slide-image { justify-content: center; }
-        .slide-image img { max-width: 70%; margin: 0 auto; }
-        .main-title { font-size: 4rem; }
-        .sub-title { font-size: 1.4rem; }
-        .slide-desc { text-align: center; }
-        .hero-features-bar { gap: 20px; padding: 15px 5%; justify-content: space-around; }
-        .hero-feature { width: 45%; justify-content: center; flex-direction: column; text-align: center; gap: 8px; }
-        .feature-text { align-items: center; text-align: center; }
-        .feature-text p { display: none; } /* اخفاء الوصف في الموبايل للزحمة */
+        gap: 70px;
+        z-index: 20;
     }
 </style>
 
-<section class="hero-slider swiper">
-    <div class="swiper-wrapper">
-        {% for slide in slides %}
-        <div class="swiper-slide">
-            <div class="slide-content">
-                
-                <div class="slide-text">
-                    <h1 class="main-title">{{ slide.title_ar }}</h1>
-                    
-                    <h2 class="sub-title">{{ slide.subtitle_ar }}</h2>
-                    
-                    <p class="slide-desc">تصاميم عربية عصرية بخامات فاخرة تعكس هويتك بأسلوب جريء.</p>
-                    
-                    <a href="{{ slide.btn_url }}" class="slide-btn">
-                        <i class="fas fa-arrow-left"></i> {{ slide.btn_text_ar }}
-                    </a>
+<section class="hero-slider">
+    <div class="noise-overlay"></div>
 
-                    <div class="shipping-hint">
-                        <i class="fas fa-truck"></i> شحن سريع لجميع أنحاء الجمهورية
-                    </div>
-                </div>
+    <div class="slide-content">
+        <div class="slide-text">
+            <h1 class="main-title">مهاجر</h1>
+            <h2 class="sub-title">هوية عربية بستايل عصري.</h2>
+            <a href="#" class="slide-btn">
+                <i class="fas fa-arrow-left"></i> اطلب الآن
+            </a>
+        </div>
 
-                <div class="slide-image">
-                    {% if slide.image %}
-                        <img src="{{ slide.image.url }}" alt="{{ slide.title_ar }}">
-                    {% endif %}
-                </div>
-                
-            </div>
+        <div class="slide-image-wrapper">
+            <img src="{% static 'images/hoodie-mockup.png' %}" class="floating-product" style="display: none;"> 
+            
+            <img src="{% static 'images/logo.png' %}" class="horse-img" alt="مهاجر">
         </div>
-        {% empty %}
-        <div class="swiper-slide">
-            <div class="slide-content" style="justify-content: center;">
-                <h1 class="main-title">مهاجر</h1>
-            </div>
-        </div>
-        {% endfor %}
     </div>
     
     <div class="hero-features-bar">
@@ -273,35 +229,9 @@
             <i class="fas fa-shield-alt"></i>
             <div class="feature-text">
                 <h4>هوية موثوقة</h4>
-                <p>علامة تجارية عربية</p>
             </div>
         </div>
-        <div class="hero-feature">
-            <i class="far fa-lightbulb"></i>
-            <div class="feature-text">
-                <h4>تصميم مبدع</h4>
-                <p>تصاميم فريدة ومعاصرة</p>
-            </div>
         </div>
-        <div class="hero-feature">
-            <i class="fas fa-bullseye"></i>
-            <div class="feature-text">
-                <h4>فهم عميق</h4>
-                <p>نهتم بأدق التفاصيل</p>
-            </div>
-        </div>
-        <div class="hero-feature">
-            <i class="fas fa-award"></i>
-            <div class="feature-text">
-                <h4>جودة احترافية</h4>
-                <p>خامات مختارة بعناية</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="swiper-button-next" style="color: var(--gold); opacity: 0.5;"></div>
-    <div class="swiper-button-prev" style="color: var(--gold); opacity: 0.5;"></div>
-    <div class="swiper-pagination"></div>
 </section>
 <!-- عنوان سيكشن المنتجات -->
 <h2 style="text-align: center; color: var(--gold); font-family: var(--font-heading); margin-top: 10px; margin-bottom: 10px; font-size: 2.5rem;">أحدث الإصدارات</h2>
