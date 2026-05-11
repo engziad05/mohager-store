@@ -140,6 +140,7 @@
     .slide-btn {
         background-color: #dcb36a;
         color: #111;
+        border: 1px solid transparent;
         padding: 12px 40px;
         text-decoration: none;
         font-weight: bold;
@@ -153,8 +154,11 @@
     }
 
     .slide-btn:hover {
+        background-color: transparent;
+        color: #dcb36a;
+        border: 1px solid #dcb36a;
+        box-shadow: 0 0 15px rgba(220, 179, 106, 0.5), inset 0 0 10px rgba(220, 179, 106, 0.2);
         transform: translateY(-3px);
-        opacity: 0.9;
     }
 
     /* ========================================== */
@@ -435,8 +439,7 @@
                     {% endif %}
 
                     <a href="{{ slide.btn_url|default:'#' }}" class="slide-btn">
-                        <i class="fas fa-arrow-left"></i> {% if slide.btn_text_ar %}{{ slide.btn_text_ar }}{% else
-                        %}اطلب الآن{% endif %}
+                        <i class="fas fa-arrow-left"></i> {% if slide.btn_text_ar %}{{ slide.btn_text_ar }}{% else %}اطلب الآن{% endif %}
                     </a>
 
                 </div>
