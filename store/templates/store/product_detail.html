@@ -418,35 +418,38 @@
                 {{ product.description_ar|linebreaks|safe }}
             </div>
 
-            <form hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-drawer-content" style="width: 100%; display: flex; flex-direction: column; align-items: center;" id="add-to-cart-form">
-                {% csrf_token %}
+            <form hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-drawer-content" style="width: 100%; display: flex; flex-direction: column; align-items: flex-start;" id="add-to-cart-form">
+            {% csrf_token %}
+
+            <div class="options-section">
                 
                 <div class="option-group">
-                <span class="option-label">اللون: {{ product.color_ar|default:"-" }}</span>
-                <div class="color-preview">
-                    <div class="color-swatch" style="background-color: {{ product.color_code|default:'#000000' }};"></div>
-                </div>
-            </div>
-                   
-                    
-                    <div class="option-group">
-                        <span class="option-label">اختر المقاس:</span>
-                        <div class="sizes-grid">
-                            {% for variant in variants %}
-                                <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box">
-                                <label for="variant_{{ variant.id }}" class="size-btn">{{ variant.size }}</label>
-                            {% empty %}
-                                <p style="color: var(--gold); font-family: var(--font-body);">عفواً، لا توجد مقاسات متاحة حالياً</p>
-                            {% endfor %}
-                        </div>
+                    <span class="option-label">اللون: <span style="color: var(--cream);">{{ product.color_ar|default:"-" }}</span></span>
+                    <div class="color-preview">
+                        <div class="color-swatch" style="background-color: {{ product.color_code|default:'#000000' }}; width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 10px rgba(200, 169, 110, 0.2);"></div>
                     </div>
                 </div>
 
-                <button type="submit" class="add-to-cart-premium">
-                    أضف إلى السلة <i class="fas fa-shopping-bag"></i>
-                </button>
-            </form>
-        </div>
+                <div class="option-group">
+                    <span class="option-label">اختر المقاس:</span>
+                    <div class="sizes-grid">
+                        {% for variant in variants %}
+                            <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box" required>
+                            <label for="variant_{{ variant.id }}" class="size-btn">{{ variant.size }}</label>
+                        {% empty %}
+                            <p style="color: var(--gold); font-family: var(--font-body);">عفواً، لا توجد مقاسات متاحة حالياً.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div> <button type="submit" class="add-to-cart-premium">
+                أضف إلى السلة <i class="fas fa-shopping-bag"></i>
+            </button>
+            
+        </form>
+        ```
+
+
 
         <!-- قسم الصور -->
         <div class="product-gallery-col">
