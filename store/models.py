@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db import models
-from django.conf import settings
 import random
 import string
 
@@ -29,8 +28,7 @@ class Product(models.Model):
     color_ar = models.CharField(max_length=50, blank=True, null=True, verbose_name="اللون (عربي)")
     color_en = models.CharField(max_length=50, blank=True, null=True, verbose_name="اللون (إنجليزي)")
     color_code = models.CharField(max_length=20, verbose_name="كود اللون (Hex)", default="#111111")
-    # شلنا السعر من هنا لأن السعر الصح بيبقى في الـ Variant (ممكن المقاس الأكبر يبقى أغلى)
-    # بس لو عايز سعر مبدئي يظهر بره خليه
+    # السعر الأساسي والثابت لكل المتغيرات
     base_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="السعر الأساسي") 
     image = models.ImageField(upload_to='products/', verbose_name="صورة المنتج", blank=True, null=True)
     is_active = models.BooleanField(default=True)
@@ -55,7 +53,6 @@ class ProductVariant(models.Model):
     stock = models.PositiveIntegerField(default=0, verbose_name="المخزون")
 
     def __str__(self):
-        # هنا غيرنا self.color_en لـ self.product.color_en
         return f"{self.product.name_en} - {self.size} - {self.product.color_en}"
 
 # 5. البانر الرئيسي (Hero Slide)
@@ -109,12 +106,10 @@ class CartItem(models.Model):
 
     @property
     def total_price(self):
-        # بنحسب السعر من الـ Variant عشان هو ده السعر النهائي الفعلي
-        if self.variant:
-            return self.variant.price * self.quantity
+        # 🚨 التعديل هنا: السعر بيتحسب من المنتج الأساسي علطول
         return self.product.base_price * self.quantity
 
-# 8. جدول الطلبات (Orders - دمجنا المرتين في موديل واحد شامل)
+# 8. جدول الطلبات (Orders)
 class Order(models.Model):
     STATUS_CHOICES = (
         ('Pending', 'قيد الانتظار'),
@@ -137,18 +132,19 @@ class Order(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending', verbose_name="حالة الطلب")
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="إجمالي الحساب")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الطلب")
+    
     def save(self, *args, **kwargs):
-        if not self.tracking_no:  # لو الأوردر لسه جديد ومعهوش رقم
-            # بنختار حروف كابيتال وأرقام عشوائية
+        if not self.tracking_no:  
             chars = string.ascii_uppercase + string.digits 
-            random_str = ''.join(random.choice(chars) for _ in range(6)) # بنجيب 6 رموز
-            self.tracking_no = f"MHG-{random_str}" # بنلزق فيهم اسم البراند
+            random_str = ''.join(random.choice(chars) for _ in range(6)) 
+            self.tracking_no = f"MHG-{random_str}" 
             
         super(Order, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"طلب رقم {self.id} - {self.full_name}"
-# 9. جدول عناصر الطلب (Order Items - المنتجات اللي جوه الأوردر)
+
+# 9. جدول عناصر الطلب (Order Items)
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE, verbose_name="الطلب")
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, verbose_name="المنتج")
@@ -160,11 +156,10 @@ class OrderItem(models.Model):
         if self.product:
             return f"{self.quantity} x {self.product.name_en} - طلب #{self.order.id}"
         return f"عنصر محذوف - طلب #{self.order.id}"
-# 10. جدول العنوان المحفوظ للعميل (عشان يملى صفحة الدفع أوتوماتيك)
+
+# 10. جدول العنوان المحفوظ للعميل
 class SavedAddress(models.Model):
-    # بنربط العنوان بالعميل، وكل عميل ليه عنوان واحد متسجل
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='saved_address')
-    
     phone = models.CharField(max_length=20, verbose_name="رقم التليفون")
     region = models.CharField(max_length=100, verbose_name="المحافظة")
     address = models.CharField(max_length=500, verbose_name="العنوان التفصيلي")
@@ -175,8 +170,8 @@ class SavedAddress(models.Model):
 
     def __str__(self):
         return f"عنوان {self.user.first_name or self.user.email}"
- 
- 
+
+# 11. إعدادات المتجر
 class StoreSetting(models.Model):
     shipping_cost = models.DecimalField(max_digits=6, decimal_places=2, default=0, verbose_name="تكلفة الشحن")
     
@@ -186,7 +181,3 @@ class StoreSetting(models.Model):
     class Meta:
         verbose_name = "إعداد المتجر"
         verbose_name_plural = "إعدادات المتجر"
-
-
-    
-    
