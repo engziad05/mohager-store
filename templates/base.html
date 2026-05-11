@@ -557,21 +557,31 @@ body {
     }
 
     .footer-top-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         margin-bottom: 60px;
-        position: relative;
         width: 100%;
+    }
+    
+    .footer-top-divider::before,
+    .footer-top-divider::after {
+        content: '';
         height: 1px;
-        background: linear-gradient(to right, transparent, rgba(200, 169, 107, 0.4), transparent);
+        flex-grow: 1;
         box-shadow: 0 0 10px rgba(200, 169, 107, 0.2);
     }
     
+    .footer-top-divider::before {
+        background: linear-gradient(to left, transparent, rgba(200, 169, 107, 0.4));
+    }
+    
+    .footer-top-divider::after {
+        background: linear-gradient(to right, transparent, rgba(200, 169, 107, 0.4));
+    }
+    
     .footer-top-divider i {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #0b0b0b;
-        padding: 0 25px;
+        margin: 0 25px;
         color: var(--gold);
         font-size: 1.2rem;
         filter: drop-shadow(0 0 10px rgba(200, 169, 107, 0.5));
