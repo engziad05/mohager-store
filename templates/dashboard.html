@@ -22,11 +22,11 @@
     /* ========================================== */
     .dash-top-section {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 30px;
+        flex-direction: column; /* التعديل: خليناهم تحت بعض بدل جنب بعض */
+        align-items: flex-start;
+        gap: 25px; /* مسافة شيك بين الترحيب والكروت */
         margin-bottom: 40px;
+        width: 100%;
     }
 
     .dash-header-text h1 {
@@ -37,18 +37,19 @@
     }
 
     .dash-header-text p {
-        color: rgba(255, 255, 255, 0.68); /* التعديل: تظبيط الـ Contrast */
+        color: rgba(255, 255, 255, 0.68);
         margin: 0;
         font-size: 1rem;
     }
 
     .dash-stats-container {
-        display: flex;
+        display: grid;
+        /* التعديل: 4 عواميد متساوية تاخد العرض بالكامل */
+        grid-template-columns: repeat(4, 1fr); 
         gap: 20px;
-        flex-wrap: wrap;
+        width: 100%;
     }
 
-    /* التعديل: إعادة هيكلة الكروت الإحصائية (Alignment & Breathing Space) */
     .stat-card {
         background: rgba(26, 26, 26, 0.8);
         border: 1px solid rgba(255, 255, 255, 0.05);
@@ -57,9 +58,9 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        min-width: 150px;
         min-height: 110px;
         transition: 0.35s ease;
+        box-sizing: border-box; /* عشان الـ padding ميبوظش العرض */
     }
 
     .stat-card:hover {
@@ -252,10 +253,12 @@
 
     @media (max-width: 992px) {
         .dash-grid { grid-template-columns: 1fr; }
-        .dash-top-section { flex-direction: column; align-items: flex-start; }
-        .dash-stats-container { width: 100%; justify-content: space-between; gap: 15px; }
-        .stat-card { flex: 1; min-width: 45%; }
+        .dash-stats-container { grid-template-columns: repeat(2, 1fr); } /* كارتين في الصف للتابلت والموبايل */
         .hide-mobile { display: none; }
+    }
+    
+    @media (max-width: 576px) {
+        .dash-stats-container { grid-template-columns: 1fr; } /* كارت واحد في الصف للشاشات الصغيرة جداً */
     }
 </style>
 
@@ -355,7 +358,7 @@
                             </td>
                             
                             <td>
-                                <span class="track-btn-sm">التفاصيل</span>
+                                <a href="{% url 'order_detail' order.id %}" class="track-btn-sm" onclick="event.stopPropagation();">التفاصيل</a>
                             </td>
                         </tr>
                         {% endfor %}
