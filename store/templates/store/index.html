@@ -257,14 +257,15 @@
                         </div>
                     </div>
 
-                    <h2>هوية عربية بمستوى عالمي</h2>
-                    <p class="slide-desc">نصمم هويات تجارية عربية تعكس الأصالة ونواكب المعايير العالمية في الإبداع والتميز.</p>
+                    <h2>{{ slide.title_ar }}</h2>
+
+                    <p class="slide-desc">{{ slide.subtitle_ar }}</p>
                     
                     <a href="{{ slide.btn_url|default:'#' }}" class="slide-btn">
-                        <i class="fas fa-arrow-left"></i> {% if slide.btn_text_ar %}{{ slide.btn_text_ar }}{% else %}اطلب الآن{% endif %}
+                        <i class="fas fa-arrow-left"></i> 
+                        {{ slide.btn_text_ar|default:"اطلب الآن" }}
                     </a>
                 </div>
-
                 <div class="slide-image-wrapper">
                     {% if slide.image %}
                         <img src="{{ slide.image.url }}" class="main-logo-img" alt="{{ slide.title_ar }}">
