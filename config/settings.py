@@ -200,3 +200,10 @@ sentry_sdk.init(
     traces_sample_rate=1.0,
 )
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+TIME_ZONE = 'Africa/Cairo' # 🚨 التعديل السحري لتوقيت مصر
+
+USE_I18N = True
+
+USE_TZ = True
