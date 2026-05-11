@@ -18,146 +18,203 @@
     /* ========================================== */
     /* الـ Glow السينمائي الفخم خلف المنتجات */
     /* ========================================== */
-    section { /* السيكشن اللي جواه الجريد بتاع المنتجات */
-        position: relative;
-        z-index: 1;
-    }
+    section { position: relative; z-index: 1; }
     
     section::before {
         content: '';
         position: absolute;
-        top: 50%;
-        left: 50%;
+        top: 50%; left: 50%;
         transform: translate(-50%, -50%);
-        width: 80%;
-        height: 80%;
-        /* ده الـ Glow: إضاءة دهبي خفيفة جداً بتختفي بالتدريج */
+        width: 80%; height: 80%;
         background: radial-gradient(circle, rgba(200, 169, 110, 0.05) 0%, transparent 65%);
         z-index: -1;
-        pointer-events: none; /* عشان ميأثرش على الكليكات */
+        pointer-events: none; 
     }
 
-    /* عشان نضمن إن لو منتج واحد يجي في النص أو يترص بشياكة */
-    .products-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 40px;
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 20px;
-        padding-bottom: 50px !important;
-        justify-content: center; /* بيخلي المنتجات تتوسطن لو هما قليلين */
+    /* ========================================== */
+    /* الهيرو سلايدر (الخلفية المتماثلة) */
+    /* ========================================== */
+    .hero-slider {
+        width: 100%;
+        /* 🚨 لو رفعت الصورة التحفة بتاعتك في فولدر الـ static، شيل الـ comment من السطرين اللي تحت وحط مسارها */
+        /* background-image: url('/static/images/hero-bg.jpg'); */
+        /* background-size: cover; background-position: center; */
+        
+        background: radial-gradient(circle at center, rgba(201,167,92,0.08), transparent 65%), var(--bg-base);
+        border-bottom: 2px solid var(--gold);
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 60px;
     }
-    
-    /* عرض الكارت ثابت عشان ميمطش */
-    .product-card {
-        width: 280px; 
-        background: transparent;
-        border: none;
+
+    .slide-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* 🔥 السر هنا: بيعكس الأماكن (الصورة يمين والنص شمال) */
+        flex-direction: row-reverse; 
+        gap: 100px;
+        min-height: 88vh;
+        padding: 0 7%;
+    }
+
+    /* ========================================== */
+    /* تنسيقات النص والزرار */
+    /* ========================================== */
+    .slide-text {
+        flex: 1;
+        max-width: 520px;
+        padding: 20px;
         display: flex;
         flex-direction: column;
-        transition: transform 0.4s ease;
+        align-items: center;
+        text-align: center;
         position: relative;
+        z-index: 10;
     }
+
+    /* 🔥 إضاءة متماثلة ورا النص عشان اليمين يبقى منور زي الشمال */
+    .slide-text::before {
+        content: "";
+        position: absolute;
+        width: 450px;
+        height: 450px;
+        background: radial-gradient(circle, rgba(201,167,92,0.12), transparent 70%);
+        filter: blur(50px);
+        z-index: -1;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .slide-text h2 {
+        font-size: 5.5rem;
+        line-height: 1;
+        color: var(--gold);
+        font-family: var(--font-heading);
+        margin-bottom: 15px;
+    }
+    
+    .slide-text p.slide-desc {
+        font-size: 1.2rem;
+        color: rgba(255,255,255,0.85);
+        margin-bottom: 20px;
+        font-family: var(--font-body);
+    }
+
+    .slide-divider {
+        width: 120px;
+        height: 1.5px;
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        margin: 20px auto 30px auto;
+        opacity: 0.9;
+        box-shadow: 0 0 8px rgba(201,167,92,0.4);
+    }
+
+    .slide-text p.slide-action-hint {
+        font-size: 1.1rem;
+        color: rgba(255,255,255,0.9);
+        margin-bottom: 15px;
+        font-family: var(--font-body);
+    }
+
+    .slide-btn {
+        background-color: var(--gold);
+        color: var(--bg-base);
+        padding: 12px 50px;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        font-family: var(--font-body);
+        position: relative !important;
+        z-index: 999 !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
+    }
+
+    .slide-btn:hover { 
+        background-color: #e6c072;
+        transform: translateY(-3px); 
+        box-shadow: 0 5px 15px rgba(201,167,92,0.3);
+    }
+
+    /* ========================================== */
+    /* الصورة (الحصان) */
+    /* ========================================== */
+    .slide-image {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: visible;
+    }
+    
+    .slide-image img {
+        width: 100%;
+        max-width: 540px;
+        height: auto;
+        object-fit: contain;
+        position: relative;
+        z-index: 2;
+        filter: drop-shadow(0 0 25px rgba(201,167,92,0.15));
+    }
+
+    .slide-image::before {
+        content: "";
+        position: absolute;
+        width: 520px;
+        height: 520px;
+        background: radial-gradient(circle, rgba(201,167,92,0.14), transparent 70%);
+        filter: blur(50px);
+        z-index: 1;
+    }
+
     /* ========================================== */
     /* شبكة المنتجات (متوازنة وفي السنتر) */
     /* ========================================== */
     .products-grid {
         display: flex;
         flex-wrap: wrap;
-        
-        /* السر هنا: سنترنا المنتجات عشان ميبقاش في فراغ شمال */
-        justify-content: center; 
-        
+        justify-content: center !important; 
         gap: 40px;
         max-width: 1200px;
         margin: 0 auto;
-        padding: 20px 20px 80px 20px !important; 
+        padding: 10px 20px 80px 20px !important; 
         direction: rtl;
     }
 
-    /* ========================================== */
-    /* كارت المنتج (أكبر، أوضح، هو البطل) */
-    /* ========================================== */
-    .product-card {
-        /* كبرناه من 260 لـ 310 عشان يملى العين */
-        width: 310px !important; 
-        
-        background: transparent !important;
-        border: none !important;
-        display: flex;
-        flex-direction: column;
-        align-items: center; 
-    }
-
-    /* الصورة (بطل الحكاية) */
-    .product-img-wrapper {
-        width: 100%;
-        aspect-ratio: 3 / 4; /* مقاس فاشون عالمي */
-        background-color: #0a0a08;
-        overflow: hidden;
-        border-radius: 0px; /* حواف حادة بتدي طابع Streetwear عصري */
-        position: relative;
-    }
-
-    .product-img-wrapper img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1);
-    }
-
-    .product-card:hover .product-img-wrapper img {
-        transform: scale(1.05); /* زووم بسيط جداً */
-    }
-
-    /* النصوص (محاذاة لليمين زي المجلات، بدون Paddings جانبية) */
-   /* ========================================== */
-    /* تفاصيل المنتج (متسنترة وفيها مساحة أمان للزرار) */
-    /* ========================================== */
-    .products-grid {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center !important; /* السر هنا: هيسحب الكارت للنص بالظبط */
-        gap: 40px;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 10px 20px 80px 20px !important; /* قللنا البادينج اللي فوق */
-        direction: rtl;
-    }
-
-    /* ========================================== */
-    /* كارت المنتج (حيوي، متزن، وفيه مساحة للشادو) */
-    /* ========================================== */
     .product-card {
         width: 290px !important;
         background: transparent !important;
-        border: 1px solid transparent !important; /* برواز وهمي عشان الحركة تكون ناعمة */
+        border: 1px solid transparent !important;
         border-radius: 12px;
-        padding: 15px; /* مهم جداً: مسافة داخلية عشان الشادو مياكلش حواف الصورة */
+        padding: 15px; 
         display: flex;
         flex-direction: column;
         align-items: center;
         transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    /* الصورة */
     .product-img-wrapper {
         width: 100%;
-        border-radius: 8px; /* حواف ناعمة كلاسيكية */
+        border-radius: 8px; 
         overflow: hidden;
-        margin-bottom: 15px; /* مسافة نظيفة تفصلها عن الاسم */
+        margin-bottom: 15px; 
         background-color: transparent;
     }
 
     .product-img-wrapper img {
-        width: 100%;
-        height: auto;
+        width: 100% !important;
+        aspect-ratio: 1 / 1 !important; 
+        object-fit: cover !important; 
         display: block;
         border-radius: 8px;
+        margin-bottom: 10px;
+        transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    /* التفاصيل (الاسم والسعر) */
     .product-details {
         width: 100%;
         text-align: center;
@@ -178,21 +235,18 @@
     .product-details p.price {
         color: rgba(200, 169, 110, 0.9);
         font-size: 1.05rem;
-        margin: 0 0 20px 0; /* مسافة صريحة قبل الزرار */
+        margin: 0 0 20px 0; 
         font-family: var(--font-body);
     }
 
-    /* ========================================== */
-    /* الزرار (Classic Premium Button) */
-    /* ========================================== */
     .premium-btn {
         box-sizing: border-box !important;
         display: block;
-        width: 100%; /* واخد عرض الكارت كله بشكل نظيف ومستحيل يتقص */
+        width: 100%; 
         background-color: transparent !important;
         color: var(--gold) !important;
         border: 1px solid var(--gold) !important;
-        border-radius: 6px !important; /* نفس نعومة حواف الصورة */
+        border-radius: 6px !important; 
         padding: 10px 0;
         text-align: center;
         font-family: var(--font-body);
@@ -208,228 +262,64 @@
     }
     
     .product-card:hover {
-        transform: translateY(-6px) scale(1.02); /* نطة خفيفة مع تكبير لا يذكر */
-        background-color: rgba(200, 169, 110, 0.02) !important; /* لمحة دهبي في الخلفية */
-        box-shadow: 0 15px 40px rgba(200, 169, 110, 0.08); /* الشادو الناعم اللي طلبته */
-        border-color: rgba(200, 169, 110, 0.06) !important; /* تحديد خفي جداً للكارت */
-    }
-    /* 3. السحر اللي بيصغر الصورة ويخليها مربعة زي الريفرنس */
-    .product-img-wrapper img {
-        width: 100% !important;
-        aspect-ratio: 1 / 1 !important; 
-        object-fit: cover !important; 
-        border-radius: 8px; 
-        margin-bottom: 10px;
-    }
-
-    /* تنسيقات السلايدر */
-    .hero-slider {
-        width: 100%;
-        background:
-radial-gradient(circle at center,
-rgba(201,167,92,0.08),
-transparent 65%),
-var(--bg-base);
-        border-bottom: 2px solid var(--gold);
-        position: relative;
-        overflow: hidden;
-        margin-bottom: 60px;
-    }
-    .slide-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 100px;
-    min-height: 88vh;
-    padding: 0 7%;
-}
-    /* ========================================== */
-    /* تنسيقات النص والزرار الجديدة (ستايل الريفرنس) */
-    /* ========================================== */
-    .slide-text {
-        flex: 1;
-        max-width: 520px;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        /* السطرين الجداد أهم ضفناهم هنا */
-        position: relative;
-        z-index: 10;
+        transform: translateY(-6px) scale(1.02); 
+        background-color: rgba(200, 169, 110, 0.02) !important; 
+        box-shadow: 0 15px 40px rgba(200, 169, 110, 0.08); 
+        border-color: rgba(200, 169, 110, 0.06) !important; 
     }
     
-    /* لو هتستخدم صورة للمخطوطة مستقبلاً */
-    .calligraphy-img {
-        width: 280px;
-        margin-bottom: 20px;
-        filter: drop-shadow(0 0 10px rgba(201,167,92,0.2));
+    .product-card:hover .product-img-wrapper img {
+        transform: scale(1.05);
     }
 
-    .slide-text h2 {
-        font-size: 5.5rem;
-        line-height: 1;
-        color: var(--gold);
-        font-family: var(--font-heading);
-        margin-bottom: 15px;
-    }
-    
-    .slide-text p.slide-desc {
-        font-size: 1.2rem;
-        color: rgba(255,255,255,0.85);
-        margin-bottom: 20px;
-        font-family: var(--font-body);
-    }
-
-    
-    /* الخط الذهبي الفاصل (ستايل فخم متدرج) */
-    .slide-divider {
-        width: 120px; /* كبرنا العرض شوية */
-        height: 1.5px; /* رفعناه عشان يبان أرقى */
-        /* عملنا تدرج لوني: شفاف -> دهبي -> شفاف */
-        background: linear-gradient(90deg, transparent, var(--gold), transparent);
-        margin: 20px auto 30px auto;
-        opacity: 0.9;
-        /* ضفنا توهج خفيف للخط */
-        box-shadow: 0 0 8px rgba(201,167,92,0.4);
-    }
-
-    .slide-text p.slide-action-hint {
-        font-size: 1.1rem;
-        color: rgba(255,255,255,0.9);
-        margin-bottom: 15px;
-        font-family: var(--font-body);
-    }
-
-    .slide-btn {
-        background-color: var(--gold);
-        color: var(--bg-base); /* اللون أسود/غامق زي الصورة */
-        padding: 12px 50px;
-        text-decoration: none;
-        font-weight: bold;
-        border-radius: 8px; /* حواف ناعمة زي الريفرنس */
-        font-size: 1.2rem;
-        transition: all 0.3s ease;
-        font-family: var(--font-body);
-        /* الأربع سطور الجداد أهم عشان الكليك يشتغل على الموبايل */
-        position: relative !important;
-        z-index: 999 !important;
-        pointer-events: auto !important;
-        cursor: pointer !important;
-    }
-
-    .slide-btn:hover { 
-        background-color: #e6c072; /* درجة أفتح شوية لما تقف عليه */
-        transform: translateY(-3px); 
-        color: var(--bg-base);
-        box-shadow: 0 5px 15px rgba(201,167,92,0.3);
-    }
-    .slide-image { flex: 1; display: flex; justify-content: center; align-items: center; }
-    .slide-image img {
-    width: 100%;
-    max-width: 540px;
-    height: auto;
-    object-fit: contain;
-    position: relative;
-    z-index: 2;
-    filter: drop-shadow(0 0 25px rgba(201,167,92,0.15));
-}
-    @media (max-width: 768px) 
-
-    .slide-content {
-        flex-direction: column-reverse;
-        text-align: center;
-        padding: 20px 5%;
-        gap: 10px;
-        min-height: auto;
-    }
-
-    .slide-text {
-        max-width: 100%;
-        padding: 10px;
-    }
-
-    .slide-text h2 {
-        font-size: 3rem;
-        line-height: 1.2;
-        margin-bottom: 15px;
-    }
-
-    .slide-text p {
-        font-size: 1rem;
-        margin-bottom: 20px;
-    }
-
-    .slide-image {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    overflow: visible;
-}
-
-.slide-image::before {
-    content: "";
-    position: absolute;
-    width: 520px;
-    height: 520px;
-    background: radial-gradient(
-        circle,
-        rgba(201,167,92,0.14),
-        transparent 70%
-    );
-    filter: blur(50px);
-    z-index: 1;
-}
-@media (max-width: 768px) {
-
-    .slide-btn {
-        width: 100%;
-        max-width: 260px;
-        padding: 14px 20px;
-        font-size: 1rem;
-    }
     /* ========================================== */
-    /* تظبيط الموبايل للهيرو سلايدر والمنتجات */
+    /* تظبيط الموبايل بعد تنظيف الكود المتكرر */
     /* ========================================== */
     @media (max-width: 768px) {
-        /* 1. الهيرو سلايدر (ترتيب عمودي بدل الزنقة) */
         .slide-content {
             flex-direction: column; /* النص فوق والصورة تحته */
             text-align: center;
             gap: 30px;
             padding: 40px 20px;
-        }
-        .slide-text, .slide-image {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .slide-image img {
-            max-width: 75%; /* بنصغر الحصان شوية عشان الشاشة */
-            margin: 0 auto;
+            min-height: auto !important;
         }
         
-        /* بنلغي الفراغ الأسود الضخم اللي فوق السلايدر */
-        .hero-slider {
-            min-height: auto !important;
-            padding-top: 20px;
+        .slide-text, .slide-image {
+            width: 100%;
+            max-width: 100%;
+        }
+        
+        .slide-image img {
+            max-width: 75%; 
+            margin: 0 auto;
         }
 
-        /* 2. المنتجات (تكبير الكارت وتقليل الفراغات) */
+        .slide-text h2 {
+            font-size: 3rem;
+            line-height: 1.2;
+        }
+        
+        .hero-slider {
+            padding-top: 20px;
+        }
+        
+        .slide-btn {
+            width: 100%;
+            max-width: 260px;
+            padding: 14px 20px;
+            font-size: 1rem;
+        }
+
         .products-grid {
             padding: 10px 10px 40px 10px !important;
             gap: 30px;
         }
+        
         .product-card {
-            width: 90% !important; /* بنخلي الكارت ياخد عرض شاشة الموبايل بشكل مريح */
+            width: 90% !important; 
             max-width: 340px;
         }
     }
-}
-
 </style>
 
 <!-- سلايدر العروض -->
