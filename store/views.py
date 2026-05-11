@@ -380,7 +380,7 @@ def checkout(request):
                 )
                 
                 # 3. حفظ العنوان للمرات القادمة
-                i# --- 1. حفظ العنوان للمرات القادمة ---
+                # --- 1. حفظ العنوان للمرات القادمة ---
                 if request.user.is_authenticated:
                     address_record, created = SavedAddress.objects.get_or_create(user=request.user)
                     address_record.phone = request.POST.get('phone')
