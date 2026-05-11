@@ -37,28 +37,29 @@
     }
 
     .dash-header-text p {
-        color: #888;
+        color: rgba(255, 255, 255, 0.68); /* التعديل: تظبيط الـ Contrast */
         margin: 0;
         font-size: 1rem;
     }
 
     .dash-stats-container {
         display: flex;
-        gap: 20px; /* التعديل: وسعنا المسافة لـ 20px */
+        gap: 20px;
         flex-wrap: wrap;
     }
 
+    /* التعديل: إعادة هيكلة الكروت الإحصائية (Alignment & Breathing Space) */
     .stat-card {
         background: rgba(26, 26, 26, 0.8);
         border: 1px solid rgba(255, 255, 255, 0.05);
         border-radius: 12px;
-        padding: 15px 20px;
+        padding: 20px;
         display: flex;
-        align-items: center;
-        gap: 20px;
-        min-width: 140px;
-        min-height: 110px; /* التعديل: زودنا الارتفاع لفخامة أكتر */
-        transition: 0.3s;
+        flex-direction: column;
+        justify-content: space-between;
+        min-width: 150px;
+        min-height: 110px;
+        transition: 0.35s ease;
     }
 
     .stat-card:hover {
@@ -66,21 +67,29 @@
         transform: translateY(-2px);
     }
 
+    .stat-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .stat-label { color: rgba(255, 255, 255, 0.68); font-size: 0.9rem; }
+    
     .stat-icon {
-        width: 40px;
-        height: 40px;
-        background: rgba(200, 169, 110, 0.1);
+        width: 32px;
+        height: 32px;
+        background: rgba(200, 169, 110, 0.08);
         border-radius: 50%;
         display: flex;
         justify-content: center;
         align-items: center;
         color: var(--gold);
-        font-size: 1.2rem;
+        font-size: 0.95rem;
     }
 
-    .stat-info { display: flex; flex-direction: column; align-items: flex-start; }
-    .stat-num { color: var(--cream); font-family: var(--font-en); font-size: 1.4rem; font-weight: bold; line-height: 1; margin-bottom: 5px; }
-    .stat-label { color: #888; font-size: 0.85rem; }
+    .stat-num { color: var(--cream); font-family: var(--font-en); font-size: 2rem; font-weight: bold; line-height: 1; }
 
     /* ========================================== */
     /* الجريد (جدول يمين - تفاصيل شمال) */
@@ -103,11 +112,13 @@
     /* ========================================== */
     /* جدول الطلبات (اليمين) */
     /* ========================================== */
+    /* التعديل: Subtle Line Glow للهيدر */
     .table-header-flex {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid rgba(200, 169, 110, 0.2);
+        border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+        box-shadow: 0 1px 12px rgba(212, 175, 55, 0.04);
         padding-bottom: 15px;
         margin-bottom: 20px;
     }
@@ -116,16 +127,24 @@
     .table-header-flex span { color: var(--gold); font-family: var(--font-body); font-size: 0.9rem; background: rgba(200, 169, 110, 0.1); padding: 4px 10px; border-radius: 6px; }
 
     .orders-table { width: 100%; border-collapse: collapse; text-align: right; }
-    .orders-table th { color: #888; font-weight: normal; padding: 10px 15px; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    .orders-table th { color: rgba(255, 255, 255, 0.68); font-weight: normal; padding: 10px 15px; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
     .orders-table td { padding: 15px; color: var(--cream); font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); vertical-align: middle; }
     
-    /* التعديل: Active State للـ Row */
+    /* التعديل: Hover State ناعم للـ Rows مع لون ذهبي للـ ID */
     .order-row { 
         cursor: pointer; 
         transition: 0.3s; 
-        border-right: 3px solid transparent; /* عشان ميحصلش Shift للصفحة */
+        border-right: 3px solid transparent; 
     }
-    .order-row:hover { background: rgba(255, 255, 255, 0.02); }
+    
+    .order-row:hover { 
+        background: rgba(255, 255, 255, 0.03); 
+    }
+    
+    .order-row:hover .order-id-cell {
+        color: #f5d77f; /* ذهبي فاتح */
+        text-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+    }
     
     .order-row.active-row { 
         background: rgba(212, 175, 55, 0.05); 
@@ -134,12 +153,12 @@
     
     .order-row:last-child td { border-bottom: none; }
 
-    /* التعديل: Letter Spacing للأرقام */
     .order-id-cell {
         font-family: var(--font-en); 
         font-weight: bold; 
         color: var(--gold);
         letter-spacing: 1px;
+        transition: 0.3s ease;
     }
 
     /* الحالات (Badges) + Animated Pulse */
@@ -147,39 +166,15 @@
     @keyframes pulse-blue { 0% { box-shadow: 0 0 0 0 rgba(77, 166, 255, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(77, 166, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(77, 166, 255, 0); } }
     @keyframes pulse-green { 0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(76, 175, 80, 0); } 100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); } }
 
-    .status-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: rgba(0, 0, 0, 0.4);
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        font-family: var(--font-body);
-    }
+    .status-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 0, 0, 0.4); padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-family: var(--font-body); }
     .status-badge::before { content: ''; width: 8px; height: 8px; border-radius: 50%; }
     
-    .status-pending { color: var(--gold); }
-    .status-pending::before { background-color: var(--gold); animation: pulse-gold 2s infinite; }
-    
-    .status-shipped { color: #4da6ff; }
-    .status-shipped::before { background-color: #4da6ff; animation: pulse-blue 2s infinite; }
-    
-    .status-delivered { color: #4caf50; }
-    .status-delivered::before { background-color: #4caf50; animation: pulse-green 2s infinite; }
+    .status-pending { color: var(--gold); } .status-pending::before { background-color: var(--gold); animation: pulse-gold 2s infinite; }
+    .status-shipped { color: #4da6ff; } .status-shipped::before { background-color: #4da6ff; animation: pulse-blue 2s infinite; }
+    .status-delivered { color: #4caf50; } .status-delivered::before { background-color: #4caf50; animation: pulse-green 2s infinite; }
 
-    .track-btn-sm {
-        background: transparent;
-        color: var(--gold);
-        border: 1px solid rgba(200, 169, 110, 0.4);
-        padding: 6px 15px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 0.85rem;
-        transition: 0.3s;
-        display: inline-block;
-    }
-    .track-btn-sm:hover { background: rgba(200, 169, 110, 0.1); border-color: var(--gold); }
+    .track-btn-sm { background: transparent; color: rgba(255,255,255,0.68); border: 1px solid rgba(255, 255, 255, 0.2); padding: 6px 15px; border-radius: 6px; font-size: 0.85rem; transition: 0.3s; display: inline-block; }
+    .track-btn-sm:hover { background: rgba(255, 255, 255, 0.05); color: var(--cream); border-color: rgba(255, 255, 255, 0.4); }
 
     /* ========================================== */
     /* تفاصيل الطلب (الشمال) */
@@ -187,45 +182,66 @@
     .details-title { color: var(--cream); font-family: var(--font-heading); font-size: 1.3rem; margin: 0 0 10px 0; display: flex; align-items: center; justify-content: space-between; }
     .details-title i { color: var(--gold); }
 
-    /* التعديل: Visual Grouping */
     .detail-group-title {
         font-size: 0.85rem;
         color: rgba(255, 255, 255, 0.4);
         margin: 25px 0 15px 0;
         padding-bottom: 5px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        /* التعديل: Subtle Line Glow للفواصل الداخلية */
+        border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+        box-shadow: 0 1px 12px rgba(212, 175, 55, 0.04);
         font-family: var(--font-body);
     }
     .detail-group-title:first-of-type { margin-top: 15px; }
 
     .detail-item { display: flex; flex-direction: column; margin-bottom: 15px; }
-    .detail-label { color: #888; font-size: 0.85rem; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+    .detail-label { color: rgba(255, 255, 255, 0.68); font-size: 0.85rem; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
     .detail-label i { color: var(--gold); width: 15px; text-align: center; }
-    .detail-value { color: var(--cream); font-size: 1rem; padding-right: 23px; }
     
+    /* التعديل: Line-height عشان المحتوى يتنفس */
+    .detail-value { color: var(--cream); font-size: 1rem; padding-right: 23px; line-height: 1.9; }
     .detail-value.en-font { font-family: var(--font-en); letter-spacing: 1px; }
 
-    /* التعديل: زرار تتبع أنعم */
+    /* التعديل: أزرار الـ Actions تحت (أنعم وأفخم) */
+    .actions-row { display: flex; gap: 15px; margin-top: 30px; }
+    
     .track-btn-large {
-        display: block;
-        width: 100%;
+        flex: 2;
         background-color: var(--gold);
         color: var(--bg-base);
         text-align: center;
-        padding: 15px;
+        padding: 14px;
         border-radius: 8px;
         font-weight: bold;
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         text-decoration: none;
-        margin-top: 30px;
         transition: 0.35s ease;
-        box-sizing: border-box;
+        border: none;
     }
     .track-btn-large:hover { background-color: var(--cream); transform: translateY(-1px); }
 
+    .copy-btn-outline {
+        flex: 1;
+        background-color: transparent;
+        color: var(--cream);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        text-align: center;
+        padding: 14px;
+        border-radius: 8px;
+        font-family: var(--font-body);
+        font-size: 1.05rem;
+        cursor: pointer;
+        transition: 0.35s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+    }
+    .copy-btn-outline:hover { background-color: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.5); }
+
     .security-note {
         text-align: center;
-        color: rgba(255,255,255,0.4);
+        color: rgba(255, 255, 255, 0.4);
         font-size: 0.8rem;
         margin-top: 20px;
         display: flex;
@@ -237,7 +253,7 @@
     @media (max-width: 992px) {
         .dash-grid { grid-template-columns: 1fr; }
         .dash-top-section { flex-direction: column; align-items: flex-start; }
-        .dash-stats-container { width: 100%; justify-content: space-between; }
+        .dash-stats-container { width: 100%; justify-content: space-between; gap: 15px; }
         .stat-card { flex: 1; min-width: 45%; }
         .hide-mobile { display: none; }
     }
@@ -253,32 +269,35 @@
         
         <div class="dash-stats-container">
             <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-shopping-bag"></i></div>
-                <div class="stat-info">
-                    <span class="stat-num" id="stat-total">{{ orders|length|default:"0" }}</span>
+                <div class="stat-header-row">
                     <span class="stat-label">إجمالي الطلبات</span>
+                    <div class="stat-icon"><i class="fas fa-shopping-bag"></i></div>
                 </div>
+                <span class="stat-num" id="stat-total">{{ orders|length|default:"0" }}</span>
             </div>
+            
             <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-clock"></i></div>
-                <div class="stat-info">
-                    <span class="stat-num" id="stat-pending">0</span>
+                <div class="stat-header-row">
                     <span class="stat-label">قيد الانتظار</span>
+                    <div class="stat-icon"><i class="fas fa-clock" style="color: #bbb;"></i></div>
                 </div>
+                <span class="stat-num" id="stat-pending">0</span>
             </div>
+            
             <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-truck"></i></div>
-                <div class="stat-info">
-                    <span class="stat-num" id="stat-shipped">0</span>
+                <div class="stat-header-row">
                     <span class="stat-label">قيد الشحن</span>
+                    <div class="stat-icon"><i class="fas fa-truck" style="color: #4da6ff;"></i></div>
                 </div>
+                <span class="stat-num" id="stat-shipped">0</span>
             </div>
+            
             <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-check"></i></div>
-                <div class="stat-info">
-                    <span class="stat-num" id="stat-delivered">0</span>
+                <div class="stat-header-row">
                     <span class="stat-label">تم التسليم</span>
+                    <div class="stat-icon"><i class="fas fa-check" style="color: #4caf50;"></i></div>
                 </div>
+                <span class="stat-num" id="stat-delivered">0</span>
             </div>
         </div>
     </div>
@@ -287,7 +306,7 @@
         
         <div class="glass-panel" style="padding: 25px 30px;">
             <div class="table-header-flex">
-                <span>كل {{ orders|length|default:"0" }} طلب</span>
+                <span>إجمالي الطلبات: {{ orders|length|default:"0" }}</span>
             </div>
 
             {% if orders %}
@@ -299,7 +318,7 @@
                             <th>التاريخ</th>
                             <th>الإجمالي</th>
                             <th class="hide-mobile">الحالة</th>
-                            <th>التتبع</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -336,7 +355,7 @@
                             </td>
                             
                             <td>
-                                <span class="track-btn-sm">تتبع الطلب</span>
+                                <span class="track-btn-sm">التفاصيل</span>
                             </td>
                         </tr>
                         {% endfor %}
@@ -346,7 +365,7 @@
             {% else %}
             <div style="text-align: center; padding: 40px 0;">
                 <i class="fas fa-box-open" style="font-size: 3rem; color: rgba(255,255,255,0.1); margin-bottom: 15px;"></i>
-                <p style="color: #888;">لا توجد طلبات سابقة حتى الآن.</p>
+                <p style="color: rgba(255, 255, 255, 0.68);">لا توجد طلبات سابقة حتى الآن.</p>
                 <a href="{% url 'shop' %}" style="display: inline-block; margin-top: 15px; background-color: var(--gold); color: var(--bg-base); padding: 8px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
                     تصفح المتجر
                 </a>
@@ -360,53 +379,52 @@
             <div id="smart-order-details">
                 {% if orders %}
                     <div class="detail-group-title">معلومات التواصل</div>
-                    
                     <div class="detail-item">
                         <span class="detail-label"><i class="fas fa-hashtag"></i> رقم الطلب</span>
                         <span class="detail-value en-font" id="pane-id">-</span>
                     </div>
-                    
                     <div class="detail-item">
                         <span class="detail-label"><i class="fas fa-phone-alt"></i> رقم التليفون</span>
                         <span class="detail-value en-font" id="pane-phone">-</span>
                     </div>
                     
                     <div class="detail-group-title">عنوان التوصيل</div>
-                    
                     <div class="detail-item">
                         <span class="detail-label"><i class="fas fa-map-marker-alt"></i> المحافظة</span>
                         <span class="detail-value" id="pane-region">-</span>
                     </div>
-                    
                     <div class="detail-item">
                         <span class="detail-label"><i class="fas fa-map"></i> العنوان التفصيلي</span>
-                        <span class="detail-value" style="font-size: 0.9rem; line-height: 1.5;" id="pane-address">-</span>
+                        <span class="detail-value" style="font-size: 0.9rem;" id="pane-address">-</span>
                     </div>
                     
                     <div class="detail-group-title">ملاحظات الطلب</div>
-                    
                     <div class="detail-item">
                         <span class="detail-label"><i class="fas fa-comment-alt"></i> ملاحظات</span>
                         <span class="detail-value" style="font-size: 0.9rem;" id="pane-landmark">-</span>
                     </div>
 
                     <div class="detail-group-title">ملخص الفاتورة</div>
-
                     <div class="detail-item">
                         <span class="detail-label"><i class="far fa-calendar-alt"></i> تاريخ الطلب</span>
                         <span class="detail-value en-font" style="font-size: 0.9rem;" id="pane-date">-</span>
                     </div>
-                    
                     <div class="detail-item" style="margin-bottom: 0;">
                         <span class="detail-label"><i class="fas fa-wallet"></i> الإجمالي</span>
                         <span class="detail-value en-font" style="color: var(--gold); font-size: 1.3rem; font-weight: bold;" id="pane-total">-</span>
                     </div>
 
-                    <a href="#" id="pane-track-btn" class="track-btn-large">
-                        تتبع الطلب <i class="fas fa-truck" style="margin-right: 8px;"></i>
-                    </a>
+                    <div class="actions-row">
+                        <a href="#" id="pane-track-btn" class="track-btn-large">
+                            تتبع الطلب <i class="fas fa-truck" style="margin-right: 8px;"></i>
+                        </a>
+                        <button type="button" id="pane-copy-btn" class="copy-btn-outline" title="نسخ رقم الطلب">
+                            نسخ <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+
                 {% else %}
-                    <p style="text-align: center; color: #888; font-size: 0.9rem; margin-top: 50px;">قم بعمل طلبك الأول لتظهر التفاصيل هنا.</p>
+                    <p style="text-align: center; color: rgba(255, 255, 255, 0.68); font-size: 0.9rem; margin-top: 50px;">قم بعمل طلبك الأول لتظهر التفاصيل هنا.</p>
                 {% endif %}
             </div>
 
@@ -452,6 +470,26 @@
                 document.getElementById('pane-track-btn').setAttribute('href', this.getAttribute('data-url'));
             });
         });
+
+        // سكريبت النسخ الذكي لرقم الطلب
+        const copyBtn = document.getElementById('pane-copy-btn');
+        if(copyBtn) {
+            copyBtn.addEventListener('click', function() {
+                const orderId = document.getElementById('pane-id').innerText;
+                navigator.clipboard.writeText(orderId);
+                
+                const originalHtml = this.innerHTML;
+                this.innerHTML = 'تم <i class="fas fa-check"></i>';
+                this.style.color = '#4caf50';
+                this.style.borderColor = '#4caf50';
+                
+                setTimeout(() => {
+                    this.innerHTML = originalHtml;
+                    this.style.color = '';
+                    this.style.borderColor = '';
+                }, 2000);
+            });
+        }
 
         if (rows.length > 0) {
             rows[0].click();
