@@ -33,12 +33,12 @@
     .slide-content {
         display: flex;
         align-items: center;
-        justify-content: space-between; /* توزيع متوازن بعرض الشاشة */
-        max-width: 1400px; /* حاوية أوسع لإحساس أكثر فخامة (Immersive) */
+        justify-content: center; /* سنترة المحتوى في المنتصف بدل توزيعه للأطراف */
+        max-width: 1200px;
         margin: 0 auto;
-        min-height: 75vh; /* زيادة الارتفاع */
+        min-height: 70vh; /* زيادة الارتفاع لجعله أكثر فخامة (Cinematic) */
         padding: 40px 5%;
-        gap: 40px;
+        gap: 8%; /* مسافة ديناميكية متناسقة بين النص والصورة */
     }
 
     /* ========================================== */
@@ -49,13 +49,14 @@
     /* ========================================== */
     .slide-text {
         flex: 1;
-        max-width: 600px; /* مساحة أكبر للنص */
+        max-width: 480px; /* توازن عرض النص مع عرض الصورة */
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         /* محاذاة لليمين */
         text-align: right;
         z-index: 10;
+        /* تم إزالة الـ padding-left لتجنب أي فراغات غير مبررة */
     }
 
     .titles-wrapper {
@@ -68,7 +69,8 @@
 
     /* 🚨 ده العنوان اللي هيسحب كلمة "مهاجر" من الباك اند 🚨 */
     .slide-text h2 {
-        font-size: 5.5rem; /* تكبير الاسم لإبراز البراند وإعطاء شعور فخم */
+        font-size: 4.5rem;
+        /* كبرناه عشان ده اسم البراند */
         line-height: 1;
         color: var(--gold, #dcb36a);
         font-family: var(--font-heading, serif);
@@ -165,9 +167,9 @@
     .slide-image-wrapper {
         flex: 1;
         width: 100%;
-        max-width: 600px; /* توازن مع عرض النص */
+        max-width: 480px; /* توازن عرض الصورة مع عرض النص */
         display: flex;
-        justify-content: center;
+        justify-content: center; /* سنترة الحصان داخل الجزء الخاص به */
         align-items: center;
         position: relative;
     }
@@ -175,8 +177,8 @@
     .slide-image-wrapper::before {
         content: '';
         position: absolute;
-        width: 550px;
-        height: 550px;
+        width: 480px;
+        height: 480px;
         border: 1px solid rgba(201, 167, 92, 0.3);
         border-radius: 50%;
         z-index: 1;
@@ -186,8 +188,8 @@
     .slide-image-wrapper::after {
         content: '';
         position: absolute;
-        width: 400px;
-        height: 400px;
+        width: 360px;
+        height: 360px;
         border: 1px solid rgba(201, 167, 92, 0.15);
         border-radius: 50%;
         z-index: 1;
@@ -195,12 +197,12 @@
 
     .main-logo-img {
         width: 100% !important;
-        max-width: 480px !important; /* تكبير الحصان ليملأ الفراغ */
+        max-width: 420px !important;
         height: auto;
         object-fit: contain;
         position: relative;
         z-index: 2;
-        filter: drop-shadow(0 0 35px rgba(201, 167, 92, 0.3)); /* توهج أفخم */
+        filter: drop-shadow(0 0 25px rgba(201, 167, 92, 0.2));
         mix-blend-mode: screen;
     }
 
