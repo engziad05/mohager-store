@@ -4,7 +4,7 @@
 {% block extra_css %}
 <style>
     .bg-watermark {
-        background-position: 40% 60% !important; 
+        background-position: 40% 60% !important;
     }
 </style>
 {% endblock %}
@@ -21,14 +21,13 @@
     /* ========================================== */
     .hero-slider {
         width: 100%;
-        background: 
-            linear-gradient(to bottom, rgba(10, 10, 8, 0.8), rgba(10, 10, 8, 0.3)),
-            url('{% static "images/hero-bg.jpg" %}');
-        background-size: cover; 
-        background-position: center bottom; 
-        border-bottom: 1px solid rgba(201,167,92,0.2);
+        background: linear-gradient(to bottom, rgba(10, 10, 8, 0.8), rgba(10, 10, 8, 0.3)),
+        url('{% static "images/hero-bg.jpg" %}');
+        background-size: cover;
+        background-position: center bottom;
+        border-bottom: 1px solid rgba(201, 167, 92, 0.2);
         position: relative;
-        direction: rtl; 
+        direction: rtl;
     }
 
     .slide-content {
@@ -37,8 +36,8 @@
         justify-content: space-between;
         max-width: 1200px;
         margin: 0 auto;
-        min-height: 60vh; 
-        padding: 20px 20px 40px 20px; 
+        min-height: 60vh;
+        padding: 20px 20px 40px 20px;
         gap: 40px;
     }
 
@@ -50,11 +49,12 @@
     /* ========================================== */
     .slide-text {
         flex: 1;
-        max-width: 520px; 
+        max-width: 520px;
         display: flex;
         flex-direction: column;
-        align-items: flex-start; /* محاذاة لليمين */
-        text-align: right; 
+        align-items: flex-start;
+        /* محاذاة لليمين */
+        text-align: right;
         z-index: 10;
         padding-left: 20px;
     }
@@ -69,55 +69,60 @@
 
     /* 🚨 ده العنوان اللي هيسحب كلمة "مهاجر" من الباك اند 🚨 */
     .slide-text h2 {
-        font-size: 4.5rem; /* كبرناه عشان ده اسم البراند */
+        font-size: 4.5rem;
+        /* كبرناه عشان ده اسم البراند */
         line-height: 1;
         color: var(--gold, #dcb36a);
         font-family: var(--font-heading, serif);
         margin: 0 0 5px 0;
-        text-shadow: 0 0 15px rgba(201,167,92,0.3);
+        text-shadow: 0 0 15px rgba(201, 167, 92, 0.3);
     }
 
     .top-logo-text {
-        color: rgba(255,255,255,0.7);
+        color: rgba(255, 255, 255, 0.7);
         font-family: var(--font-en, sans-serif);
         font-size: 1rem;
-        letter-spacing: 12px; /* مسافات واسعة وفخمة */
+        letter-spacing: 12px;
+        /* مسافات واسعة وفخمة */
         margin-bottom: 15px;
-        margin-left: 12px; 
+        margin-left: 12px;
     }
 
     .custom-divider {
         display: flex;
         align-items: center;
         gap: 15px;
-        width: 100%; 
+        width: 100%;
     }
-    
-    .custom-divider::before, .custom-divider::after {
+
+    .custom-divider::before,
+    .custom-divider::after {
         content: '';
-        flex: 1; 
+        flex: 1;
         height: 1px;
     }
 
     .custom-divider::after {
-        background: linear-gradient(to left, rgba(201,167,92,0.4), transparent);
+        background: linear-gradient(to left, rgba(201, 167, 92, 0.4), transparent);
     }
+
     .custom-divider::before {
-        background: linear-gradient(to right, rgba(201,167,92,0.4), transparent);
+        background: linear-gradient(to right, rgba(201, 167, 92, 0.4), transparent);
     }
-    
+
     .custom-divider .diamond {
-        width: 6px; height: 6px;
+        width: 6px;
+        height: 6px;
         background: var(--gold, #dcb36a);
         transform: rotate(45deg);
-        box-shadow: 0 0 8px rgba(201,167,92,0.8);
+        box-shadow: 0 0 8px rgba(201, 167, 92, 0.8);
     }
-    
+
     /* 🚨 الوصف اللي هيسحب "هوية عربية بستايل عصري" 🚨 */
     .slide-desc {
         font-size: 1.15rem;
         line-height: 1.8;
-        color: rgba(255,255,255,0.8);
+        color: rgba(255, 255, 255, 0.8);
         margin-bottom: 20px;
         font-family: var(--font-body, sans-serif);
         width: 100%;
@@ -126,14 +131,14 @@
     /* 🚨 الجملة التحفيزية اللي ضفناها (لطلب مهاجر الآن) 🚨 */
     .action-hint {
         font-size: 1.05rem;
-        color: rgba(255,255,255,0.95);
+        color: rgba(255, 255, 255, 0.95);
         margin-bottom: 15px;
         font-family: var(--font-body, sans-serif);
         font-weight: bold;
     }
 
     .slide-btn {
-        background-color: #dcb36a; 
+        background-color: #dcb36a;
         color: #111;
         padding: 12px 40px;
         text-decoration: none;
@@ -147,8 +152,8 @@
         gap: 12px;
     }
 
-    .slide-btn:hover { 
-        transform: translateY(-3px); 
+    .slide-btn:hover {
+        transform: translateY(-3px);
         opacity: 0.9;
     }
 
@@ -158,7 +163,8 @@
     .slide-image-wrapper {
         flex: 1;
         width: 100%;
-        max-width: 50%; /* 🚨 لجمنا الحصان عشان ميكبرش 🚨 */
+        max-width: 50%;
+        /* 🚨 لجمنا الحصان عشان ميكبرش 🚨 */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -168,33 +174,33 @@
     .slide-image-wrapper::before {
         content: '';
         position: absolute;
-        width: 480px; 
-        height: 480px; 
-        border: 1px solid rgba(201,167,92,0.3);
+        width: 480px;
+        height: 480px;
+        border: 1px solid rgba(201, 167, 92, 0.3);
         border-radius: 50%;
         z-index: 1;
-        box-shadow: inset 0 0 40px rgba(201,167,92,0.05);
+        box-shadow: inset 0 0 40px rgba(201, 167, 92, 0.05);
     }
 
     .slide-image-wrapper::after {
         content: '';
         position: absolute;
-        width: 360px; 
-        height: 360px; 
-        border: 1px solid rgba(201,167,92,0.15);
+        width: 360px;
+        height: 360px;
+        border: 1px solid rgba(201, 167, 92, 0.15);
         border-radius: 50%;
         z-index: 1;
     }
 
     .main-logo-img {
         width: 100% !important;
-        max-width: 420px !important; 
+        max-width: 420px !important;
         height: auto;
         object-fit: contain;
         position: relative;
         z-index: 2;
-        filter: drop-shadow(0 0 25px rgba(201,167,92,0.2));
-        mix-blend-mode: screen; 
+        filter: drop-shadow(0 0 25px rgba(201, 167, 92, 0.2));
+        mix-blend-mode: screen;
     }
 
     /* ========================================== */
@@ -207,52 +213,202 @@
         gap: 60px;
         padding: 20px 5%;
         background: rgba(10, 10, 8, 0.6);
-        border-top: 1px solid rgba(201,167,92,0.1);
+        border-top: 1px solid rgba(201, 167, 92, 0.1);
         direction: rtl;
         position: relative;
         z-index: 10;
     }
 
-    .hero-feature { display: flex; align-items: center; gap: 15px; }
-    .hero-feature i { color: #dcb36a; font-size: 1.5rem; opacity: 0.9; }
-    .feature-text { display: flex; flex-direction: column; text-align: right; }
-    .feature-text h4 { color: rgba(255,255,255,0.9); margin: 0; font-size: 0.95rem; font-family: var(--font-body, sans-serif); }
-    .feature-text p { color: rgba(255,255,255,0.5); font-size: 0.8rem; margin: 3px 0 0 0; }
+    .hero-feature {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .hero-feature i {
+        color: #dcb36a;
+        font-size: 1.5rem;
+        opacity: 0.9;
+    }
+
+    .feature-text {
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+    }
+
+    .feature-text h4 {
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+        font-size: 0.95rem;
+        font-family: var(--font-body, sans-serif);
+    }
+
+    .feature-text p {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.8rem;
+        margin: 3px 0 0 0;
+    }
 
     /* ========================================== */
     /* 5. شبكة المنتجات */
     /* ========================================== */
     .products-grid {
-        display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; max-width: 1200px; margin: 0 auto; padding: 0px 20px 60px 20px !important; direction: rtl;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0px 20px 60px 20px !important;
+        direction: rtl;
     }
+
     .product-card {
-        width: 290px !important; background: transparent !important; border: 1px solid transparent !important; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        width: 290px !important;
+        background: transparent !important;
+        border: 1px solid transparent !important;
+        border-radius: 12px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
-    .product-img-wrapper { width: 100%; border-radius: 8px; overflow: hidden; margin-bottom: 15px; background-color: transparent; }
-    .product-img-wrapper img { width: 100% !important; aspect-ratio: 1 / 1 !important; object-fit: cover !important; display: block; border-radius: 8px; }
-    .product-details { width: 100%; text-align: center; display: flex; flex-direction: column; align-items: center; padding: 0 !important; }
-    .product-details h3 { color: var(--cream, #f5f5f0); font-size: 1.15rem; margin: 0 0 5px 0; font-family: var(--font-body, sans-serif); font-weight: 600; }
-    .product-details p.price { color: rgba(200, 169, 110, 0.9); font-size: 1.05rem; margin: 0 0 20px 0; font-family: var(--font-body, sans-serif); }
-    .premium-btn { box-sizing: border-box !important; display: block; width: 100%; background-color: transparent !important; color: var(--gold, #dcb36a) !important; border: 1px solid var(--gold, #dcb36a) !important; border-radius: 6px !important; padding: 10px 0; text-align: center; font-family: var(--font-body, sans-serif); font-weight: 600; font-size: 1rem; text-decoration: none; transition: all 0.3s ease; }
-    .premium-btn:hover { background-color: var(--gold, #dcb36a) !important; color: var(--bg-base, #111) !important; }
-    .product-card:hover { transform: translateY(-6px) scale(1.02); background-color: rgba(200, 169, 110, 0.02) !important; box-shadow: 0 15px 40px rgba(200, 169, 110, 0.08); }
+
+    .product-img-wrapper {
+        width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 15px;
+        background-color: transparent;
+    }
+
+    .product-img-wrapper img {
+        width: 100% !important;
+        aspect-ratio: 1 / 1 !important;
+        object-fit: cover !important;
+        display: block;
+        border-radius: 8px;
+    }
+
+    .product-details {
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 !important;
+    }
+
+    .product-details h3 {
+        color: var(--cream, #f5f5f0);
+        font-size: 1.15rem;
+        margin: 0 0 5px 0;
+        font-family: var(--font-body, sans-serif);
+        font-weight: 600;
+    }
+
+    .product-details p.price {
+        color: rgba(200, 169, 110, 0.9);
+        font-size: 1.05rem;
+        margin: 0 0 20px 0;
+        font-family: var(--font-body, sans-serif);
+    }
+
+    .premium-btn {
+        box-sizing: border-box !important;
+        display: block;
+        width: 100%;
+        background-color: transparent !important;
+        color: var(--gold, #dcb36a) !important;
+        border: 1px solid var(--gold, #dcb36a) !important;
+        border-radius: 6px !important;
+        padding: 10px 0;
+        text-align: center;
+        font-family: var(--font-body, sans-serif);
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .premium-btn:hover {
+        background-color: var(--gold, #dcb36a) !important;
+        color: var(--bg-base, #111) !important;
+    }
+
+    .product-card:hover {
+        transform: translateY(-6px) scale(1.02);
+        background-color: rgba(200, 169, 110, 0.02) !important;
+        box-shadow: 0 15px 40px rgba(200, 169, 110, 0.08);
+    }
 
     /* ========================================== */
     /* 6. الموبايل */
     /* ========================================== */
     @media (max-width: 992px) {
-        .slide-image-wrapper { max-width: 100%; }
-        .slide-content { flex-direction: column-reverse; text-align: center; gap: 30px; padding: 40px 20px; }
-        .slide-text { align-items: center; text-align: center; padding-left: 0; }
-        .slide-text h2 { font-size: 2.5rem; }
-        .slide-desc { font-size: 1rem; }
-        .main-logo-img { max-width: 280px !important; }
-        .slide-image-wrapper::before { width: 300px; height: 300px; }
-        .slide-image-wrapper::after { width: 220px; height: 220px; }
-        .hero-features-bar { flex-wrap: wrap; gap: 20px; justify-content: space-around; padding: 20px 10px; }
-        .hero-feature { width: 45%; justify-content: center; flex-direction: column; text-align: center; gap: 8px;}
-        .feature-text { align-items: center; }
-        .feature-text p { display: none; } 
+        .slide-image-wrapper {
+            max-width: 100%;
+        }
+
+        .slide-content {
+            flex-direction: column-reverse;
+            text-align: center;
+            gap: 30px;
+            padding: 40px 20px;
+        }
+
+        .slide-text {
+            align-items: center;
+            text-align: center;
+            padding-left: 0;
+        }
+
+        .slide-text h2 {
+            font-size: 2.5rem;
+        }
+
+        .slide-desc {
+            font-size: 1rem;
+        }
+
+        .main-logo-img {
+            max-width: 280px !important;
+        }
+
+        .slide-image-wrapper::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .slide-image-wrapper::after {
+            width: 220px;
+            height: 220px;
+        }
+
+        .hero-features-bar {
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-around;
+            padding: 20px 10px;
+        }
+
+        .hero-feature {
+            width: 45%;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            gap: 8px;
+        }
+
+        .feature-text {
+            align-items: center;
+        }
+
+        .feature-text p {
+            display: none;
+        }
     }
 </style>
 
@@ -261,11 +417,11 @@
         {% for slide in slides %}
         <div class="swiper-slide">
             <div class="slide-content">
-                
+
                 <div class="slide-text">
-                    
+
                     <div class="titles-wrapper">
-                        <h2>{{ slide.title_ar }}</h2> 
+                        <h2>{{ slide.title_ar }}</h2>
                         <span class="top-logo-text">M O H A G E R</span>
                         <div class="custom-divider">
                             <span class="diamond"></span>
@@ -273,22 +429,23 @@
                     </div>
 
                     <p class="slide-desc">{{ slide.subtitle_ar }}</p>
-                    
+
                     {% if slide.action_hint_ar %}
-                        <p class="action-hint">{{ slide.action_hint_ar }}</p>
+                    <p class="action-hint">{{ slide.action_hint_ar }}</p>
                     {% endif %}
-                    
+
                     <a href="{{ slide.btn_url|default:'#' }}" class="slide-btn">
-                        <i class="fas fa-arrow-left"></i> {% if slide.btn_text_ar %}{{ slide.btn_text_ar }}{% else %}اطلب الآن{% endif %}
+                        <i class="fas fa-arrow-left"></i> {% if slide.btn_text_ar %}{{ slide.btn_text_ar }}{% else
+                        %}اطلب الآن{% endif %}
                     </a>
 
                 </div>
                 <div class="slide-image-wrapper">
                     {% if slide.image %}
-                        <img src="{{ slide.image.url }}" class="main-logo-img" alt="{{ slide.title_ar }}">
+                    <img src="{{ slide.image.url }}" class="main-logo-img" alt="{{ slide.title_ar }}">
                     {% endif %}
                 </div>
-                
+
             </div>
         </div>
         {% empty %}
@@ -299,7 +456,7 @@
         </div>
         {% endfor %}
     </div>
-    
+
     <div class="hero-features-bar">
         <div class="hero-feature">
             <i class="fas fa-shield-alt"></i>
@@ -336,32 +493,35 @@
     <div class="swiper-pagination"></div>
 </section>
 
-<h2 style="text-align: center; color: #dcb36a; font-family: var(--font-heading, serif); margin-top: 20px; margin-bottom: 20px; font-size: 2.2rem;">أحدث الإصدارات</h2>
+<h2
+    style="text-align: center; color: #dcb36a; font-family: var(--font-heading, serif); margin-top: 20px; margin-bottom: 20px; font-size: 2.2rem;">
+    أحدث الإصدارات</h2>
 
 <section>
     {% if products %}
-        <div class="products-grid">
-            {% for product in products %}
-            <div class="product-card" data-aos="fade-up" data-aos-duration="800">
-                <a href="{% url 'product_detail' product.id %}" class="product-img-wrapper">
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name_ar }}" loading="lazy">
-                    {% else %}
-                        <span style="color: #444; display: flex; height:100%; align-items:center; justify-content:center;">لا توجد صورة</span>
-                    {% endif %}
-                </a>
-                <div class="product-details">
-                    <h3>{{ product.name_ar }}</h3>
-                    <p class="price">{{ product.base_price }} ج.م</p>
-                    <a href="{% url 'product_detail' product.id %}" class="premium-btn">التفاصيل</a>
-                </div>
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card" data-aos="fade-up" data-aos-duration="800">
+            <a href="{% url 'product_detail' product.id %}" class="product-img-wrapper">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name_ar }}" loading="lazy">
+                {% else %}
+                <span style="color: #444; display: flex; height:100%; align-items:center; justify-content:center;">لا
+                    توجد صورة</span>
+                {% endif %}
+            </a>
+            <div class="product-details">
+                <h3>{{ product.name_ar }}</h3>
+                <p class="price">{{ product.base_price }} ج.م</p>
+                <a href="{% url 'product_detail' product.id %}" class="premium-btn">التفاصيل</a>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
+    </div>
     {% else %}
-        <div style="text-align: center; color: #888; padding: 50px;">
-            <h2 style="font-family: var(--font-heading, serif);">جاري إضافة كوليكشن مُهاجر الجديد قريباً...</h2>
-        </div>
+    <div style="text-align: center; color: #888; padding: 50px;">
+        <h2 style="font-family: var(--font-heading, serif);">جاري إضافة كوليكشن مُهاجر الجديد قريباً...</h2>
+    </div>
     {% endif %}
 </section>
 
