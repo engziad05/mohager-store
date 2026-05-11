@@ -538,7 +538,6 @@ body {
         direction: rtl;
         z-index: 10;
         width: 100%;
-        overflow: hidden; /* For the background texture */
     }
 
     /* Subtle Background Texture */
@@ -554,6 +553,7 @@ body {
         filter: blur(5px);
         pointer-events: none;
         z-index: -1;
+        clip-path: inset(0); /* Contain the blur without clipping children of .site-footer */
     }
 
     .footer-top-divider {
