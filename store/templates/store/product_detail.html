@@ -434,40 +434,60 @@
                     <span class="option-label" style="display: block; margin-bottom: 10px;">اختر المقاس:</span>
                     <div class="sizes-grid">
                         {% for variant in variants %}
-                            <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box" required>
+                            <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box">
                             <label for="variant_{{ variant.id }}" class="size-btn">{{ variant.size }}</label>
                         {% empty %}
                             <p style="color: var(--gold); font-family: var(--font-body); margin: 0;">عفواً، لا توجد مقاسات متاحة حالياً.</p>
                         {% endfor %}
                     </div>
+                    <p id="size-error-msg" style="display: none; color: #ff4d4d; font-family: var(--font-body); margin-top: 10px; font-size: 0.9rem;">
+                        <i class="fas fa-exclamation-circle"></i> برجاء اختيار المقاس أولاً!
+                    </p>
                 </div>
             </div>
 
             <button type="submit" class="add-to-cart-premium" style="width: 100%; margin-top: 5px;">
                 أضف إلى السلة <i class="fas fa-shopping-bag" style="margin-right: 8px;"></i>
             </button>
-            <script>
+        </form>
+        <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const cartForm = document.getElementById('add-to-cart-form');
                 
                 if (cartForm) {
-                    cartForm.addEventListener('submit', function() {
-                        const btn = document.querySelector('.add-to-cart-premium');
-                        const originalText = btn.innerHTML;
+                    // 1. نخفي رسالة الإيرور فوراً أول ما العميل يدوس على أي مقاس
+                    const sizeRadios = document.querySelectorAll('input[name="variant_id"]');
+                    sizeRadios.forEach(radio => {
+                        radio.addEventListener('change', function() {
+                            document.getElementById('size-error-msg').style.display = 'none';
+                        });
+                    });
+
+                    // 2. نراقب الضغطة بتاعت زرار أضف للسلة
+                    cartForm.addEventListener('htmx:confirm', function(e) {
+                        const selectedSize = document.querySelector('input[name="variant_id"]:checked');
                         
-                        // تغيير شكل الزرار للون الأخضر فوراً أول ما يدوس
-                        btn.innerHTML = 'تم الإضافة للسلة بنجاح <i class="fas fa-check" style="margin-right: 8px;"></i>';
-                        btn.style.backgroundColor = '#4caf50';
-                        btn.style.borderColor = '#4caf50';
-                        btn.style.color = '#fff';
-                        
-                        // رجوع الزرار لأصله بعد 3 ثواني
-                        setTimeout(() => {
-                            btn.innerHTML = originalText;
-                            btn.style.backgroundColor = ''; 
-                            btn.style.borderColor = '';
-                            btn.style.color = '';
-                        }, 3000);
+                        if (!selectedSize) {
+                            // لو داس ومفيش مقاس متحدد: نوقف الريكويست ونظهر الرسالة الحمرا
+                            e.preventDefault(); 
+                            document.getElementById('size-error-msg').style.display = 'block';
+                        } else {
+                            // لو مختار مقاس: نقلب الزرار أخضر ونقوله تم الإضافة
+                            const btn = document.querySelector('.add-to-cart-premium');
+                            const originalText = btn.innerHTML;
+                            
+                            btn.innerHTML = 'تم الإضافة للسلة بنجاح <i class="fas fa-check" style="margin-right: 8px;"></i>';
+                            btn.style.backgroundColor = '#4caf50';
+                            btn.style.borderColor = '#4caf50';
+                            btn.style.color = '#fff';
+                            
+                            setTimeout(() => {
+                                btn.innerHTML = originalText;
+                                btn.style.backgroundColor = ''; 
+                                btn.style.borderColor = '';
+                                btn.style.color = '';
+                            }, 3000);
+                        }
                     });
                 }
             });
