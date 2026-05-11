@@ -37,145 +37,147 @@
     /* ========================================== */
     .hero-slider {
         width: 100%;
-        /* دمجنا الصورة مع طبقة ضل خفيفة جداً من فوق عشان الكلام الأبيض يفضل واضح ومقري */
         background: 
-            linear-gradient(to bottom, rgba(10, 10, 8, 0.4), rgba(10, 10, 8, 0.1)),
+            linear-gradient(to bottom, rgba(10, 10, 8, 0.6), rgba(10, 10, 8, 0.2)),
             url('{% static "images/hero-bg.jpg" %}');
-        background-size: cover; /* عشان تملى الشاشة كلها من غير ما تمط */
-        background-position: center bottom; /* مهم جداً: عشان الأرضية المنورة اللي في الصورة تبان تحت الحصان */
+        background-size: cover; 
+        background-position: center bottom; 
         background-repeat: no-repeat;
-        border-bottom: 2px solid var(--gold);
+        border-bottom: 2px solid rgba(201,167,92,0.3);
         position: relative;
         overflow: hidden;
         margin-bottom: 60px;
+        direction: rtl; /* عشان نضمن الترتيب يمين لشمال */
     }
 
     .slide-content {
         display: flex;
         align-items: center;
-        justify-content: center;
-        /* 🔥 السر هنا: بيعكس الأماكن (الصورة يمين والنص شمال) */
-        flex-direction: row-reverse; 
-        gap: 100px;
+        justify-content: space-between;
+        flex-direction: row; /* 🔥 رجعناها للوضع الطبيعي عشان النص يبقى يمين والصورة شمال */
+        gap: 50px;
         min-height: 88vh;
-        padding: 0 7%;
+        padding: 0 7% 80px 7%; /* زودنا مسافة من تحت عشان شريط المميزات */
     }
 
     /* ========================================== */
-    /* تنسيقات النص والزرار */
+    /* تنسيقات النص (على اليمين) */
     /* ========================================== */
     .slide-text {
         flex: 1;
-        max-width: 520px;
+        max-width: 550px;
         padding: 20px;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        text-align: center;
+        align-items: flex-start; /* 🔥 محاذاة لليمين */
+        text-align: right; /* 🔥 محاذاة لليمين */
         position: relative;
         z-index: 10;
     }
 
-    /* 🔥 إضاءة متماثلة ورا النص عشان اليمين يبقى منور زي الشمال */
-    .slide-text::before {
-        content: "";
-        position: absolute;
-        width: 450px;
-        height: 450px;
-        background: radial-gradient(circle, rgba(201,167,92,0.12), transparent 70%);
-        filter: blur(50px);
-        z-index: -1;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
     .slide-text h2 {
-        font-size: 5.5rem;
-        line-height: 1;
-        color: var(--gold);
+        font-size: 4rem; /* مقاس مناسب للفخامة */
+        line-height: 1.2;
+        color: var(--cream);
         font-family: var(--font-heading);
         margin-bottom: 15px;
     }
     
     .slide-text p.slide-desc {
-        font-size: 1.2rem;
-        color: rgba(255,255,255,0.85);
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: rgba(255,255,255,0.7);
         margin-bottom: 20px;
         font-family: var(--font-body);
     }
 
     .slide-divider {
-        width: 120px;
-        height: 1.5px;
-        background: linear-gradient(90deg, transparent, var(--gold), transparent);
-        margin: 20px auto 30px auto;
-        opacity: 0.9;
+        width: 80px;
+        height: 2px;
+        background: var(--gold);
+        margin: 20px 0 30px 0; /* 🔥 المسافة من اليمين 0 عشان يفضل محاذي */
         box-shadow: 0 0 8px rgba(201,167,92,0.4);
     }
 
-    .slide-text p.slide-action-hint {
-        font-size: 1.1rem;
-        color: rgba(255,255,255,0.9);
-        margin-bottom: 15px;
-        font-family: var(--font-body);
-    }
-
     .slide-btn {
-        background-color: var(--gold);
-        color: var(--bg-base);
-        padding: 12px 50px;
+        background-color: var(--gold); /* زرار دهبي زي الريفرنس */
+        color: #111;
+        padding: 12px 40px;
         text-decoration: none;
         font-weight: bold;
-        border-radius: 8px;
-        font-size: 1.2rem;
+        border-radius: 6px;
+        font-size: 1.1rem;
         transition: all 0.3s ease;
         font-family: var(--font-body);
+        display: inline-flex;
+        align-items: center;
+        gap: 15px;
         position: relative !important;
         z-index: 999 !important;
-        pointer-events: auto !important;
-        cursor: pointer !important;
     }
 
     .slide-btn:hover { 
         background-color: #e6c072;
         transform: translateY(-3px); 
-        box-shadow: 0 5px 15px rgba(201,167,92,0.3);
+        box-shadow: 0 5px 20px rgba(201,167,92,0.4);
     }
 
     /* ========================================== */
-    /* الصورة (الحصان) */
+    /* الصورة (الحصان على الشمال) */
     /* ========================================== */
     .slide-image {
         flex: 1;
         display: flex;
-        justify-content: center;
+        justify-content: flex-end; /* يزق الصورة لأقصى الشمال */
         align-items: center;
         position: relative;
-        overflow: visible;
     }
     
     .slide-image img {
         width: 100%;
-        max-width: 540px;
+        max-width: 500px;
         height: auto;
         object-fit: contain;
         position: relative;
         z-index: 2;
-        filter: drop-shadow(0 0 25px rgba(201,167,92,0.15));
-    }
-
-    .slide-image::before {
-        content: "";
-        position: absolute;
-        width: 520px;
-        height: 520px;
-        background: radial-gradient(circle, rgba(201,167,92,0.14), transparent 70%);
-        filter: blur(50px);
-        z-index: 1;
+        filter: drop-shadow(0 0 30px rgba(201,167,92,0.2));
     }
 
     /* ========================================== */
-    /* شبكة المنتجات (متوازنة وفي السنتر) */
+    /* شريط المميزات السفلي (Hero Features) */
+    /* ========================================== */
+    .hero-features-bar {
+        position: absolute;
+        bottom: 30px;
+        left: 0; right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 60px;
+        z-index: 10;
+        flex-wrap: wrap;
+    }
+
+    .hero-feature {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .hero-feature i {
+        color: var(--gold);
+        font-size: 1.5rem;
+        opacity: 0.8;
+    }
+
+    .hero-feature h4 {
+        color: rgba(255,255,255,0.9);
+        margin: 0;
+        font-size: 0.95rem;
+        font-family: var(--font-body);
+    }
+
+    /* ========================================== */
+    /* شبكة المنتجات */
     /* ========================================== */
     .products-grid {
         display: flex;
@@ -214,7 +216,6 @@
         object-fit: cover !important; 
         display: block;
         border-radius: 8px;
-        margin-bottom: 10px;
         transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
@@ -268,7 +269,6 @@
         transform: translateY(-6px) scale(1.02); 
         background-color: rgba(200, 169, 110, 0.02) !important; 
         box-shadow: 0 15px 40px rgba(200, 169, 110, 0.08); 
-        border-color: rgba(200, 169, 110, 0.06) !important; 
     }
     
     .product-card:hover .product-img-wrapper img {
@@ -276,56 +276,38 @@
     }
 
     /* ========================================== */
-    /* تظبيط الموبايل بعد تنظيف الكود المتكرر */
+    /* الموبايل */
     /* ========================================== */
-    @media (max-width: 768px) {
+    @media (max-width: 992px) {
         .slide-content {
-            flex-direction: column; /* النص فوق والصورة تحته */
+            flex-direction: column-reverse; /* الصورة فوق والنص تحت في الموبايل */
             text-align: center;
-            gap: 30px;
-            padding: 40px 20px;
-            min-height: auto !important;
+            gap: 20px;
+            padding: 40px 20px 120px 20px; /* مسافة أطول تحت عشان المميزات تنزل */
         }
         
-        .slide-text, .slide-image {
-            width: 100%;
-            max-width: 100%;
+        .slide-text {
+            align-items: center; /* توسيط في الموبايل */
+            text-align: center;
         }
+
+        .slide-text h2 { font-size: 2.5rem; }
+        
+        .slide-divider { margin: 20px auto 30px auto; } /* توسيط الخط */
         
         .slide-image img {
-            max-width: 75%; 
+            max-width: 80%; 
             margin: 0 auto;
         }
-
-        .slide-text h2 {
-            font-size: 3rem;
-            line-height: 1.2;
-        }
         
-        .hero-slider {
-            padding-top: 20px;
+        .hero-features-bar {
+            gap: 20px;
+            bottom: 20px;
         }
-        
-        .slide-btn {
-            width: 100%;
-            max-width: 260px;
-            padding: 14px 20px;
-            font-size: 1rem;
-        }
-
-        .products-grid {
-            padding: 10px 10px 40px 10px !important;
-            gap: 30px;
-        }
-        
-        .product-card {
-            width: 90% !important; 
-            max-width: 340px;
-        }
+        .hero-feature h4 { font-size: 0.8rem; }
     }
 </style>
 
-<!-- سلايدر العروض -->
 <section class="hero-slider swiper">
     <div class="swiper-wrapper">
         {% for slide in slides %}
@@ -333,17 +315,23 @@
             <div class="slide-content">
                 
                 <div class="slide-text">
+                    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                        <h3 style="color: var(--gold); font-family: var(--font-heading); font-size: 2.5rem; margin: 0;">مهاجر</h3>
+                        <div style="display: flex; align-items: center; gap: 10px; width: 100%; justify-content: center;">
+                            <span style="height: 1px; width: 30px; background: rgba(201,167,92,0.3);"></span>
+                            <span style="color: rgba(255,255,255,0.5); font-family: var(--font-en); font-size: 0.8rem; letter-spacing: 4px;">M O H A G E R</span>
+                            <span style="height: 1px; width: 30px; background: rgba(201,167,92,0.3);"></span>
+                        </div>
+                    </div>
+
                     <h2>{{ slide.title_ar }}</h2>
-                    
                     <p class="slide-desc">{{ slide.subtitle_ar }}</p>
                     
                     <div class="slide-divider"></div>
                     
-                    {% if slide.action_hint_ar %}
-                        <p class="slide-action-hint">{{ slide.action_hint_ar }}</p>
-                    {% endif %}
-                    
-                    <a href="{{ slide.btn_url }}" class="slide-btn">{{ slide.btn_text_ar }}</a>
+                    <a href="{{ slide.btn_url }}" class="slide-btn">
+                        <i class="fas fa-arrow-left"></i> {{ slide.btn_text_ar }}
+                    </a>
                 </div>
 
                 <div class="slide-image">
@@ -362,8 +350,28 @@
         </div>
         {% endfor %}
     </div>
-    <div class="swiper-button-next" style="color: var(--gold);"></div>
-    <div class="swiper-button-prev" style="color: var(--gold);"></div>
+    
+    <div class="hero-features-bar">
+        <div class="hero-feature">
+            <i class="fas fa-shield-alt"></i>
+            <h4>هوية موثوقة</h4>
+        </div>
+        <div class="hero-feature">
+            <i class="fas fa-lightbulb"></i>
+            <h4>تصميم مبدع</h4>
+        </div>
+        <div class="hero-feature">
+            <i class="fas fa-bullseye"></i>
+            <h4>فهم عميق</h4>
+        </div>
+        <div class="hero-feature">
+            <i class="fas fa-medal"></i>
+            <h4>جودة احترافية</h4>
+        </div>
+    </div>
+
+    <div class="swiper-button-next" style="color: var(--gold); opacity: 0.5;"></div>
+    <div class="swiper-button-prev" style="color: var(--gold); opacity: 0.5;"></div>
     <div class="swiper-pagination"></div>
 </section>
 
