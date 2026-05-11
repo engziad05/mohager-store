@@ -37,11 +37,12 @@
         justify-content: space-between;
         max-width: 1200px;
         margin: 0 auto;
-        min-height: 80vh; 
-        padding: 40px 20px; 
+        /* 🚨 السر هنا: نزلنا الارتفاع من 80vh لـ 60vh عشان نرفع الشريط لفوق */
+        min-height: 60vh; 
+        /* 🚨 وقللنا المسافات الفاضية من فوق وتحت */
+        padding: 20px 20px 40px 20px; 
         gap: 40px;
     }
-
     /* ========================================== */
     /* 2. النص (اليمين) - مربوط بالباك اند 100% */
     /* ========================================== */
@@ -280,7 +281,6 @@
                 
                 <div class="slide-text">
                     <div class="top-logo-wrapper">
-                        <img src="{% static 'images/logo.png' %}" alt="مهاجر">
                         <span class="top-logo-text">M O H A G E R</span>
                         <div class="custom-divider">
                             <span class="diamond"></span>
