@@ -418,20 +418,20 @@
                 {{ product.description_ar|linebreaks|safe }}
             </div>
 
-            <form hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-drawer-content" style="width: 100%; display: flex; flex-direction: column; align-items: flex-start;" id="add-to-cart-form">
+           <form hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-drawer-content" style="width: 100%; display: flex; flex-direction: column; align-items: flex-start;" id="add-to-cart-form">
             {% csrf_token %}
-
-            <div class="options-section">
+            
+            <div class="options-section" style="width: 100%;">
                 
-                <div class="option-group">
-                    <span class="option-label">اللون: <span style="color: var(--cream);">{{ product.color_ar|default:"-" }}</span></span>
+                <div class="option-group" style="margin-bottom: 25px;">
+                    <span class="option-label" style="display: block; margin-bottom: 10px;">اللون: <span style="color: var(--cream); font-weight: bold;">{{ product.color_ar|default:"-" }}</span></span>
                     <div class="color-preview">
-                        <div class="color-swatch" style="background-color: {{ product.color_code|default:'#000000' }}; width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 10px rgba(200, 169, 110, 0.2);"></div>
+                        <div class="color-swatch" style="background-color: {{ product.color_code|default:'#000000' }}; width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 10px rgba(200, 169, 110, 0.2);"></div>
                     </div>
                 </div>
-
-                <div class="option-group">
-                    <span class="option-label">اختر المقاس:</span>
+                
+                <div class="option-group" style="margin-bottom: 30px;">
+                    <span class="option-label" style="display: block; margin-bottom: 15px;">اختر المقاس:</span>
                     <div class="sizes-grid">
                         {% for variant in variants %}
                             <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box" required>
@@ -441,15 +441,16 @@
                         {% endfor %}
                     </div>
                 </div>
+            </div>
 
-            </div> <button type="submit" class="add-to-cart-premium">
-                أضف إلى السلة <i class="fas fa-shopping-bag"></i>
+            <button type="submit" class="add-to-cart-premium" style="width: 100%; margin-top: 10px;">
+                أضف إلى السلة <i class="fas fa-shopping-bag" style="margin-right: 8px;"></i>
             </button>
-            
         </form>
         ```
 
-
+ارفع الكود ده واعمل ريفريش، هتلاقي الديزاين رجع مسطرة زي ما كان، والدايرة بقت فخمة واسم اللون شغال معاك زي الطلقة! 🚀 طمني إيه الأخبار.
+        </div>
 
         <!-- قسم الصور -->
         <div class="product-gallery-col">
