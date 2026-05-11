@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 from django.conf import settings
+import random
+import string
 
 
 # 1. جدول الأقسام (Categories)
@@ -122,6 +124,7 @@ class Order(models.Model):
         ('Delivered', 'تم التوصيل'),
         ('Cancelled', 'ملغي'),
     )
+    tracking_no = models.CharField(max_length=50, null=True, blank=True, verbose_name="رقم الطلب")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     full_name = models.CharField(max_length=255, verbose_name="الاسم بالكامل")
     phone = models.CharField(max_length=20, verbose_name="رقم التليفون")
@@ -135,6 +138,14 @@ class Order(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending', verbose_name="حالة الطلب")
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="إجمالي الحساب")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الطلب")
+    def save(self, *args, **kwargs):
+        if not self.tracking_no:  # لو الأوردر لسه جديد ومعهوش رقم
+            # بنختار حروف كابيتال وأرقام عشوائية
+            chars = string.ascii_uppercase + string.digits 
+            random_str = ''.join(random.choice(chars) for _ in range(6)) # بنجيب 6 رموز
+            self.tracking_no = f"MHG-{random_str}" # بنلزق فيهم اسم البراند
+            
+        super(Order, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"طلب رقم {self.id} - {self.full_name}"

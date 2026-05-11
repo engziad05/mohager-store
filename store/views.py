@@ -417,7 +417,7 @@ def checkout(request):
                         data = {
                             "sender": {"name": "Mohager Store", "email": settings.DEFAULT_FROM_EMAIL},
                             "to": [{"email": to_email}],
-                            "subject": f"تأكيد طلبك بنجاح من مُهاجر - رقم #{order_id}",
+                            "subject": f"تأكيد طلبك بنجاح من مُهاجر - رقم #{order.tracking_no}",
                             "htmlContent": html
                         }
                         
