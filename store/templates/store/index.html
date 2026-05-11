@@ -32,15 +32,17 @@
     }
 
     /* ========================================== */
-    /* الهيرو سلايدر (الخلفية المتماثلة) */
+    /* الهيرو سلايدر (بالخلفية السينمائية الجديدة) */
     /* ========================================== */
     .hero-slider {
         width: 100%;
-        /* 🚨 لو رفعت الصورة التحفة بتاعتك في فولدر الـ static، شيل الـ comment من السطرين اللي تحت وحط مسارها */
-        /* background-image: url('/static/images/hero-bg.jpg'); */
-        /* background-size: cover; background-position: center; */
-        
-        background: radial-gradient(circle at center, rgba(201,167,92,0.08), transparent 65%), var(--bg-base);
+        /* دمجنا الصورة مع طبقة ضل خفيفة جداً من فوق عشان الكلام الأبيض يفضل واضح ومقري */
+        background: 
+            linear-gradient(to bottom, rgba(10, 10, 8, 0.4), rgba(10, 10, 8, 0.1)),
+            url('{% static "images/hero-bg.jpg" %}');
+        background-size: cover; /* عشان تملى الشاشة كلها من غير ما تمط */
+        background-position: center bottom; /* مهم جداً: عشان الأرضية المنورة اللي في الصورة تبان تحت الحصان */
+        background-repeat: no-repeat;
         border-bottom: 2px solid var(--gold);
         position: relative;
         overflow: hidden;
