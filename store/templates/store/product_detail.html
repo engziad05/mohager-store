@@ -446,6 +446,29 @@
             <button type="submit" class="add-to-cart-premium" style="width: 100%; margin-top: 5px;">
                 أضف إلى السلة <i class="fas fa-shopping-bag" style="margin-right: 8px;"></i>
             </button>
+            <script>
+            document.body.addEventListener('htmx:afterOnLoad', function(evt) {
+                // بنتأكد إن الريكويست جاي من فورم الإضافة للسلة
+                if (evt.detail.elt.id === 'add-to-cart-form') {
+                    const btn = document.querySelector('.add-to-cart-premium');
+                    const originalText = btn.innerHTML;
+                    
+                    // تغيير شكل الزرار للون الأخضر لرسالة النجاح
+                    btn.innerHTML = 'تم الإضافة للسلة بنجاح <i class="fas fa-check" style="margin-right: 8px;"></i>';
+                    btn.style.backgroundColor = '#4caf50';
+                    btn.style.borderColor = '#4caf50';
+                    btn.style.color = '#fff';
+                    
+                    // رجوع الزرار لأصله بعد 3 ثواني
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.style.backgroundColor = ''; 
+                        btn.style.borderColor = '';
+                        btn.style.color = '';
+                    }, 3000);
+                }
+            });
+        </script>
         </form>
        
 
