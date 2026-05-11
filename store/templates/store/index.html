@@ -28,7 +28,7 @@
         background-position: center bottom; 
         border-bottom: 1px solid rgba(201,167,92,0.2);
         position: relative;
-        direction: rtl; /* يمين لشمال */
+        direction: rtl; 
     }
 
     .slide-content {
@@ -37,24 +37,20 @@
         justify-content: space-between;
         max-width: 1200px;
         margin: 0 auto;
-        /* 🚨 السر هنا: نزلنا الارتفاع من 80vh لـ 60vh عشان نرفع الشريط لفوق */
         min-height: 60vh; 
-        /* 🚨 وقللنا المسافات الفاضية من فوق وتحت */
         padding: 20px 20px 40px 20px; 
         gap: 40px;
     }
+
     /* ========================================== */
-    /* 2. النص (اليمين) - مربوط بالباك اند 100% */
-    /* ========================================== */
-    /* ========================================== */
-    /* 2. النص (اليمين) - مربوط بالباك اند 100% */
+    /* 2. النص (اليمين) - التصميم العالمي */
     /* ========================================== */
     .slide-text {
         flex: 1;
-        max-width: 520px; /* ظبطنا العرض عشان الخط يمتد صح */
+        max-width: 520px; 
         display: flex;
         flex-direction: column;
-        align-items: flex-start; /* محاذاة لليمين */
+        align-items: flex-start; 
         text-align: right; 
         z-index: 10;
         padding-left: 20px;
@@ -63,23 +59,16 @@
     .top-logo-wrapper {
         display: flex;
         flex-direction: column;
-        align-items: center; /* سنترنا اللوجو والكلمة مع بعض */
+        align-items: center; 
         width: 100%; 
         margin-bottom: 25px;
-    }
-
-    /* 👇 الكلاس ده ضفناه عشان اللوجو الصغير 👇 */
-    .small-top-logo {
-        width: 110px; 
-        margin-bottom: 10px;
-        filter: drop-shadow(0 0 10px rgba(201,167,92,0.4));
     }
 
     .top-logo-text {
         color: rgba(255,255,255,0.6);
         font-family: var(--font-en, sans-serif);
         font-size: 0.85rem;
-        letter-spacing: 8px; /* وسعنا المسافات شوية للفخامة */
+        letter-spacing: 8px; 
         margin-bottom: 15px;
         margin-left: 8px; 
     }
@@ -88,16 +77,15 @@
         display: flex;
         align-items: center;
         gap: 15px;
-        width: 100%; /* 🚨 الخط هياخد عرض المساحة كلها 🚨 */
+        width: 100%; 
     }
     
     .custom-divider::before, .custom-divider::after {
         content: '';
-        flex: 1; /* 🚨 بيخلي الخط يمتد للآخر 🚨 */
+        flex: 1; 
         height: 1px;
     }
 
-    /* 👇 التدرج اللوني عشان الخط يختفي في الأطراف 👇 */
     .custom-divider::after {
         background: linear-gradient(to left, rgba(201,167,92,0.4), transparent);
     }
@@ -156,13 +144,14 @@
     /* ========================================== */
     .slide-image-wrapper {
         flex: 1;
+        width: 100%;
+        max-width: 50%; /* 🚨 لجمنا الحصان عشان ميكبرش 🚨 */
         display: flex;
         justify-content: center;
         align-items: center;
         position: relative;
     }
 
-    /* 🚨 الحلقة الذهبية الكبيرة (زي الريفرنس) 🚨 */
     .slide-image-wrapper::before {
         content: '';
         position: absolute;
@@ -174,7 +163,6 @@
         box-shadow: inset 0 0 40px rgba(201,167,92,0.05);
     }
 
-    /* 🚨 الحلقة الذهبية الصغيرة 🚨 */
     .slide-image-wrapper::after {
         content: '';
         position: absolute;
@@ -186,14 +174,13 @@
     }
 
     .main-logo-img {
-        width: 100%;
-        max-width: 420px; 
+        width: 100% !important;
+        max-width: 420px !important; 
         height: auto;
         object-fit: contain;
         position: relative;
         z-index: 2;
         filter: drop-shadow(0 0 25px rgba(201,167,92,0.2));
-        /* 🔥 السحر: لو الصورة المرفوعة ليها خلفية سودة، السطر ده هيخفيها ويخليها شفافة! */
         mix-blend-mode: screen; 
     }
 
@@ -213,12 +200,7 @@
         z-index: 10;
     }
 
-    .hero-feature {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
+    .hero-feature { display: flex; align-items: center; gap: 15px; }
     .hero-feature i { color: #dcb36a; font-size: 1.5rem; opacity: 0.9; }
     .feature-text { display: flex; flex-direction: column; text-align: right; }
     .feature-text h4 { color: rgba(255,255,255,0.9); margin: 0; font-size: 0.95rem; font-family: var(--font-body, sans-serif); }
@@ -228,45 +210,17 @@
     /* 5. شبكة المنتجات */
     /* ========================================== */
     .products-grid {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center; 
-        gap: 40px;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0px 20px 60px 20px !important; 
-        direction: rtl;
+        display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; max-width: 1200px; margin: 0 auto; padding: 0px 20px 60px 20px !important; direction: rtl;
     }
-    
     .product-card {
-        width: 290px !important;
-        background: transparent !important;
-        border: 1px solid transparent !important;
-        border-radius: 12px;
-        padding: 15px; 
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        width: 290px !important; background: transparent !important; border: 1px solid transparent !important; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
-    .product-img-wrapper {
-        width: 100%; border-radius: 8px; overflow: hidden; margin-bottom: 15px; background-color: transparent;
-    }
-    .product-img-wrapper img {
-        width: 100% !important; aspect-ratio: 1 / 1 !important; object-fit: cover !important; display: block; border-radius: 8px;
-    }
-    .product-details {
-        width: 100%; text-align: center; display: flex; flex-direction: column; align-items: center; padding: 0 !important;
-    }
-    .product-details h3 {
-        color: var(--cream, #f5f5f0); font-size: 1.15rem; margin: 0 0 5px 0; font-family: var(--font-body, sans-serif); font-weight: 600;
-    }
-    .product-details p.price {
-        color: rgba(200, 169, 110, 0.9); font-size: 1.05rem; margin: 0 0 20px 0; font-family: var(--font-body, sans-serif);
-    }
-    .premium-btn {
-        box-sizing: border-box !important; display: block; width: 100%; background-color: transparent !important; color: var(--gold, #dcb36a) !important; border: 1px solid var(--gold, #dcb36a) !important; border-radius: 6px !important; padding: 10px 0; text-align: center; font-family: var(--font-body, sans-serif); font-weight: 600; font-size: 1rem; text-decoration: none; transition: all 0.3s ease;
-    }
+    .product-img-wrapper { width: 100%; border-radius: 8px; overflow: hidden; margin-bottom: 15px; background-color: transparent; }
+    .product-img-wrapper img { width: 100% !important; aspect-ratio: 1 / 1 !important; object-fit: cover !important; display: block; border-radius: 8px; }
+    .product-details { width: 100%; text-align: center; display: flex; flex-direction: column; align-items: center; padding: 0 !important; }
+    .product-details h3 { color: var(--cream, #f5f5f0); font-size: 1.15rem; margin: 0 0 5px 0; font-family: var(--font-body, sans-serif); font-weight: 600; }
+    .product-details p.price { color: rgba(200, 169, 110, 0.9); font-size: 1.05rem; margin: 0 0 20px 0; font-family: var(--font-body, sans-serif); }
+    .premium-btn { box-sizing: border-box !important; display: block; width: 100%; background-color: transparent !important; color: var(--gold, #dcb36a) !important; border: 1px solid var(--gold, #dcb36a) !important; border-radius: 6px !important; padding: 10px 0; text-align: center; font-family: var(--font-body, sans-serif); font-weight: 600; font-size: 1rem; text-decoration: none; transition: all 0.3s ease; }
     .premium-btn:hover { background-color: var(--gold, #dcb36a) !important; color: var(--bg-base, #111) !important; }
     .product-card:hover { transform: translateY(-6px) scale(1.02); background-color: rgba(200, 169, 110, 0.02) !important; box-shadow: 0 15px 40px rgba(200, 169, 110, 0.08); }
 
@@ -274,11 +228,12 @@
     /* 6. الموبايل */
     /* ========================================== */
     @media (max-width: 992px) {
+        .slide-image-wrapper { max-width: 100%; }
         .slide-content { flex-direction: column-reverse; text-align: center; gap: 30px; padding: 40px 20px; }
         .slide-text { align-items: center; text-align: center; padding-left: 0; }
         .slide-text h2 { font-size: 2.5rem; }
         .slide-desc { font-size: 1rem; }
-        .main-logo-img { max-width: 280px; }
+        .main-logo-img { max-width: 280px !important; }
         .slide-image-wrapper::before { width: 300px; height: 300px; }
         .slide-image-wrapper::after { width: 220px; height: 220px; }
         .hero-features-bar { flex-wrap: wrap; gap: 20px; justify-content: space-around; padding: 20px 10px; }
@@ -295,6 +250,21 @@
             <div class="slide-content">
                 
                 <div class="slide-text">
+                    <div class="top-logo-wrapper">
+                        <span class="top-logo-text">M O H A G E R</span>
+                        <div class="custom-divider">
+                            <span class="diamond"></span>
+                        </div>
+                    </div>
+
+                    <h2>هوية عربية بمستوى عالمي</h2>
+                    <p class="slide-desc">نصمم هويات تجارية عربية تعكس الأصالة ونواكب المعايير العالمية في الإبداع والتميز.</p>
+                    
+                    <a href="{{ slide.btn_url|default:'#' }}" class="slide-btn">
+                        <i class="fas fa-arrow-left"></i> {% if slide.btn_text_ar %}{{ slide.btn_text_ar }}{% else %}اطلب الآن{% endif %}
+                    </a>
+                </div>
+
                 <div class="slide-image-wrapper">
                     {% if slide.image %}
                         <img src="{{ slide.image.url }}" class="main-logo-img" alt="{{ slide.title_ar }}">
@@ -355,7 +325,6 @@
         <div class="products-grid">
             {% for product in products %}
             <div class="product-card" data-aos="fade-up" data-aos-duration="800">
-                
                 <a href="{% url 'product_detail' product.id %}" class="product-img-wrapper">
                     {% if product.image %}
                         <img src="{{ product.image.url }}" alt="{{ product.name_ar }}" loading="lazy">
@@ -363,13 +332,10 @@
                         <span style="color: #444; display: flex; height:100%; align-items:center; justify-content:center;">لا توجد صورة</span>
                     {% endif %}
                 </a>
-                
                 <div class="product-details">
                     <h3>{{ product.name_ar }}</h3>
                     <p class="price">{{ product.base_price }} ج.م</p>
-                    <a href="{% url 'product_detail' product.id %}" class="premium-btn">
-                        التفاصيل
-                    </a>
+                    <a href="{% url 'product_detail' product.id %}" class="premium-btn">التفاصيل</a>
                 </div>
             </div>
             {% endfor %}
@@ -390,7 +356,6 @@
         pagination: { el: ".swiper-pagination", clickable: true },
         navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
     });
-    
     AOS.init({ once: true });
 </script>
 {% endblock %}
