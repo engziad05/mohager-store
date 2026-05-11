@@ -4,135 +4,427 @@
 
 {% block content %}
 <style>
+    /* ========================================== */
+    /* الهيكل الأساسي للوحة التحكم (Premium Layout) */
+    /* ========================================== */
     .dashboard-container {
-        /* كبرنا العرض شوية عشان يستوعب القسمين */
-        max-width: 1100px;
+        max-width: 1300px;
         margin: 50px auto;
-        padding: 30px;
-        background-color: var(--bg-surface);
-        border-radius: 15px;
-        border: 1px solid #333;
+        padding: 0 5%;
+        direction: rtl;
         color: #fff;
         font-family: var(--font-body);
+        min-height: 70vh;
     }
-    .dashboard-header {
-        border-bottom: 2px solid var(--gold);
-        padding-bottom: 20px;
-        margin-bottom: 30px;
+
+    /* ========================================== */
+    /* الهيدر والكروت الإحصائية */
+    /* ========================================== */
+    .dash-top-section {
         display: flex;
         justify-content: space-between;
         align-items: center;
-    }
-    .dashboard-title {
-        color: var(--gold);
-        font-family: var(--font-heading);
-        font-size: 2.5rem;
-        margin: 0;
-    }
-    /* تقسيم الشاشة لعمودين */
-    .dashboard-grid {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
+        flex-wrap: wrap;
         gap: 30px;
+        margin-bottom: 40px;
     }
-    /* للموبايل: العمودين يبقوا تحت بعض */
-    @media (max-width: 768px) {
-        .dashboard-grid {
-            grid-template-columns: 1fr;
-        }
+
+    .dash-header-text h1 {
+        color: var(--cream);
+        font-family: var(--font-heading);
+        font-size: 2.2rem;
+        margin: 0 0 5px 0;
     }
-    /* تظبيط شكل نصوص الفورم */
-    .address-form p { margin-bottom: 10px; }
-    .address-form label { display: block; margin-bottom: 5px; color: var(--gold); font-size: 0.9rem; }
+
+    .dash-header-text p {
+        color: #888;
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .dash-stats-container {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .stat-card {
+        background: rgba(26, 26, 26, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        min-width: 140px;
+        transition: 0.3s;
+    }
+
+    .stat-card:hover {
+        border-color: rgba(200, 169, 110, 0.3);
+        transform: translateY(-2px);
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(200, 169, 110, 0.1);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--gold);
+        font-size: 1.2rem;
+    }
+
+    .stat-info { display: flex; flex-direction: column; align-items: flex-start; }
+    .stat-num { color: var(--cream); font-family: var(--font-en); font-size: 1.4rem; font-weight: bold; line-height: 1; margin-bottom: 5px; }
+    .stat-label { color: #888; font-size: 0.85rem; }
+
+    /* ========================================== */
+    /* الجريد (جدول يمين - تفاصيل شمال) */
+    /* ========================================== */
+    .dash-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 30px;
+        align-items: flex-start;
+    }
+
+    .glass-panel {
+        background: rgba(20, 20, 15, 0.6);
+        border: 1px solid rgba(200, 169, 110, 0.15);
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ========================================== */
+    /* جدول الطلبات (اليمين) */
+    /* ========================================== */
+    .table-header-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(200, 169, 110, 0.2);
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .table-header-flex h3 { color: var(--cream); font-family: var(--font-heading); margin: 0; font-size: 1.3rem; }
+    .table-header-flex span { color: var(--gold); font-family: var(--font-body); font-size: 0.9rem; background: rgba(200, 169, 110, 0.1); padding: 4px 10px; border-radius: 6px; }
+
+    .orders-table { width: 100%; border-collapse: collapse; text-align: right; }
+    .orders-table th { color: #888; font-weight: normal; padding: 10px 15px; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    .orders-table td { padding: 15px; color: var(--cream); font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); vertical-align: middle; }
+    
+    .order-row { cursor: pointer; transition: 0.3s; }
+    .order-row:hover, .order-row.active-row { background: rgba(255, 255, 255, 0.02); }
+    .order-row:last-child td { border-bottom: none; }
+
+    /* الحالات (Badges) */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-family: var(--font-body);
+    }
+    .status-badge::before { content: ''; width: 8px; height: 8px; border-radius: 50%; }
+    
+    .status-pending { color: var(--gold); }
+    .status-pending::before { background-color: var(--gold); box-shadow: 0 0 5px var(--gold); }
+    
+    .status-shipped { color: #4da6ff; }
+    .status-shipped::before { background-color: #4da6ff; box-shadow: 0 0 5px #4da6ff; }
+    
+    .status-delivered { color: #4caf50; }
+    .status-delivered::before { background-color: #4caf50; box-shadow: 0 0 5px #4caf50; }
+
+    /* زرار التتبع في الجدول */
+    .track-btn-sm {
+        background: transparent;
+        color: var(--gold);
+        border: 1px solid rgba(200, 169, 110, 0.4);
+        padding: 6px 15px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: 0.3s;
+        display: inline-block;
+    }
+    .track-btn-sm:hover { background: rgba(200, 169, 110, 0.1); border-color: var(--gold); }
+
+    /* ========================================== */
+    /* تفاصيل الطلب (الشمال) */
+    /* ========================================== */
+    .details-title { color: var(--cream); font-family: var(--font-heading); font-size: 1.3rem; margin: 0 0 25px 0; display: flex; align-items: center; justify-content: space-between; }
+    .details-title i { color: var(--gold); }
+
+    .detail-item { display: flex; flex-direction: column; margin-bottom: 20px; }
+    .detail-label { color: #888; font-size: 0.85rem; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+    .detail-label i { color: var(--gold); width: 15px; text-align: center; }
+    .detail-value { color: var(--cream); font-size: 1rem; padding-right: 23px; }
+    
+    .detail-value.en-font { font-family: var(--font-en); letter-spacing: 1px; }
+
+    .details-divider { height: 1px; background: rgba(255, 255, 255, 0.05); margin: 20px 0; }
+
+    .track-btn-large {
+        display: block;
+        width: 100%;
+        background-color: var(--gold);
+        color: var(--bg-base);
+        text-align: center;
+        padding: 15px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 1.1rem;
+        text-decoration: none;
+        margin-top: 30px;
+        transition: 0.3s;
+        box-sizing: border-box;
+    }
+    .track-btn-large:hover { background-color: var(--cream); transform: translateY(-2px); }
+
+    .security-note {
+        text-align: center;
+        color: rgba(255,255,255,0.4);
+        font-size: 0.8rem;
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+    }
+
+    /* ========================================== */
+    /* التجاوب مع الموبايل */
+    /* ========================================== */
+    @media (max-width: 992px) {
+        .dash-grid { grid-template-columns: 1fr; }
+        .dash-top-section { flex-direction: column; align-items: flex-start; }
+        .dash-stats-container { width: 100%; justify-content: space-between; }
+        .stat-card { flex: 1; min-width: 45%; }
+        /* نخفي بعض الأعمدة في الموبايل عشان الجدول ميبوظش */
+        .hide-mobile { display: none; }
+    }
 </style>
 
 <div class="dashboard-container">
-    <div class="dashboard-header">
-        <h1 class="dashboard-title">مرحباً، {{ user.first_name|default:"صديق مُهاجر" }}</h1>
-        <p style="color: #aaa; margin: 0;">لوحة تحكم العميل</p>
+    
+    <div class="dash-top-section">
+        <div class="dash-header-text">
+            <h1>مرحباً صديقي {{ user.first_name|default:"مُهاجر" }}</h1>
+            <p>هنا يمكنك متابعة جميع طلباتك وإدارتها بسهولة.</p>
+        </div>
+        
+        <div class="dash-stats-container">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-shopping-bag"></i></div>
+                <div class="stat-info">
+                    <span class="stat-num" id="stat-total">{{ orders|length|default:"0" }}</span>
+                    <span class="stat-label">إجمالي الطلبات</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-info">
+                    <span class="stat-num" id="stat-pending">0</span>
+                    <span class="stat-label">قيد الانتظار</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-truck"></i></div>
+                <div class="stat-info">
+                    <span class="stat-num" id="stat-shipped">0</span>
+                    <span class="stat-label">قيد الشحن</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-check"></i></div>
+                <div class="stat-info">
+                    <span class="stat-num" id="stat-delivered">0</span>
+                    <span class="stat-label">تم التسليم</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="dashboard-grid">
-        <!-- العمود الأول: فورم العنوان المحفوظ -->
-        <div style="background: #1a1a1a; padding: 25px; border-radius: 10px; border: 1px solid #333; height: fit-content;">
-            <h3 style="color: var(--cream); margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px;">
-                <i class="fas fa-map-marker-alt" style="color: var(--gold); margin-left: 5px;"></i> عنوان التوصيل
-            </h3>
-            
-            <form method="POST" class="address-form">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" style="width: 100%; background-color: var(--gold); color: var(--bg-base); padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; font-family: var(--font-body); transition: 0.3s;">
-                    حفظ التعديلات
-                </button>
-            </form>
-        </div>
+    <div class="dash-grid">
+        
+        <div class="glass-panel" style="padding: 25px 30px;">
+            <div class="table-header-flex">
+                <span>كل {{ orders|length|default:"0" }} طلب</span>
+            </div>
 
-        <!-- العمود التاني: سجل الطلبات -->
-        <div>
-            <h3 style="color: var(--cream); margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px;">
-                <i class="fas fa-box" style="color: var(--gold); margin-left: 5px;"></i> سجل الطلبات
-            </h3>
-            
             {% if orders %}
             <div style="overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse; text-align: right;">
-    <thead>
-        <tr style="border-bottom: 1px solid #444; color: var(--gold);">
-            <th style="padding: 10px;">رقم الطلب</th>
-            <th style="padding: 10px;">التاريخ</th>
-            <th style="padding: 10px;">الإجمالي</th>
-            <th style="padding: 10px;">الحالة</th>
-            <th style="padding: 10px;">التتبع</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for order in orders %}
-        <tr style="border-bottom: 1px solid #222; color: var(--cream);">
-            
-            <!-- 1. رقم الطلب -->
-            <td style="padding: 10px; font-family: var(--font-en);">#{{ order.id }}</td>
-            
-            <!-- 2. التاريخ -->
-            <td style="padding: 10px;">{{ order.created_at|date:"Y-m-d" }}</td>
-            
-            <!-- 3. الإجمالي -->
-            <td style="padding: 10px;">{{ order.total_price }} ج.م</td>
-            
-            <!-- 4. الحالة -->
-            <td style="padding: 10px;">
-                <span style="background: #222; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem; color: var(--gold);">
-                    {% if order.status == 'Pending' %}قيد الانتظار
-                    {% elif order.status == 'Processing' %}جاري التجهيز
-                    {% elif order.status == 'Shipped' %}تم الشحن
-                    {% elif order.status == 'Delivered' %}تم التوصيل
-                    {% elif order.status == 'Cancelled' %}ملغي
-                    {% else %}{{ order.status }}{% endif %}
-                </span>
-            </td>
-            
-            <!-- 5. التتبع -->
-            <td style="padding: 10px;">
-                <a href="{% url 'order_detail' order.id %}" style="background-color: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 0.8rem; transition: 0.3s;">
-                    تتبع الطلب
-                </a>
-            </td>
-            
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>رقم الطلب</th>
+                            <th>التاريخ</th>
+                            <th>الإجمالي</th>
+                            <th class="hide-mobile">الحالة</th>
+                            <th>التتبع</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr class="order-row" 
+                            data-id="{% if order.tracking_no %}{{ order.tracking_no }}{% else %}#{{ order.id }}{% endif %}"
+                            data-date="{{ order.created_at|date:'Y-m-d | h:i A' }}"
+                            data-total="{{ order.total_price }}"
+                            data-status="{{ order.status }}"
+                            data-phone="{{ order.phone|default:'-' }}"
+                            data-region="{{ order.region|default:'-' }}"
+                            data-address="{{ order.address|default:'-' }}, {{ order.building|default:'' }}, {{ order.floor|default:'' }}, {{ order.apartment|default:'' }}"
+                            data-landmark="{{ order.landmark|default:'لا توجد ملاحظات' }}"
+                            data-url="{% url 'order_detail' order.id %}">
+                            
+                            <td style="font-family: var(--font-en); font-weight: bold; color: var(--gold);">
+                                {% if order.tracking_no %}{{ order.tracking_no }}{% else %}#{{ order.id }}{% endif %}
+                            </td>
+                            
+                            <td style="font-family: var(--font-en); font-size: 0.9rem;">{{ order.created_at|date:"Y-m-d" }}</td>
+                            
+                            <td style="font-family: var(--font-en);">{{ order.total_price }} ج.م</td>
+                            
+                            <td class="hide-mobile">
+                                {% if order.status == 'Pending' %}
+                                    <span class="status-badge status-pending">قيد الانتظار</span>
+                                {% elif order.status == 'Shipped' %}
+                                    <span class="status-badge status-shipped">قيد الشحن</span>
+                                {% elif order.status == 'Delivered' %}
+                                    <span class="status-badge status-delivered">تم التوصيل</span>
+                                {% else %}
+                                    <span class="status-badge status-pending">{{ order.status }}</span>
+                                {% endif %}
+                            </td>
+                            
+                            <td>
+                                <span class="track-btn-sm">تتبع الطلب</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
             {% else %}
             <div style="text-align: center; padding: 40px 0;">
-                <i class="fas fa-box-open" style="font-size: 3rem; color: #444; margin-bottom: 15px;"></i>
+                <i class="fas fa-box-open" style="font-size: 3rem; color: rgba(255,255,255,0.1); margin-bottom: 15px;"></i>
                 <p style="color: #888;">لا توجد طلبات سابقة حتى الآن.</p>
-                <a href="/shop" style="display: inline-block; margin-top: 15px; background-color: var(--gold); color: var(--bg-base); padding: 8px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                <a href="{% url 'shop' %}" style="display: inline-block; margin-top: 15px; background-color: var(--gold); color: var(--bg-base); padding: 8px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
                     تصفح المتجر
                 </a>
             </div>
             {% endif %}
         </div>
+
+        <div class="glass-panel" style="position: sticky; top: 30px;">
+            <h2 class="details-title">تفاصيل الطلب <i class="fas fa-clipboard-list"></i></h2>
+            
+            <div id="smart-order-details">
+                {% if orders %}
+                    <div class="detail-item">
+                        <span class="detail-label"><i class="fas fa-hashtag"></i> رقم الطلب</span>
+                        <span class="detail-value en-font" id="pane-id">-</span>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <span class="detail-label"><i class="fas fa-phone-alt"></i> رقم التليفون</span>
+                        <span class="detail-value en-font" id="pane-phone">-</span>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <span class="detail-label"><i class="fas fa-map-marker-alt"></i> المحافظة</span>
+                        <span class="detail-value" id="pane-region">-</span>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <span class="detail-label"><i class="fas fa-map"></i> عنوان التوصيل</span>
+                        <span class="detail-value" style="font-size: 0.9rem; line-height: 1.5;" id="pane-address">-</span>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <span class="detail-label"><i class="fas fa-comment-alt"></i> ملاحظات</span>
+                        <span class="detail-value" style="font-size: 0.9rem;" id="pane-landmark">-</span>
+                    </div>
+
+                    <div class="details-divider"></div>
+
+                    <div class="detail-item">
+                        <span class="detail-label"><i class="far fa-calendar-alt"></i> تاريخ الطلب</span>
+                        <span class="detail-value en-font" style="font-size: 0.9rem;" id="pane-date">-</span>
+                    </div>
+                    
+                    <div class="detail-item" style="margin-bottom: 0;">
+                        <span class="detail-label"><i class="fas fa-wallet"></i> الإجمالي</span>
+                        <span class="detail-value en-font" style="color: var(--gold); font-size: 1.3rem; font-weight: bold;" id="pane-total">-</span>
+                    </div>
+
+                    <a href="#" id="pane-track-btn" class="track-btn-large">
+                        تتبع الطلب <i class="fas fa-truck" style="margin-right: 8px;"></i>
+                    </a>
+                {% else %}
+                    <p style="text-align: center; color: #888; font-size: 0.9rem; margin-top: 50px;">قم بعمل طلبك الأول لتظهر التفاصيل هنا.</p>
+                {% endif %}
+            </div>
+
+            <div class="security-note">
+                <i class="fas fa-shield-alt"></i> جميع معاملاتك محمية بتقنية تشفير عالية
+            </div>
+        </div>
+
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const rows = document.querySelectorAll('.order-row');
+        
+        // 1. حساب الإحصائيات أوتوماتيك من الجدول
+        let pending = 0, shipped = 0, delivered = 0;
+        rows.forEach(row => {
+            const status = row.getAttribute('data-status');
+            if (status === 'Pending') pending++;
+            else if (status === 'Shipped') shipped++;
+            else if (status === 'Delivered') delivered++;
+        });
+        
+        document.getElementById('stat-pending').innerText = pending;
+        document.getElementById('stat-shipped').innerText = shipped;
+        document.getElementById('stat-delivered').innerText = delivered;
+
+        // 2. تفعيل كارت تفاصيل الطلب الذكي (لما العميل يدوس على أي صف)
+        rows.forEach(row => {
+            row.addEventListener('click', function() {
+                // إزالة التحديد من كل الصفوف وإضافته للصف الحالي
+                rows.forEach(r => r.classList.remove('active-row'));
+                this.classList.add('active-row');
+
+                // نقل البيانات من الصف للشاشة الشمال
+                document.getElementById('pane-id').innerText = this.getAttribute('data-id');
+                document.getElementById('pane-date').innerText = this.getAttribute('data-date');
+                document.getElementById('pane-total').innerText = this.getAttribute('data-total') + ' ج.م';
+                document.getElementById('pane-phone').innerText = this.getAttribute('data-phone');
+                document.getElementById('pane-region').innerText = this.getAttribute('data-region');
+                document.getElementById('pane-address').innerText = this.getAttribute('data-address');
+                document.getElementById('pane-landmark').innerText = this.getAttribute('data-landmark');
+                
+                // تحديث لينك زرار التتبع
+                document.getElementById('pane-track-btn').setAttribute('href', this.getAttribute('data-url'));
+            });
+        });
+
+        // 3. محاكاة ضغطة على أول طلب عشان الشاشة الشمال متكونش فاضية في البداية
+        if (rows.length > 0) {
+            rows[0].click();
+        }
+    });
+</script>
 {% endblock %}
