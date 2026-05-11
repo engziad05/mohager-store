@@ -20,17 +20,71 @@
         overflow: hidden;
     }
 
-    .auth-bg-horse {
-        position: absolute;
-        left: -5%;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 600px;
-        opacity: 0.15;
-        mix-blend-mode: screen;
-        pointer-events: none;
-        z-index: 1;
-        filter: drop-shadow(0 0 25px rgba(201,167,92,0.2));
+    .footer-features {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 60px;
+        padding: 30px 20px;
+        background-color: rgba(10, 10, 8, 0.7);
+        border-top: 1px solid rgba(201, 167, 92, 0.1);
+        direction: rtl;
+        position: relative;
+        z-index: 10;
+        width: 100%;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .feature-item i {
+        color: var(--gold, #dcb36a);
+        font-size: 1.8rem;
+        opacity: 0.9;
+    }
+
+    .feature-text {
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+    }
+
+    .feature-text h4 {
+        color: rgba(255, 255, 255, 0.95);
+        margin: 0 0 5px 0;
+        font-size: 1.1rem;
+        font-family: var(--font-heading, serif);
+    }
+
+    .feature-text p {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.85rem;
+        margin: 0;
+        font-family: var(--font-body, sans-serif);
+    }
+
+    @media (max-width: 992px) {
+        .footer-features {
+            gap: 20px;
+            justify-content: space-around;
+        }
+        .feature-item {
+            width: 45%;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            gap: 8px;
+        }
+        .feature-text {
+            align-items: center;
+        }
+        .feature-text p {
+            display: none;
+        }
     }
 
     .logout-card {
@@ -172,7 +226,6 @@
 
 {% block content %}
 <div class="auth-wrapper">
-    <img src="{% static 'images/logo-Photoroom.png' %}" class="auth-bg-horse" alt="مهاجر">
     
     <div class="logout-card">
         
@@ -197,16 +250,47 @@
             {% endif %}
             
             <button type="submit" class="btn-gold">
-                <i class="fas fa-sign-out-alt"></i> نعم، تسجيل الخروج
+                نعم، تسجيل الخروج <i class="fas fa-sign-out-alt" style="transform: scaleX(-1);"></i>
             </button>
         </form>
         
         <a href="{% url 'index' %}" class="btn-outline">
-            <i class="fas fa-arrow-left"></i> إلغاء والعودة للمتجر
+            إلغاء والعودة للمتجر <i class="fas fa-arrow-right"></i>
         </a>
 
         <div class="security-note">
             <i class="fas fa-shield-alt"></i> تم تأمين جلستك بنجاح
+        </div>
+    </div>
+</div>
+
+<div class="footer-features">
+    <div class="feature-item">
+        <i class="fas fa-headset"></i>
+        <div class="feature-text">
+            <h4>دعم العملاء</h4>
+            <p>متاح 24/7 لمساعدتك</p>
+        </div>
+    </div>
+    <div class="feature-item">
+        <i class="fas fa-shield-alt"></i>
+        <div class="feature-text">
+            <h4>جودة مضمونة</h4>
+            <p>منتجات أصلية 100%</p>
+        </div>
+    </div>
+    <div class="feature-item">
+        <i class="fas fa-shipping-fast"></i>
+        <div class="feature-text">
+            <h4>شحن سريع</h4>
+            <p>توصيل خلال 2-4 أيام</p>
+        </div>
+    </div>
+    <div class="feature-item">
+        <i class="fas fa-lock"></i>
+        <div class="feature-text">
+            <h4>تسوق آمن</h4>
+            <p>بياناتك محمية بالكامل</p>
         </div>
     </div>
 </div>
