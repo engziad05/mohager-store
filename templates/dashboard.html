@@ -44,7 +44,7 @@
 
     .dash-stats-container {
         display: flex;
-        gap: 15px;
+        gap: 20px; /* التعديل: وسعنا المسافة لـ 20px */
         flex-wrap: wrap;
     }
 
@@ -57,6 +57,7 @@
         align-items: center;
         gap: 20px;
         min-width: 140px;
+        min-height: 110px; /* التعديل: زودنا الارتفاع لفخامة أكتر */
         transition: 0.3s;
     }
 
@@ -118,15 +119,38 @@
     .orders-table th { color: #888; font-weight: normal; padding: 10px 15px; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
     .orders-table td { padding: 15px; color: var(--cream); font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); vertical-align: middle; }
     
-    .order-row { cursor: pointer; transition: 0.3s; }
-    .order-row:hover, .order-row.active-row { background: rgba(255, 255, 255, 0.02); }
+    /* التعديل: Active State للـ Row */
+    .order-row { 
+        cursor: pointer; 
+        transition: 0.3s; 
+        border-right: 3px solid transparent; /* عشان ميحصلش Shift للصفحة */
+    }
+    .order-row:hover { background: rgba(255, 255, 255, 0.02); }
+    
+    .order-row.active-row { 
+        background: rgba(212, 175, 55, 0.05); 
+        border-right-color: #D4AF37; 
+    }
+    
     .order-row:last-child td { border-bottom: none; }
 
-    /* الحالات (Badges) */
+    /* التعديل: Letter Spacing للأرقام */
+    .order-id-cell {
+        font-family: var(--font-en); 
+        font-weight: bold; 
+        color: var(--gold);
+        letter-spacing: 1px;
+    }
+
+    /* الحالات (Badges) + Animated Pulse */
+    @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(212, 175, 55, 0); } 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); } }
+    @keyframes pulse-blue { 0% { box-shadow: 0 0 0 0 rgba(77, 166, 255, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(77, 166, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(77, 166, 255, 0); } }
+    @keyframes pulse-green { 0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(76, 175, 80, 0); } 100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); } }
+
     .status-badge {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
         background: rgba(0, 0, 0, 0.4);
         padding: 5px 12px;
         border-radius: 20px;
@@ -136,15 +160,14 @@
     .status-badge::before { content: ''; width: 8px; height: 8px; border-radius: 50%; }
     
     .status-pending { color: var(--gold); }
-    .status-pending::before { background-color: var(--gold); box-shadow: 0 0 5px var(--gold); }
+    .status-pending::before { background-color: var(--gold); animation: pulse-gold 2s infinite; }
     
     .status-shipped { color: #4da6ff; }
-    .status-shipped::before { background-color: #4da6ff; box-shadow: 0 0 5px #4da6ff; }
+    .status-shipped::before { background-color: #4da6ff; animation: pulse-blue 2s infinite; }
     
     .status-delivered { color: #4caf50; }
-    .status-delivered::before { background-color: #4caf50; box-shadow: 0 0 5px #4caf50; }
+    .status-delivered::before { background-color: #4caf50; animation: pulse-green 2s infinite; }
 
-    /* زرار التتبع في الجدول */
     .track-btn-sm {
         background: transparent;
         color: var(--gold);
@@ -161,18 +184,28 @@
     /* ========================================== */
     /* تفاصيل الطلب (الشمال) */
     /* ========================================== */
-    .details-title { color: var(--cream); font-family: var(--font-heading); font-size: 1.3rem; margin: 0 0 25px 0; display: flex; align-items: center; justify-content: space-between; }
+    .details-title { color: var(--cream); font-family: var(--font-heading); font-size: 1.3rem; margin: 0 0 10px 0; display: flex; align-items: center; justify-content: space-between; }
     .details-title i { color: var(--gold); }
 
-    .detail-item { display: flex; flex-direction: column; margin-bottom: 20px; }
+    /* التعديل: Visual Grouping */
+    .detail-group-title {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin: 25px 0 15px 0;
+        padding-bottom: 5px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-family: var(--font-body);
+    }
+    .detail-group-title:first-of-type { margin-top: 15px; }
+
+    .detail-item { display: flex; flex-direction: column; margin-bottom: 15px; }
     .detail-label { color: #888; font-size: 0.85rem; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
     .detail-label i { color: var(--gold); width: 15px; text-align: center; }
     .detail-value { color: var(--cream); font-size: 1rem; padding-right: 23px; }
     
     .detail-value.en-font { font-family: var(--font-en); letter-spacing: 1px; }
 
-    .details-divider { height: 1px; background: rgba(255, 255, 255, 0.05); margin: 20px 0; }
-
+    /* التعديل: زرار تتبع أنعم */
     .track-btn-large {
         display: block;
         width: 100%;
@@ -185,10 +218,10 @@
         font-size: 1.1rem;
         text-decoration: none;
         margin-top: 30px;
-        transition: 0.3s;
+        transition: 0.35s ease;
         box-sizing: border-box;
     }
-    .track-btn-large:hover { background-color: var(--cream); transform: translateY(-2px); }
+    .track-btn-large:hover { background-color: var(--cream); transform: translateY(-1px); }
 
     .security-note {
         text-align: center;
@@ -201,15 +234,11 @@
         gap: 6px;
     }
 
-    /* ========================================== */
-    /* التجاوب مع الموبايل */
-    /* ========================================== */
     @media (max-width: 992px) {
         .dash-grid { grid-template-columns: 1fr; }
         .dash-top-section { flex-direction: column; align-items: flex-start; }
         .dash-stats-container { width: 100%; justify-content: space-between; }
         .stat-card { flex: 1; min-width: 45%; }
-        /* نخفي بعض الأعمدة في الموبايل عشان الجدول ميبوظش */
         .hide-mobile { display: none; }
     }
 </style>
@@ -286,7 +315,7 @@
                             data-landmark="{{ order.landmark|default:'لا توجد ملاحظات' }}"
                             data-url="{% url 'order_detail' order.id %}">
                             
-                            <td style="font-family: var(--font-en); font-weight: bold; color: var(--gold);">
+                            <td class="order-id-cell">
                                 {% if order.tracking_no %}{{ order.tracking_no }}{% else %}#{{ order.id }}{% endif %}
                             </td>
                             
@@ -330,6 +359,8 @@
             
             <div id="smart-order-details">
                 {% if orders %}
+                    <div class="detail-group-title">معلومات التواصل</div>
+                    
                     <div class="detail-item">
                         <span class="detail-label"><i class="fas fa-hashtag"></i> رقم الطلب</span>
                         <span class="detail-value en-font" id="pane-id">-</span>
@@ -340,22 +371,26 @@
                         <span class="detail-value en-font" id="pane-phone">-</span>
                     </div>
                     
+                    <div class="detail-group-title">عنوان التوصيل</div>
+                    
                     <div class="detail-item">
                         <span class="detail-label"><i class="fas fa-map-marker-alt"></i> المحافظة</span>
                         <span class="detail-value" id="pane-region">-</span>
                     </div>
                     
                     <div class="detail-item">
-                        <span class="detail-label"><i class="fas fa-map"></i> عنوان التوصيل</span>
+                        <span class="detail-label"><i class="fas fa-map"></i> العنوان التفصيلي</span>
                         <span class="detail-value" style="font-size: 0.9rem; line-height: 1.5;" id="pane-address">-</span>
                     </div>
+                    
+                    <div class="detail-group-title">ملاحظات الطلب</div>
                     
                     <div class="detail-item">
                         <span class="detail-label"><i class="fas fa-comment-alt"></i> ملاحظات</span>
                         <span class="detail-value" style="font-size: 0.9rem;" id="pane-landmark">-</span>
                     </div>
 
-                    <div class="details-divider"></div>
+                    <div class="detail-group-title">ملخص الفاتورة</div>
 
                     <div class="detail-item">
                         <span class="detail-label"><i class="far fa-calendar-alt"></i> تاريخ الطلب</span>
@@ -387,7 +422,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         const rows = document.querySelectorAll('.order-row');
         
-        // 1. حساب الإحصائيات أوتوماتيك من الجدول
+        // حساب الإحصائيات
         let pending = 0, shipped = 0, delivered = 0;
         rows.forEach(row => {
             const status = row.getAttribute('data-status');
@@ -400,14 +435,12 @@
         document.getElementById('stat-shipped').innerText = shipped;
         document.getElementById('stat-delivered').innerText = delivered;
 
-        // 2. تفعيل كارت تفاصيل الطلب الذكي (لما العميل يدوس على أي صف)
+        // التفاعل وتغيير الـ Active State
         rows.forEach(row => {
             row.addEventListener('click', function() {
-                // إزالة التحديد من كل الصفوف وإضافته للصف الحالي
                 rows.forEach(r => r.classList.remove('active-row'));
                 this.classList.add('active-row');
 
-                // نقل البيانات من الصف للشاشة الشمال
                 document.getElementById('pane-id').innerText = this.getAttribute('data-id');
                 document.getElementById('pane-date').innerText = this.getAttribute('data-date');
                 document.getElementById('pane-total').innerText = this.getAttribute('data-total') + ' ج.م';
@@ -416,12 +449,10 @@
                 document.getElementById('pane-address').innerText = this.getAttribute('data-address');
                 document.getElementById('pane-landmark').innerText = this.getAttribute('data-landmark');
                 
-                // تحديث لينك زرار التتبع
                 document.getElementById('pane-track-btn').setAttribute('href', this.getAttribute('data-url'));
             });
         });
 
-        // 3. محاكاة ضغطة على أول طلب عشان الشاشة الشمال متكونش فاضية في البداية
         if (rows.length > 0) {
             rows[0].click();
         }
