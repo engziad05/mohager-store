@@ -199,3 +199,4 @@ sentry_sdk.init(
     send_default_pii=True,
     traces_sample_rate=1.0,
 )
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
