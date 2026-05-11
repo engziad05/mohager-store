@@ -1,7 +1,7 @@
 """
 Django settings for config project.
 """
-import os
+
 from decouple import config
 from pathlib import Path
 import sentry_sdk
@@ -102,7 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Cairo' # 🚨 التعديل السحري لتوقيت مصر
 USE_I18N = True
 USE_TZ = True
 
@@ -201,9 +201,4 @@ sentry_sdk.init(
 )
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-
-TIME_ZONE = 'Africa/Cairo' # 🚨 التعديل السحري لتوقيت مصر
-
-USE_I18N = True
-
-USE_TZ = True
+
