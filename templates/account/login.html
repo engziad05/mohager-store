@@ -301,15 +301,15 @@
             <button class="submit-btn" type="submit">
                 دخول <i class="fas fa-sign-in-alt" style="transform: scaleX(-1);"></i>
             </button>
-
-            <div class="divider">أو</div>
-            <form action="{% provider_login_url 'google' %}" method="post" style="width: 100%;">
-                {% csrf_token %}
-                <button type="submit" class="social-login-btn" style="width: 100%; cursor: pointer;">
-                    <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google">
-                    تسجيل الدخول بـ Google
-                </button>
-            </form>
+            
+        </form> <div class="divider">أو</div>
+        <form action="{% provider_login_url 'google' %}" method="post" style="width: 100%;">
+            {% csrf_token %}
+            <button type="submit" class="social-login-btn" style="width: 100%; cursor: pointer;">
+                <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google">
+                تسجيل الدخول بـ Google
+            </button>
+        </form>
 
         <div class="auth-footer">
             ليس لديك حساب؟ <a href="{% url 'account_signup' %}">إنشاء حساب جديد</a>
