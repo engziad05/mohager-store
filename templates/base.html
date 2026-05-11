@@ -565,15 +565,18 @@ body {
         height: 1px;
         background: linear-gradient(to right, transparent, rgba(200, 169, 107, 0.5), transparent);
         box-shadow: 0 0 10px rgba(200, 169, 107, 0.2);
+        position: relative;
     }
     
     .footer-top-divider i {
-        background-color: #0b0b0b;
-        padding: 0 25px;
+        position: absolute;
+        left: 50%;
+        bottom: 0; /* يجلس على الخط مباشرة */
+        /* النقل يميناً قليلاً لضبط التوازن البصري للحصان */
+        transform: translateX(calc(-50% + 8px));
         color: var(--gold);
-        font-size: 1.3rem;
-        filter: drop-shadow(0 0 10px rgba(200, 169, 107, 0.5));
-        transform: translateY(-2px); /* Slight optical adjustment */
+        font-size: 1.5rem;
+        filter: drop-shadow(0 -2px 8px rgba(200, 169, 107, 0.6));
     }
 
     .footer-container {
