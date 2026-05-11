@@ -421,14 +421,12 @@
             <form hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-drawer-content" style="width: 100%; display: flex; flex-direction: column; align-items: center;" id="add-to-cart-form">
                 {% csrf_token %}
                 
-                <div class="options-section">
-                    {% if variants %}
-                    <div class="option-group">
-                        <span class="option-label">اللون: {{ variants.0.color_ar }}</span>
-                        <div class="color-preview">
-                            <div class="color-swatch" style="background-color: {{ variants.0.color_code|default:'#000000' }};"></div>
-                        </div>
-                    </div>
+                <div class="option-group">
+                <span class="option-label">اللون: {{ product.color_ar|default:"-" }}</span>
+                <div class="color-preview">
+                    <div class="color-swatch" style="background-color: {{ product.color_code|default:'#000000' }};"></div>
+                </div>
+            </div>
                     {% endif %}
                     
                     <div class="option-group">
