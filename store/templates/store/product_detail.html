@@ -463,31 +463,43 @@
                         });
                     });
 
-                    // 2. نراقب الضغطة بتاعت زرار أضف للسلة
+                    // 2. أول ما يدوس على زرار الإضافة
                     cartForm.addEventListener('htmx:confirm', function(e) {
                         const selectedSize = document.querySelector('input[name="variant_id"]:checked');
                         
                         if (!selectedSize) {
-                            // لو داس ومفيش مقاس متحدد: نوقف الريكويست ونظهر الرسالة الحمرا
+                            // لو مختارش مقاس: نوقف الريكويست ونظهر الرسالة الحمرا
                             e.preventDefault(); 
                             document.getElementById('size-error-msg').style.display = 'block';
                         } else {
-                            // لو مختار مقاس: نقلب الزرار أخضر ونقوله تم الإضافة
+                            // لو مختار مقاس: نقلب الزرار لـ "جاري الإضافة..." عشان ميحسش ببطء السيرفر
                             const btn = document.querySelector('.add-to-cart-premium');
-                            const originalText = btn.innerHTML;
-                            
-                            btn.innerHTML = 'تم الإضافة للسلة بنجاح <i class="fas fa-check" style="margin-right: 8px;"></i>';
-                            btn.style.backgroundColor = '#4caf50';
-                            btn.style.borderColor = '#4caf50';
-                            btn.style.color = '#fff';
-                            
-                            setTimeout(() => {
-                                btn.innerHTML = originalText;
-                                btn.style.backgroundColor = ''; 
-                                btn.style.borderColor = '';
-                                btn.style.color = '';
-                            }, 3000);
+                            btn.innerHTML = 'جاري الإضافة... <i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>';
+                            btn.style.opacity = '0.8';
+                            btn.style.cursor = 'wait';
                         }
+                    });
+
+                    // 3. أول ما السيرفر يرد (والسلة تفتح)
+                    cartForm.addEventListener('htmx:afterSwap', function(e) {
+                        const btn = document.querySelector('.add-to-cart-premium');
+                        const originalText = 'أضف إلى السلة <i class="fas fa-shopping-bag" style="margin-right: 8px;"></i>';
+                        
+                        // نقلب الزرار أخضر ونقوله تم بنجاح
+                        btn.innerHTML = 'تم الإضافة بنجاح <i class="fas fa-check" style="margin-right: 8px;"></i>';
+                        btn.style.backgroundColor = '#4caf50';
+                        btn.style.borderColor = '#4caf50';
+                        btn.style.color = '#fff';
+                        btn.style.opacity = '1';
+                        btn.style.cursor = 'pointer';
+                        
+                        // نرجع الزرار لأصله بعد 3 ثواني
+                        setTimeout(() => {
+                            btn.innerHTML = originalText;
+                            btn.style.backgroundColor = ''; 
+                            btn.style.borderColor = '';
+                            btn.style.color = '';
+                        }, 3000);
                     });
                 }
             });
