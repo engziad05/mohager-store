@@ -20,7 +20,10 @@
     /* 1. السلايدر والخلفية */
     /* ========================================== */
     .hero-slider {
-        width: 100%;
+        width: calc(100% + 40px); /* كسر حدود الـ main padding */
+        margin-left: -20px;
+        margin-right: -20px;
+        margin-top: -20px;
         background: linear-gradient(to bottom, rgba(10, 10, 8, 0.8), rgba(10, 10, 8, 0.3)),
         url('{% static "images/hero-bg.jpg" %}');
         background-size: cover;
@@ -35,9 +38,9 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        min-height: 60vh;
-        padding: 20px 5% 40px 2%; /* باديينج أقل على الشمال عشان يشيل الفراغ */
-        gap: 40px;
+        min-height: 65vh;
+        padding: 40px 4% 40px 0; /* صفر padding على الشمال */
+        gap: 30px;
     }
 
     /* ========================================== */
