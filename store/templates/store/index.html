@@ -162,35 +162,37 @@
   00. الصورة والدايرة المزخرفة ورا اللوجو (اليمين) */
     /* ========================================== */
     .slide-image-wrapper {
-        flex: 1;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
+        flex: 1;
+        width: 100%;
+        max-width: 50%; /* 🚨 عشان نلجم الكونتينر مياخدش الشاشة كلها */
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     /* 🚨 الدايرة المزخرفة الكبيرة ورا اللوجو الرئيسي */
     .slide-image-wrapper::before {
-        content: '';
-        position: absolute;
-        width: 110%; height: 110%; /* أكبر من اللوجو */
-        /* استخدمنا صورة فريم زخرفي دهبي جاهز */
-        background-image: url('https://www.transparentpng.com/download/gold-frame/gold-circular-islamic-frame-ornament-png-Vp3x8D.png'); 
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
-        opacity: 0.15; /* خفيفة جداً عشان الفخامة */
-        filter: sepia(1) saturate(2) hue-rotate(10deg); /* تظبيط اللون للدهبي */
-        z-index: 1;
-    }
+        content: '';
+        position: absolute;
+        width: 110%; height: 110%; 
+        background-image: url('https://www.transparentpng.com/download/gold-frame/gold-circular-islamic-frame-ornament-png-Vp3x8D.png'); 
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0.15; 
+        filter: sepia(1) saturate(2) hue-rotate(10deg); 
+        z-index: 1;
+    }
 
     .main-logo-img {
-        width: 100%;
-        max-width: 400px; /* مقاس متزن */
-        position: relative;
-        z-index: 2;
-        filter: drop-shadow(0 0 20px rgba(201,167,92,0.15));
-    }
+        width: 100% !important;
+        max-width: 450px !important; /* 🚨 السر هنا: إجبار السلايدر يحترم المقاس */
+        height: auto !important;
+        object-fit: contain !important;
+        position: relative;
+        z-index: 2;
+        filter: drop-shadow(0 0 20px rgba(201,167,92,0.15));
+    }
 
     /* ========================================== */
     /* شريط المميزات السفلي */
@@ -265,6 +267,8 @@
     /* الموبايل */
     /* ========================================== */
     @media (max-width: 768px) {
+         .slide-image-wrapper { max-width: 100%; }
+         .main-logo-img { max-width: 80% !important; }
         .slide-content { flex-direction: column; text-align: center; gap: 20px; padding: 30px 20px; min-height: auto; }
         .slide-text { align-items: center; text-align: center; }
         .top-logo-wrapper { align-items: center; }
