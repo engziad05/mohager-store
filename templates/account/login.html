@@ -242,6 +242,59 @@
     .error-box { background: rgba(255, 76, 76, 0.1); border: 1px solid rgba(255, 76, 76, 0.3); color: #ff4c4c; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; text-align: center; }
 
     /* ========================================== */
+    /* Custom Validation Tooltip & Error State */
+    /* ========================================== */
+    .custom-tooltip {
+        position: absolute;
+        bottom: -40px;
+        right: 0;
+        background: #0b0b0b;
+        color: #c8a96b;
+        padding: 8px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(200, 169, 107, 0.4);
+        font-size: 0.85rem;
+        font-family: var(--font-body);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(200, 169, 107, 0.05);
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        pointer-events: none;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .custom-tooltip.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .custom-tooltip i {
+        font-size: 1rem;
+        color: rgba(200, 169, 107, 0.9);
+    }
+    
+    .auth-input.input-error {
+        border-color: rgba(200, 169, 107, 0.8) !important;
+        box-shadow: 0 0 15px rgba(200, 169, 107, 0.2), inset 0 0 10px rgba(180, 40, 40, 0.2) !important;
+        animation: shakeError 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+    .auth-input.input-error:focus {
+        box-shadow: 0 0 20px rgba(200, 169, 107, 0.3), inset 0 0 15px rgba(180, 40, 40, 0.25) !important;
+        background: rgba(20, 10, 10, 0.6);
+    }
+    
+    @keyframes shakeError {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-4px); }
+        50% { transform: translateX(4px); }
+        75% { transform: translateX(-4px); }
+    }
+
+    /* ========================================== */
     /* مميزات المتجر السفلية (Footer Features) */
     /* ========================================== */
     .footer-features {
@@ -441,28 +494,54 @@
             });
         }
 
-        // 2. التحقق من الحقول الفاضية (SweetAlert2)
-        const loginForm = document.querySelector('.auth-form');
-        if (loginForm) {
-            loginForm.addEventListener('submit', function(e) {
-                const loginInput = document.getElementById('id_login');
+        // 2. Custom Luxury Validation
+        const forms = document.querySelectorAll('.auth-form');
+        forms.forEach(form => {
+            form.setAttribute('novalidate', 'true');
+            
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+                const requiredInputs = form.querySelectorAll('input[required]');
                 
-                if ((loginInput && !loginInput.value.trim()) || (passwordInput && !passwordInput.value.trim())) {
-                    e.preventDefault(); 
-                    
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'بيانات ناقصة!',
-                        text: 'من فضلك أدخل البريد الإلكتروني وكلمة المرور لتسجيل الدخول.',
-                        confirmButtonColor: 'var(--gold)', 
-                        background: 'rgba(20, 20, 15, 0.95)', 
-                        color: 'var(--cream)', 
-                        confirmButtonText: 'حسناً',
-                        customClass: { popup: 'custom-swal-font' }
-                    });
+                form.querySelectorAll('.custom-tooltip').forEach(el => el.remove());
+                form.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+
+                for (let i = requiredInputs.length - 1; i >= 0; i--) {
+                    const input = requiredInputs[i];
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        
+                        input.classList.add('input-error');
+                        
+                        const tooltip = document.createElement('div');
+                        tooltip.className = 'custom-tooltip';
+                        tooltip.innerHTML = '<i class="fas fa-exclamation-circle"></i> يرجى ملء هذا الحقل';
+                        
+                        let wrapper = input.parentElement;
+                        if (window.getComputedStyle(wrapper).position === 'static') {
+                            wrapper.style.position = 'relative';
+                        }
+                        
+                        wrapper.appendChild(tooltip);
+                        
+                        // force reflow
+                        void tooltip.offsetWidth;
+                        tooltip.classList.add('show');
+                        
+                        input.addEventListener('input', function removeError() {
+                            input.classList.remove('input-error');
+                            tooltip.classList.remove('show');
+                            setTimeout(() => tooltip.remove(), 400);
+                            input.removeEventListener('input', removeError);
+                        });
+                    }
+                }
+
+                if (!isValid) {
+                    e.preventDefault();
                 }
             });
-        }
+        });
     });
 </script>
 {% endblock %}
