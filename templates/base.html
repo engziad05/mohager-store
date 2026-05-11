@@ -523,200 +523,267 @@ body {
         {% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer>
-        <!-- ستايل الفوتر المتكامل -->
-    <!-- ستايل الفوتر المتكامل المتناسق مع الهيدر -->
+    <!-- ========================================== -->
+    <!-- الفوتر (Premium Dark Design) -->
+    <!-- ========================================== -->
     <style>
-        /* إجبار الصفحة إنها تاخد الطول كله وتزق الفوتر لتحت */
-        /* ========================================== */
-    /* ستايل الفوتر (Cinematic & Premium) */
-    /* ========================================== */
-
-   /* ========================================== */
-    /* الفوتر (أهدى، أفخم، وبيغطي على العلامة المائية) */
-    /* ========================================== */
     .site-footer {
-        background: radial-gradient(ellipse at top, rgba(35, 35, 28, 0.9) 0%, var(--bg-surface) 60%);
-        background-color: var(--bg-surface);
-        
-        /* 1. الخط الدهبي بقى شعرة خفيفة جداً تكاد تُرى (0.04 بدل 0.08) */
-        border-top: 1px solid rgba(200, 169, 110, 0.04); 
-        box-shadow: inset 0 10px 20px -10px rgba(200, 169, 110, 0.02); 
-        
+        background-color: #0b0b0b;
+        color: var(--cream);
         position: relative;
-        z-index: 10; 
-        
-        /* 2. قللنا الـ Padding من فوق ومن تحت عشان نلم الفراغ الرأسي */
-        padding: 30px 5% 10px; 
-        width: 100%;
-        box-sizing: border-box;
-        margin-top: auto; 
-    }
-
-    .footer-container {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 20px;
-        /* 4. تقليل العرض عشان نلم الأعمدة وتقرب من بعضها */
-        max-width: 950px; 
-        margin: 0 auto;
-    }
-
-    .footer-section {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .footer-section:nth-child(1) { align-items: flex-start; text-align: right; }
-    .footer-section:nth-child(2) { align-items: center; text-align: center; }
-    .footer-section:nth-child(3) { align-items: flex-end; text-align: left; }
-
-    .footer-section h4 {
-        color: var(--gold);
-        margin-bottom: 20px; /* قللنا المسافة تحت العنوان */
-        font-size: 1.4rem;
-        font-family: var(--font-heading);
-        font-weight: normal;
-        text-shadow: 0 0 10px rgba(200, 169, 110, 0.2); /* Glow خفيف للعنوان */
-    }
-
-    .footer-section p, .footer-section a {
-        color: var(--sand);
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 12px;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        font-size: 1.05rem;
+        padding-top: 0;
+        margin-top: 50px;
         font-family: var(--font-body);
+        direction: rtl;
+        z-index: 10;
+        width: 100%;
     }
 
-    .footer-section a:hover {
-        color: var(--gold);
-        transform: translateX(-5px);
-        text-shadow: 0 0 8px rgba(200, 169, 110, 0.4);
-    }
-
-    .social-icons {
-        display: flex;
-        gap: 15px;
-    }
-
-    /* 5. الأيقونات (تصميم أهدى مع Glow فخم في الهوفر) */
-    /* أيقونات السوشيال - Cinematic Hover */
-    .social-icons a {
-        font-size: 1.1rem;
-        color: rgba(232, 213, 176, 0.7); /* لون دهبي مطفي هادي جداً */
-        background: transparent;
-        border: 1px solid rgba(200, 169, 110, 0.15); /* برواز خفيف أوي */
-        width: 38px;
-        height: 38px;
+    .footer-top-divider {
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-bottom: 50px;
+        position: relative;
+    }
+    
+    .footer-top-divider .line {
+        height: 1px;
+        flex-grow: 1;
+        background: linear-gradient(to right, transparent, rgba(200, 169, 107, 0.5), transparent);
+    }
+    
+    .footer-top-divider i {
+        margin: 0 15px;
+        color: var(--gold);
+        font-size: 1.5rem;
+        filter: drop-shadow(0 0 8px rgba(200, 169, 107, 0.4));
+    }
+
+    .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 0 5%;
+        flex-wrap: wrap;
+        gap: 40px;
+    }
+
+    .footer-section {
+        flex: 1;
+        min-width: 250px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .footer-section h4 {
+        color: var(--gold);
+        font-size: 1.3rem;
+        margin-bottom: 25px;
+        font-family: var(--font-heading);
+        font-weight: normal;
+        text-align: center;
+    }
+
+    /* "مهاجر" Column */
+    .footer-brand {
+        text-align: center;
+    }
+    .footer-brand h2 {
+        color: var(--gold);
+        font-family: var(--font-heading);
+        font-size: 2.2rem;
+        margin: 0;
+        text-shadow: 0 0 10px rgba(200, 169, 107, 0.3);
+    }
+    .footer-brand .en-logo {
+        letter-spacing: 4px;
+        font-size: 0.85rem;
+        color: var(--gold);
+        margin: 5px 0 15px 0;
+        text-transform: uppercase;
+        opacity: 0.9;
+    }
+    .footer-brand p {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.95rem;
+        margin-bottom: 25px;
+    }
+    .social-icons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+    .social-icons a {
+        width: 38px;
+        height: 38px;
         border-radius: 50%;
-        /* Animation ناعم جداً وبطيء سِنة */
-        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        border: 1px solid rgba(200, 169, 107, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: all 0.4s ease;
     }
-
     .social-icons a:hover {
-        color: var(--bg-base) !important; /* الأيقونة تقلب أسود */
-        background-color: var(--gold) !important; /* الخلفية تقلب دهبي صريح */
-        border-color: var(--gold) !important;
-        /* الـ Glow السحري */
-        box-shadow: 0 0 18px rgba(200, 169, 110, 0.35); 
-        transform: translateY(-4px) scale(1.05); /* نطة خفيفة لفوق مع تكبير لا يذكر */
+        background: var(--gold);
+        color: #0b0b0b;
+        border-color: var(--gold);
+        box-shadow: 0 0 15px rgba(200, 169, 107, 0.4);
+        transform: translateY(-3px);
     }
 
-    /* 6. حقوق النشر (أصغر، ملمومة، وتباين أوضح) */
+    /* "معلومات تهمك" Column */
+    .footer-links a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        padding: 10px 0;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        margin-bottom: 5px;
+    }
+    .footer-links a i {
+        color: var(--gold);
+        opacity: 0;
+        transform: translateX(10px);
+        transition: all 0.3s ease;
+        font-size: 0.8rem;
+    }
+    .footer-links a:hover {
+        color: var(--gold);
+        transform: translateX(-5px);
+    }
+    .footer-links a:hover i {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    /* "تواصل معنا" Column */
+    .footer-contact .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        justify-content: center;
+    }
+    .footer-contact .contact-icon {
+        width: 35px;
+        height: 35px;
+        border: 1px solid rgba(200, 169, 107, 0.3);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+    }
+    .footer-contact p {
+        color: rgba(255, 255, 255, 0.7);
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    /* Bottom Bar */
     .footer-bottom {
         text-align: center;
-        /* 3. لمينا المسافات حوالين جملة حقوق النشر */
-        margin-top: 20px; 
-        padding-top: 10px;
-        border-top: 1px solid rgba(200, 169, 110, 0.04); /* خط أنعم بكتير */
-        color: rgba(242, 237, 228, 0.4); /* لون أهدى سِنة */
-        font-size: 0.8rem; 
-        font-family: var(--font-body);
+        margin-top: 50px;
+        padding: 20px 0;
+        border-top: 1px solid rgba(200, 169, 107, 0.1);
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
     }
-    /* ========================================== */
-    /* تظبيط الموبايل للأساسيات والفوتر */
-    /* ========================================== */
+
+    /* Mobile adjustments */
     @media (max-width: 768px) {
-        .bg-watermark {
-            background-size: 80% !important; /* هيكبر وياخد 80% من عرض الشاشة بدل 20% */
-        }
         .footer-container {
-            flex-direction: column; /* بنرص العواميد تحت بعضها بدل جنب بعض */
+            flex-direction: column;
             align-items: center;
-            gap: 40px;
+            text-align: center;
         }
-        .footer-section {
-            width: 100%;
-            align-items: center !important;
-            text-align: center !important;
+        .footer-section h4 {
+            text-align: center;
         }
-        .footer-section p, .footer-section a {
-            justify-content: center; /* توسيط الكلام والأيقونات */
+        .footer-brand {
+            text-align: center;
         }
         .social-icons {
             justify-content: center;
         }
+        .footer-links a {
+            justify-content: center;
+            gap: 10px;
+        }
+        .footer-contact .contact-item {
+            justify-content: center;
+            flex-direction: row-reverse;
+        }
     }
     </style>
 
-    <!-- Footer -->
     <footer class="site-footer">
+        <div class="footer-top-divider">
+            <div class="line"></div>
+            <i class="fas fa-chess-knight"></i>
+            <div class="line"></div>
+        </div>
+        
         <div class="footer-container">
             
-            <!-- 1. تواصل معنا (اليمين) -->
-            <div class="footer-section">
-                <h4>تواصل معنا</h4>
-                <p dir="ltr">+20 1099138710<i class="fas fa-phone" style="color: var(--gold);"></i></p>
-                <p dir="ltr">mohagerbrand@gmail.com <i class="fas fa-envelope" style="color: var(--gold);"></i></p>
+            <!-- 1. مهاجر (يمين الشاشة) -->
+            <div class="footer-section footer-brand">
+                <h2>مهاجر</h2>
+                <p class="en-logo">M O H A G E R</p>
+                <p>هوية عربية بتفاصيل معاصرة.</p>
+                <div class="social-icons">
+                    <a href="https://www.tiktok.com/@mohager82?is_from_webapp=1&amp;sender_device=pc" target="_blank"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.instagram.com/mohagerbrand?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61587125740592" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                </div>
             </div>
 
             <!-- 2. معلومات تهمك (النص) -->
-            <div class="footer-section">
+            <div class="footer-section footer-links">
                 <h4>معلومات تهمك</h4>
-                <a href="{% url 'return_policy' %}" target="_blank" style="color: #bbb; text-decoration: none; font-family: var(--font-body); font-size: 1.1rem; transition: 0.3s; display: inline-block;" onmouseover="this.style.color='var(--gold)'; this.style.transform='translateX(-5px)';" onmouseout="this.style.color='#bbb'; this.style.transform='translateX(0)';">
-    سياسة الاسترجاع
-</a>
-                <a href="{% url 'terms' %}" target="_blank" style="color: #bbb; text-decoration: none; font-family: var(--font-body); font-size: 1.1rem; transition: 0.3s; display: inline-block;" onmouseover="this.style.color='var(--gold)'; this.style.transform='translateX(-5px)';" onmouseout="this.style.color='#bbb'; this.style.transform='translateX(0)';">
-    الشروط والأحكام
-</a>
-                <a href="{% url 'about' %}" target="_blank" style="color: #bbb; text-decoration: none; font-family: var(--font-body); font-size: 1.1rem; transition: 0.3s; display: inline-block;" onmouseover="this.style.color='var(--gold)'; this.style.transform='translateX(-5px)';" onmouseout="this.style.color='#bbb'; this.style.transform='translateX(0)';">
-    عن مُهاجر
-</a>
+                <a href="{% url 'return_policy' %}" target="_blank">
+                    سياسة الاسترجاع <i class="fas fa-arrow-left"></i>
+                </a>
+                <a href="{% url 'terms' %}" target="_blank">
+                    الشروط والأحكام <i class="fas fa-arrow-left"></i>
+                </a>
+                <a href="{% url 'about' %}" target="_blank">
+                    عن مُهاجر <i class="fas fa-arrow-left"></i>
+                </a>
+                <a href="#" target="_blank">
+                    الأسئلة الشائعة <i class="fas fa-arrow-left"></i>
+                </a>
             </div>
 
-            <!-- 3. تابعنا (الشمال) -->
-            <div class="footer-section">
-                <h4>تابعنا</h4>
-                <div class="social-icons">
-                   <!-- أيقونة فيسبوك -->
-<a href="https://www.facebook.com/profile.php?id=61587125740592" target="_blank" style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--bg-base); border: 1px solid #333; display: flex; justify-content: center; align-items: center; color: var(--cream); text-decoration: none; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold)'; this.style.color='var(--gold)';" onmouseout="this.style.borderColor='#333'; this.style.color='var(--cream)';">
-    <i class="fab fa-facebook-f" style="font-size: 1.1rem;"></i>
-</a>
-
-<!-- أيقونة انستجرام -->
-<a href="https://www.instagram.com/mohagerbrand?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--bg-base); border: 1px solid #333; display: flex; justify-content: center; align-items: center; color: var(--cream); text-decoration: none; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold)'; this.style.color='var(--gold)';" onmouseout="this.style.borderColor='#333'; this.style.color='var(--cream)';">
-    <i class="fab fa-instagram" style="font-size: 1.1rem;"></i>
-</a>
-
-<!-- أيقونة تيك توك -->
-<a href="https://www.tiktok.com/@mohager82?is_from_webapp=1&amp;sender_device=pc" target="_blank" style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--bg-base); border: 1px solid #333; display: flex; justify-content: center; align-items: center; color: var(--cream); text-decoration: none; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold)'; this.style.color='var(--gold)';" onmouseout="this.style.borderColor='#333'; this.style.color='var(--cream)';">
-    <i class="fab fa-tiktok" style="font-size: 1.1rem;"></i>
-</a>
+            <!-- 3. تواصل معنا (شمال الشاشة) -->
+            <div class="footer-section footer-contact">
+                <h4>تواصل معنا</h4>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                    <p dir="ltr">+20 109 913 8710</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                    <p dir="ltr">mohagerbrand@gmail.com</p>
                 </div>
             </div>
             
         </div>
         
         <div class="footer-bottom">
+            <i class="fas fa-shield-alt" style="color: rgba(200, 169, 107, 0.4); font-size: 1rem;"></i>
             <p>&copy; 2026 متجر مُهاجر. جميع الحقوق محفوظة.</p>
         </div>
     </footer>
@@ -762,4 +829,3 @@ body {
 
 </body>
 </html>
-    </footer>
