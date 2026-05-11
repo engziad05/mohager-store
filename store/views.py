@@ -380,6 +380,7 @@ def checkout(request):
                 )
                 
                 # 3. حفظ العنوان للمرات القادمة
+                i# --- 1. حفظ العنوان للمرات القادمة ---
                 if request.user.is_authenticated:
                     address_record, created = SavedAddress.objects.get_or_create(user=request.user)
                     address_record.phone = request.POST.get('phone')
@@ -387,11 +388,30 @@ def checkout(request):
                     address_record.address = request.POST.get('address')
                     address_record.building = request.POST.get('building')
                     address_record.floor = request.POST.get('floor')
+                    address_record.apartment = request.POST.get('apartment')
+                    address_record.landmark = request.POST.get('landmark')
+                    address_record.save()
+
+                # --- 2. إضافة المنتجات للطلب (ده كان ممسوح عندك) ---
+                for item in cart_items:
+                    OrderItem.objects.create(
+                        order=order,
+                        product=item.product,
+                        variant=item.variant,
+                        quantity=item.quantity,
+                        price=item.variant.price if item.variant else item.product.base_price
+                    )
+                
+                # --- 3. إرسال الإيميل المطور اللي بيصطاد الأخطاء ---
+                if order.email:
+                    html_content = render_to_string('store/emails/order_confirm.html', {
+                        'order': order,
+                        'cart_items': cart_items
+                    })
                     
-                    # دالة بتبعت الإيميل عن طريق الـ API من ورا ضهر Railway
                     def send_bg_email_api(to_email, html, order_id):
+                        import urllib.error
                         url = "https://api.brevo.com/v3/smtp/email"
-                        # بنسحب الباسورد بتاع برافو لأنه هو هو الـ API Key
                         api_key = str(settings.EMAIL_HOST_PASSWORD).strip()
                         
                         data = {
@@ -408,16 +428,20 @@ def checkout(request):
                         
                         try:
                             with urllib.request.urlopen(req) as response:
-                                print("✅✅✅ تم إرسال الإيميل بنجاح عن طريق API! ✅✅✅")
+                                print(f"✅✅✅ تم إرسال الإيميل للطلب #{order_id} بنجاح! ✅✅✅")
+                        except urllib.error.HTTPError as e:
+                            error_message = e.read().decode('utf-8')
+                            print(f"❌❌❌ رفض من Brevo (كود {e.code}): {error_message} ❌❌❌")
                         except Exception as e:
-                            print(f"❌❌❌ مشكلة في الـ API: {e} ❌❌❌")
+                            print(f"❌❌❌ مشكلة عامة في الإرسال: {e} ❌❌❌")
 
-                    # تشغيل الإرسال في الخلفية
                     try:
                         email_thread = threading.Thread(target=send_bg_email_api, args=(order.email, html_content, order.id))
                         email_thread.start()
                     except Exception as e:
                         print(f"Error starting email thread: {e}")
+                
+                # --- 4. مسح السلة والتحويل ---
                 cart.delete()
                 if 'cart_id' in request.session:
                     del request.session['cart_id']
