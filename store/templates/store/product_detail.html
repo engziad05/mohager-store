@@ -455,7 +455,7 @@
                 const cartForm = document.getElementById('add-to-cart-form');
                 
                 if (cartForm) {
-                    // 1. نخفي رسالة الإيرور فوراً أول ما العميل يدوس على أي مقاس
+                    // 1. نخفي رسالة الإيرور لو اختار مقاس
                     const sizeRadios = document.querySelectorAll('input[name="variant_id"]');
                     sizeRadios.forEach(radio => {
                         radio.addEventListener('change', function() {
@@ -463,16 +463,14 @@
                         });
                     });
 
-                    // 2. أول ما يدوس على زرار الإضافة
+                    // 2. أول ما يدوس على الزرار (جاري التحميل)
                     cartForm.addEventListener('htmx:confirm', function(e) {
                         const selectedSize = document.querySelector('input[name="variant_id"]:checked');
                         
                         if (!selectedSize) {
-                            // لو مختارش مقاس: نوقف الريكويست ونظهر الرسالة الحمرا
                             e.preventDefault(); 
                             document.getElementById('size-error-msg').style.display = 'block';
                         } else {
-                            // لو مختار مقاس: نقلب الزرار لـ "جاري الإضافة..." عشان ميحسش ببطء السيرفر
                             const btn = document.querySelector('.add-to-cart-premium');
                             btn.innerHTML = 'جاري الإضافة... <i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>';
                             btn.style.opacity = '0.8';
@@ -480,26 +478,33 @@
                         }
                     });
 
-                    // 3. أول ما السيرفر يرد (والسلة تفتح)
-                    cartForm.addEventListener('htmx:afterSwap', function(e) {
+                    // 3. أول ما السيرفر يرد (الحدث الأكيد)
+                    cartForm.addEventListener('htmx:afterRequest', function(e) {
                         const btn = document.querySelector('.add-to-cart-premium');
                         const originalText = 'أضف إلى السلة <i class="fas fa-shopping-bag" style="margin-right: 8px;"></i>';
                         
-                        // نقلب الزرار أخضر ونقوله تم بنجاح
-                        btn.innerHTML = 'تم الإضافة بنجاح <i class="fas fa-check" style="margin-right: 8px;"></i>';
-                        btn.style.backgroundColor = '#4caf50';
-                        btn.style.borderColor = '#4caf50';
-                        btn.style.color = '#fff';
-                        btn.style.opacity = '1';
-                        btn.style.cursor = 'pointer';
-                        
-                        // نرجع الزرار لأصله بعد 3 ثواني
-                        setTimeout(() => {
+                        if (e.detail.successful) {
+                            // نجاح: الزرار يقلب أخضر
+                            btn.innerHTML = 'تم الإضافة بنجاح <i class="fas fa-check" style="margin-right: 8px;"></i>';
+                            btn.style.backgroundColor = '#4caf50';
+                            btn.style.borderColor = '#4caf50';
+                            btn.style.color = '#fff';
+                            btn.style.opacity = '1';
+                            btn.style.cursor = 'pointer';
+                            
+                            // يرجع لأصله بعد 3 ثواني
+                            setTimeout(() => {
+                                btn.innerHTML = originalText;
+                                btn.style.backgroundColor = ''; 
+                                btn.style.borderColor = '';
+                                btn.style.color = '';
+                            }, 3000);
+                        } else {
+                            // لو حصل مشكلة في النت يرجع الزرار لأصله
                             btn.innerHTML = originalText;
-                            btn.style.backgroundColor = ''; 
-                            btn.style.borderColor = '';
-                            btn.style.color = '';
-                        }, 3000);
+                            btn.style.opacity = '1';
+                            btn.style.cursor = 'pointer';
+                        }
                     });
                 }
             });
