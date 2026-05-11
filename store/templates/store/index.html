@@ -46,12 +46,15 @@
     /* ========================================== */
     /* 2. النص (اليمين) - مربوط بالباك اند 100% */
     /* ========================================== */
+    /* ========================================== */
+    /* 2. النص (اليمين) - مربوط بالباك اند 100% */
+    /* ========================================== */
     .slide-text {
         flex: 1;
-        max-width: 520px;
+        max-width: 520px; /* ظبطنا العرض عشان الخط يمتد صح */
         display: flex;
         flex-direction: column;
-        align-items: flex-start; /* محاذاة العنوان والوصف لليمين */
+        align-items: flex-start; /* محاذاة لليمين */
         text-align: right; 
         z-index: 10;
         padding-left: 20px;
@@ -60,37 +63,46 @@
     .top-logo-wrapper {
         display: flex;
         flex-direction: column;
-        align-items: center; /* سنتر اللوجو والكلمة الإنجليزي */
+        align-items: center; /* سنترنا اللوجو والكلمة مع بعض */
         width: 100%; 
         margin-bottom: 25px;
     }
 
-    .top-logo-wrapper img {
-        width: 120px; 
-        margin-bottom: 8px;
-        filter: drop-shadow(0 0 10px rgba(201,167,92,0.3));
+    /* 👇 الكلاس ده ضفناه عشان اللوجو الصغير 👇 */
+    .small-top-logo {
+        width: 110px; 
+        margin-bottom: 10px;
+        filter: drop-shadow(0 0 10px rgba(201,167,92,0.4));
     }
 
     .top-logo-text {
         color: rgba(255,255,255,0.6);
         font-family: var(--font-en, sans-serif);
         font-size: 0.85rem;
-        letter-spacing: 8px; /* مسافات واسعة وفخمة */
+        letter-spacing: 8px; /* وسعنا المسافات شوية للفخامة */
         margin-bottom: 15px;
         margin-left: 8px; 
     }
 
-   .custom-divider {
+    .custom-divider {
         display: flex;
         align-items: center;
         gap: 15px;
-        width: 100%; /* 🚨 هيوصل لآخر الشاشة/النص */
+        width: 100%; /* 🚨 الخط هياخد عرض المساحة كلها 🚨 */
     }
     
     .custom-divider::before, .custom-divider::after {
         content: '';
-        flex: 1; /* 🚨 بيجبر الخط يتمد للآخر */
+        flex: 1; /* 🚨 بيخلي الخط يمتد للآخر 🚨 */
         height: 1px;
+    }
+
+    /* 👇 التدرج اللوني عشان الخط يختفي في الأطراف 👇 */
+    .custom-divider::after {
+        background: linear-gradient(to left, rgba(201,167,92,0.4), transparent);
+    }
+    .custom-divider::before {
+        background: linear-gradient(to right, rgba(201,167,92,0.4), transparent);
     }
     
     .custom-divider .diamond {
@@ -100,7 +112,6 @@
         box-shadow: 0 0 8px rgba(201,167,92,0.8);
     }
 
-    /* 🚨 متغيرات الباك اند رجعت 🚨 */
     .slide-text h2 {
         font-size: 3.2rem; 
         line-height: 1.3;
