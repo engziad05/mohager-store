@@ -26,6 +26,7 @@ from .models import StoreSetting
 
 
 
+
 def index(request):
     products = Product.objects.filter(is_active=True)[:8]
     slides = HeroSlide.objects.filter(is_active=True).order_by('order')
@@ -189,7 +190,15 @@ def update_quantity(request, item_id, action):
 
     
 def order_success(request):
-    return render(request, 'store/order_success.html')
+    tracking_no = request.session.get('last_order_tracking', 'MHG-000000')
+    
+    context = {
+        'tracking_no': tracking_no
+    }
+    
+    # هنا ضفنا الـ context عشان الصفحة تقرا الرقم
+    return render(request, 'store/order_success.html', context)
+    
 def cart_drawer(request):
     cart_id = request.session.get('cart_id')
     cart = None
@@ -445,8 +454,9 @@ def checkout(request):
                 cart.delete()
                 if 'cart_id' in request.session:
                     del request.session['cart_id']
-
+                request.session['last_order_tracking'] = order.tracking_no
                 return redirect('order_success')
+            
                 
         except ValueError as e:
             messages.error(request, str(e))
@@ -468,5 +478,8 @@ def terms(request):
     return render(request, 'terms.html')
 def about(request):
     return render(request, 'about.html')
+
+
+
 
 
