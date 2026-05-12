@@ -5,33 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تأكيد طلبك من مُهاجر</title>
 </head>
-<body style="margin:0; padding:0; background-color:#0d0d0d; font-family: 'Segoe UI', Arial, sans-serif; direction: rtl;">
+<body style="margin:0; padding:0; background-color:#111111; font-family: Arial, sans-serif; direction: rtl;">
 
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0d0d0d; padding: 48px 0;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#111111; padding: 40px 0;">
     <tr>
       <td align="center">
 
-        <!-- ===== CARD with gold glow ===== -->
+        <!-- ===== CARD ===== -->
         <table width="600" cellpadding="0" cellspacing="0"
-          style="max-width:600px; width:100%; background-color:#161610;
-                 border-radius:18px;
-                 border:1px solid rgba(212,175,55,0.18);
-                 box-shadow: 0 0 60px rgba(212,175,55,0.08), 0 0 0 1px rgba(212,175,55,0.06);
+          style="max-width:600px; width:100%; background-color:#1a1a1a;
+                 border-radius:16px; border:1px solid #2e2a1f;
+                 box-shadow: 0 0 40px rgba(212,175,55,0.08);
                  overflow:hidden;">
 
           <!-- ===== HEADER ===== -->
           <tr>
-            <td align="center" style="padding: 44px 30px 24px; background: linear-gradient(180deg, #1a1a10 0%, #161610 100%);">
-              <!-- Arabic Logo -->
-              <div style="font-family: Georgia, 'Times New Roman', serif; font-size: 44px; font-weight: 900; color: #d4af37; letter-spacing: 1px; line-height:1; text-shadow: 0 0 30px rgba(212,175,55,0.25);">مهاجر</div>
-              <!-- English sub-logo -->
-              <div style="letter-spacing: 12px; font-size: 10px; color: #c8a96e; margin-top: 8px; opacity: 0.75; font-family: Arial;">M O H A G E R</div>
-              <!-- Gold divider -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 24px;">
+            <td align="center" style="padding: 36px 30px 20px;">
+              <div style="font-family: Georgia, serif; font-size: 42px; color: #c8a96e; font-weight: bold; line-height:1;">مهاجر</div>
+              <div style="letter-spacing: 10px; font-size: 11px; color: #c8a96e; margin-top: 6px; opacity: 0.8; font-family: Arial;">M O H A G E R</div>
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 22px;">
                 <tr>
-                  <td style="background: linear-gradient(to left, transparent, rgba(212,175,55,0.5)); height:1px;"></td>
-                  <td width="24" align="center" style="color:#d4af37; font-size:9px; padding:0 4px;">◆</td>
-                  <td style="background: linear-gradient(to right, transparent, rgba(212,175,55,0.5)); height:1px;"></td>
+                  <td style="border-bottom: 1px solid rgba(200,169,110,0.35);"></td>
+                  <td align="center" width="20" style="color:#c8a96e; font-size:10px; padding:0 6px;">◆</td>
+                  <td style="border-bottom: 1px solid rgba(200,169,110,0.35);"></td>
                 </tr>
               </table>
             </td>
@@ -39,8 +35,8 @@
 
           <!-- ===== STATUS BADGE ===== -->
           <tr>
-            <td align="center" style="padding: 20px 30px 0;">
-              <span style="display:inline-block; background: rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.35); border-radius:30px; padding: 6px 20px; color:#d4af37; font-size:12px; font-weight:700; letter-spacing:0.5px;">
+            <td align="center" style="padding: 10px 30px 0;">
+              <span style="display:inline-block; background:rgba(200,169,110,0.1); border:1px solid rgba(200,169,110,0.3); border-radius:30px; padding:7px 22px; color:#c8a96e; font-size:12px; font-weight:bold;">
                 ✦ &nbsp; تم تأكيد الطلب &nbsp; ✦
               </span>
             </td>
@@ -49,21 +45,21 @@
           <!-- ===== GREETING ===== -->
           <tr>
             <td style="padding: 24px 40px 8px; text-align: right;">
-              <p style="font-size: 26px; font-weight: 800; color: #f4ecd8; margin: 0 0 10px 0; line-height:1.3;">مرحباً {{ order.full_name }}،</p>
-              <p style="font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.55); margin: 0; line-height: 1.8;">
-                شكراً لك على طلبك من مُهاجر.<br>تم استلام طلبك بنجاح وجاري تجهيزه بعناية.
+              <p style="font-size: 24px; font-weight: bold; color: #f4ecd8; margin: 0 0 8px 0;">مرحباً {{ order.full_name }}،</p>
+              <p style="font-size: 14px; color: #aaaaaa; margin: 0 0 20px 0; line-height: 1.7;">
+                شكراً لك على طلبك من مُهاجر. تم استلام طلبك بنجاح وجاري تجهيزه.
               </p>
             </td>
           </tr>
 
-          <!-- ===== ORDER NUMBER BADGE ===== -->
+          <!-- ===== ORDER NUMBER ===== -->
           <tr>
-            <td style="padding: 16px 40px 28px;">
+            <td style="padding: 0 40px 26px;">
               <table cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="background: rgba(212,175,55,0.07); border:1px solid rgba(212,175,55,0.2); border-radius:10px; padding: 12px 20px;">
-                    <span style="color:rgba(255,255,255,0.5); font-size:12px;">رقم الطلب</span>
-                    <span style="color:#d4af37; font-size:16px; font-weight:800; margin-right:8px;">#{{ order.id }}</span>
+                  <td style="background-color:#242424; border:1px solid #3a3520; border-radius:8px; padding: 11px 20px;">
+                    <span style="color:rgba(255,255,255,0.5); font-size:12px;">رقم الطلب: </span>
+                    <span style="color:#c8a96e; font-size:16px; font-weight:bold;">#{{ order.id }}</span>
                   </td>
                 </tr>
               </table>
@@ -72,41 +68,46 @@
 
           <!-- ===== SECTION TITLE ===== -->
           <tr>
-            <td style="padding: 0 30px 16px;">
+            <td style="padding: 0 30px 14px;">
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="border-top:1px solid rgba(255,255,255,0.05); padding-top:20px;">
-                    <p style="color:#d4af37; font-size:13px; font-weight:700; margin:0; letter-spacing:1px; text-transform:uppercase;">ملخص الطلب</p>
+                  <td style="border-top:1px solid #2a2a2a; padding-top:18px;">
+                    <p style="color:#c8a96e; font-size:13px; font-weight:bold; margin:0; letter-spacing:0.5px;">ملخص الطلب</p>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
 
-          <!-- ===== PRODUCT ITEMS ===== -->
+          <!-- ===== PRODUCT ITEMS (no image) ===== -->
           {% for item in cart_items %}
           <tr>
             <td style="padding: 0 30px 14px;">
               <table width="100%" cellpadding="0" cellspacing="0"
-                style="background: rgba(255,255,255,0.03); border-radius:12px; border:1px solid rgba(255,255,255,0.06); overflow:hidden;">
+                style="background-color:#242424; border-radius:10px; border:1px solid #2e2a1f;">
                 <tr>
-                  <!-- Product Image -->
-                  <td width="110" style="padding: 14px; vertical-align:middle;">
-                    {% if item.product.image %}
-                    <img src="{{ base_url }}{{ item.product.image.url }}"
-                         width="86" height="86"
-                         style="border-radius:10px; object-fit:cover; display:block; border:1px solid rgba(212,175,55,0.15);"
-                         alt="{{ item.product.name_ar }}">
-                    {% else %}
-                    <div style="width:86px; height:86px; background:rgba(255,255,255,0.04); border-radius:10px; border:1px solid rgba(255,255,255,0.08);"></div>
-                    {% endif %}
-                  </td>
-                  <!-- Product Info -->
-                  <td style="padding: 14px 16px 14px 14px; vertical-align:middle; text-align:right;">
-                    <p style="color:#f4ecd8; font-size:17px; font-weight:800; margin:0 0 6px 0; line-height:1.3;">{{ item.product.name_ar }}</p>
-                    <p style="color:rgba(255,255,255,0.45); font-size:12px; font-weight:400; margin:0 0 3px 0;">المقاس: {{ item.variant.size }}</p>
-                    <p style="color:rgba(255,255,255,0.45); font-size:12px; font-weight:400; margin:0 0 10px 0;">الكمية: {{ item.quantity }}</p>
-                    <p style="color:#d4af37; font-size:16px; font-weight:800; margin:0;">{{ item.product.base_price }} ج.م</p>
+                  <td style="padding: 18px 22px; text-align:right;">
+                    <p style="color:#f4ecd8; font-size:17px; font-weight:bold; margin:0 0 10px 0;">{{ item.product.name_ar }}</p>
+                    <table cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="padding-left:18px;">
+                          <span style="color:rgba(255,255,255,0.4); font-size:12px;">المقاس</span><br>
+                          <span style="color:#f4ecd8; font-size:14px; font-weight:bold;">{{ item.variant.size }}</span>
+                        </td>
+                        <td style="padding-left:18px;">
+                          <span style="color:rgba(255,255,255,0.4); font-size:12px;">الكمية</span><br>
+                          <span style="color:#f4ecd8; font-size:14px; font-weight:bold;">{{ item.quantity }}</span>
+                        </td>
+                        <td style="padding-left:18px;">
+                          <span style="color:rgba(255,255,255,0.4); font-size:12px;">اللون</span><br>
+                          <span style="color:#f4ecd8; font-size:14px; font-weight:bold;">{{ item.product.color_ar }}</span>
+                        </td>
+                        <td>
+                          <span style="color:rgba(255,255,255,0.4); font-size:12px;">السعر</span><br>
+                          <span style="color:#c8a96e; font-size:15px; font-weight:bold;">{{ item.product.base_price }} ج.م</span>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
@@ -116,16 +117,15 @@
 
           <!-- ===== TOTAL BAR ===== -->
           <tr>
-            <td style="padding: 4px 30px 28px;">
+            <td style="padding: 0 30px 26px;">
               <table width="100%" cellpadding="0" cellspacing="0"
-                style="background: linear-gradient(135deg, rgba(212,175,55,0.1) 0%, rgba(212,175,55,0.05) 100%);
-                       border-radius:12px; border:1px solid rgba(212,175,55,0.2);">
+                style="background:rgba(200,169,110,0.08); border-radius:10px; border:1px solid rgba(200,169,110,0.2);">
                 <tr>
-                  <td style="padding: 18px 22px; text-align:right;">
-                    <span style="color:rgba(255,255,255,0.7); font-size:14px; font-weight:600;">الإجمالي:</span>
+                  <td style="padding: 16px 22px; text-align:right;">
+                    <span style="color:#f4ecd8; font-size:17px; font-weight:bold;">الإجمالي:</span>
                   </td>
-                  <td style="padding: 18px 22px; text-align:left;">
-                    <span style="color:#d4af37; font-size:22px; font-weight:900;">{{ order.total_price }} ج.م</span>
+                  <td style="padding: 16px 22px; text-align:left;">
+                    <span style="color:#c8a96e; font-size:20px; font-weight:bold;">{{ order.total_price }} ج.م</span>
                   </td>
                 </tr>
               </table>
@@ -134,27 +134,22 @@
 
           <!-- ===== CTA BUTTONS ===== -->
           <tr>
-            <td style="padding: 0 30px 36px;">
+            <td style="padding: 0 30px 30px;">
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <!-- Track Order -->
-                  <td width="50%" style="padding-left: 7px;">
-                    <a href="https://mohager-store-production.up.railway.app/orders/{{ order.id }}/"
-                       style="display:block; background: linear-gradient(135deg, #d4af37 0%, #b8960c 100%);
-                              color:#111; text-align:center; padding:16px 10px;
-                              border-radius:10px; font-size:15px; font-weight:800;
-                              text-decoration:none; letter-spacing:0.3px;">
+                  <td width="50%" style="padding-left: 6px;">
+                    <a href="https://mohager-store-production.up.railway.app/order/{{ order.id }}/"
+                       style="display:block; background-color:#c8a96e; color:#111; text-align:center;
+                              padding:15px; border-radius:8px; font-size:15px; font-weight:bold;
+                              text-decoration:none;">
                       تتبع الطلب
                     </a>
                   </td>
-                  <!-- Visit Store -->
-                  <td width="50%" style="padding-right: 7px;">
+                  <td width="50%" style="padding-right: 6px;">
                     <a href="https://mohager-store-production.up.railway.app/"
-                       style="display:block; background:transparent; color:#d4af37;
-                              text-align:center; padding:15px 10px;
-                              border-radius:10px; font-size:15px; font-weight:700;
-                              text-decoration:none; border:1px solid rgba(212,175,55,0.35);
-                              letter-spacing:0.3px;">
+                       style="display:block; background-color:#242424; color:#c8a96e; text-align:center;
+                              padding:14px; border-radius:8px; font-size:15px; font-weight:bold;
+                              text-decoration:none; border:1px solid rgba(200,169,110,0.35);">
                       زيارة المتجر
                     </a>
                   </td>
@@ -166,55 +161,52 @@
           <!-- ===== DIVIDER ===== -->
           <tr>
             <td style="padding: 0 30px;">
-              <div style="height:1px; background: linear-gradient(to right, transparent, rgba(255,255,255,0.06), transparent);"></div>
+              <div style="height:1px; background:rgba(255,255,255,0.05);"></div>
             </td>
           </tr>
 
-          <!-- ===== SUPPORT SECTION ===== -->
+          <!-- ===== SUPPORT ===== -->
           <tr>
-            <td style="padding: 28px 30px 20px; text-align:center;">
-              <p style="color:#d4af37; font-size:14px; font-weight:700; margin:0 0 8px 0;">🛡️ نحن نهتم بتجربتك</p>
-              <p style="color:rgba(255,255,255,0.4); font-size:13px; font-weight:400; margin:0;">إذا كان لديك أي استفسار، لا تتردد في التواصل معنا.</p>
+            <td style="padding: 26px 30px 16px; text-align:center;">
+              <p style="color:#c8a96e; font-size:14px; font-weight:bold; margin:0 0 6px 0;">🛡️ نحن نهتم بتجربتك</p>
+              <p style="color:#888; font-size:13px; margin:0;">إذا كان لديك أي استفسار، لا تتردد في التواصل معنا.</p>
             </td>
           </tr>
 
           <!-- ===== SOCIAL ICONS (SVG) ===== -->
           <tr>
-            <td align="center" style="padding: 4px 30px 36px;">
+            <td align="center" style="padding: 12px 30px 28px;">
               <table cellpadding="0" cellspacing="0">
                 <tr>
                   <!-- Instagram -->
-                  <td style="padding: 0 10px;">
+                  <td style="padding: 0 8px;">
                     <a href="https://www.instagram.com/mohagerbrand" target="_blank" style="display:inline-block; text-decoration:none;">
-                      <div style="width:42px; height:42px; background:rgba(212,175,55,0.08); border:1px solid rgba(212,175,55,0.25); border-radius:50%; display:flex; align-items:center; justify-content:center; text-align:center; line-height:42px;">
-                        <!-- Instagram SVG -->
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block; vertical-align:middle; margin-top:12px;">
-                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="#d4af37" stroke-width="1.8" fill="none"/>
-                          <circle cx="12" cy="12" r="4.5" stroke="#d4af37" stroke-width="1.8" fill="none"/>
-                          <circle cx="17.5" cy="6.5" r="1" fill="#d4af37"/>
+                      <div style="width:40px; height:40px; background:#242424; border:1px solid #3a3520; border-radius:50%; text-align:center; line-height:40px;">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle; margin-top:11px;">
+                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="#c8a96e" stroke-width="1.8"/>
+                          <circle cx="12" cy="12" r="4.5" stroke="#c8a96e" stroke-width="1.8"/>
+                          <circle cx="17.5" cy="6.5" r="1.1" fill="#c8a96e"/>
                         </svg>
                       </div>
                     </a>
                   </td>
                   <!-- TikTok -->
-                  <td style="padding: 0 10px;">
+                  <td style="padding: 0 8px;">
                     <a href="https://www.tiktok.com/@mohager82" target="_blank" style="display:inline-block; text-decoration:none;">
-                      <div style="width:42px; height:42px; background:rgba(212,175,55,0.08); border:1px solid rgba(212,175,55,0.25); border-radius:50%; text-align:center; line-height:42px;">
-                        <!-- TikTok SVG -->
-                        <svg width="16" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block; vertical-align:middle; margin-top:12px;">
-                          <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.2 8.2 0 004.84 1.56V6.79a4.85 4.85 0 01-1.07-.1z" stroke="#d4af37" stroke-width="0.5" fill="#d4af37"/>
+                      <div style="width:40px; height:40px; background:#242424; border:1px solid #3a3520; border-radius:50%; text-align:center; line-height:40px;">
+                        <svg width="15" height="17" viewBox="0 0 24 24" fill="#c8a96e" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle; margin-top:11px;">
+                          <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.2 8.2 0 004.84 1.56V6.79a4.85 4.85 0 01-1.07-.1z"/>
                         </svg>
                       </div>
                     </a>
                   </td>
                   <!-- WhatsApp -->
-                  <td style="padding: 0 10px;">
+                  <td style="padding: 0 8px;">
                     <a href="https://wa.me/201099138710" target="_blank" style="display:inline-block; text-decoration:none;">
-                      <div style="width:42px; height:42px; background:rgba(212,175,55,0.08); border:1px solid rgba(212,175,55,0.25); border-radius:50%; text-align:center; line-height:42px;">
-                        <!-- WhatsApp SVG -->
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block; vertical-align:middle; margin-top:12px;">
-                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" fill="#d4af37"/>
-                          <path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.35A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18a8 8 0 01-4.1-1.13l-.29-.17-3.01.79.81-2.96-.19-.3A8 8 0 1112 20z" stroke="#d4af37" stroke-width="0.3" fill="#d4af37"/>
+                      <div style="width:40px; height:40px; background:#242424; border:1px solid #3a3520; border-radius:50%; text-align:center; line-height:40px;">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="#c8a96e" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle; margin-top:11px;">
+                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                          <path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.35A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18a8 8 0 01-4.1-1.13l-.29-.17-3.01.79.81-2.96-.19-.3A8 8 0 1112 20z"/>
                         </svg>
                       </div>
                     </a>
@@ -226,12 +218,12 @@
 
           <!-- ===== FOOTER TAGLINE ===== -->
           <tr>
-            <td style="background: rgba(212,175,55,0.04); border-top:1px solid rgba(212,175,55,0.1); padding: 32px 30px 36px; text-align:center;">
-              <p style="color:#d4af37; font-size:16px; font-weight:800; margin:0 0 8px 0; letter-spacing:0.5px;">
-                ◀&nbsp; شكراً لثقتك في مُهاجر &nbsp;▶
+            <td style="border-top:1px solid #2a2a2a; padding: 28px 30px 32px; text-align:center;">
+              <p style="color:#c8a96e; font-size:15px; font-weight:bold; margin:0 0 6px 0;">
+                شكراً لثقتك في مُهاجر
               </p>
-              <p style="color:rgba(255,255,255,0.3); font-size:12px; font-weight:400; margin:0; letter-spacing:0.3px;">
-                جودة احترافية .. تفاصيل بمعايير عالية
+              <p style="color:#555; font-size:12px; margin:0;">
+                جودة احترافية.. تفاصيل بمعايير عالية
               </p>
             </td>
           </tr>
@@ -240,9 +232,9 @@
         <!-- END CARD -->
 
         <!-- ===== OUTER FOOTER ===== -->
-        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%; margin-top:24px;">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%; margin-top:20px;">
           <tr>
-            <td align="center" style="color:rgba(255,255,255,0.2); font-size:11px; padding-bottom:24px; letter-spacing:0.3px;">
+            <td align="center" style="color:#444; font-size:11px; padding-bottom:20px;">
               © 2026 متجر مُهاجر. جميع الحقوق محفوظة.
             </td>
           </tr>
