@@ -415,34 +415,25 @@ def checkout(request):
                         'base_url': base_url,
                     })
 
-                    def send_bg_email_api(to_email, html, order_id):
-                        url = "https://api.brevo.com/v3/smtp/email"
-                        api_key = str(settings.EMAIL_HOST_PASSWORD).strip()
-
-                        data = {
-                            "sender": {"name": "Mohager Store", "email": settings.DEFAULT_FROM_EMAIL},
-                            "to": [{"email": to_email}],
-                            "subject": f"تأكيد طلبك بنجاح من مُهاجر - رقم #{order.tracking_no}",
-                            "htmlContent": html,
-                        }
-
-                        req = urllib.request.Request(url, data=json.dumps(data).encode('utf-8'))
-                        req.add_header('accept', 'application/json')
-                        req.add_header('api-key', api_key)
-                        req.add_header('content-type', 'application/json')
-
+                    def send_bg_email_api(to_email, html, order_id, tracking_no):
+                        from django.core.mail import EmailMultiAlternatives
                         try:
-                            with urllib.request.urlopen(req):
-                                print(f"✅ تم إرسال الإيميل للطلب #{order_id} بنجاح!")
-                        except urllib.error.HTTPError as e:
-                            print(f"❌ رفض من Brevo (كود {e.code}): {e.read().decode('utf-8')}")
+                            msg = EmailMultiAlternatives(
+                                subject=f"تأكيد طلبك بنجاح من مُهاجر - رقم #{tracking_no}",
+                                body="يرجى تفعيل HTML لعرض محتوى الرسالة.",
+                                from_email=settings.DEFAULT_FROM_EMAIL,
+                                to=[to_email],
+                            )
+                            msg.attach_alternative(html, "text/html")
+                            msg.send()
+                            print(f"✅ تم إرسال الإيميل للطلب #{order_id} بنجاح عبر Anymail!")
                         except Exception as e:
                             print(f"❌ مشكلة في الإرسال: {e}")
 
                     try:
                         email_thread = threading.Thread(
                             target=send_bg_email_api,
-                            args=(order.email, html_content, order.id)
+                            args=(order.email, html_content, order.id, order.tracking_no)
                         )
                         email_thread.start()
                     except Exception as e:
