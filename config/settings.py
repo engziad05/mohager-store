@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'store',
     'cloudinary_storage',
     'cloudinary',  
+    'anymail',
 ]
 
 MIDDLEWARE = [
@@ -172,17 +173,14 @@ ACCOUNT_FORMS = {
 
 
 # ==========================================
-# إعدادات إرسال الإيميلات (Brevo SMTP)
+# إعدادات إرسال الإيميلات (Brevo HTTP API)
+# Railway بيحجب كل منافذ SMTP، فبنستخدم HTTP API بدل كده
 # ==========================================
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp-relay.brevo.com'
-EMAIL_PORT = 587                # Port 587 is officially open on Railway
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-# هنسحب الإيميل والباسورد من Railway
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
-DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='')
+EMAIL_BACKEND = 'anymail.backends.brevo.EmailBackend'
+ANYMAIL = {
+    'BREVO_API_KEY': config('BREVO_API_KEY', default=''),
+}
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@mohager-store.com')
 
 # Cache Configuration
 CACHES = {
