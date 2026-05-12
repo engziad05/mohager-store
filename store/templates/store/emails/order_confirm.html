@@ -1,32 +1,224 @@
-<div style="font-family: Arial, sans-serif; direction: rtl; text-align: right; background-color: #1a1a1a; padding: 40px 20px; color: #f4ecd8;">
-    <div style="max-width: 600px; margin: auto; background-color: #242424; padding: 30px; border-radius: 10px; border: 1px solid #c8a96e;">
-        
-        <h1 style="color: #c8a96e; text-align: center; margin-bottom: 30px;">مُهاجر | MOHAGER</h1>
-        <h2 style="color: #f4ecd8;">مرحباً {{ order.full_name }}،</h2>
-        <p style="font-size: 16px; color: #cccccc; line-height: 1.6;">
-            شكراً لتسوقك من مُهاجر! لقد استلمنا طلبك بنجاح وجاري تجهيزه.
-            <br>رقم الطلب الخاص بك هو: <strong style="color: #c8a96e;">#{{ order.id }}</strong>
-        </p>
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تأكيد طلبك من مُهاجر</title>
+</head>
+<body style="margin:0; padding:0; background-color:#111111; font-family: Arial, sans-serif; direction: rtl;">
 
-        <h3 style="color: #c8a96e; border-bottom: 1px solid #444; padding-bottom: 10px; margin-top: 30px;">ملخص الطلب:</h3>
-        <ul style="list-style-type: none; padding: 0;">
-            {% for item in cart_items %}
-            <li style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #333;">
-                <strong style="color: #f4ecd8; font-size: 18px;">{{ item.product.name_ar }}</strong><br>
-                <span style="color: #aaa;">المقاس: {{ item.variant.size }} | الكمية: {{ item.quantity }}</span><br>
-                
-                <!-- السطر ده اللي غيرنا فيه EGP وخليناه يعرض اللون -->
-                <span style="color: #aaa;">اللون: {{ item.variant.color_ar }}</span>
-            </li>
-            {% endfor %}
-        </ul>
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#111111; padding: 40px 0;">
+    <tr>
+      <td align="center">
 
-        <div style="font-size: 20px; font-weight: bold; color: #c8a96e; margin-top: 20px;">
-            الإجمالي: {{ order.total_price }} ج.م
-        </div>
+        <!-- ===== CARD ===== -->
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%; background-color:#1a1a1a; border-radius:16px; border:1px solid #2e2a1f; overflow:hidden;">
 
-        <p style="font-size: 14px; color: #888; margin-top: 40px; text-align: center;">
-            سنتواصل معك قريباً على الرقم {{ order.phone }} لتأكيد تفاصيل الشحن.
-        </p>
-    </div>
-</div>
+          <!-- ===== HEADER ===== -->
+          <tr>
+            <td align="center" style="padding: 36px 30px 20px;">
+              <!-- Arabic Logo Text -->
+              <div style="font-family: Georgia, serif; font-size: 38px; color: #c8a96e; font-weight: bold; letter-spacing: 2px; line-height:1;">مهاجر</div>
+              <!-- English Sub-logo -->
+              <div style="letter-spacing: 10px; font-size: 11px; color: #c8a96e; margin-top: 6px; opacity: 0.8;">M O H A G E R</div>
+              <!-- Gold Divider with Diamond -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 20px;">
+                <tr>
+                  <td style="border-bottom: 1px solid #c8a96e; opacity: 0.4;"></td>
+                  <td align="center" width="20" style="color:#c8a96e; font-size:10px; padding:0 6px;">◆</td>
+                  <td style="border-bottom: 1px solid #c8a96e; opacity: 0.4;"></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== GREETING ===== -->
+          <tr>
+            <td style="padding: 10px 40px 0px; text-align: right;">
+              <p style="font-size: 24px; font-weight: bold; color: #f4ecd8; margin: 0 0 8px 0;">مرحباً {{ order.full_name }}،</p>
+              <p style="font-size: 14px; color: #aaaaaa; margin: 0 0 20px 0; line-height: 1.7;">
+                شكراً لك على طلبك من مُهاجر. تم استلام طلبك بنجاح وجاري تجهيزه.
+              </p>
+            </td>
+          </tr>
+
+          <!-- ===== ORDER NUMBER BADGE ===== -->
+          <tr>
+            <td style="padding: 0 40px 24px;">
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:#242424; border:1px solid #3a3520; border-radius:8px; padding: 10px 18px;">
+                    <span style="color:#c8a96e; font-size:14px; font-weight:bold;">رقم الطلب الخاص بك هو: #{{ order.id }}</span>
+                    &nbsp;
+                    <span style="color:#c8a96e; font-size:16px;">📋</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== SECTION TITLE ===== -->
+          <tr>
+            <td style="padding: 0 40px 14px; text-align:center;">
+              <p style="color:#c8a96e; font-size:16px; font-weight:bold; margin:0;">ملخص الطلب:</p>
+            </td>
+          </tr>
+
+          <!-- ===== PRODUCT ITEMS ===== -->
+          {% for item in cart_items %}
+          <tr>
+            <td style="padding: 0 30px 16px;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#242424; border-radius:10px; border:1px solid #2e2a1f; overflow:hidden;">
+                <tr>
+                  <!-- Product Image -->
+                  <td width="110" style="padding: 12px; vertical-align:middle;">
+                    {% if item.product.image %}
+                    <img src="{{ item.product.image.url }}" width="90" height="90"
+                         style="border-radius:8px; object-fit:cover; display:block; border:1px solid #3a3520;"
+                         alt="{{ item.product.name_ar }}">
+                    {% else %}
+                    <div style="width:90px; height:90px; background:#2a2a2a; border-radius:8px; border:1px solid #333; display:flex; align-items:center; justify-content:center;">
+                      <span style="color:#555; font-size:11px;">لا توجد صورة</span>
+                    </div>
+                    {% endif %}
+                  </td>
+                  <!-- Product Info -->
+                  <td style="padding: 12px 16px; vertical-align:middle; text-align:right;">
+                    <p style="color:#f4ecd8; font-size:17px; font-weight:bold; margin:0 0 6px 0;">{{ item.product.name_ar }}</p>
+                    <p style="color:#aaaaaa; font-size:13px; margin:0 0 4px 0;">المقاس: {{ item.variant.size }}</p>
+                    <p style="color:#aaaaaa; font-size:13px; margin:0 0 8px 0;">الكمية: {{ item.quantity }}</p>
+                    <p style="color:#c8a96e; font-size:15px; font-weight:bold; margin:0;">{{ item.variant.price }} ج.م</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          {% endfor %}
+
+          <!-- ===== TOTAL BAR ===== -->
+          <tr>
+            <td style="padding: 0 30px 24px;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#242424; border-radius:10px; border:1px solid #2e2a1f;">
+                <tr>
+                  <td style="padding: 16px 20px; text-align:right;">
+                    <span style="color:#f4ecd8; font-size:18px; font-weight:bold;">الإجمالي:</span>
+                  </td>
+                  <td style="padding: 16px 20px; text-align:left;">
+                    <span style="color:#c8a96e; font-size:20px; font-weight:bold;">{{ order.total_price }} ج.م</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== CTA BUTTONS ===== -->
+          <tr>
+            <td style="padding: 0 30px 30px;">
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <!-- Track Order Button -->
+                  <td width="50%" style="padding-left: 6px;">
+                    <a href="https://mohager-store-production.up.railway.app/orders/{{ order.id }}/"
+                       style="display:block; background-color:#c8a96e; color:#111; text-align:center; padding:14px; border-radius:8px; font-size:14px; font-weight:bold; text-decoration:none;">
+                      🚚 تتبع الطلب
+                    </a>
+                  </td>
+                  <!-- Visit Store Button -->
+                  <td width="50%" style="padding-right: 6px;">
+                    <a href="https://mohager-store-production.up.railway.app/"
+                       style="display:block; background-color:#242424; color:#c8a96e; text-align:center; padding:14px; border-radius:8px; font-size:14px; font-weight:bold; text-decoration:none; border:1px solid #c8a96e;">
+                      🛍️ زيارة المتجر
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== GOLD DIVIDER ===== -->
+          <tr>
+            <td style="padding: 0 30px;">
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="border-top: 1px solid #2e2a1f;"></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== SUPPORT SECTION ===== -->
+          <tr>
+            <td style="padding: 24px 30px 10px; text-align:center;">
+              <p style="color:#c8a96e; font-size:14px; font-weight:bold; margin:0 0 6px 0;">🛡️ نحن نهتم بتجربتك</p>
+              <p style="color:#888888; font-size:13px; margin:0;">إذا كان لديك أي استفسار، لا تتردد في التواصل معنا.</p>
+            </td>
+          </tr>
+
+          <!-- ===== SOCIAL ICONS ===== -->
+          <tr>
+            <td align="center" style="padding: 14px 30px 24px;">
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <!-- Instagram -->
+                  <td style="padding: 0 8px;">
+                    <a href="https://www.instagram.com/mohagerbrand" target="_blank"
+                       style="display:inline-block; width:38px; height:38px; background:#242424; border:1px solid #3a3520; border-radius:50%; text-align:center; line-height:38px; color:#c8a96e; font-size:16px; text-decoration:none;">
+                      IG
+                    </a>
+                  </td>
+                  <!-- TikTok -->
+                  <td style="padding: 0 8px;">
+                    <a href="https://www.tiktok.com/@mohager82" target="_blank"
+                       style="display:inline-block; width:38px; height:38px; background:#242424; border:1px solid #3a3520; border-radius:50%; text-align:center; line-height:38px; color:#c8a96e; font-size:13px; text-decoration:none; font-weight:bold;">
+                      TK
+                    </a>
+                  </td>
+                  <!-- WhatsApp -->
+                  <td style="padding: 0 8px;">
+                    <a href="https://wa.me/201099138710" target="_blank"
+                       style="display:inline-block; width:38px; height:38px; background:#242424; border:1px solid #3a3520; border-radius:50%; text-align:center; line-height:38px; color:#c8a96e; font-size:13px; text-decoration:none; font-weight:bold;">
+                      WA
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== FOOTER TAGLINE ===== -->
+          <tr>
+            <td style="padding: 0 30px 10px; text-align:center;">
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="border-top: 1px solid #2e2a1f; padding-top:20px; text-align:center;">
+                    <!-- Arrows + Text -->
+                    <p style="color:#c8a96e; font-size:15px; font-weight:bold; margin:0 0 4px 0;">
+                      ◀ شكراً لثقتك في مُهاجر ▶
+                    </p>
+                    <p style="color:#666666; font-size:12px; margin:0 0 20px 0;">
+                      جودة احترافية.. تفاصيل بمعايير عالية
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+        <!-- END CARD -->
+
+        <!-- ===== OUTER FOOTER ===== -->
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%; margin-top:20px;">
+          <tr>
+            <td align="center" style="color:#444444; font-size:12px; padding-bottom:20px;">
+              © 2026 متجر مُهاجر. جميع الحقوق محفوظة.
+            </td>
+          </tr>
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
