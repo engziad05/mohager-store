@@ -59,7 +59,7 @@
                 <tr>
                   <td style="background-color:#242424; border:1px solid #3a3520; border-radius:8px; padding: 11px 20px;">
                     <span style="color:rgba(255,255,255,0.5); font-size:12px;">رقم الطلب: </span>
-                    <span style="color:#c8a96e; font-size:16px; font-weight:bold;">#{{ order.id }}</span>
+                    <span style="color:#c8a96e; font-size:16px; font-weight:bold;">{{ order.tracking_no }}</span>
                   </td>
                 </tr>
               </table>
@@ -173,43 +173,21 @@
             </td>
           </tr>
 
-          <!-- ===== SOCIAL ICONS (SVG) ===== -->
+          <!-- ===== CONTACT INFO ===== -->
           <tr>
-            <td align="center" style="padding: 12px 30px 28px;">
-              <table cellpadding="0" cellspacing="0">
+            <td style="padding: 12px 30px 28px;">
+              <table width="100%" cellpadding="0" cellspacing="0"
+                style="background-color:#242424; border-radius:10px; border:1px solid #2e2a1f;">
                 <tr>
-                  <!-- Instagram -->
-                  <td style="padding: 0 8px;">
-                    <a href="https://www.instagram.com/mohagerbrand" target="_blank" style="display:inline-block; text-decoration:none;">
-                      <div style="width:40px; height:40px; background:#242424; border:1px solid #3a3520; border-radius:50%; text-align:center; line-height:40px;">
-                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle; margin-top:11px;">
-                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="#c8a96e" stroke-width="1.8"/>
-                          <circle cx="12" cy="12" r="4.5" stroke="#c8a96e" stroke-width="1.8"/>
-                          <circle cx="17.5" cy="6.5" r="1.1" fill="#c8a96e"/>
-                        </svg>
-                      </div>
-                    </a>
+                  <!-- Phone (Right) -->
+                  <td width="50%" style="padding: 16px 20px; text-align:right; border-left:1px solid #2e2a1f;">
+                    <p style="color:rgba(255,255,255,0.4); font-size:11px; margin:0 0 5px 0;">📞 &nbsp; تليفون</p>
+                    <p style="color:#f4ecd8; font-size:14px; font-weight:bold; margin:0; direction:ltr; text-align:right;">+20 109 913 8710</p>
                   </td>
-                  <!-- TikTok -->
-                  <td style="padding: 0 8px;">
-                    <a href="https://www.tiktok.com/@mohager82" target="_blank" style="display:inline-block; text-decoration:none;">
-                      <div style="width:40px; height:40px; background:#242424; border:1px solid #3a3520; border-radius:50%; text-align:center; line-height:40px;">
-                        <svg width="15" height="17" viewBox="0 0 24 24" fill="#c8a96e" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle; margin-top:11px;">
-                          <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.2 8.2 0 004.84 1.56V6.79a4.85 4.85 0 01-1.07-.1z"/>
-                        </svg>
-                      </div>
-                    </a>
-                  </td>
-                  <!-- WhatsApp -->
-                  <td style="padding: 0 8px;">
-                    <a href="https://wa.me/201099138710" target="_blank" style="display:inline-block; text-decoration:none;">
-                      <div style="width:40px; height:40px; background:#242424; border:1px solid #3a3520; border-radius:50%; text-align:center; line-height:40px;">
-                        <svg width="17" height="17" viewBox="0 0 24 24" fill="#c8a96e" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle; margin-top:11px;">
-                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                          <path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.35A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18a8 8 0 01-4.1-1.13l-.29-.17-3.01.79.81-2.96-.19-.3A8 8 0 1112 20z"/>
-                        </svg>
-                      </div>
-                    </a>
+                  <!-- Email (Left) -->
+                  <td width="50%" style="padding: 16px 20px; text-align:right;">
+                    <p style="color:rgba(255,255,255,0.4); font-size:11px; margin:0 0 5px 0;">✉️ &nbsp; إيميل</p>
+                    <p style="color:#f4ecd8; font-size:13px; font-weight:bold; margin:0; direction:ltr; text-align:right;">mohagerbrand@gmail.com</p>
                   </td>
                 </tr>
               </table>
