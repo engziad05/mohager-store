@@ -18,12 +18,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;600&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/htmx.org@1.9.11"></script>
     <style>
-        
-    
+    /* Reset عشان منبقاش في margin تايع للمتصفح */
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
     /* السطر ده مهم عشان اللوجو يعرف إنه مطبوع على الصفحة دي */
     body {
         position: relative;
-        overflow-x: hidden; /* بيمنع ظهور السلايدر الأفقي من تحت */
     }
 
    
@@ -534,10 +539,15 @@ body {
         position: relative;
         padding-top: 0;
         margin-top: 50px;
+        margin-left: calc(-20px); /* يكسر الـ padding بتاع main */
+        margin-right: calc(-20px);
+        padding-left: 20px;
+        padding-right: 20px;
         font-family: var(--font-body);
         direction: rtl;
         z-index: 10;
-        width: 100%;
+        width: calc(100% + 40px);
+        box-sizing: border-box;
     }
 
     /* Subtle Background Texture */
@@ -740,22 +750,23 @@ body {
 
     /* Bottom Bar */
     .footer-bottom {
-        text-align: center;
         margin-top: 60px;
         padding: 20px 0;
         border-top: 1px solid rgba(255, 255, 255, 0.03);
         color: rgba(255, 255, 255, 0.35);
         font-size: 0.85rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         width: 100%;
+        box-sizing: border-box;
+        direction: ltr; /* إعادة تعيين الاتجاه عشان التوسيط يشتغل صح */
     }
     .footer-bottom p {
         margin: 0;
-        display: inline-flex;
+        width: 100%;
+        display: flex;
         align-items: center;
+        justify-content: center;
         gap: 8px;
+        text-align: center;
     }
 
     /* Mobile adjustments */
