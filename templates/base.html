@@ -726,22 +726,41 @@ body {
     /* Bottom Bar */
     .footer-bottom {
         margin-top: 60px;
-        padding: 20px 0;
+        padding: 20px 5%;
         border-top: 1px solid rgba(255, 255, 255, 0.03);
         color: rgba(255, 255, 255, 0.35);
         font-size: 0.85rem;
         width: 100%;
         box-sizing: border-box;
         direction: ltr; /* إعادة تعيين الاتجاه عشان التوسيط يشتغل صح */
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .footer-bottom p {
         margin: 0;
-        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
         text-align: center;
+    }
+    .adova-credit {
+        position: absolute;
+        right: 5%;
+        top: 50%;
+        transform: translateY(-50%);
+        font-family: var(--font-en, sans-serif);
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.3);
+        letter-spacing: 1px;
+    }
+    .adova-credit span {
+        color: var(--gold);
+        font-weight: bold;
+        letter-spacing: 2px;
+        opacity: 0.8;
     }
 
     /* Mobile adjustments */
@@ -779,9 +798,22 @@ body {
             transform: translateX(-50%);
             right: auto;
         }
+        .footer-contact {
+            text-align: center;
+            align-items: center;
+        }
         .footer-contact .contact-item {
             justify-content: center;
             flex-direction: row-reverse;
+        }
+        .footer-bottom {
+            flex-direction: column;
+            gap: 12px;
+        }
+        .adova-credit {
+            position: static;
+            transform: none;
+            margin-top: 5px;
         }
     }
     </style>
@@ -837,6 +869,9 @@ body {
                 <i class="fas fa-shield-alt" style="color: rgba(200, 169, 107, 0.4); font-size: 1rem;"></i>
                 &copy; 2026 متجر مُهاجر. جميع الحقوق محفوظة.
             </p>
+            <div class="adova-credit">
+                Created by <span>ADOVA</span>
+            </div>
         </div>
     </footer>
 
