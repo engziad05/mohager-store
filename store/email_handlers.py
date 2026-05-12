@@ -1,6 +1,7 @@
 """
 معالجات إرسال البريد الإلكتروني للطلبات والعمليات الأخرى
 """
+import logging
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -8,6 +9,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from .models import Order, OrderItem
+
+logger = logging.getLogger(__name__)
 
 
 @receiver(post_save, sender=Order)
@@ -19,6 +22,7 @@ def send_order_confirmation_email(sender, instance, created, **kwargs):
         return
     
     order = instance
+    logger.info(f"🔔 بدء إرسال رسائل البريد للطلب: {order.tracking_no}")
     
     # الحصول على عناصر الطلب
     cart_items = OrderItem.objects.filter(order=order)
@@ -39,11 +43,11 @@ def send_order_confirmation_email(sender, instance, created, **kwargs):
                 to=[order.email],
             )
             msg.attach_alternative(html_content, "text/html")
-            msg.send(fail_silently=False)
+            result = msg.send(fail_silently=False)
             
-            print(f"✅ تم إرسال تأكيد الطلب للعميل: {order.email} - طلب #{order.tracking_no}")
+            logger.info(f"✅ تم إرسال تأكيد الطلب للعميل: {order.email} - طلب #{order.tracking_no} (النتيجة: {result})")
         except Exception as e:
-            print(f"❌ خطأ في إرسال بريد تأكيد الطلب: {str(e)}")
+            logger.error(f"❌ خطأ في إرسال بريد تأكيد الطلب: {str(e)}", exc_info=True)
     
     # 2. إيميل إشعار لصاحب المتجر
     owner_email = getattr(settings, 'STORE_OWNER_EMAIL', None)
@@ -64,8 +68,8 @@ def send_order_confirmation_email(sender, instance, created, **kwargs):
                 to=[owner_email],
             )
             admin_msg.attach_alternative(admin_html, "text/html")
-            admin_msg.send(fail_silently=False)
+            result = admin_msg.send(fail_silently=False)
             
-            print(f"✅ تم إرسال إشعار الطلب لصاحب المتجر: {owner_email} - طلب #{order.tracking_no}")
+            logger.info(f"✅ تم إرسال إشعار الطلب لصاحب المتجر: {owner_email} - طلب #{order.tracking_no} (النتيجة: {result})")
         except Exception as e:
-            print(f"❌ خطأ في إرسال بريد الإشعار: {str(e)}")
+            logger.error(f"❌ خطأ في إرسال بريد الإشعار: {str(e)}", exc_info=True)
