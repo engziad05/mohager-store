@@ -194,7 +194,11 @@ def update_quantity(request, item_id, action):
 # ============================================================
 def order_success(request):
     tracking_no = request.session.get('last_order_tracking', 'MHG-000000')
-    context = {'tracking_no': tracking_no}
+    order_id = request.session.get('last_order_id', None)
+    context = {
+        'tracking_no': tracking_no,
+        'order_id': order_id,
+    }
     return render(request, 'store/order_success.html', context)
 
 
@@ -448,6 +452,7 @@ def checkout(request):
                 cart.delete()
                 request.session.pop('cart_id', None)
                 request.session['last_order_tracking'] = order.tracking_no
+                request.session['last_order_id'] = order.id
                 return redirect('order_success')
 
         except ValueError as e:

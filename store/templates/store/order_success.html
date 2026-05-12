@@ -31,11 +31,28 @@
             </div>
         </div>
 
-        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
-            <a href="{% url 'index' %}" style="background-color: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: var(--cream); padding: 14px 35px; border-radius: 8px; text-decoration: none; font-family: var(--font-body); font-size: 1.1rem; transition: 0.3s; min-width: 150px;" onmouseover="this.style.backgroundColor='rgba(212,175,55,0.08)'; this.style.borderColor='var(--gold)'; this.style.color='var(--gold)';" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='rgba(255, 255, 255, 0.2)'; this.style.color='var(--cream)';">
+        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'index' %}" 
+               style="background-color: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--cream); padding: 14px 30px; border-radius: 8px; text-decoration: none; font-family: var(--font-body); font-size: 1rem; transition: 0.3s; min-width: 130px;"
+               onmouseover="this.style.backgroundColor='rgba(212,175,55,0.08)'; this.style.borderColor='var(--gold)'; this.style.color='var(--gold)';"
+               onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='rgba(255,255,255,0.2)'; this.style.color='var(--cream)';">
                 الرئيسية
             </a>
-            <a href="{% url 'shop' %}" style="background-color: var(--gold); color: var(--bg-base); padding: 14px 35px; border-radius: 8px; text-decoration: none; font-weight: bold; font-family: var(--font-body); font-size: 1.1rem; transition: 0.3s; min-width: 150px;" onmouseover="this.style.backgroundColor='var(--cream)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.backgroundColor='var(--gold)'; this.style.transform='translateY(0)';">
+
+            {% if order_id %}
+            <a href="{% url 'order_detail' order_id %}" 
+               style="background: linear-gradient(135deg, rgba(200,169,110,0.15) 0%, rgba(200,169,110,0.05) 100%); border: 1px solid rgba(200,169,110,0.4); color: var(--gold); padding: 14px 30px; border-radius: 8px; text-decoration: none; font-family: var(--font-body); font-size: 1rem; font-weight: bold; transition: 0.3s; min-width: 130px; display: inline-flex; align-items: center; gap: 8px; justify-content: center;"
+               onmouseover="this.style.background='rgba(200,169,110,0.2)'; this.style.transform='translateY(-2px)';"
+               onmouseout="this.style.background='linear-gradient(135deg, rgba(200,169,110,0.15) 0%, rgba(200,169,110,0.05) 100%)'; this.style.transform='translateY(0)';">
+                <i class="fas fa-box-open" style="font-size:0.95rem;"></i>
+                تتبع الطلب
+            </a>
+            {% endif %}
+
+            <a href="{% url 'shop' %}" 
+               style="background-color: var(--gold); color: var(--bg-base); padding: 14px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; font-family: var(--font-body); font-size: 1rem; transition: 0.3s; min-width: 130px;"
+               onmouseover="this.style.backgroundColor='var(--cream)'; this.style.transform='translateY(-2px)';"
+               onmouseout="this.style.backgroundColor='var(--gold)'; this.style.transform='translateY(0)';">
                 متابعة التسوق
             </a>
         </div>
