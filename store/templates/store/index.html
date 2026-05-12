@@ -343,25 +343,18 @@
             <div class="slide-content">
 
                 <!-- Cinematic Background and Ambient Glow layers per slide -->
-                <div class="cinematic-bg" style="background-image: url('{% if slide.image %}{{ slide.image.url }}{% else %}{% static 'images/hero-bg.jpg' %}{% endif %}');"></div>
+                <!-- We use the default hero-bg.jpg as the cover, because slide.image is a transparent logo, not a full background -->
+                <div class="cinematic-bg" style="background-image: url('{% static 'images/hero-bg.jpg' %}');"></div>
                 <div class="ambient-glow"></div>
 
                 <div class="cinematic-content">
-                    <h1 class="cinematic-title">{{ slide.title_ar|default:"M O H A G E R" }}</h1>
-                    <p class="cinematic-subtitle">{{ slide.subtitle_ar|default:"Collection 01 — Coming Soon" }}</p>
+                    <h1 class="cinematic-title">M O H A G E R</h1>
+                    <p class="cinematic-subtitle">Collection 01 — Coming Soon</p>
 
-                    {% if slide.btn_url %}
-                    <a href="{{ slide.btn_url }}" class="cinematic-btn">
-                        {{ slide.btn_text_ar|default:"اطلب الآن" }}
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
-                    {% else %}
-                    <!-- Default fallback button if no DB entry -->
-                    <a href="#" class="cinematic-btn">
+                    <a href="{{ slide.btn_url|default:'#' }}" class="cinematic-btn">
                         اطلب الآن
                         <i class="fas fa-arrow-left"></i>
                     </a>
-                    {% endif %}
                 </div>
         </div>
         {% empty %}
