@@ -34,6 +34,13 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['is_active', 'created_at']),
+            models.Index(fields=['category', 'is_active']),
+        ]
+
     def __str__(self):
         return self.name_en
 
@@ -49,7 +56,6 @@ class ProductImage(models.Model):
 class ProductVariant(models.Model):
     product = models.ForeignKey(Product, related_name='variants', on_delete=models.CASCADE)
     size = models.CharField(max_length=10, blank=True, null=True, verbose_name="المقاس") 
-    stock_quantity = models.PositiveIntegerField(default=0, verbose_name="الكمية في المخزن")
     stock = models.PositiveIntegerField(default=0, verbose_name="المخزون")
 
     def __str__(self):
@@ -143,6 +149,14 @@ class Order(models.Model):
 
     def __str__(self):
         return f"طلب رقم {self.id} - {self.full_name}"
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['status', 'created_at']),
+            models.Index(fields=['user', 'created_at']),
+            models.Index(fields=['tracking_no']),
+        ]
 
 # 9. جدول عناصر الطلب (Order Items)
 class OrderItem(models.Model):
