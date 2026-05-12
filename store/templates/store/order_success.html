@@ -61,6 +61,21 @@
             <i class="fas fa-shield-alt" style="color: var(--gold); font-size: 1.1rem;"></i>
             سيتم التواصل معك خلال 24 ساعة لتأكيد الطلب.
         </div>
+
+        {% if not user.is_authenticated %}
+        <div style="margin-top: 28px; padding: 16px 24px; background: rgba(200,169,110,0.06); border: 1px solid rgba(200,169,110,0.18); border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;">
+            <span style="color: rgba(255,255,255,0.55); font-family: var(--font-body); font-size: 0.9rem; line-height: 1.6;">
+                <i class="fas fa-star" style="color: var(--gold); font-size: 0.8rem; margin-left: 4px;"></i>
+                أنشئ حسابك في مُهاجر لمتابعة طلباتك وحفظ عنوانك تلقائياً في كل مرة.
+            </span>
+            <a href="{% url 'account_signup' %}"
+               style="color: var(--gold); font-family: var(--font-body); font-size: 0.9rem; font-weight: bold; text-decoration: none; white-space: nowrap; border-bottom: 1px solid rgba(200,169,110,0.4); padding-bottom: 1px; transition: 0.2s;"
+               onmouseover="this.style.borderBottomColor='var(--gold)';"
+               onmouseout="this.style.borderBottomColor='rgba(200,169,110,0.4)';">
+                إنشاء حساب ←
+            </a>
+        </div>
+        {% endif %}
         
     </div>
 </div>
