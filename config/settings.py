@@ -15,7 +15,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
 # تم تحديث الدومين ليتطابق مع رابط موقع مهاجر الحالي
 CSRF_TRUSTED_ORIGINS = ['https://mohager-store-production.up.railway.app']
 
@@ -120,37 +120,25 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 # إعدادات Cloudinary لرفع الصور أونلاين
 # ==========================================
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dxvdsiauj',
-    'API_KEY': '157295236115861',
-    'API_SECRET': 'UdZjDRbRbrIcyQtNjaXy-YxEsUA',
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': config('CLOUDINARY_API_KEY'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET'),
 }
 
 # إعدادات التخزين
-# إعدادات التخزين
-if DEBUG == True:
-    STORAGES = {
-        "default": {
-            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-        },
-        "staticfiles": {
-            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-        },
-    }
-else:
-    STORAGES = {
-        "default": {
-            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-        },
-        "staticfiles": {
-            # غيرنا السطر ده عشان السيرفر مايضربش لو في صورة ناقصة
-            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage", 
-        },
-    }
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 
 MEDIA_URL = '/media/'
 
 # API Keys & Third-Party Settings
-RESEND_API_KEY = "re_SobrL6rk_3V1LjFUMwLA2JLHM19SUXHpp"
+RESEND_API_KEY = config('RESEND_API_KEY', default='')
 
 # Allauth Settings
 SITE_ID = 1
@@ -161,8 +149,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 ACCOUNT_LOGIN_METHODS = {'email'}
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_SIGNUP_FIELDS = ['email', 'password1', 'password2']
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = 'none' 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
@@ -196,8 +183,22 @@ CACHES = {
 sentry_sdk.init(
     dsn="https://1ba0ced8739c1b36b76fb859936600ac@o4511337997729792.ingest.de.sentry.io/4511338007568272",
     send_default_pii=True,
-    traces_sample_rate=1.0,
+    traces_sample_rate=0.2,  # 20% من الـ requests بس عشان الأداء
 )
+
+# ==========================================
+# إعدادات الأمان للـ Production
+# ==========================================
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000  # سنة كاملة
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
 
 

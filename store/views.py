@@ -145,7 +145,8 @@ def cart_detail(request):
 # حذف عنصر من السلة
 # ============================================================
 def remove_cart_item(request, item_id):
-    cart_item = get_object_or_404(CartItem, id=item_id)
+    cart_id = request.session.get('cart_id')
+    cart_item = get_object_or_404(CartItem, id=item_id, cart_id=cart_id)
     cart_item.delete()
     messages.success(request, 'تم حذف القطعة من السلة 🗑️')
     return redirect('cart_detail')
@@ -155,7 +156,8 @@ def remove_cart_item(request, item_id):
 # تعديل الكمية
 # ============================================================
 def update_quantity(request, item_id, action):
-    cart_item = get_object_or_404(CartItem, id=item_id)
+    cart_id = request.session.get('cart_id')
+    cart_item = get_object_or_404(CartItem, id=item_id, cart_id=cart_id)
 
     if action == 'increase':
         if cart_item.quantity + 1 > cart_item.variant.stock:
@@ -380,7 +382,7 @@ def checkout(request):
                     apartment=request.POST.get('apartment'),
                     landmark=request.POST.get('landmark'),
                     region=request.POST.get('region'),
-                    total_price=total_price,
+                    total_price=grand_total,
                     status='Pending'
                 )
 

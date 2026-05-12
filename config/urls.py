@@ -19,17 +19,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-def trigger_error(request):
-    division_by_zero = 1 / 0
 
 urlpatterns = [
     path('mohajer-secret-boss-2026/', admin.site.urls),
     path('', include('store.urls')),
     path('accounts/', include('allauth.urls')),
-    
 ]
 
 # الكود ده عشان نعرف ديجانجو يعرض الصور
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    from django.urls import path, include
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
