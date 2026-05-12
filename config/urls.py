@@ -23,7 +23,7 @@ def trigger_error(request):
     division_by_zero = 1 / 0
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('mohajer-secret-boss-2026/', admin.site.urls),
     path('', include('store.urls')),
     path('accounts/', include('allauth.urls')),
     
