@@ -139,6 +139,7 @@ MEDIA_URL = '/media/'
 
 # API Keys & Third-Party Settings
 RESEND_API_KEY = config('RESEND_API_KEY', default='')
+STORE_OWNER_EMAIL = config('STORE_OWNER_EMAIL', default='')
 
 # Allauth Settings
 SITE_ID = 1
