@@ -404,9 +404,11 @@ def checkout(request):
 
                 # 5. إرسال الإيميل
                 if order.email:
+                    base_url = "https://mohager-store-production.up.railway.app"
                     html_content = render_to_string('store/emails/order_confirm.html', {
                         'order': order,
                         'cart_items': cart_items,
+                        'base_url': base_url,
                     })
 
                     def send_bg_email_api(to_email, html, order_id):
