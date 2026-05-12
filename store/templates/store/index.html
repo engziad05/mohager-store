@@ -38,7 +38,7 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        min-height: 85vh;
+        min-height: 75vh;
         padding: 40px 12% 40px 0; /* زيادة البادينج اليمين يزق الكلام للشمال */
         gap: 30px;
     }
@@ -174,6 +174,7 @@
         justify-content: center;
         align-items: center;
         position: relative;
+        transform: translateX(-40px); /* تحريك الحصان لليسار قليلاً */
     }
 
     .slide-image-wrapper::before {
@@ -217,8 +218,8 @@
         align-items: center;
         gap: 60px;
         padding: 20px 5%;
-        background: rgba(10, 10, 8, 0.6);
-        border-top: 1px solid rgba(201, 167, 92, 0.1);
+        background: transparent; /* إزالة الخلفية السوداء ليدمج مع الهيرو */
+        border-top: 1px solid rgba(201, 167, 92, 0.15); /* خط ذهبي خفيف يفصل بين المحتوى والمميزات */
         direction: rtl;
         position: relative;
         z-index: 10;
