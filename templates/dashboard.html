@@ -9,7 +9,7 @@
     /* ========================================== */
     .dashboard-container {
         max-width: 1300px;
-        margin: 50px auto;
+        margin: 120px auto 50px; /* التعديل هنا: نزلنا الصفحة تحت النافبار */
         padding: 0 5%;
         direction: rtl;
         color: #fff;
@@ -103,6 +103,8 @@
         grid-template-columns: 2fr 1fr;
         gap: 30px;
         align-items: flex-start;
+        width: 100%;
+        max-width: 100%;
     }
 
     .glass-panel {
@@ -316,8 +318,8 @@
             </div>
 
             {% if orders %}
-            <div style="overflow-x: auto;">
-                <table class="orders-table">
+            <div style="width: 100%; max-width: 100vw; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                <table class="orders-table" style="min-width: 600px;">
                     <thead>
                         <tr>
                             <th>رقم الطلب</th>
