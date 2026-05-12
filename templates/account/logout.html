@@ -7,39 +7,13 @@
 <style>
     .auth-wrapper {
         min-height: 80vh;
+        width: 100%;
+        box-sizing: border-box;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 40px 20px;
-        background: 
-            linear-gradient(to bottom, rgba(10, 10, 8, 0.9), rgba(10, 10, 8, 0.8)),
-            url('{% static "images/hero-bg.jpg" %}');
-        background-size: cover;
-        background-position: center;
         position: relative;
-        overflow: hidden;
-    }
-
-    .auth-wrapper::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: radial-gradient(circle at center, rgba(201, 167, 92, 0.05) 0%, rgba(5, 5, 5, 0.95) 100%);
-        z-index: 2;
-        pointer-events: none;
-    }
-
-    .auth-bg-horse {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        height: 120%;
-        width: auto;
-        opacity: 0.03;
-        mix-blend-mode: screen;
-        pointer-events: none;
-        z-index: 1;
     }
 
     @keyframes pulseGlow {
@@ -262,7 +236,6 @@
 
 {% block content %}
 <div class="auth-wrapper">
-    <img src="{% static 'images/logo-Photoroom.png' %}" class="auth-bg-horse" alt="مهاجر">
     
     <div class="logout-card">
         

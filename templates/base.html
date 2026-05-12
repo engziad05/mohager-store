@@ -102,27 +102,7 @@ body {
    
 }
 
-/* ========================================== */
-   /* القاعدة الأساسية في البيز */
-    .bg-watermark {
-        position: fixed !important;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-image: url('/static/images/logo-Photoroom.png');
-        background-repeat: no-repeat;
-        
-        /* السر هنا: هيقرأ القيمة من متغير اسمه watermark-pos */
-        /* ولو الصفحة مفيهاش متغير، هيهرب للقيمة الافتراضية (center) */
-        background-position: var(--watermark-pos, center center) !important;
-        
-        background-size: 35%; 
-        opacity: 0.2 !important;
-        z-index: -9999;
-        pointer-events: none;
-        transition: background-position 0.5s ease; /* حركة ناعمة لما يتنقل بين الصفحات */
-    }
+
     
         /* ========================================== */
         /* ستايل الهيدر (Navbar) - Glassmorphism & Premium UI */
@@ -440,12 +420,7 @@ body {
     </style>
 </head>
 <body class="{% block body_class %}{% endblock %}">
-<div class="bg-watermark"></div>
-     
-    <!-- خلفية الحصان المائية -->
-    <!-- خلفية الحصان المائية (ثابتة بالمسامير) -->
-<!-- خلفية الحصان المائية (مطبوعة في الصفحة ومش بتتحرك معاك) -->
-<!-- خلفية الحصان المائية (متغيرة حسب الصفحة) -->
+
     {% if messages %}
         <div id="success-modal-overlay" class="custom-modal-overlay">
             <div class="custom-modal-box">
