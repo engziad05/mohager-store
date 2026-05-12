@@ -1,6 +1,5 @@
 import json
 import string
-import threading
 import urllib.request
 import urllib.error
 
@@ -10,7 +9,6 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
-from django.template.loader import render_to_string
 from django_ratelimit.decorators import ratelimit
 
 from .forms import SavedAddressForm
@@ -398,7 +396,7 @@ def checkout(request):
                     address_record.landmark = request.POST.get('landmark')
                     address_record.save()
 
-                # 4. إضافة المنتجات للطلب
+                # 5. إضافة المنتجات للطلب
                 for item in cart_items:
                     OrderItem.objects.create(
                         order=order,
@@ -408,66 +406,8 @@ def checkout(request):
                         price=item.product.base_price,
                     )
 
-                # 5. إرسال الإيميل
-                base_url = "https://mohager-store-production.up.railway.app"
-                html_content = render_to_string('store/emails/order_confirm.html', {
-                    'order': order,
-                    'cart_items': cart_items,
-                    'base_url': base_url,
-                })
-
-                # إيميل إشعار لصاحب المتجر
-                admin_html = render_to_string('store/emails/admin_order_notify.html', {
-                    'order': order,
-                    'cart_items': cart_items,
-                    'total_price': total_price,
-                    'shipping_cost': shipping_cost,
-                    'grand_total': grand_total,
-                })
-
-                def send_bg_emails(customer_email, customer_html, admin_html, order_id, tracking_no):
-                    from django.core.mail import EmailMultiAlternatives
-                    # 1. إيميل للعميل
-                    if customer_email:
-                        try:
-                            msg = EmailMultiAlternatives(
-                                subject=f"تأكيد طلبك بنجاح من مُهاجر - رقم #{tracking_no}",
-                                body="يرجى تفعيل HTML لعرض محتوى الرسالة.",
-                                from_email=settings.DEFAULT_FROM_EMAIL,
-                                to=[customer_email],
-                            )
-                            msg.attach_alternative(customer_html, "text/html")
-                            msg.send()
-                            print(f"✅ تم إرسال الإيميل للعميل - طلب #{order_id}")
-                        except Exception as e:
-                            print(f"❌ مشكلة في إرسال إيميل العميل: {e}")
-
-                    # 2. إيميل لصاحب المتجر
-                    try:
-                        owner_email = getattr(settings, 'STORE_OWNER_EMAIL', None)
-                        if owner_email:
-                            admin_msg = EmailMultiAlternatives(
-                                subject=f"🔔 طلب جديد #{tracking_no} - {order.full_name}",
-                                body=f"طلب جديد من {order.full_name} - {order.phone}",
-                                from_email=settings.DEFAULT_FROM_EMAIL,
-                                to=[owner_email],
-                            )
-                            admin_msg.attach_alternative(admin_html, "text/html")
-                            admin_msg.send()
-                            print(f"✅ تم إرسال الإشعار لصاحب المتجر - طلب #{order_id}")
-                    except Exception as e:
-                        print(f"❌ مشكلة في إرسال إيميل الأدمن: {e}")
-
-                try:
-                    email_thread = threading.Thread(
-                        target=send_bg_emails,
-                        args=(order.email, html_content, admin_html, order.id, order.tracking_no)
-                    )
-                    email_thread.start()
-                except Exception as e:
-                    print(f"Error starting email thread: {e}")
-
                 # 6. مسح السلة والتحويل
+                # (البريد الإلكتروني سيُرسل تلقائياً عند حفظ الطلب بفضل Django Signal)
                 cart.delete()
                 request.session.pop('cart_id', None)
                 request.session['last_order_tracking'] = order.tracking_no

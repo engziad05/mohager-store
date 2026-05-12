@@ -7,3 +7,4 @@ class StoreConfig(AppConfig):
     # الدالة دي بتشتغل أول ما الـ app يحمل
     def ready(self):
         import store.signals  # هنا بنفعل الإشارات
+        import store.email_handlers  # هنا بنفعل معالجات البريد
