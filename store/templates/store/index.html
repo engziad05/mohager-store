@@ -361,6 +361,11 @@
     /* 6. الموبايل */
     /* ========================================== */
     @media (max-width: 992px) {
+        .hero-slider {
+            min-height: auto; /* الغاء الـ 100vh للموبايل */
+            height: auto;
+        }
+
         .slide-image-wrapper {
             max-width: 100%;
         }
@@ -370,6 +375,7 @@
             text-align: center;
             gap: 30px;
             padding: 40px 20px;
+            min-height: 75vh; /* رجعنا الموبايل لأصله */
         }
 
         .slide-text {
@@ -401,6 +407,8 @@
         }
 
         .hero-features-bar {
+            position: relative; /* الغاء التثبيت في الموبايل */
+            bottom: auto;
             flex-wrap: wrap;
             gap: 20px;
             justify-content: space-around;
