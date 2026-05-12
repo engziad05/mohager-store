@@ -17,199 +17,137 @@
 
 <style>
     /* ========================================== */
-    /* 1. السلايدر والخلفية */
+    /* 1. السلايدر والخلفية (Cinematic Edition) */
     /* ========================================== */
     .hero-slider {
         width: calc(100% + 40px); /* كسر حدود الـ main padding */
         margin-left: -20px;
         margin-right: -20px;
         margin-top: -20px;
-        min-height: calc(100vh - 20px); /* التعديل هنا: يملى الشاشة كلها للآخر */
-        background: linear-gradient(to bottom, rgba(10, 10, 8, 0.8), rgba(10, 10, 8, 0.3)),
-        url('{% static "images/hero-bg.jpg" %}');
-        background-size: cover;
-        background-position: center bottom;
+        min-height: calc(100vh - 20px);
+        background-color: #0a0a08; /* Fallback dark background */
         border-bottom: 1px solid rgba(201, 167, 92, 0.2);
         position: relative;
         direction: rtl;
-        overflow: hidden; /* عشان الشريط اللي تحت ميعملش سكرول زيادة */
+        overflow: hidden;
     }
 
-    .slide-content {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+    /* خلفية كل سلايد منفصلة عشان نقدر نغير الصورة ديناميكياً */
+    .cinematic-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        min-height: calc(100vh - 120px); /* عشان يدي مساحة للشريط اللي تحت */
-        padding: 40px 12% 100px 0; /* زيادة البادينج تحت يزق المحتوى لفوق بعيد عن الشريط */
-        gap: 30px;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        z-index: 1;
+        animation: cinematicZoom 30s linear infinite alternate;
+        filter: brightness(0.6) contrast(1.2); /* Optimized filter instead of blur */
+    }
+
+    @keyframes cinematicZoom {
+        0% { transform: scale(1); }
+        100% { transform: scale(1.08); }
+    }
+
+    /* Ambient Glowing Waves (Optimized CSS Gradients) */
+    .ambient-glow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        background: radial-gradient(circle at 40% 60%, rgba(201, 167, 92, 0.12) 0%, transparent 60%),
+                    radial-gradient(circle at 80% 20%, rgba(201, 167, 92, 0.08) 0%, transparent 50%);
+        animation: ambientShift 15s ease-in-out infinite alternate;
+        pointer-events: none;
+    }
+
+    @keyframes ambientShift {
+        0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+        100% { transform: translate(-3%, 4%) scale(1.05); opacity: 1; }
+    }
+
+    #hero-particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 3;
+        pointer-events: none;
+    }
+
+    /* ========================================== */
+    /* 2. المحتوى (Cinematic Centered Text) */
+    /* ========================================== */
+    .cinematic-content {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+        min-height: calc(100vh - 120px);
+        padding: 0 5% 100px 5%; /* Space for features bar */
         box-sizing: border-box;
     }
 
-    /* ========================================== */
-    /* 2. النص (اليمين) - التصميم العالمي */
-    /* ========================================== */
-    /* ========================================== */
-    /* 2. النص (اليمين) - مربوط بالباك اند 100% */
-    /* ========================================== */
-    .slide-text {
-        flex: 1;
-        max-width: 520px;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        /* محاذاة لليمين */
-        text-align: right;
-        z-index: 10;
-        padding-left: 20px;
-    }
-
-    .titles-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
-    /* 🚨 ده العنوان اللي هيسحب كلمة "مهاجر" من الباك اند 🚨 */
-    .slide-text h2 {
-        font-size: 4.5rem;
-        /* كبرناه عشان ده اسم البراند */
-        line-height: 1;
+    .cinematic-title {
+        font-family: var(--font-en, 'Cinzel', serif);
+        font-size: clamp(3.5rem, 8vw, 6.5rem); /* Responsive fluid typography */
         color: var(--gold, #dcb36a);
-        font-family: var(--font-heading, serif);
-        margin: 0 0 5px 0;
-        text-shadow: 0 0 15px rgba(201, 167, 92, 0.3);
+        letter-spacing: clamp(10px, 3vw, 25px);
+        margin: 0 0 15px 0;
+        text-shadow: 0 0 40px rgba(201, 167, 92, 0.4);
+        text-transform: uppercase;
+        animation: fadeUp 2s ease-out;
+        margin-left: clamp(10px, 3vw, 25px); /* Offset letter-spacing for true center */
     }
 
-    .top-logo-text {
-        color: rgba(255, 255, 255, 0.7);
-        font-family: var(--font-en, sans-serif);
-        font-size: 1rem;
-        letter-spacing: 12px;
-        /* مسافات واسعة وفخمة */
-        margin-bottom: 15px;
-        margin-left: 12px;
+    .cinematic-subtitle {
+        font-family: var(--font-en, 'Cinzel', serif);
+        font-size: clamp(0.9rem, 2vw, 1.3rem);
+        color: rgba(255, 255, 255, 0.85);
+        letter-spacing: clamp(3px, 1vw, 8px);
+        margin-bottom: 40px;
+        text-transform: uppercase;
+        animation: fadeUp 2.5s ease-out;
+        margin-left: clamp(3px, 1vw, 8px);
     }
 
-    .custom-divider {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        width: 100%;
-    }
-
-    .custom-divider::before,
-    .custom-divider::after {
-        content: '';
-        flex: 1;
-        height: 1px;
-    }
-
-    .custom-divider::after {
-        background: linear-gradient(to left, rgba(201, 167, 92, 0.4), transparent);
-    }
-
-    .custom-divider::before {
-        background: linear-gradient(to right, rgba(201, 167, 92, 0.4), transparent);
-    }
-
-    .custom-divider .diamond {
-        width: 6px;
-        height: 6px;
-        background: var(--gold, #dcb36a);
-        transform: rotate(45deg);
-        box-shadow: 0 0 8px rgba(201, 167, 92, 0.8);
-    }
-
-    /* 🚨 الوصف اللي هيسحب "هوية عربية بستايل عصري" 🚨 */
-    .slide-desc {
-        font-size: 1.15rem;
-        line-height: 1.8;
-        color: rgba(255, 255, 255, 0.8);
-        margin-bottom: 20px;
-        font-family: var(--font-body, sans-serif);
-        width: 100%;
-    }
-
-    /* 🚨 الجملة التحفيزية اللي ضفناها (لطلب مهاجر الآن) 🚨 */
-    .action-hint {
-        font-size: 1.05rem;
-        color: rgba(255, 255, 255, 0.95);
-        margin-bottom: 15px;
-        font-family: var(--font-body, sans-serif);
-        font-weight: bold;
-    }
-
-    .slide-btn {
-        background-color: #dcb36a;
-        color: #111;
-        border: 1px solid transparent;
-        padding: 12px 40px;
-        text-decoration: none;
-        font-weight: bold;
-        border-radius: 6px;
-        font-size: 1.1rem;
-        transition: all 0.3s ease;
-        font-family: var(--font-body, sans-serif);
+    .cinematic-btn {
         display: inline-flex;
         align-items: center;
         gap: 12px;
+        border: 1px solid rgba(201, 167, 92, 0.4);
+        color: var(--gold, #dcb36a);
+        padding: 14px 45px;
+        text-decoration: none;
+        font-family: var(--font-body, sans-serif);
+        font-size: 1.05rem;
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        background: rgba(10, 10, 10, 0.4);
+        backdrop-filter: blur(4px); /* Minimal blur for performance */
+        -webkit-backdrop-filter: blur(4px);
+        border-radius: 4px;
+        animation: fadeUp 3s ease-out;
     }
 
-    .slide-btn:hover {
-        background-color: transparent;
-        color: #dcb36a;
-        border: 1px solid #dcb36a;
-        box-shadow: 0 0 15px rgba(220, 179, 106, 0.5), inset 0 0 10px rgba(220, 179, 106, 0.2);
-        transform: translateY(-3px);
+    .cinematic-btn:hover {
+        background: var(--gold, #dcb36a);
+        color: #111;
+        box-shadow: 0 0 25px rgba(201, 167, 92, 0.3);
+        transform: translateY(-2px);
     }
 
-    /* ========================================== */
-    /* 3. الصورة والحلقات الذهبية (اليسار) */
-    /* ========================================== */
-    .slide-image-wrapper {
-        flex: 1;
-        width: 100%;
-        max-width: 55%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        transform: translateX(40px); /* تحريك الحصان لليمين */
-    }
-
-    .slide-image-wrapper::before {
-        content: '';
-        position: absolute;
-        width: 480px;
-        height: 480px;
-        border: 1px solid rgba(201, 167, 92, 0.3);
-        border-radius: 50%;
-        z-index: 1;
-        box-shadow: inset 0 0 40px rgba(201, 167, 92, 0.05);
-    }
-
-    .slide-image-wrapper::after {
-        content: '';
-        position: absolute;
-        width: 360px;
-        height: 360px;
-        border: 1px solid rgba(201, 167, 92, 0.15);
-        border-radius: 50%;
-        z-index: 1;
-    }
-
-    .main-logo-img {
-        width: 100% !important;
-        max-width: 420px !important;
-        height: auto;
-        object-fit: contain;
-        position: relative;
-        z-index: 2;
-        filter: drop-shadow(0 0 25px rgba(201, 167, 92, 0.2));
-        mix-blend-mode: screen;
+    @keyframes fadeUp {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
     }
 
     /* ========================================== */
@@ -366,44 +304,9 @@
             height: auto;
         }
 
-        .slide-image-wrapper {
-            max-width: 100%;
-        }
-
-        .slide-content {
-            flex-direction: column-reverse;
-            text-align: center;
-            gap: 30px;
-            padding: 40px 20px;
-            min-height: 75vh; /* رجعنا الموبايل لأصله */
-        }
-
-        .slide-text {
-            align-items: center;
-            text-align: center;
-            padding-left: 0;
-        }
-
-        .slide-text h2 {
-            font-size: 2.5rem;
-        }
-
-        .slide-desc {
-            font-size: 1rem;
-        }
-
-        .main-logo-img {
-            max-width: 280px !important;
-        }
-
-        .slide-image-wrapper::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .slide-image-wrapper::after {
-            width: 220px;
-            height: 220px;
+        .cinematic-content {
+            min-height: 75vh;
+            padding: 100px 5% 40px 5%;
         }
 
         .hero-features-bar {
@@ -439,43 +342,48 @@
         <div class="swiper-slide">
             <div class="slide-content">
 
-                <div class="slide-text">
+                <!-- Cinematic Background and Ambient Glow layers per slide -->
+                <div class="cinematic-bg" style="background-image: url('{% if slide.image %}{{ slide.image.url }}{% else %}{% static 'images/hero-bg.jpg' %}{% endif %}');"></div>
+                <div class="ambient-glow"></div>
 
-                    <div class="titles-wrapper">
-                        <h2>{{ slide.title_ar }}</h2>
-                        <span class="top-logo-text">M O H A G E R</span>
-                        <div class="custom-divider">
-                            <span class="diamond"></span>
-                        </div>
-                    </div>
+                <div class="cinematic-content">
+                    <h1 class="cinematic-title">{{ slide.title_ar|default:"M O H A G E R" }}</h1>
+                    <p class="cinematic-subtitle">{{ slide.subtitle_ar|default:"Collection 01 — Coming Soon" }}</p>
 
-                    <p class="slide-desc">{{ slide.subtitle_ar }}</p>
-
-                    {% if slide.action_hint_ar %}
-                    <p class="action-hint">{{ slide.action_hint_ar }}</p>
-                    {% endif %}
-
-                    <a href="{{ slide.btn_url|default:'#' }}" class="slide-btn">
-                        <i class="fas fa-arrow-left"></i> {% if slide.btn_text_ar %}{{ slide.btn_text_ar }}{% else %}اطلب الآن{% endif %}
+                    {% if slide.btn_url %}
+                    <a href="{{ slide.btn_url }}" class="cinematic-btn">
+                        {{ slide.btn_text_ar|default:"اطلب الآن" }}
+                        <i class="fas fa-arrow-left"></i>
                     </a>
-
-                </div>
-                <div class="slide-image-wrapper">
-                    {% if slide.image %}
-                    <img src="{{ slide.image.url }}" class="main-logo-img" alt="{{ slide.title_ar }}">
+                    {% else %}
+                    <!-- Default fallback button if no DB entry -->
+                    <a href="#" class="cinematic-btn">
+                        اطلب الآن
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
                     {% endif %}
                 </div>
-
-            </div>
         </div>
         {% empty %}
+        <!-- Fallback Cinematic Slide if Database is Empty -->
         <div class="swiper-slide">
-            <div class="slide-content" style="justify-content: center;">
-                <h2 style="color: #dcb36a; font-family: var(--font-heading, serif);">مرحباً بك في مُهاجر</h2>
+            <div class="cinematic-bg" style="background-image: url('{% static 'images/hero-bg.jpg' %}');"></div>
+            <div class="ambient-glow"></div>
+            
+            <div class="cinematic-content">
+                <h1 class="cinematic-title">M O H A G E R</h1>
+                <p class="cinematic-subtitle">Collection 01 — Coming Soon</p>
+                <a href="#" class="cinematic-btn">
+                    اطلب الآن
+                    <i class="fas fa-arrow-left"></i>
+                </a>
             </div>
         </div>
         {% endfor %}
     </div>
+
+    <!-- Canvas for Particle System -->
+    <canvas id="hero-particles"></canvas>
 
     <div class="hero-features-bar">
         <div class="hero-feature">
@@ -548,12 +456,83 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
+    // تهيئة Swiper
     var swiper = new Swiper(".hero-slider", {
         loop: true,
-        autoplay: { delay: 4000, disableOnInteraction: false },
+        autoplay: { delay: 6000, disableOnInteraction: false }, // أبطأنا الحركة لتناسب الجو السينمائي
         pagination: { el: ".swiper-pagination", clickable: true },
         navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
     });
     AOS.init({ once: true });
+
+    // نظام الجزيئات (Particles) السينمائي
+    document.addEventListener("DOMContentLoaded", function() {
+        const canvas = document.getElementById('hero-particles');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let particles = [];
+        
+        // تقليل الجزيئات في الموبايل عشان الأداء
+        const isMobile = window.innerWidth < 768;
+        const particleCount = isMobile ? 25 : 60;
+
+        function resize() {
+            width = canvas.parentElement.clientWidth;
+            height = canvas.parentElement.clientHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedY = Math.random() * 0.3 + 0.1;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.opacity = Math.random() * 0.5 + 0.1;
+                this.pulseSpeed = Math.random() * 0.02 + 0.01;
+                this.pulseDir = Math.random() > 0.5 ? 1 : -1;
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                
+                // Pulse opacity
+                this.opacity += this.pulseSpeed * this.pulseDir;
+                if (this.opacity > 0.6 || this.opacity < 0.1) this.pulseDir *= -1;
+
+                if (this.y < 0) {
+                    this.y = height;
+                    this.x = Math.random() * width;
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(201, 167, 92, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    });
 </script>
 {% endblock %}
