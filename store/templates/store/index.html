@@ -81,73 +81,172 @@
     }
 
     /* ========================================== */
-    /* 2. المحتوى (Cinematic Centered Text) */
+    /* 2. النص (اليمين) - التصميم العالمي */
     /* ========================================== */
-    .cinematic-content {
-        position: relative;
-        z-index: 10;
+    .slide-content {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        justify-content: center;
-        text-align: center;
+        justify-content: space-between;
         width: 100%;
         min-height: calc(100vh - 120px);
-        padding: 0 5% 100px 5%; /* Space for features bar */
+        padding: 40px 12% 100px 0; /* زيادة البادينج تحت يزق المحتوى لفوق بعيد عن الشريط */
+        gap: 30px;
         box-sizing: border-box;
+        position: relative;
+        z-index: 10;
     }
 
-    .cinematic-title {
-        font-family: var(--font-en, 'Cinzel', serif);
-        font-size: clamp(3.5rem, 8vw, 6.5rem); /* Responsive fluid typography */
+    .slide-text {
+        flex: 1;
+        max-width: 520px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: right;
+        padding-left: 20px;
+    }
+
+    .titles-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .slide-text h2 {
+        font-size: 4.5rem;
+        line-height: 1;
         color: var(--gold, #dcb36a);
-        letter-spacing: clamp(10px, 3vw, 25px);
-        margin: 0 0 15px 0;
-        text-shadow: 0 0 40px rgba(201, 167, 92, 0.4);
-        text-transform: uppercase;
-        animation: fadeUp 2s ease-out;
-        margin-left: clamp(10px, 3vw, 25px); /* Offset letter-spacing for true center */
+        font-family: var(--font-heading, serif);
+        margin: 0 0 5px 0;
+        text-shadow: 0 0 15px rgba(201, 167, 92, 0.3);
     }
 
-    .cinematic-subtitle {
-        font-family: var(--font-en, 'Cinzel', serif);
-        font-size: clamp(0.9rem, 2vw, 1.3rem);
-        color: rgba(255, 255, 255, 0.85);
-        letter-spacing: clamp(3px, 1vw, 8px);
-        margin-bottom: 40px;
-        text-transform: uppercase;
-        animation: fadeUp 2.5s ease-out;
-        margin-left: clamp(3px, 1vw, 8px);
+    .top-logo-text {
+        color: rgba(255, 255, 255, 0.7);
+        font-family: var(--font-en, sans-serif);
+        font-size: 1rem;
+        letter-spacing: 12px;
+        margin-bottom: 15px;
+        margin-left: 12px;
     }
 
-    .cinematic-btn {
+    .custom-divider {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+    }
+
+    .custom-divider::before,
+    .custom-divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+    }
+
+    .custom-divider::after {
+        background: linear-gradient(to left, rgba(201, 167, 92, 0.4), transparent);
+    }
+
+    .custom-divider::before {
+        background: linear-gradient(to right, rgba(201, 167, 92, 0.4), transparent);
+    }
+
+    .custom-divider .diamond {
+        width: 6px;
+        height: 6px;
+        background: var(--gold, #dcb36a);
+        transform: rotate(45deg);
+        box-shadow: 0 0 8px rgba(201, 167, 92, 0.8);
+    }
+
+    .slide-desc {
+        font-size: 1.15rem;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 20px;
+        font-family: var(--font-body, sans-serif);
+        width: 100%;
+    }
+
+    .action-hint {
+        font-size: 1.05rem;
+        color: rgba(255, 255, 255, 0.95);
+        margin-bottom: 15px;
+        font-family: var(--font-body, sans-serif);
+        font-weight: bold;
+    }
+
+    .slide-btn {
+        background-color: transparent;
+        color: #dcb36a;
+        border: 1px solid #dcb36a;
+        padding: 12px 40px;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 6px;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        font-family: var(--font-body, sans-serif);
         display: inline-flex;
         align-items: center;
         gap: 12px;
-        border: 1px solid rgba(201, 167, 92, 0.4);
-        color: var(--gold, #dcb36a);
-        padding: 14px 45px;
-        text-decoration: none;
-        font-family: var(--font-body, sans-serif);
-        font-size: 1.05rem;
-        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        background: rgba(10, 10, 10, 0.4);
-        backdrop-filter: blur(4px); /* Minimal blur for performance */
-        -webkit-backdrop-filter: blur(4px);
-        border-radius: 4px;
-        animation: fadeUp 3s ease-out;
+        backdrop-filter: blur(4px);
     }
 
-    .cinematic-btn:hover {
-        background: var(--gold, #dcb36a);
+    .slide-btn:hover {
+        background-color: #dcb36a;
         color: #111;
-        box-shadow: 0 0 25px rgba(201, 167, 92, 0.3);
-        transform: translateY(-2px);
+        box-shadow: 0 0 15px rgba(220, 179, 106, 0.5);
+        transform: translateY(-3px);
     }
 
-    @keyframes fadeUp {
-        0% { opacity: 0; transform: translateY(20px); }
-        100% { opacity: 1; transform: translateY(0); }
+    /* ========================================== */
+    /* 3. الصورة والحلقات الذهبية (اليسار) */
+    /* ========================================== */
+    .slide-image-wrapper {
+        flex: 1;
+        width: 100%;
+        max-width: 55%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        transform: translateX(40px);
+    }
+
+    .slide-image-wrapper::before {
+        content: '';
+        position: absolute;
+        width: 480px;
+        height: 480px;
+        border: 1px solid rgba(201, 167, 92, 0.3);
+        border-radius: 50%;
+        z-index: 1;
+        box-shadow: inset 0 0 40px rgba(201, 167, 92, 0.05);
+    }
+
+    .slide-image-wrapper::after {
+        content: '';
+        position: absolute;
+        width: 360px;
+        height: 360px;
+        border: 1px solid rgba(201, 167, 92, 0.15);
+        border-radius: 50%;
+        z-index: 1;
+    }
+
+    .main-logo-img {
+        width: 100% !important;
+        max-width: 420px !important;
+        height: auto;
+        object-fit: contain;
+        position: relative;
+        z-index: 2;
+        filter: drop-shadow(0 0 25px rgba(201, 167, 92, 0.2));
+        mix-blend-mode: screen;
     }
 
     /* ========================================== */
@@ -304,9 +403,44 @@
             height: auto;
         }
 
-        .cinematic-content {
+        .slide-image-wrapper {
+            max-width: 100%;
+        }
+
+        .slide-content {
+            flex-direction: column-reverse;
+            text-align: center;
+            gap: 30px;
+            padding: 40px 20px;
             min-height: 75vh;
-            padding: 100px 5% 40px 5%;
+        }
+
+        .slide-text {
+            align-items: center;
+            text-align: center;
+            padding-left: 0;
+        }
+
+        .slide-text h2 {
+            font-size: 2.5rem;
+        }
+
+        .slide-desc {
+            font-size: 1rem;
+        }
+
+        .main-logo-img {
+            max-width: 280px !important;
+        }
+
+        .slide-image-wrapper::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .slide-image-wrapper::after {
+            width: 220px;
+            height: 220px;
         }
 
         .hero-features-bar {
@@ -340,21 +474,36 @@
     <div class="swiper-wrapper">
         {% for slide in slides %}
         <div class="swiper-slide">
+            <!-- Cinematic Background and Ambient Glow layers per slide -->
+            <div class="cinematic-bg" style="background-image: url('{% static 'images/hero-bg.jpg' %}');"></div>
+            <div class="ambient-glow"></div>
+
             <div class="slide-content">
+                <div class="slide-text">
+                        <div class="titles-wrapper">
+                            <h2>{{ slide.title_ar }}</h2>
+                            <span class="top-logo-text">M O H A G E R</span>
+                            <div class="custom-divider">
+                                <span class="diamond"></span>
+                            </div>
+                        </div>
 
-                <!-- Cinematic Background and Ambient Glow layers per slide -->
-                <!-- We use the default hero-bg.jpg as the cover, because slide.image is a transparent logo, not a full background -->
-                <div class="cinematic-bg" style="background-image: url('{% static 'images/hero-bg.jpg' %}');"></div>
-                <div class="ambient-glow"></div>
+                        <p class="slide-desc">{{ slide.subtitle_ar }}</p>
 
-                <div class="cinematic-content">
-                    <h1 class="cinematic-title">M O H A G E R</h1>
-                    <p class="cinematic-subtitle">Collection 01 — Coming Soon</p>
+                        {% if slide.action_hint_ar %}
+                        <p class="action-hint">{{ slide.action_hint_ar }}</p>
+                        {% endif %}
 
-                    <a href="{{ slide.btn_url|default:'#' }}" class="cinematic-btn">
-                        اطلب الآن
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
+                        <a href="{{ slide.btn_url|default:'#' }}" class="slide-btn">
+                            <i class="fas fa-arrow-left"></i> {% if slide.btn_text_ar %}{{ slide.btn_text_ar }}{% else %}اطلب الآن{% endif %}
+                        </a>
+                    </div>
+
+                    <div class="slide-image-wrapper">
+                        {% if slide.image %}
+                        <img src="{{ slide.image.url }}" class="main-logo-img" alt="{{ slide.title_ar }}">
+                        {% endif %}
+                    </div>
                 </div>
         </div>
         {% empty %}
@@ -363,13 +512,8 @@
             <div class="cinematic-bg" style="background-image: url('{% static 'images/hero-bg.jpg' %}');"></div>
             <div class="ambient-glow"></div>
             
-            <div class="cinematic-content">
-                <h1 class="cinematic-title">M O H A G E R</h1>
-                <p class="cinematic-subtitle">Collection 01 — Coming Soon</p>
-                <a href="#" class="cinematic-btn">
-                    اطلب الآن
-                    <i class="fas fa-arrow-left"></i>
-                </a>
+            <div class="slide-content" style="justify-content: center;">
+                <h2 style="color: #dcb36a; font-family: var(--font-heading, serif);">مرحباً بك في مُهاجر</h2>
             </div>
         </div>
         {% endfor %}
