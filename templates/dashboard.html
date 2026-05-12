@@ -113,6 +113,9 @@
         border-radius: 16px;
         padding: 25px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        min-width: 0; /* مهم جداً عشان الجدول ميكبرش الجريد كله في الموبايل */
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     /* ========================================== */
@@ -205,7 +208,7 @@
     .detail-label i { color: var(--gold); width: 15px; text-align: center; }
     
     /* التعديل: Line-height عشان المحتوى يتنفس */
-    .detail-value { color: var(--cream); font-size: 1rem; padding-right: 23px; line-height: 1.9; }
+    .detail-value { color: var(--cream); font-size: 1rem; padding-right: 23px; line-height: 1.9; word-break: break-word; }
     .detail-value.en-font { font-family: var(--font-en); letter-spacing: 1px; }
 
     /* التعديل: أزرار الـ Actions تحت (أنعم وأفخم) */
@@ -264,6 +267,9 @@
     
     @media (max-width: 576px) {
         .dash-stats-container { grid-template-columns: 1fr; } /* كارت واحد في الصف للشاشات الصغيرة جداً */
+        .glass-panel {
+            padding: 15px; /* تقليل البادينج في الموبايل عشان يدي مساحة للمحتوى */
+        }
     }
 </style>
 
@@ -312,7 +318,7 @@
 
     <div class="dash-grid">
         
-        <div class="glass-panel" style="padding: 25px 30px;">
+        <div class="glass-panel">
             <div class="table-header-flex">
                 <span>إجمالي الطلبات: {{ orders|length|default:"0" }}</span>
             </div>
