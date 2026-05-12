@@ -11,7 +11,7 @@
     /* الهيكل الأساسي لصفحة الدخول (Premium Layout) */
     /* ========================================== */
     .auth-page-wrapper {
-        min-height: 80vh;
+        min-height: 70vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -19,22 +19,7 @@
         padding: 50px 5%;
         font-family: var(--font-body);
         direction: rtl;
-        background: 
-            linear-gradient(to bottom, rgba(10, 10, 8, 0.9), rgba(10, 10, 8, 0.8)),
-            url('{% static "images/hero-bg.jpg" %}');
-        background-size: cover;
-        background-position: center;
         position: relative;
-        overflow: hidden;
-    }
-
-    .auth-page-wrapper::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: radial-gradient(circle at center, rgba(201, 167, 92, 0.05) 0%, rgba(5, 5, 5, 0.95) 100%);
-        z-index: 1;
-        pointer-events: none;
     }
 
     .auth-container {
