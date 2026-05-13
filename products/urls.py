@@ -1,7 +1,7 @@
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import SimpleRouter
 from .views import ProductViewSet, CategoryViewSet
 
-router = DefaultRouter()
+router = SimpleRouter()
 router.register(r'', ProductViewSet, basename='product')
 router.register(r'categories', CategoryViewSet, basename='category')
 
