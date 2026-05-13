@@ -19,13 +19,25 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 urlpatterns = [
     path('mohajer-secret-boss-2026/', admin.site.urls),
+
+    # API documentation
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='api-docs'),
+
+    # API routes
+    path('api/v1/products/', include('products.urls')),
+    path('api/v1/orders/', include('orders.urls')),
+    path('api/v1/cart/', include('cart.urls')),
+    path('api/v1/users/', include('users.urls')),
+
+    # Existing frontend
     path('', include('store.urls')),
     path('accounts/', include('allauth.urls')),
 ]
 
-# الكود ده عشان نعرف ديجانجو يعرض الصور
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

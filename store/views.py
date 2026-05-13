@@ -1,9 +1,7 @@
-"""
-Views الخاصة بالمتجر — مُهاجر
-تم إعادة هيكلتها: إزالة الكود المكرر + logging احترافي
-cart_count بقى أوتوماتيك عبر Context Processor
-"""
-import logging
+import json
+import string
+import urllib.request
+import urllib.error
 
 from django.conf import settings
 from django.contrib import messages
@@ -11,7 +9,6 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
-from django.template.loader import render_to_string
 from django_ratelimit.decorators import ratelimit
 
 from .forms import SavedAddressForm
@@ -21,39 +18,30 @@ from .models import (
     ProductVariant, SavedAddress, StoreSetting,
 )
 
-logger = logging.getLogger('store')
-
-
-# ============================================================
-# Helper — جلب سلة الزائر الحالية
-# ============================================================
-def _get_cart(request):
-    """يرجع (cart, cart_items) أو (None, []) لو مفيش سلة."""
-    cart_id = request.session.get('cart_id')
-    if not cart_id:
-        return None, CartItem.objects.none()
-    cart = Cart.objects.filter(id=cart_id).first()
-    if not cart:
-        return None, CartItem.objects.none()
-    items = CartItem.objects.filter(cart=cart).select_related('product', 'variant')
-    return cart, items
-
 
 # ============================================================
 # الصفحة الرئيسية
 # ============================================================
 def index(request):
-    products = Product.objects.filter(is_active=True).select_related('category')[:8]
+    products = Product.objects.filter(is_active=True)[:8]
     slides = HeroSlide.objects.filter(is_active=True).order_by('order')
 
-    # cart_count بيتحسب أوتوماتيك من الـ Context Processor
-    # بس محتاجين cart_items و total_price للـ drawer في الهوم بيدج
-    cart, cart_items = _get_cart(request)
-    total_price = sum(item.total_price for item in cart_items) if cart_items else 0
+    cart_id = request.session.get('cart_id')
+    cart_count = 0
+    cart_items = []
+    total_price = 0
+
+    if cart_id:
+        cart = Cart.objects.filter(id=cart_id).first()
+        if cart:
+            cart_items = CartItem.objects.filter(cart=cart)
+            cart_count = sum(item.quantity for item in cart_items)
+            total_price = sum(item.total_price for item in cart_items)
 
     context = {
         'products': products,
         'slides': slides,
+        'cart_count': cart_count,
         'cart_items': cart_items,
         'total_price': total_price,
     }
@@ -64,7 +52,7 @@ def index(request):
 # صفحة المتجر
 # ============================================================
 def shop(request):
-    products = Product.objects.filter(is_active=True).select_related('category')
+    products = Product.objects.filter(is_active=True)
     categories = Category.objects.filter(is_active=True)
 
     query = request.GET.get('q')
@@ -80,11 +68,17 @@ def shop(request):
             Q(description_ar__icontains=query)
         )
 
-    # cart_count أوتوماتيك من الـ Context Processor ✅
+    cart_id = request.session.get('cart_id')
+    cart_count = 0
+    if cart_id:
+        cart = Cart.objects.filter(id=cart_id).first()
+        if cart:
+            cart_count = sum(item.quantity for item in CartItem.objects.filter(cart=cart))
 
     context = {
         'products': products,
         'categories': categories,
+        'cart_count': cart_count,
     }
     return render(request, 'store/shop.html', context)
 
@@ -97,12 +91,18 @@ def product_detail(request, product_id):
     variants = ProductVariant.objects.filter(product=product)
     extra_images = ProductImage.objects.filter(product=product)
 
-    # cart_count أوتوماتيك من الـ Context Processor ✅
+    cart_id = request.session.get('cart_id')
+    cart_count = 0
+    if cart_id:
+        cart = Cart.objects.filter(id=cart_id).first()
+        if cart:
+            cart_count = sum(item.quantity for item in CartItem.objects.filter(cart=cart))
 
     context = {
         'product': product,
         'variants': variants,
         'extra_images': extra_images,
+        'cart_count': cart_count,
     }
     return render(request, 'store/product_detail.html', context)
 
@@ -111,10 +111,18 @@ def product_detail(request, product_id):
 # صفحة السلة
 # ============================================================
 def cart_detail(request):
-    cart, cart_items = _get_cart(request)
-    total_price = sum(item.total_price for item in cart_items) if cart_items else 0
+    cart_id = request.session.get('cart_id')
+    cart = None
+    cart_items = []
+    total_price = 0
     shipping_cost = 0
     grand_total = 0
+
+    if cart_id:
+        cart = Cart.objects.filter(id=cart_id).first()
+        if cart:
+            cart_items = CartItem.objects.filter(cart=cart)
+            total_price = sum(item.total_price for item in cart_items)
 
     if total_price > 0:
         setting = StoreSetting.objects.first()
@@ -138,7 +146,6 @@ def remove_cart_item(request, item_id):
     cart_id = request.session.get('cart_id')
     cart_item = get_object_or_404(CartItem, id=item_id, cart_id=cart_id)
     cart_item.delete()
-    logger.info(f"Cart item #{item_id} removed from cart #{cart_id}")
     messages.success(request, 'تم حذف القطعة من السلة 🗑️')
     return redirect('cart_detail')
 
@@ -166,7 +173,7 @@ def update_quantity(request, item_id, action):
 
     if request.headers.get('HX-Request'):
         cart = cart_item.cart
-        cart_items = CartItem.objects.filter(cart=cart).select_related('product', 'variant')
+        cart_items = CartItem.objects.filter(cart=cart)
         total_price = sum(item.total_price for item in cart_items)
         cart_count = sum(item.quantity for item in cart_items)
 
@@ -199,15 +206,26 @@ def order_success(request):
 # درج السلة (HTMX)
 # ============================================================
 def cart_drawer(request):
-    cart, cart_items = _get_cart(request)
-    total_price = sum(item.total_price for item in cart_items) if cart_items else 0
-    cart_count = sum(item.quantity for item in cart_items) if cart_items else 0
+    cart_id = request.session.get('cart_id')
+    cart = None
+    cart_items = []
+    total_price = 0
+    grand_total = 0
+    cart_count = 0
+
+    if cart_id:
+        cart = Cart.objects.filter(id=cart_id).first()
+        if cart:
+            cart_items = CartItem.objects.filter(cart=cart)
+            total_price = sum(item.total_price for item in cart_items)
+            grand_total = total_price
+            cart_count = sum(item.quantity for item in cart_items)
 
     context = {
         'cart': cart,
         'cart_items': cart_items,
         'total_price': total_price,
-        'grand_total': total_price,
+        'grand_total': grand_total,
         'cart_count': cart_count,
     }
     return render(request, 'store/partials/cart_items.html', context)
@@ -254,10 +272,8 @@ def add_to_cart(request, product_id):
             cart_item.quantity += 1
             cart_item.save()
 
-        logger.info(f"Product #{product_id} (variant #{variant_id}) added to cart #{cart.id}")
-
         if request.headers.get('HX-Request'):
-            cart_items = CartItem.objects.filter(cart=cart).select_related('product', 'variant')
+            cart_items = CartItem.objects.filter(cart=cart)
             total_price = sum(item.total_price for item in cart_items)
             cart_count = sum(item.quantity for item in cart_items)
 
@@ -328,7 +344,7 @@ def checkout(request):
     if not cart:
         return redirect('index')
 
-    cart_items = CartItem.objects.filter(cart=cart).select_related('product', 'variant')
+    cart_items = CartItem.objects.filter(cart=cart)
     if not cart_items.exists():
         return redirect('index')
 
@@ -368,8 +384,6 @@ def checkout(request):
                     status='Pending'
                 )
 
-                logger.info(f"Order #{order.tracking_no} created by {order.full_name} ({order.phone}) — total: {grand_total} EGP")
-
                 # 3. حفظ العنوان للمرات القادمة
                 if request.user.is_authenticated:
                     address_record, _ = SavedAddress.objects.get_or_create(user=request.user)
@@ -382,7 +396,7 @@ def checkout(request):
                     address_record.landmark = request.POST.get('landmark')
                     address_record.save()
 
-                # 4. إضافة المنتجات للطلب
+                # 5. إضافة المنتجات للطلب
                 for item in cart_items:
                     OrderItem.objects.create(
                         order=order,
@@ -392,8 +406,8 @@ def checkout(request):
                         price=item.product.base_price,
                     )
 
-                # 5. مسح السلة والتحويل
-                # (البريد الإلكتروني يُرسل تلقائياً عبر Signal في email_handlers.py)
+                # 6. مسح السلة والتحويل
+                # (البريد الإلكتروني سيُرسل تلقائياً عند حفظ الطلب بفضل Django Signal)
                 cart.delete()
                 request.session.pop('cart_id', None)
                 request.session['last_order_tracking'] = order.tracking_no
@@ -401,7 +415,6 @@ def checkout(request):
                 return redirect('order_success')
 
         except ValueError as e:
-            logger.warning(f"Checkout failed — stock issue: {e}")
             messages.error(request, str(e))
             return redirect('cart_detail')
 

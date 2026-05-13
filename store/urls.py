@@ -19,9 +19,8 @@ urlpatterns = [
     path('shop/', views.shop, name='shop'),
     path('cart/drawer/', views.cart_drawer, name='cart_drawer'),
     path('dashboard/', views.dashboard, name='dashboard'),
-    
-path('order/<int:order_id>/', views.order_detail, name='order_detail'),
-path('return-policy/', views.return_policy, name='return_policy'),
-path('terms/', views.terms, name='terms'),
-path('about/', views.about, name='about'),
+    path('order/<int:order_id>/', views.order_detail, name='order_detail'),
+    path('return-policy/', views.return_policy, name='return_policy'),
+    path('terms/', views.terms, name='terms'),
+    path('about/', views.about, name='about'),
 ]
