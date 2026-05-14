@@ -1,0 +1,49 @@
+<section class="mohager-panel">
+    <div class="mohager-panel-header">
+        <div>
+            <p class="mohager-eyebrow">Fulfillment</p>
+            <h2>Recent orders</h2>
+        </div>
+        <a href="{% url 'mohager_admin:orders_order_changelist' %}" class="mohager-link">View all</a>
+    </div>
+
+    {% if latest_orders %}
+        <div class="mohager-table-wrap">
+            <table class="mohager-table">
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Customer</th>
+                        <th>Status</th>
+                        <th>Total</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in latest_orders %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'mohager_admin:orders_order_change' order.id %}" class="mohager-table-link">
+                                    #{{ order.tracking_no|default:order.id }}
+                                </a>
+                            </td>
+                            <td>
+                                <strong>{{ order.full_name }}</strong>
+                                <small>{{ order.phone }}</small>
+                            </td>
+                            <td><span class="mohager-status mohager-status-{{ order.status|lower }}">{{ order.status }}</span></td>
+                            <td>{{ order.total_price|floatformat:0 }} EGP</td>
+                            <td>{{ order.created_at|date:"M d, H:i" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="mohager-empty-state">
+            <span class="material-symbols-outlined" aria-hidden="true">receipt_long</span>
+            <strong>No orders yet</strong>
+            <p>New customer orders will land here with fulfillment status and totals.</p>
+        </div>
+    {% endif %}
+</section>

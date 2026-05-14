@@ -366,6 +366,40 @@
         font-family: var(--font-body, sans-serif);
     }
 
+    .product-price-stack,
+    .price.product-price-stack {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        margin: 0 0 20px 0;
+    }
+
+    .current-price {
+        color: rgba(200, 169, 110, 0.98);
+        font-family: var(--font-en, sans-serif);
+        font-size: 1.12rem;
+        font-weight: 800;
+    }
+
+    .old-price {
+        color: rgba(244, 236, 216, 0.45);
+        font-family: var(--font-en, sans-serif);
+        font-size: 0.9rem;
+        text-decoration: line-through;
+    }
+
+    .discount-badge {
+        background: linear-gradient(135deg, #c8a96e, #8b5cf6);
+        border-radius: 999px;
+        color: #111;
+        font-family: var(--font-en, sans-serif);
+        font-size: 0.75rem;
+        font-weight: 900;
+        padding: 4px 8px;
+    }
+
     .premium-btn {
         box-sizing: border-box !important;
         display: block;
@@ -577,7 +611,7 @@
             </a>
             <div class="product-details">
                 <h3>{{ product.name_ar }}</h3>
-                <p class="price">{{ product.base_price }} ج.م</p>
+                <div class="price product-price-stack">{% include "store/partials/product_price.html" %}</div>
                 <a href="{% url 'product_detail' product.id %}" class="premium-btn">التفاصيل</a>
             </div>
         </div>

@@ -57,6 +57,38 @@
         font-family: var(--font-en);
     }
 
+    .product-price-stack {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 0;
+    }
+
+    .current-price {
+        color: var(--gold);
+        font-family: var(--font-en);
+        font-size: 1.8rem;
+        font-weight: 900;
+    }
+
+    .old-price {
+        color: rgba(244, 236, 216, 0.42);
+        font-family: var(--font-en);
+        font-size: 1.05rem;
+        text-decoration: line-through;
+    }
+
+    .discount-badge {
+        background: linear-gradient(135deg, var(--gold), #8b5cf6);
+        border-radius: 999px;
+        color: #111;
+        font-family: var(--font-en);
+        font-size: 0.85rem;
+        font-weight: 900;
+        padding: 5px 10px;
+    }
+
     .diamond-divider {
         width: 60%;
         height: 1px;
@@ -410,7 +442,7 @@
         <!-- قسم التفاصيل -->
         <div class="product-info-col">
             <h1 class="prod-title">{{ product.name_ar }}</h1>
-            <p class="prod-price">{{ product.base_price }} ج.م</p>
+            <div class="prod-price product-price-stack">{% include "store/partials/product_price.html" %}</div>
             
             <div class="diamond-divider"></div>
             

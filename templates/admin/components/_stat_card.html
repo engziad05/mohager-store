@@ -1,0 +1,10 @@
+<article class="mohager-stat mohager-stat-{{ tone|default:'violet' }}">
+    <div class="mohager-stat-icon">
+        <span class="material-symbols-outlined" aria-hidden="true">{{ icon }}</span>
+    </div>
+    <div>
+        <p>{{ label }}</p>
+        <strong>{% if money %}{{ value|floatformat:0 }} EGP{% else %}{{ value|default:"0" }}{% endif %}</strong>
+        <small>{{ helper }}</small>
+    </div>
+</article>

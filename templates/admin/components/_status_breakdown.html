@@ -1,0 +1,31 @@
+<section class="mohager-panel">
+    <div class="mohager-panel-header">
+        <div>
+            <p class="mohager-eyebrow">Operations</p>
+            <h2>Order status</h2>
+        </div>
+    </div>
+
+    {% if orders_by_status %}
+        <div class="mohager-status-list">
+            {% for item in orders_by_status %}
+                <div class="mohager-status-row">
+                    <div>
+                        <span class="mohager-status-dot mohager-status-dot-{{ item.status|lower }}"></span>
+                        <strong>{{ item.label }}</strong>
+                    </div>
+                    <span>{{ item.count }}</span>
+                    <div class="mohager-progress">
+                        <span style="width: {{ item.percent }}%;"></span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="mohager-empty-state mohager-empty-state-compact">
+            <span class="material-symbols-outlined" aria-hidden="true">donut_large</span>
+            <strong>No order states</strong>
+            <p>Status distribution will appear after your first order.</p>
+        </div>
+    {% endif %}
+</section>

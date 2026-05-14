@@ -1,0 +1,7 @@
+{% if product.has_discount %}
+<span class="discount-badge">-{{ product.discount_percent }}%</span>
+<span class="current-price">{{ product.base_price }} ج.م</span>
+<span class="old-price">{{ product.compare_at_price }} ج.م</span>
+{% else %}
+<span class="current-price">{{ product.base_price }} ج.م</span>
+{% endif %}

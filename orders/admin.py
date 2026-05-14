@@ -10,8 +10,10 @@ class OrderItemInline(TabularInline):
 
 
 class OrderAdmin(ModelAdmin):
-    list_display = ['id', 'full_name', 'phone', 'status', 'total_price', 'created_at']
+    list_display = ['tracking_no', 'full_name', 'phone', 'status', 'total_price', 'created_at']
     list_filter = ['status', 'created_at', 'region']
-    search_fields = ['full_name', 'phone', 'id']
+    search_fields = ['tracking_no', 'full_name', 'phone', 'email', 'id']
     inlines = [OrderItemInline]
-    list_display_links = ['id', 'full_name']
+    list_display_links = ['tracking_no', 'full_name']
+    list_select_related = ['user']
+    date_hierarchy = 'created_at'

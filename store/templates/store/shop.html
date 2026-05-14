@@ -245,6 +245,38 @@
         margin: 0 0 20px 0;
     }
 
+    .product-price-stack {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .current-price {
+        color: var(--gold);
+        font-family: var(--font-en);
+        font-size: 1.35rem;
+        font-weight: 900;
+    }
+
+    .old-price {
+        color: rgba(244, 236, 216, 0.45);
+        font-family: var(--font-en);
+        font-size: 0.95rem;
+        text-decoration: line-through;
+    }
+
+    .discount-badge {
+        background: linear-gradient(135deg, var(--gold), #8b5cf6);
+        border-radius: 999px;
+        color: #111;
+        font-family: var(--font-en);
+        font-size: 0.78rem;
+        font-weight: 900;
+        padding: 4px 9px;
+    }
+
     /* زرار الإضافة (مفرغ Outline) */
     .btn-outline-gold {
         margin-top: auto;
@@ -391,7 +423,7 @@
                 <div class="product-details">
                     <h3 class="product-title">{{ product.name_ar }}</h3>
                     <p class="product-subtitle">{{ product.description_ar|truncatechars:45|default:"خامة فاخرة - تصميم مميز" }}</p>
-                    <p class="product-price">{{ product.base_price }} ج.م</p>
+                    <div class="product-price product-price-stack">{% include "store/partials/product_price.html" %}</div>
                     
                     <!-- رجعناه لينك بس محتفظ بشياكة وفخامة الزرار اللي فات -->
                     <a href="{% url 'product_detail' product.id %}" class="btn-outline-gold" style="width: 100%;">

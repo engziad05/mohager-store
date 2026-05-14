@@ -144,6 +144,10 @@
     .item-details p span { color: var(--gold); font-weight: bold; font-family: var(--font-en); }
     .item-price-col, .item-total-col { color: var(--cream); font-family: var(--font-en); font-size: 1.2rem; text-align: center; }
     .item-total-col { color: var(--gold); font-weight: bold; }
+    .item-price-col .product-price-stack { align-items: center; display: flex; flex-direction: column; gap: 4px; }
+    .item-price-col .current-price { color: var(--gold); font-weight: 900; }
+    .item-price-col .old-price { color: rgba(244,236,216,.45); font-size: .85rem; text-decoration: line-through; }
+    .item-price-col .discount-badge { background: linear-gradient(135deg, var(--gold), #8b5cf6); border-radius: 999px; color: #111; font-size: .72rem; font-weight: 900; padding: 3px 8px; }
 
     .qty-controls {
         display: flex;
@@ -317,7 +321,7 @@
                     </div>
 
                     <div class="item-price-col">
-                        EGP {{ item.product.base_price }}
+                        <div class="product-price-stack">{% include "store/partials/product_price.html" with product=item.product %}</div>
                     </div>
 
                     <div>

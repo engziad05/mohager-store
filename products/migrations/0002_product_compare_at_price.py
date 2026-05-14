@@ -1,0 +1,23 @@
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('products', '0001_initial'),
+    ]
+
+    operations = [
+        migrations.AddField(
+            model_name='product',
+            name='compare_at_price',
+            field=models.DecimalField(
+                blank=True,
+                decimal_places=2,
+                help_text='Optional. Example: set 800 here and 580 as the base price.',
+                max_digits=10,
+                null=True,
+                verbose_name='Original price before discount',
+            ),
+        ),
+    ]

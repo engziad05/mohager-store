@@ -72,12 +72,16 @@ INSTALLED_APPS = [
 # إعدادات django-unfold (لوحة التحكم الحديثة)
 # ==========================================
 UNFOLD = {
-    'SITE_TITLE': 'مُهاجر ستور',
-    'SITE_HEADER': 'مُهاجر ستور — لوحة التحكم',
+    'SITE_TITLE': 'Mohager Store',
+    'SITE_HEADER': 'Mohager Store CMS',
     'SITE_SYMBOL': 'shopping_bag',       # Material symbol name
     'SITE_FAVICONS': [],
-    'SHOW_HISTORY': True,
+    'SHOW_HISTORY': False,
     'SHOW_VIEW_ON_SITE': True,
+    'STYLES': [
+        '/static/admin/css/mohager-admin.css',
+        '/static/admin/css/dashboard.css',
+    ],
     'ENVIRONMENT': 'config.settings.environment_callback',
     'COLORS': {
         'primary': {
@@ -95,74 +99,69 @@ UNFOLD = {
         },
     },
     'SIDEBAR': {
+        'show_search': True,
         'navigation': [
             {
-                'title': 'الرئيسية',
+                'title': 'Overview',
                 'icon': 'dashboard',
                 'items': [
                     {
-                        'title': 'لوحة التحكم',
+                        'title': 'Dashboard',
                         'icon': 'dashboard',
                         'link': MOHAGER_ADMIN_URL,
                     },
                 ],
             },
             {
-                'title': 'المتجر',
-                'icon': 'store',
+                'title': 'Commerce',
+                'icon': 'shopping_bag',
                 'items': [
                     {
-                        'title': 'المنتجات',
-                        'icon': 'inventory_2',
-                        'link': f'{MOHAGER_ADMIN_URL}products/product/',
+                        'title': 'Orders',
+                        'icon': 'receipt_long',
+                        'link': f'{MOHAGER_ADMIN_URL}orders/order/',
                     },
                     {
-                        'title': 'الأقسام',
-                        'icon': 'category',
-                        'link': f'{MOHAGER_ADMIN_URL}products/category/',
+                        'title': 'Carts',
+                        'icon': 'shopping_cart',
+                        'link': f'{MOHAGER_ADMIN_URL}cart/cart/',
                     },
                     {
-                        'title': 'إعدادات المتجر',
-                        'icon': 'settings',
+                        'title': 'Customers',
+                        'icon': 'groups',
+                        'link': f'{MOHAGER_ADMIN_URL}accounts/customuser/',
+                    },
+                    {
+                        'title': 'Shipping rate',
+                        'icon': 'local_shipping',
                         'link': f'{MOHAGER_ADMIN_URL}store/storesetting/',
                     },
                 ],
             },
             {
-                'title': 'الطلبات',
-                'icon': 'receipt_long',
+                'title': 'Catalog',
+                'icon': 'inventory_2',
                 'items': [
                     {
-                        'title': 'الطلبات',
-                        'icon': 'shopping_cart',
-                        'link': f'{MOHAGER_ADMIN_URL}orders/order/',
+                        'title': 'Products',
+                        'icon': 'inventory_2',
+                        'link': f'{MOHAGER_ADMIN_URL}products/product/',
                     },
                     {
-                        'title': 'السلال',
-                        'icon': 'add_shopping_cart',
-                        'link': f'{MOHAGER_ADMIN_URL}cart/cart/',
+                        'title': 'Categories',
+                        'icon': 'category',
+                        'link': f'{MOHAGER_ADMIN_URL}products/category/',
                     },
                 ],
             },
             {
-                'title': 'المحتوى',
+                'title': 'Content',
                 'icon': 'web',
                 'items': [
                     {
-                        'title': 'البانرات',
+                        'title': 'Hero slides',
                         'icon': 'view_carousel',
                         'link': f'{MOHAGER_ADMIN_URL}store/heroslide/',
-                    },
-                ],
-            },
-            {
-                'title': 'الحسابات',
-                'icon': 'people',
-                'items': [
-                    {
-                        'title': 'المستخدمين',
-                        'icon': 'person',
-                        'link': f'{MOHAGER_ADMIN_URL}accounts/customuser/',
                     },
                 ],
             },

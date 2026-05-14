@@ -18,6 +18,8 @@ class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
     variants = ProductVariantSerializer(many=True, read_only=True)
     category_name = serializers.CharField(source='category.name_en', read_only=True)
+    has_discount = serializers.BooleanField(read_only=True)
+    discount_percent = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Product
@@ -28,6 +30,9 @@ class ProductSerializer(serializers.ModelSerializer):
             'description_en',
             'description_ar',
             'base_price',
+            'compare_at_price',
+            'has_discount',
+            'discount_percent',
             'color_en',
             'color_ar',
             'color_code',

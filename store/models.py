@@ -59,8 +59,8 @@ class StoreSetting(models.Model):
 
     class Meta:
         db_table = 'store_storesetting'
-        verbose_name = 'إعداد المتجر'
-        verbose_name_plural = 'إعدادات المتجر'
+        verbose_name = 'Shipping rate'
+        verbose_name_plural = 'Shipping rates'
 
     def __str__(self):
-        return 'إعدادات المتجر'
+        return f'Shipping rate: {self.shipping_cost} EGP'

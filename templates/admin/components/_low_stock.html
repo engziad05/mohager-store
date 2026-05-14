@@ -1,0 +1,32 @@
+<section class="mohager-panel">
+    <div class="mohager-panel-header">
+        <div>
+            <p class="mohager-eyebrow">Inventory</p>
+            <h2>Low stock</h2>
+        </div>
+        <a href="{% url 'mohager_admin:products_product_changelist' %}" class="mohager-link">Catalog</a>
+    </div>
+
+    {% if low_stock_products %}
+        <div class="mohager-list">
+            {% for product in low_stock_products %}
+                <a href="{% url 'mohager_admin:products_product_change' product.id %}" class="mohager-list-item">
+                    <span class="mohager-list-thumb">
+                        <span class="material-symbols-outlined" aria-hidden="true">inventory_2</span>
+                    </span>
+                    <span>
+                        <strong>{{ product.name_en }}</strong>
+                        <small>{{ product.category.name_en|default:"Uncategorized" }}</small>
+                    </span>
+                    <em>{{ product.lowest_stock|default:"0" }}</em>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="mohager-empty-state mohager-empty-state-compact">
+            <span class="material-symbols-outlined" aria-hidden="true">inventory</span>
+            <strong>Stock looks healthy</strong>
+            <p>No active products are below the low-stock threshold.</p>
+        </div>
+    {% endif %}
+</section>

@@ -1,0 +1,27 @@
+<section class="mohager-panel mohager-chart-panel">
+    <div class="mohager-panel-header">
+        <div>
+            <p class="mohager-eyebrow">Real-time analytics</p>
+            <h2>Revenue trend</h2>
+        </div>
+        <span class="mohager-muted">Last 14 days</span>
+    </div>
+
+    {% if total_orders %}
+        <div class="mohager-chart" aria-label="Revenue over the last 14 days">
+            {% for point in revenue_chart %}
+                <div class="mohager-chart-bar-wrap" title="{{ point.label }} - {{ point.revenue|floatformat:0 }} EGP">
+                    <span class="mohager-chart-value">{{ point.orders }}</span>
+                    <span class="mohager-chart-bar" style="height: {{ point.height }}%;"></span>
+                    <small>{{ point.date|date:"d" }}</small>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="mohager-empty-state">
+            <span class="material-symbols-outlined" aria-hidden="true">monitoring</span>
+            <strong>No revenue data yet</strong>
+            <p>Orders will appear here once customers start checking out.</p>
+        </div>
+    {% endif %}
+</section>

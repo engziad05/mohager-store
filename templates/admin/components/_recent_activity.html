@@ -1,0 +1,39 @@
+<section class="mohager-panel">
+    <div class="mohager-panel-header">
+        <div>
+            <p class="mohager-eyebrow">Audit trail</p>
+            <h2>Recent activity</h2>
+        </div>
+        <span class="mohager-muted">Custom activity feed</span>
+    </div>
+
+    {% if recent_activity %}
+        <div class="mohager-activity-feed">
+            {% for entry in recent_activity %}
+                <article class="mohager-activity-item">
+                    <span class="mohager-activity-icon">
+                        {% if entry.is_addition %}
+                            <span class="material-symbols-outlined" aria-hidden="true">add_circle</span>
+                        {% elif entry.is_change %}
+                            <span class="material-symbols-outlined" aria-hidden="true">edit_square</span>
+                        {% elif entry.is_deletion %}
+                            <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                        {% else %}
+                            <span class="material-symbols-outlined" aria-hidden="true">history</span>
+                        {% endif %}
+                    </span>
+                    <span>
+                        <strong>{{ entry.object_repr }}</strong>
+                        <small>{{ entry.user.get_username }} updated {{ entry.content_type.name|default:"an item" }} - {{ entry.action_time|timesince }} ago</small>
+                    </span>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="mohager-empty-state">
+            <span class="material-symbols-outlined" aria-hidden="true">history</span>
+            <strong>No admin activity yet</strong>
+            <p>Creates, edits, and deletes will show here as a clean operational feed.</p>
+        </div>
+    {% endif %}
+</section>

@@ -6,10 +6,9 @@ from .models import CustomUser
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
 
-    # الحقول الجديدة بتاعتنا
     fieldsets = UserAdmin.fieldsets + (
-        ('معلومات إضافية (مُهاجر)', {'fields': ('phone', 'preferred_lang')}),
+        ('Mohager profile', {'fields': ('phone', 'preferred_lang')}),
     )
-
-    # الأعمدة اللي هتظهر في الجدول من بره
-    list_display = ['username', 'email', 'phone', 'preferred_lang', 'is_staff']
+    list_display = ['username', 'email', 'phone', 'preferred_lang', 'is_staff', 'is_active']
+    list_filter = ['is_staff', 'is_active', 'preferred_lang']
+    search_fields = ['username', 'email', 'phone']

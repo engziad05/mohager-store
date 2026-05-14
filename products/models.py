@@ -39,6 +39,14 @@ class Product(models.Model):
         default=0,
         verbose_name='السعر الأساسي',
     )
+    compare_at_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        verbose_name='Original price before discount',
+        help_text='Optional. Example: set 800 here and 580 as the base price.',
+    )
     image = models.ImageField(
         upload_to='products/',
         verbose_name='صورة المنتج',
@@ -53,6 +61,17 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name_en
+
+    @property
+    def has_discount(self):
+        return bool(self.compare_at_price and self.compare_at_price > self.base_price)
+
+    @property
+    def discount_percent(self):
+        if not self.has_discount:
+            return 0
+        discount = self.compare_at_price - self.base_price
+        return round((discount / self.compare_at_price) * 100)
 
 
 class ProductImage(models.Model):

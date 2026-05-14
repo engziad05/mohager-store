@@ -180,6 +180,9 @@
     .s-item-details h4 { color: var(--cream); margin: 0 0 5px 0; font-family: var(--font-heading); font-size: 1.1rem; }
     .s-item-details p { color: #888; margin: 0 0 3px 0; font-family: var(--font-body); font-size: 0.85rem; }
     .s-item-price { color: var(--gold); font-family: var(--font-en); font-weight: bold; font-size: 1.1rem; }
+    .s-item-price .old-price { color: rgba(244,236,216,.45); display: block; font-size: .82rem; text-decoration: line-through; }
+    .s-item-price .discount-badge { background: linear-gradient(135deg, var(--gold), #8b5cf6); border-radius: 999px; color: #111; display: inline-block; font-size: .7rem; margin-bottom: 4px; padding: 2px 7px; }
+    .s-item-price .current-price { display: block; }
 
     .summary-row {
         display: flex;
@@ -350,7 +353,11 @@
                                 <p>الكمية: {{ item.quantity }}</p>
                             </div>
                             <div class="s-item-price">
-                                EGP {{ item.total_price }}
+                                {% if item.product.has_discount %}
+                                    <span class="discount-badge">-{{ item.product.discount_percent }}%</span>
+                                    <span class="old-price">EGP {{ item.product.compare_at_price }} each</span>
+                                {% endif %}
+                                <span class="current-price">EGP {{ item.total_price }}</span>
                             </div>
                         </div>
                         {% empty %}

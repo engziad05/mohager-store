@@ -1,0 +1,20 @@
+<section class="mohager-panel">
+    <div class="mohager-panel-header">
+        <div>
+            <p class="mohager-eyebrow">Shortcuts</p>
+            <h2>Quick actions</h2>
+        </div>
+    </div>
+    <div class="mohager-quick-grid">
+        {% for action in quick_actions %}
+            <a href="{{ action.url }}" class="mohager-quick-action">
+                <span class="material-symbols-outlined" aria-hidden="true">{{ action.icon }}</span>
+                <strong>{{ action.label }}</strong>
+            </a>
+        {% endfor %}
+        <a href="{{ storefront_url }}" class="mohager-quick-action">
+            <span class="material-symbols-outlined" aria-hidden="true">storefront</span>
+            <strong>View site</strong>
+        </a>
+    </div>
+</section>

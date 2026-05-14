@@ -1,0 +1,91 @@
+:root {
+    --mh-color-bg: #070b12;
+    --mh-color-bg-soft: #0d1420;
+    --mh-color-surface: rgba(16, 24, 38, 0.82);
+    --mh-color-surface-strong: rgba(22, 32, 50, 0.95);
+    --mh-color-line: rgba(148, 163, 184, 0.14);
+    --mh-color-line-strong: rgba(148, 163, 184, 0.24);
+    --mh-color-text: #edf2ff;
+    --mh-color-muted: #91a0b8;
+    --mh-color-faint: #64748b;
+    --mh-color-primary: #8b5cf6;
+    --mh-color-primary-strong: #a855f7;
+    --mh-color-green: #22c55e;
+    --mh-color-blue: #38bdf8;
+    --mh-color-amber: #f59e0b;
+    --mh-color-pink: #d946ef;
+    --mh-color-red: #fb7185;
+    --mh-space-1: 0.25rem;
+    --mh-space-2: 0.5rem;
+    --mh-space-3: 0.75rem;
+    --mh-space-4: 1rem;
+    --mh-space-5: 1.25rem;
+    --mh-space-6: 1.5rem;
+    --mh-space-8: 2rem;
+    --mh-radius-sm: 0.5rem;
+    --mh-radius-md: 0.75rem;
+    --mh-radius-lg: 1rem;
+    --mh-radius-xl: 1.25rem;
+    --mh-shadow-soft: 0 16px 44px rgba(0, 0, 0, 0.28);
+    --mh-shadow-glow: 0 18px 60px rgba(139, 92, 246, 0.16);
+    --mh-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --mh-text-xs: 0.75rem;
+    --mh-text-sm: 0.875rem;
+    --mh-text-md: 1rem;
+    --mh-text-lg: 1.125rem;
+    --mh-text-xl: 1.35rem;
+    --mh-text-2xl: 1.8rem;
+}
+
+html,
+body {
+    background:
+        radial-gradient(circle at 18% 0%, rgba(139, 92, 246, 0.12), transparent 28rem),
+        radial-gradient(circle at 92% 12%, rgba(56, 189, 248, 0.08), transparent 26rem),
+        var(--mh-color-bg) !important;
+    color: var(--mh-color-text);
+    font-family: var(--mh-font-sans);
+}
+
+#nav-sidebar,
+[data-simplebar],
+.sidebar {
+    scrollbar-color: rgba(148, 163, 184, 0.32) transparent;
+    scroll-behavior: smooth;
+}
+
+#nav-sidebar {
+    position: sticky;
+    top: 0;
+    max-height: 100vh;
+}
+
+.module table,
+.results,
+#result_list {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+#result_list thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: rgba(13, 20, 32, 0.96) !important;
+    backdrop-filter: blur(14px);
+}
+
+#result_list tbody tr {
+    transition: background-color 160ms ease, transform 160ms ease;
+}
+
+#result_list tbody tr:hover {
+    background: rgba(139, 92, 246, 0.08) !important;
+}
+
+.paginator,
+.object-tools a,
+.submit-row input,
+.submit-row a {
+    border-radius: var(--mh-radius-md) !important;
+}
