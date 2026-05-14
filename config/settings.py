@@ -25,6 +25,9 @@ CSRF_TRUSTED_ORIGINS = ['https://mohager-store-production.up.railway.app']
 # Application definition
 INSTALLED_APPS = [
     'unfold',
+    'unfold.contrib.filters',   # Advanced filters
+    'unfold.contrib.forms',     # Custom forms
+    'unfold.contrib.inlines',   # Custom inlines
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -59,6 +62,117 @@ INSTALLED_APPS = [
     'cloudinary',
     'anymail',
 ]
+
+# ==========================================
+# إعدادات django-unfold (لوحة التحكم الحديثة)
+# ==========================================
+UNFOLD = {
+    'SITE_TITLE': 'مُهاجر ستور',
+    'SITE_HEADER': 'مُهاجر ستور — لوحة التحكم',
+    'SITE_SYMBOL': 'shopping_bag',       # Material symbol name
+    'SITE_FAVICONS': [],
+    'SHOW_HISTORY': True,
+    'SHOW_VIEW_ON_SITE': True,
+    'ENVIRONMENT': 'config.settings.environment_callback',
+    'COLORS': {
+        'primary': {
+            '50': '250 245 255',
+            '100': '243 232 255',
+            '200': '233 213 255',
+            '300': '216 180 254',
+            '400': '192 132 252',
+            '500': '168 85 247',
+            '600': '147 51 234',
+            '700': '126 34 206',
+            '800': '107 33 168',
+            '900': '88 28 135',
+            '950': '59 7 100',
+        },
+    },
+    'SIDEBAR': {
+        'navigation': [
+            {
+                'title': 'الرئيسية',
+                'icon': 'dashboard',
+                'items': [
+                    {
+                        'title': 'لوحة التحكم',
+                        'icon': 'dashboard',
+                        'link': '/admin/',
+                    },
+                ],
+            },
+            {
+                'title': 'المتجر',
+                'icon': 'store',
+                'items': [
+                    {
+                        'title': 'المنتجات',
+                        'icon': 'inventory_2',
+                        'link': '/admin/store/product/',
+                    },
+                    {
+                        'title': 'الأقسام',
+                        'icon': 'category',
+                        'link': '/admin/store/category/',
+                    },
+                    {
+                        'title': 'إعدادات المتجر',
+                        'icon': 'settings',
+                        'link': '/admin/store/storesetting/',
+                    },
+                ],
+            },
+            {
+                'title': 'الطلبات',
+                'icon': 'receipt_long',
+                'items': [
+                    {
+                        'title': 'الطلبات',
+                        'icon': 'shopping_cart',
+                        'link': '/admin/store/order/',
+                    },
+                    {
+                        'title': 'السلال',
+                        'icon': 'add_shopping_cart',
+                        'link': '/admin/store/cart/',
+                    },
+                ],
+            },
+            {
+                'title': 'المحتوى',
+                'icon': 'web',
+                'items': [
+                    {
+                        'title': 'البانرات',
+                        'icon': 'view_carousel',
+                        'link': '/admin/store/heroslide/',
+                    },
+                ],
+            },
+            {
+                'title': 'الحسابات',
+                'icon': 'people',
+                'items': [
+                    {
+                        'title': 'المستخدمين',
+                        'icon': 'person',
+                        'link': '/admin/accounts/customuser/',
+                    },
+                ],
+            },
+        ],
+    },
+}
+
+
+def environment_callback(request):
+    """Show environment badge in the admin header."""
+    from django.conf import settings
+    if settings.DEBUG:
+        return ['Development', 'warning']
+    return ['Production', 'success']
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
