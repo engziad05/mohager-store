@@ -17,6 +17,7 @@ from orders.models import Order
 from orders.services.checkout import complete_storefront_checkout
 from cart.models import Cart, CartItem
 from products.models import Category, Product, ProductVariant
+from products.services import assert_sufficient_variant_stock
 from .forms import SavedAddressForm
 from .models import HeroSlide, SavedAddress, StoreSetting
 
@@ -205,7 +206,9 @@ def update_quantity(request, item_id, action):
     cart_item = get_object_or_404(CartItem, id=item_id, cart_id=cart_id)
 
     if action == 'increase':
-        if cart_item.quantity + 1 > cart_item.variant.stock:
+        try:
+            assert_sufficient_variant_stock(cart_item.variant, cart_item.quantity + 1)
+        except ValueError:
             messages.error(request, f'عفواً، لا يوجد سوى {cart_item.variant.stock} قطع متاحة في المخزون.')
         else:
             cart_item.quantity += 1
@@ -292,7 +295,9 @@ def add_to_cart(request, product_id):
         product = get_object_or_404(Product, id=product_id)
         variant = get_object_or_404(ProductVariant, id=variant_id)
 
-        if variant.stock <= 0:
+        try:
+            assert_sufficient_variant_stock(variant, 1)
+        except ValueError:
             messages.error(request, 'عفواً، هذا المقاس نفد من المخزون حالياً!')
             return redirect('product_detail', product_id=product.id)
 
@@ -313,7 +318,9 @@ def add_to_cart(request, product_id):
         )
 
         if not created:
-            if cart_item.quantity + 1 > variant.stock:
+            try:
+                assert_sufficient_variant_stock(variant, cart_item.quantity + 1)
+            except ValueError:
                 messages.error(request, f'عفواً، أقصى كمية متاحة من هذا المقاس هي {variant.stock} قطع!')
                 return redirect('product_detail', product_id=product.id)
             cart_item.quantity += 1

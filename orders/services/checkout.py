@@ -25,10 +25,6 @@ class OrderService:
         if not cart.items.exists():
             raise ValueError('Cart is empty')
 
-        for cart_item in cart.items.all():
-            if cart_item.variant and cart_item.quantity > cart_item.variant.stock:
-                raise ValueError(f'Insufficient stock for {cart_item.product.name_en}')
-
         consume_stock_for_cart_items(cart.items.all())
 
         order = Order.objects.create(
