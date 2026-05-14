@@ -23,7 +23,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from common.admin import mohager_admin
 
 urlpatterns = [
-    path('mohajer-secret-boss-2026/', mohager_admin.urls),
+    path(f'{settings.MOHAGER_ADMIN_PATH}/', mohager_admin.urls),
 
     # API documentation
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

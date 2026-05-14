@@ -12,6 +12,10 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Custom admin mount (must match `path(..., mohager_admin.urls)` in config/urls.py)
+MOHAGER_ADMIN_PATH = config('MOHAGER_ADMIN_PATH', default='mohajer-secret-boss-2026').strip('/')
+MOHAGER_ADMIN_URL = f'/{MOHAGER_ADMIN_PATH}/'
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
 
@@ -98,7 +102,7 @@ UNFOLD = {
                     {
                         'title': 'لوحة التحكم',
                         'icon': 'dashboard',
-                        'link': '/admin/',
+                        'link': MOHAGER_ADMIN_URL,
                     },
                 ],
             },
@@ -109,17 +113,17 @@ UNFOLD = {
                     {
                         'title': 'المنتجات',
                         'icon': 'inventory_2',
-                        'link': '/admin/store/product/',
+                        'link': f'{MOHAGER_ADMIN_URL}store/product/',
                     },
                     {
                         'title': 'الأقسام',
                         'icon': 'category',
-                        'link': '/admin/store/category/',
+                        'link': f'{MOHAGER_ADMIN_URL}store/category/',
                     },
                     {
                         'title': 'إعدادات المتجر',
                         'icon': 'settings',
-                        'link': '/admin/store/storesetting/',
+                        'link': f'{MOHAGER_ADMIN_URL}store/storesetting/',
                     },
                 ],
             },
@@ -130,12 +134,12 @@ UNFOLD = {
                     {
                         'title': 'الطلبات',
                         'icon': 'shopping_cart',
-                        'link': '/admin/store/order/',
+                        'link': f'{MOHAGER_ADMIN_URL}store/order/',
                     },
                     {
                         'title': 'السلال',
                         'icon': 'add_shopping_cart',
-                        'link': '/admin/store/cart/',
+                        'link': f'{MOHAGER_ADMIN_URL}store/cart/',
                     },
                 ],
             },
@@ -146,7 +150,7 @@ UNFOLD = {
                     {
                         'title': 'البانرات',
                         'icon': 'view_carousel',
-                        'link': '/admin/store/heroslide/',
+                        'link': f'{MOHAGER_ADMIN_URL}store/heroslide/',
                     },
                 ],
             },
@@ -157,7 +161,7 @@ UNFOLD = {
                     {
                         'title': 'المستخدمين',
                         'icon': 'person',
-                        'link': '/admin/accounts/customuser/',
+                        'link': f'{MOHAGER_ADMIN_URL}accounts/customuser/',
                     },
                 ],
             },
