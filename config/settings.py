@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'django_filters',
 
-    # Modular apps
-    'common',
+    # Modular apps (explicit AppConfig so CommonConfig.ready() runs)
+    'common.apps.CommonConfig',
     'products',
     'orders',
     'cart',

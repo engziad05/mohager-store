@@ -1,6 +1,5 @@
 from unfold.admin import ModelAdmin, TabularInline
 
-from common.admin import mohager_admin
 from .models import (
     Product, Category, ProductVariant, HeroSlide,
     ProductImage, Order, OrderItem, Cart, CartItem,
@@ -25,7 +24,6 @@ class ProductVariantInline(TabularInline):
 
 
 # تظبيط عرض المنتج الأساسي
-@mohager_admin.register(Product)
 class ProductAdmin(ModelAdmin):
     list_display = ['name_ar', 'category', 'base_price', 'is_active']
     list_filter = ['category', 'is_active']
@@ -36,7 +34,6 @@ class ProductAdmin(ModelAdmin):
 # ==========================================
 # 2. الأقسام (Category)
 # ==========================================
-@mohager_admin.register(Category)
 class CategoryAdmin(ModelAdmin):
     list_display = ['name_ar', 'name_en', 'is_active']
     prepopulated_fields = {'slug': ('name_en',)}
@@ -54,7 +51,6 @@ class OrderItemInline(TabularInline):
 
 
 # عرض الطلبات الأساسية (Admin)
-@mohager_admin.register(Order)
 class OrderAdmin(ModelAdmin):
     list_display = ['id', 'full_name', 'phone', 'status', 'total_price', 'created_at']
     list_filter = ['status', 'created_at', 'region']
@@ -68,7 +64,6 @@ class OrderAdmin(ModelAdmin):
 # ==========================================
 
 # البانر الرئيسي (Slider)
-@mohager_admin.register(HeroSlide)
 class HeroSlideAdmin(ModelAdmin):
     list_display = ['title_ar', 'order', 'is_active']
     list_editable = ['order', 'is_active']
@@ -82,13 +77,11 @@ class CartItemInline(TabularInline):
 
 
 # عرض السلال النشطة
-@mohager_admin.register(Cart)
 class CartAdmin(ModelAdmin):
     list_display = ['id', 'created_at']
     inlines = [CartItemInline]
 
 
 # إعدادات المتجر
-@mohager_admin.register(StoreSetting)
 class StoreSettingAdmin(ModelAdmin):
     list_display = ['__str__']

@@ -1,10 +1,8 @@
 from django.contrib.auth.admin import UserAdmin
 
-from common.admin import mohager_admin
 from .models import CustomUser
 
 
-@mohager_admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
 
