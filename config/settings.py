@@ -179,7 +179,7 @@ AUTHENTICATION_BACKENDS = [
 
 ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
-ACCOUNT_EMAIL_VERIFICATION = 'none' 
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory' 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_USER_DISPLAY = 'store.forms.custom_user_display'
@@ -207,9 +207,21 @@ CACHES = {
         'LOCATION': REDIS_URL,
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
+            'CONNECTION_POOL_KWARGS': {'max_connections': 50},
+            'SOCKET_CONNECT_TIMEOUT': 5,
+            'SOCKET_TIMEOUT': 5,
+        },
+        'KEY_PREFIX': 'mohager_store',
     }
 }
+
+# Cache timeout settings
+CACHE_TIMEOUT_PRODUCT_LIST = 300  # 5 minutes
+CACHE_TIMEOUT_PRODUCT_DETAIL = 600  # 10 minutes
+CACHE_TIMEOUT_CATEGORY = 600  # 10 minutes
+CACHE_TIMEOUT_CART = 300  # 5 minutes
+CACHE_TIMEOUT_HERO_SLIDES = 600  # 10 minutes
+CACHE_TIMEOUT_STORE_SETTINGS = 3600  # 1 hour
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

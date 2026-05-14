@@ -6,11 +6,14 @@ import urllib.error
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django_ratelimit.decorators import ratelimit
+from django.views.decorators.cache import cache_page
 
+from common.cache import get_or_cache
 from .forms import SavedAddressForm
 from .models import (
     Cart, CartItem, Category, HeroSlide,
@@ -23,8 +26,21 @@ from .models import (
 # الصفحة الرئيسية
 # ============================================================
 def index(request):
-    products = Product.objects.filter(is_active=True)[:8]
-    slides = HeroSlide.objects.filter(is_active=True).order_by('order')
+    # Cache featured products and hero slides — invalidated by signals
+    products = get_or_cache(
+        'index:products',
+        lambda: list(
+            Product.objects.filter(is_active=True)
+            .select_related('category')
+            .prefetch_related('variants', 'images')[:8]
+        ),
+        timeout=getattr(settings, 'CACHE_TIMEOUT_PRODUCT_LIST', 300),
+    )
+    slides = get_or_cache(
+        'index:slides',
+        lambda: list(HeroSlide.objects.filter(is_active=True).order_by('order')),
+        timeout=getattr(settings, 'CACHE_TIMEOUT_HERO_SLIDES', 600),
+    )
 
     cart_id = request.session.get('cart_id')
     cart_count = 0
@@ -52,21 +68,36 @@ def index(request):
 # صفحة المتجر
 # ============================================================
 def shop(request):
-    products = Product.objects.filter(is_active=True)
-    categories = Category.objects.filter(is_active=True)
+    query = request.GET.get('q', '')
+    category_slug = request.GET.get('category', '')
 
-    query = request.GET.get('q')
-    category_slug = request.GET.get('category')
+    # Build a filter-aware cache key so different searches get separate entries
+    cache_key = f"shop:products:{category_slug}:{query}"
 
-    if category_slug:
-        products = products.filter(category__slug=category_slug)
+    def _fetch_products():
+        qs = Product.objects.filter(is_active=True).select_related('category').prefetch_related('variants', 'images')
+        if category_slug:
+            qs = qs.filter(category__slug=category_slug)
+        if query:
+            qs = qs.filter(
+                Q(name_ar__icontains=query) |
+                Q(name_en__icontains=query) |
+                Q(description_ar__icontains=query)
+            )
+        return list(qs)
 
-    if query:
-        products = products.filter(
-            Q(name_ar__icontains=query) |
-            Q(name_en__icontains=query) |
-            Q(description_ar__icontains=query)
-        )
+    products = get_or_cache(
+        cache_key,
+        _fetch_products,
+        timeout=getattr(settings, 'CACHE_TIMEOUT_PRODUCT_LIST', 300),
+    )
+
+    # Cache categories list — invalidated by category signals
+    categories = get_or_cache(
+        'shop:categories',
+        lambda: list(Category.objects.filter(is_active=True)),
+        timeout=getattr(settings, 'CACHE_TIMEOUT_CATEGORY', 600),
+    )
 
     cart_id = request.session.get('cart_id')
     cart_count = 0
@@ -87,9 +118,26 @@ def shop(request):
 # صفحة تفاصيل المنتج
 # ============================================================
 def product_detail(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    variants = ProductVariant.objects.filter(product=product)
-    extra_images = ProductImage.objects.filter(product=product)
+    # Cache product detail with variants and images — invalidated by product/variant signals
+    cache_key = f"product_detail:{product_id}"
+
+    def _fetch_product():
+        product = get_object_or_404(
+            Product.objects.select_related('category').prefetch_related('variants', 'images'),
+            id=product_id,
+        )
+        # Extract prefetched data while it's hot
+        return {
+            'product': product,
+            'variants': list(product.variants.all()),
+            'extra_images': list(product.images.all()),
+        }
+
+    cached = get_or_cache(
+        cache_key,
+        _fetch_product,
+        timeout=getattr(settings, 'CACHE_TIMEOUT_PRODUCT_DETAIL', 600),
+    )
 
     cart_id = request.session.get('cart_id')
     cart_count = 0
@@ -99,9 +147,9 @@ def product_detail(request, product_id):
             cart_count = sum(item.quantity for item in CartItem.objects.filter(cart=cart))
 
     context = {
-        'product': product,
-        'variants': variants,
-        'extra_images': extra_images,
+        'product': cached['product'],
+        'variants': cached['variants'],
+        'extra_images': cached['extra_images'],
         'cart_count': cart_count,
     }
     return render(request, 'store/product_detail.html', context)
