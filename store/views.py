@@ -7,19 +7,18 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
-from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django_ratelimit.decorators import ratelimit
 from django.views.decorators.cache import cache_page
 
 from common.cache import get_or_cache
+from orders.models import Order
+from orders.services.checkout import complete_storefront_checkout
+from cart.models import Cart, CartItem
+from products.models import Category, Product, ProductVariant
 from .forms import SavedAddressForm
-from .models import (
-    Cart, CartItem, Category, HeroSlide,
-    Order, OrderItem, Product, ProductImage,
-    ProductVariant, SavedAddress, StoreSetting,
-)
+from .models import HeroSlide, SavedAddress, StoreSetting
 
 
 # ============================================================
@@ -407,60 +406,17 @@ def checkout(request):
 
     if request.method == 'POST':
         try:
-            with transaction.atomic():
-                # 1. خصم الكمية من المخزن
-                for item in cart_items:
-                    variant = ProductVariant.objects.select_for_update().get(id=item.variant.id)
-                    if variant.stock < item.quantity:
-                        raise ValueError(f"عفواً، الكمية المتاحة من {item.product.name_ar} مقاس {variant.size} لم تعد تكفي.")
-                    variant.stock -= item.quantity
-                    variant.save()
-
-                # 2. إنشاء الطلب
-                order = Order.objects.create(
-                    user=request.user if request.user.is_authenticated else None,
-                    full_name=request.POST.get('full_name'),
-                    phone=request.POST.get('phone'),
-                    email=request.POST.get('email'),
-                    address=request.POST.get('address'),
-                    building=request.POST.get('building'),
-                    floor=request.POST.get('floor'),
-                    apartment=request.POST.get('apartment'),
-                    landmark=request.POST.get('landmark'),
-                    region=request.POST.get('region'),
-                    total_price=grand_total,
-                    status='Pending'
-                )
-
-                # 3. حفظ العنوان للمرات القادمة
-                if request.user.is_authenticated:
-                    address_record, _ = SavedAddress.objects.get_or_create(user=request.user)
-                    address_record.phone = request.POST.get('phone')
-                    address_record.region = request.POST.get('region')
-                    address_record.address = request.POST.get('address')
-                    address_record.building = request.POST.get('building')
-                    address_record.floor = request.POST.get('floor')
-                    address_record.apartment = request.POST.get('apartment')
-                    address_record.landmark = request.POST.get('landmark')
-                    address_record.save()
-
-                # 5. إضافة المنتجات للطلب
-                for item in cart_items:
-                    OrderItem.objects.create(
-                        order=order,
-                        product=item.product,
-                        variant=item.variant,
-                        quantity=item.quantity,
-                        price=item.product.base_price,
-                    )
-
-                # 6. مسح السلة والتحويل
-                # (البريد الإلكتروني سيُرسل تلقائياً عند حفظ الطلب بفضل Django Signal)
-                cart.delete()
-                request.session.pop('cart_id', None)
-                request.session['last_order_tracking'] = order.tracking_no
-                request.session['last_order_id'] = order.id
-                return redirect('order_success')
+            order = complete_storefront_checkout(
+                cart=cart,
+                cart_items=cart_items,
+                user=request.user,
+                post_data=request.POST,
+                grand_total=grand_total,
+            )
+            request.session.pop('cart_id', None)
+            request.session['last_order_tracking'] = order.tracking_no
+            request.session['last_order_id'] = order.id
+            return redirect('order_success')
 
         except ValueError as e:
             messages.error(request, str(e))

@@ -10,16 +10,15 @@ class CommonConfig(AppConfig):
 
         from accounts.admin import CustomUserAdmin
         from accounts.models import CustomUser
+        from cart.admin import CartAdmin
+        from cart.models import Cart
         from common.admin import mohager_admin
-        from store.admin import (
-            CartAdmin,
-            CategoryAdmin,
-            HeroSlideAdmin,
-            OrderAdmin,
-            ProductAdmin,
-            StoreSettingAdmin,
-        )
-        from store.models import Cart, Category, HeroSlide, Order, Product, StoreSetting
+        from orders.admin import OrderAdmin
+        from orders.models import Order
+        from products.admin import CategoryAdmin, ProductAdmin
+        from products.models import Category, Product
+        from store.admin import HeroSlideAdmin, StoreSettingAdmin
+        from store.models import HeroSlide, StoreSetting
 
         for model, admin_class in (
             (CustomUser, CustomUserAdmin),

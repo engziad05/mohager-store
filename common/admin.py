@@ -13,7 +13,8 @@ class MohagerAdminSite(UnfoldAdminSite):
     def index(self, request, extra_context=None):
         """Override index to inject dashboard metrics."""
         # Deferred import avoids cycles when admin modules load `mohager_admin`.
-        from store.models import Order, Product
+        from orders.models import Order
+        from products.models import Product
 
         extra_context = extra_context or {}
 

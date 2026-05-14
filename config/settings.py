@@ -113,12 +113,12 @@ UNFOLD = {
                     {
                         'title': 'المنتجات',
                         'icon': 'inventory_2',
-                        'link': f'{MOHAGER_ADMIN_URL}store/product/',
+                        'link': f'{MOHAGER_ADMIN_URL}products/product/',
                     },
                     {
                         'title': 'الأقسام',
                         'icon': 'category',
-                        'link': f'{MOHAGER_ADMIN_URL}store/category/',
+                        'link': f'{MOHAGER_ADMIN_URL}products/category/',
                     },
                     {
                         'title': 'إعدادات المتجر',
@@ -134,12 +134,12 @@ UNFOLD = {
                     {
                         'title': 'الطلبات',
                         'icon': 'shopping_cart',
-                        'link': f'{MOHAGER_ADMIN_URL}store/order/',
+                        'link': f'{MOHAGER_ADMIN_URL}orders/order/',
                     },
                     {
                         'title': 'السلال',
                         'icon': 'add_shopping_cart',
-                        'link': f'{MOHAGER_ADMIN_URL}store/cart/',
+                        'link': f'{MOHAGER_ADMIN_URL}cart/cart/',
                     },
                 ],
             },

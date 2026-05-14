@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from store.models import Order
+from .models import Order
 from .serializers import OrderSerializer
 from common.permissions import IsOwnerOrAdmin
 

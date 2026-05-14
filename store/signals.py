@@ -8,10 +8,9 @@ from common.cache import (
     invalidate_hero_cache,
     invalidate_store_settings_cache,
 )
-from .models import (
-    Cart, CartItem, Category, HeroSlide,
-    Product, ProductVariant, StoreSetting,
-)
+from cart.models import Cart, CartItem
+from products.models import Category, Product, ProductVariant
+from .models import HeroSlide, StoreSetting
 
 
 # ============================================================

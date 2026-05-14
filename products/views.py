@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 
-from store.models import Product, Category
+from .models import Category, Product
 from .serializers import ProductSerializer, CategorySerializer
 from common.cache import CachedViewSetMixin, get_or_cache
 from common.permissions import IsAdminOrReadOnly

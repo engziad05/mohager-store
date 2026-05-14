@@ -2,7 +2,10 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from store.models import Cart, CartItem, ProductVariant
+from products.models import ProductVariant
+from products.services import assert_sufficient_variant_stock
+
+from .models import Cart, CartItem
 from .serializers import CartSerializer, CartItemSerializer
 
 
@@ -23,8 +26,10 @@ class CartViewSet(viewsets.ViewSet):
         if not variant:
             return Response({'detail': 'Invalid variant.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        if variant.stock <= 0 or quantity > variant.stock:
-            return Response({'detail': 'Insufficient stock.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            assert_sufficient_variant_stock(variant, quantity)
+        except ValueError as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
 
         cart, _ = Cart.objects.get_or_create(user=request.user)
         cart_item, created = CartItem.objects.get_or_create(cart=cart, variant=variant, product=variant.product)
@@ -46,8 +51,10 @@ class CartViewSet(viewsets.ViewSet):
             cart_item.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-        if quantity > cart_item.variant.stock:
-            return Response({'detail': 'Not enough stock.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            assert_sufficient_variant_stock(cart_item.variant, quantity)
+        except ValueError as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
 
         cart_item.quantity = quantity
         cart_item.save()
