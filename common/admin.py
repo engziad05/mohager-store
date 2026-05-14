@@ -1,12 +1,10 @@
-from django.contrib.admin import AdminSite
-from django.db.models import Sum, Count
+from django.contrib.auth import get_user_model
+from django.db.models import Count, Sum
 from django.utils import timezone
-
-from store.models import Order, Product
-from accounts.models import CustomUser
+from unfold.sites import UnfoldAdminSite
 
 
-class MohagerAdminSite(AdminSite):
+class MohagerAdminSite(UnfoldAdminSite):
     """Custom admin site with dashboard metrics for Mohager Store."""
     site_header = 'مُهاجر ستور — لوحة التحكم'
     site_title = 'مُهاجر ستور'
@@ -14,6 +12,9 @@ class MohagerAdminSite(AdminSite):
 
     def index(self, request, extra_context=None):
         """Override index to inject dashboard metrics."""
+        # Deferred import avoids cycles when admin modules load `mohager_admin`.
+        from store.models import Order, Product
+
         extra_context = extra_context or {}
 
         today = timezone.now().date()
@@ -34,7 +35,7 @@ class MohagerAdminSite(AdminSite):
         )['total'] or 0
 
         active_products = Product.objects.filter(is_active=True).count()
-        total_customers = CustomUser.objects.count()
+        total_customers = get_user_model().objects.count()
 
         # Orders by status
         orders_by_status = dict(
