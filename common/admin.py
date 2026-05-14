@@ -1,9 +1,8 @@
-from django.db.models import Sum, Count, Q
+from django.contrib.admin import AdminSite
+from django.db.models import Sum, Count
 from django.utils import timezone
 
-from unfold.admin import AdminSite
-
-from store.models import Order, Product, Category, HeroSlide, StoreSetting
+from store.models import Order, Product
 from accounts.models import CustomUser
 
 

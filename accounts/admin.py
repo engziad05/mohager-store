@@ -1,15 +1,15 @@
-from unfold.admin import UserAdmin as UnfoldUserAdmin
+from django.contrib.auth.admin import UserAdmin
 
 from common.admin import mohager_admin
 from .models import CustomUser
 
 
 @mohager_admin.register(CustomUser)
-class CustomUserAdmin(UnfoldUserAdmin):
+class CustomUserAdmin(UserAdmin):
     model = CustomUser
 
     # الحقول الجديدة بتاعتنا
-    fieldsets = UnfoldUserAdmin.fieldsets + (
+    fieldsets = UserAdmin.fieldsets + (
         ('معلومات إضافية (مُهاجر)', {'fields': ('phone', 'preferred_lang')}),
     )
 
