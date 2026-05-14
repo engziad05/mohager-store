@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'accounts',
     'store',
+    'notifications.apps.NotificationsConfig',
     'cloudinary_storage',
     'cloudinary',
     'anymail',
@@ -301,6 +302,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_USER_DISPLAY = 'store.forms.custom_user_display'
+ACCOUNT_ADAPTER = 'notifications.adapters.AsyncAccountAdapter'
 ACCOUNT_FORMS = {
     'signup': 'store.forms.CustomSignupForm',
 }
@@ -318,6 +320,16 @@ DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@mohager-store
 
 # Cache Configuration
 REDIS_URL = config('REDIS_URL', default='redis://127.0.0.1:6379/0')
+
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_IGNORE_RESULT = True
+CELERY_TASK_DEFAULT_QUEUE = 'default'
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 CACHES = {
     'default': {

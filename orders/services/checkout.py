@@ -13,7 +13,7 @@ from products.services.inventory import (
     consume_stock_for_cart_items,
     restore_stock_for_order_items,
 )
-from notifications.tasks import send_cancellation_email, send_order_confirmation_email
+from notifications.tasks import send_cancellation_email
 
 
 class OrderService:
@@ -57,7 +57,6 @@ class OrderService:
 
         cart.items.all().delete()
         cache.delete(f'user_cart_{user.id}')
-        send_order_confirmation_email.delay(order.id)
         return order
 
     @staticmethod
