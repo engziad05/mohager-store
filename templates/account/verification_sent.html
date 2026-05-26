@@ -133,53 +133,71 @@
     }
     .secondary-btn:hover { color: var(--gold); border-color: rgba(201, 167, 92, 0.3); }
 
-    .trust-bar {
-        width: 100%;
-        max-width: 800px;
+    /* مميزات المتجر السفلية */
+    .footer-features {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 40px;
         flex-wrap: wrap;
-        margin-top: 40px;
-        padding: 25px 20px;
-        background: rgba(10, 10, 8, 0.5);
-        border-radius: 14px;
-        border: 1px solid rgba(255,255,255,0.06);
-    }
-    .trust-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        gap: 60px;
+        padding: 30px 20px;
+        background-color: rgba(10, 10, 8, 0.7);
+        border-top: 1px solid rgba(201, 167, 92, 0.1);
         direction: rtl;
-    }
-    .trust-item i {
-        font-size: 1.3rem;
-        color: var(--gold);
-        opacity: 0.85;
-    }
-    .trust-item .trust-text {
-        display: flex;
-        flex-direction: column;
-    }
-    .trust-item .trust-title {
-        color: rgba(255,255,255,0.85);
-        font-size: 0.9rem;
-        font-weight: 600;
-        font-family: var(--font-heading);
-    }
-    .trust-item .trust-desc {
-        color: rgba(255,255,255,0.4);
-        font-size: 0.75rem;
+        position: relative;
+        z-index: 10;
+        width: 100%;
     }
 
-    @media (max-width: 600px) {
-        .trust-bar {
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .feature-item i {
+        color: var(--gold, #dcb36a);
+        font-size: 1.8rem;
+        opacity: 0.9;
+    }
+
+    .feature-text {
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+    }
+
+    .feature-text h4 {
+        color: rgba(255, 255, 255, 0.95);
+        margin: 0 0 5px 0;
+        font-size: 1.1rem;
+        font-family: var(--font-heading, serif);
+    }
+
+    .feature-text p {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.85rem;
+        margin: 0;
+        font-family: var(--font-body, sans-serif);
+    }
+
+    @media (max-width: 992px) {
+        .footer-features {
             gap: 20px;
+            justify-content: space-around;
         }
-        .trust-item {
-            flex: 0 0 45%;
+        .feature-item {
+            width: 45%;
             justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            gap: 8px;
+        }
+        .feature-text {
+            align-items: center;
+        }
+        .feature-text p {
+            display: none;
         }
     }
 </style>
@@ -214,36 +232,37 @@
             <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
         </a>
     </div>
+</div>
 
-    <div class="trust-bar">
-        <div class="trust-item">
-            <i class="fas fa-lock"></i>
-            <div class="trust-text">
-                <span class="trust-title">تسوق آمن</span>
-                <span class="trust-desc">بياناتك محمية بالكامل</span>
-            </div>
+<div class="footer-features">
+    <div class="feature-item">
+        <i class="fas fa-headset"></i>
+        <div class="feature-text">
+            <h4>دعم العملاء</h4>
+            <p>متاح 24/7 لمساعدتك</p>
         </div>
-        <div class="trust-item">
-            <i class="fas fa-shipping-fast"></i>
-            <div class="trust-text">
-                <span class="trust-title">شحن سريع</span>
-                <span class="trust-desc">توصيل خلال 2-4 أيام</span>
-            </div>
+    </div>
+    <div class="feature-item">
+        <i class="fas fa-shield-alt"></i>
+        <div class="feature-text">
+            <h4>جودة مضمونة</h4>
+            <p>منتجات أصلية 100%</p>
         </div>
-        <div class="trust-item">
-            <i class="fas fa-gem"></i>
-            <div class="trust-text">
-                <span class="trust-title">جودة مضمونة</span>
-                <span class="trust-desc">منتجات أصلية 100%</span>
-            </div>
+    </div>
+    <div class="feature-item">
+        <i class="fas fa-shipping-fast"></i>
+        <div class="feature-text">
+            <h4>شحن سريع</h4>
+            <p>توصيل خلال 2-4 أيام</p>
         </div>
-        <div class="trust-item">
-            <i class="fas fa-headset"></i>
-            <div class="trust-text">
-                <span class="trust-title">دعم العملاء</span>
-                <span class="trust-desc">متاح 24/7 لمساعدتك</span>
-            </div>
+    </div>
+    <div class="feature-item">
+        <i class="fas fa-lock"></i>
+        <div class="feature-text">
+            <h4>تسوق آمن</h4>
+            <p>بياناتك محمية بالكامل</p>
         </div>
     </div>
 </div>
 {% endblock %}
+
