@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}مُهاجر | تأكيد البريد الإلكتروني{% endblock %}
+
+{% block content %}
+<style>
+    .auth-page-wrapper {
+        min-height: 70vh;
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 50px 5%;
+        font-family: var(--font-body);
+        direction: rtl;
+        position: relative;
+    }
+    .bg-watermark {
+        display: none !important;
+    }
+
+    .auth-container {
+        width: 100%;
+        max-width: 480px;
+        background: rgba(10, 10, 8, 0.6);
+        backdrop-filter: blur(15px);
+        border-radius: 20px;
+        padding: 50px 40px;
+        box-shadow: 0 0 40px rgba(201, 167, 92, 0.1), inset 0 0 20px rgba(201, 167, 92, 0.05);
+        border: 1px solid rgba(201, 167, 92, 0.3);
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .auth-title {
+        color: var(--gold);
+        font-family: var(--font-heading);
+        font-size: 2.2rem;
+        margin-bottom: 5px;
+    }
+
+    .auth-subtitle {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 1rem;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+    .title-separator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 35px;
+    }
+    .title-separator span {
+        height: 1px;
+        width: 40px;
+        background: rgba(212, 175, 55, 0.3);
+    }
+    .title-separator i { color: var(--gold); font-size: 0.7rem; opacity: 0.8; }
+
+    .email-icon-wrapper {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: rgba(201, 167, 92, 0.1);
+        border: 2px solid rgba(201, 167, 92, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 0 15px rgba(201, 167, 92, 0.1); }
+        50% { box-shadow: 0 0 30px rgba(201, 167, 92, 0.25); }
+    }
+
+    .info-text {
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 0.95rem;
+        line-height: 1.8;
+        margin-bottom: 30px;
+    }
+
+    .info-text strong {
+        color: var(--gold);
+    }
+
+    .submit-btn {
+        width: 100%;
+        background: transparent;
+        color: var(--gold);
+        border: 1px solid var(--gold);
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        font-family: var(--font-body);
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        transition: 0.3s ease;
+        text-decoration: none;
+        margin-bottom: 12px;
+    }
+    .submit-btn:hover { background: rgba(212, 175, 55, 0.1); transform: translateY(-2px); }
+
+    .secondary-btn {
+        width: 100%;
+        background: transparent;
+        color: rgba(255,255,255,0.5);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 0.95rem;
+        font-family: var(--font-body);
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        transition: 0.3s ease;
+        text-decoration: none;
+    }
+    .secondary-btn:hover { color: var(--gold); border-color: rgba(201, 167, 92, 0.3); }
+</style>
+
+<div class="auth-page-wrapper">
+    <div class="auth-container">
+        <div class="email-icon-wrapper">
+            <i class="fas fa-envelope-open-text" style="font-size: 2.2rem; color: var(--gold);"></i>
+        </div>
+        <h1 class="auth-title">تحقق من بريدك الإلكتروني</h1>
+        <p class="auth-subtitle">خطوة واحدة وتكون جزء من عيلة مُهاجر</p>
+        
+        <div class="title-separator">
+            <span></span>
+            <i class="fas fa-star" style="font-size: 0.6rem; color: var(--gold);"></i>
+            <span></span>
+        </div>
+
+        <p class="info-text">
+            أرسلنا رسالة تأكيد على بريدك الإلكتروني.<br>
+            افتح الرسالة واضغط على <strong>رابط التفعيل</strong> عشان تكمل التسجيل.<br><br>
+            <span style="font-size: 0.85rem; color: rgba(255,255,255,0.45);">
+                <i class="fas fa-info-circle"></i>
+                لو مش لاقيها، تحقق من مجلد <strong>الرسائل غير المرغوب فيها</strong> (Spam).
+            </span>
+        </p>
+
+        <a href="/" class="submit-btn">
+            <i class="fas fa-home"></i> العودة للرئيسية
+        </a>
+        <a href="{% url 'account_login' %}" class="secondary-btn">
+            <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+        </a>
+    </div>
+</div>
+{% endblock %}

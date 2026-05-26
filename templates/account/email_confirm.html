@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}مُهاجر | تأكيد البريد الإلكتروني{% endblock %}
+
+{% block content %}
+<style>
+    .auth-page-wrapper {
+        min-height: 70vh;
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 50px 5%;
+        font-family: var(--font-body);
+        direction: rtl;
+        position: relative;
+    }
+    .bg-watermark {
+        display: none !important;
+    }
+
+    .auth-container {
+        width: 100%;
+        max-width: 480px;
+        background: rgba(10, 10, 8, 0.6);
+        backdrop-filter: blur(15px);
+        border-radius: 20px;
+        padding: 50px 40px;
+        box-shadow: 0 0 40px rgba(201, 167, 92, 0.1), inset 0 0 20px rgba(201, 167, 92, 0.05);
+        border: 1px solid rgba(201, 167, 92, 0.3);
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .auth-title {
+        color: var(--gold);
+        font-family: var(--font-heading);
+        font-size: 2.2rem;
+        margin-bottom: 5px;
+    }
+
+    .auth-subtitle {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 1rem;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+    .title-separator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 35px;
+    }
+    .title-separator span {
+        height: 1px;
+        width: 40px;
+        background: rgba(212, 175, 55, 0.3);
+    }
+    .title-separator i { color: var(--gold); font-size: 0.7rem; opacity: 0.8; }
+
+    .info-text {
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 0.95rem;
+        line-height: 1.8;
+        margin-bottom: 30px;
+    }
+
+    .info-text strong {
+        color: var(--gold);
+    }
+
+    .submit-btn {
+        width: 100%;
+        background: linear-gradient(135deg, rgba(201, 167, 92, 0.15), rgba(201, 167, 92, 0.05));
+        color: var(--gold);
+        border: 1px solid var(--gold);
+        border-radius: 8px;
+        padding: 14px;
+        font-size: 1.15rem;
+        font-weight: bold;
+        font-family: var(--font-body);
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        transition: 0.3s ease;
+        text-decoration: none;
+        margin-bottom: 12px;
+    }
+    .submit-btn:hover { 
+        background: rgba(212, 175, 55, 0.15); 
+        transform: translateY(-2px);
+        box-shadow: 0 5px 25px rgba(201, 167, 92, 0.2);
+    }
+
+    .secondary-btn {
+        width: 100%;
+        background: transparent;
+        color: rgba(255,255,255,0.5);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 0.95rem;
+        font-family: var(--font-body);
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        transition: 0.3s ease;
+        text-decoration: none;
+    }
+    .secondary-btn:hover { color: var(--gold); border-color: rgba(201, 167, 92, 0.3); }
+</style>
+
+<div class="auth-page-wrapper">
+    <div class="auth-container">
+        {% if confirmation %}
+            <i class="fas fa-shield-alt" style="font-size: 3rem; color: var(--gold); margin-bottom: 15px;"></i>
+            <h1 class="auth-title">تأكيد البريد الإلكتروني</h1>
+            <p class="auth-subtitle">{{ confirmation.email_address.email }}</p>
+
+            <div class="title-separator">
+                <span></span>
+                <i class="fas fa-star" style="font-size: 0.6rem; color: var(--gold);"></i>
+                <span></span>
+            </div>
+
+            <p class="info-text">
+                اضغط على الزرار عشان تأكد إن ده بريدك الإلكتروني وتبدأ تسوق من <strong>مُهاجر</strong>.
+            </p>
+
+            <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+                {% csrf_token %}
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-check-circle"></i> تأكيد البريد الإلكتروني
+                </button>
+            </form>
+        {% else %}
+            <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #fb7185; margin-bottom: 15px;"></i>
+            <h1 class="auth-title" style="color: #fb7185;">رابط غير صالح</h1>
+
+            <div class="title-separator">
+                <span></span>
+                <i class="fas fa-star" style="font-size: 0.6rem; color: var(--gold);"></i>
+                <span></span>
+            </div>
+
+            <p class="info-text">
+                رابط التأكيد ده انتهت صلاحيته أو مش صحيح.<br>
+                ممكن تسجل دخول وتطلب رابط جديد.
+            </p>
+
+            <a href="{% url 'account_login' %}" class="submit-btn">
+                <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+            </a>
+        {% endif %}
+
+        <a href="/" class="secondary-btn" style="margin-top: 10px;">
+            <i class="fas fa-home"></i> العودة للرئيسية
+        </a>
+    </div>
+</div>
+{% endblock %}
