@@ -5,7 +5,7 @@ Safe to run on every deploy — creates or resets the superuser.
 import os
 
 from django.contrib.auth import get_user_model
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 
 
 class Command(BaseCommand):
@@ -13,9 +13,21 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         User = get_user_model()
-        email = os.environ.get('DJANGO_SUPERUSER_EMAIL', 'zeiad0453@gmail.com')
-        username = os.environ.get('DJANGO_SUPERUSER_USERNAME', 'Ziad')
-        password = os.environ.get('DJANGO_SUPERUSER_PASSWORD', 'Mohager@2026')
+        email = os.environ.get('DJANGO_SUPERUSER_EMAIL')
+        username = os.environ.get('DJANGO_SUPERUSER_USERNAME')
+        password = os.environ.get('DJANGO_SUPERUSER_PASSWORD')
+
+        missing = [
+            name
+            for name, value in {
+                'DJANGO_SUPERUSER_EMAIL': email,
+                'DJANGO_SUPERUSER_USERNAME': username,
+                'DJANGO_SUPERUSER_PASSWORD': password,
+            }.items()
+            if not value
+        ]
+        if missing:
+            raise CommandError(f'Missing required environment variables: {", ".join(missing)}')
 
         # Try to find existing user by username or email
         user = User.objects.filter(username=username).first() or User.objects.filter(email=email).first()

@@ -5,6 +5,7 @@ Django settings for config project.
 from decouple import config
 from pathlib import Path
 from datetime import timedelta
+from django.core.exceptions import ImproperlyConfigured
 import sentry_sdk
 import dj_database_url
 import os
@@ -12,19 +13,29 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = config('DEBUG', default=False, cast=bool)
+
 # Custom admin mount (must match `path(..., mohager_admin.urls)` in config/urls.py)
-MOHAGER_ADMIN_PATH = config('MOHAGER_ADMIN_PATH', default='mohajer-secret-boss-2026').strip('/')
+MOHAGER_ADMIN_PATH = config('MOHAGER_ADMIN_PATH', default='local-admin' if DEBUG else '').strip('/')
+if not MOHAGER_ADMIN_PATH:
+    raise ImproperlyConfigured('MOHAGER_ADMIN_PATH must be set in production.')
 MOHAGER_ADMIN_URL = f'/{MOHAGER_ADMIN_PATH}/'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
-
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
+ALLOWED_HOSTS = [host.strip() for host in config('ALLOWED_HOSTS', default='localhost').split(',') if host.strip()]
 # تم تحديث الدومين ليتطابق مع رابط موقع مهاجر الحالي
-CSRF_TRUSTED_ORIGINS = ['https://mohager-store-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in config(
+        'CSRF_TRUSTED_ORIGINS',
+        default='https://mohager-store-production.up.railway.app',
+    ).split(',')
+    if origin.strip()
+]
+SITE_URL = config('SITE_URL', default=CSRF_TRUSTED_ORIGINS[0] if CSRF_TRUSTED_ORIGINS else 'http://localhost:8000').rstrip('/')
 
 # Application definition
 INSTALLED_APPS = [
@@ -393,11 +404,13 @@ CORS_ALLOW_CREDENTIALS = True
 # ==========================================
 # إعدادات المراقبة وتتبع الأخطاء (Sentry)
 # ==========================================
-sentry_sdk.init(
-    dsn="https://1ba0ced8739c1b36b76fb859936600ac@o4511337997729792.ingest.de.sentry.io/4511338007568272",
-    send_default_pii=True,
-    traces_sample_rate=0.05,  # 5% tracing for minimal overhead
-)
+SENTRY_DSN = config('SENTRY_DSN', default='')
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        send_default_pii=False,
+        traces_sample_rate=0.05,  # 5% tracing for minimal overhead
+    )
 
 # ==========================================
 # إعدادات الأمان للـ Production
