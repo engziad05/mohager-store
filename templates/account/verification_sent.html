@@ -132,6 +132,56 @@
         text-decoration: none;
     }
     .secondary-btn:hover { color: var(--gold); border-color: rgba(201, 167, 92, 0.3); }
+
+    .trust-bar {
+        width: 100%;
+        max-width: 800px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        flex-wrap: wrap;
+        margin-top: 40px;
+        padding: 25px 20px;
+        background: rgba(10, 10, 8, 0.5);
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.06);
+    }
+    .trust-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        direction: rtl;
+    }
+    .trust-item i {
+        font-size: 1.3rem;
+        color: var(--gold);
+        opacity: 0.85;
+    }
+    .trust-item .trust-text {
+        display: flex;
+        flex-direction: column;
+    }
+    .trust-item .trust-title {
+        color: rgba(255,255,255,0.85);
+        font-size: 0.9rem;
+        font-weight: 600;
+        font-family: var(--font-heading);
+    }
+    .trust-item .trust-desc {
+        color: rgba(255,255,255,0.4);
+        font-size: 0.75rem;
+    }
+
+    @media (max-width: 600px) {
+        .trust-bar {
+            gap: 20px;
+        }
+        .trust-item {
+            flex: 0 0 45%;
+            justify-content: center;
+        }
+    }
 </style>
 
 <div class="auth-page-wrapper">
@@ -163,6 +213,37 @@
         <a href="{% url 'account_login' %}" class="secondary-btn">
             <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
         </a>
+    </div>
+
+    <div class="trust-bar">
+        <div class="trust-item">
+            <i class="fas fa-lock"></i>
+            <div class="trust-text">
+                <span class="trust-title">تسوق آمن</span>
+                <span class="trust-desc">بياناتك محمية بالكامل</span>
+            </div>
+        </div>
+        <div class="trust-item">
+            <i class="fas fa-shipping-fast"></i>
+            <div class="trust-text">
+                <span class="trust-title">شحن سريع</span>
+                <span class="trust-desc">توصيل خلال 2-4 أيام</span>
+            </div>
+        </div>
+        <div class="trust-item">
+            <i class="fas fa-gem"></i>
+            <div class="trust-text">
+                <span class="trust-title">جودة مضمونة</span>
+                <span class="trust-desc">منتجات أصلية 100%</span>
+            </div>
+        </div>
+        <div class="trust-item">
+            <i class="fas fa-headset"></i>
+            <div class="trust-text">
+                <span class="trust-title">دعم العملاء</span>
+                <span class="trust-desc">متاح 24/7 لمساعدتك</span>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
