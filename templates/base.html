@@ -137,20 +137,24 @@ body {
         /* ستايل الهيدر (Navbar) - Glassmorphism & Premium UI */
         /* ========================================== */
         nav {
-            position: absolute; /* طايرة فوق الموقع */
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             box-sizing: border-box;
             z-index: 1050;
-            background-color: rgba(10, 10, 10, 0.4) !important; /* شفافة أغمق من الخلفية سِنة */
-            backdrop-filter: blur(12px); /* الـ Blur المودرن */
+            background-color: rgba(10, 10, 10, 0.85) !important;
+            backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(200, 169, 110, 0.15); /* خط دهبي خفييييف تحتها */
-            padding: 10px 5%; /* صغرنا الارتفاع */
+            border-bottom: 1px solid rgba(200, 169, 110, 0.15);
+            padding: 10px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: transform 0.35s ease;
+        }
+        nav.nav-hidden {
+            transform: translateY(-100%);
         }
 
         /* تكبير كلمة مُهاجر (Anchor بصري) */
@@ -943,6 +947,32 @@ body {
             openCart();
         }
     });
+    // Smart Navbar: show on scroll down, hide on scroll up
+    (function() {
+        const nav = document.querySelector('nav');
+        let lastScroll = 0;
+        const threshold = 60; // minimum scroll before hiding
+
+        window.addEventListener('scroll', function() {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll <= threshold) {
+                // At top of page — always show
+                nav.classList.remove('nav-hidden');
+                return;
+            }
+
+            if (currentScroll > lastScroll) {
+                // Scrolling DOWN → show navbar
+                nav.classList.remove('nav-hidden');
+            } else {
+                // Scrolling UP → hide navbar
+                nav.classList.add('nav-hidden');
+            }
+
+            lastScroll = currentScroll;
+        }, { passive: true });
+    })();
 </script>
 
 </body>
