@@ -99,7 +99,6 @@ class ProductVariant(models.Model):
         on_delete=models.CASCADE,
     )
     size = models.CharField(max_length=10, blank=True, null=True, verbose_name='المقاس')
-    stock_quantity = models.PositiveIntegerField(default=0, verbose_name='الكمية في المخزن')
     stock = models.PositiveIntegerField(default=0, verbose_name='المخزون')
 
     class Meta:
