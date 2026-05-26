@@ -1,6 +1,6 @@
 """
 Management command to ensure a superuser exists.
-Safe to run on every deploy — only creates if missing.
+Safe to run on every deploy — creates or resets the superuser.
 """
 import os
 
@@ -9,7 +9,7 @@ from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
-    help = 'Create a superuser from env vars if one does not already exist.'
+    help = 'Create or reset a superuser from env vars.'
 
     def handle(self, *args, **options):
         User = get_user_model()
@@ -17,13 +17,24 @@ class Command(BaseCommand):
         username = os.environ.get('DJANGO_SUPERUSER_USERNAME', 'Ziad')
         password = os.environ.get('DJANGO_SUPERUSER_PASSWORD', 'Mohager@2026')
 
-        if User.objects.filter(email=email).exists():
-            self.stdout.write(self.style.WARNING(f'Superuser with email {email} already exists — skipping.'))
-            return
+        # Try to find existing user by username or email
+        user = User.objects.filter(username=username).first() or User.objects.filter(email=email).first()
 
-        User.objects.create_superuser(
-            username=username,
-            email=email,
-            password=password,
-        )
-        self.stdout.write(self.style.SUCCESS(f'Superuser "{username}" created successfully.'))
+        if user:
+            # Reset password and ensure superuser privileges
+            user.set_password(password)
+            user.is_staff = True
+            user.is_superuser = True
+            user.is_active = True
+            user.email = email
+            user.username = username
+            user.save()
+            self.stdout.write(self.style.SUCCESS(f'Superuser "{username}" updated and password reset.'))
+        else:
+            # Create new superuser
+            User.objects.create_superuser(
+                username=username,
+                email=email,
+                password=password,
+            )
+            self.stdout.write(self.style.SUCCESS(f'Superuser "{username}" created successfully.'))
