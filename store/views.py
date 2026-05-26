@@ -23,6 +23,34 @@ from .models import HeroSlide, SavedAddress, StoreSetting
 
 
 # ============================================================
+# Cart helper — eliminates N+1 queries across all views
+# ============================================================
+def _get_cart_data(request):
+    """Fetch cart info in a single optimized query. Returns dict with
+    cart, cart_items (list), cart_count, and total_price."""
+    cart_id = request.session.get('cart_id')
+    if not cart_id:
+        return {'cart': None, 'cart_items': [], 'cart_count': 0, 'total_price': 0}
+
+    cart = Cart.objects.filter(id=cart_id).first()
+    if not cart:
+        return {'cart': None, 'cart_items': [], 'cart_count': 0, 'total_price': 0}
+
+    items = list(
+        CartItem.objects.filter(cart=cart)
+        .select_related('product', 'variant')
+    )
+    cart_count = sum(item.quantity for item in items)
+    total_price = sum(item.total_price for item in items)
+    return {
+        'cart': cart,
+        'cart_items': items,
+        'cart_count': cart_count,
+        'total_price': total_price,
+    }
+
+
+# ============================================================
 # الصفحة الرئيسية
 # ============================================================
 def index(request):
@@ -42,24 +70,14 @@ def index(request):
         timeout=getattr(settings, 'CACHE_TIMEOUT_HERO_SLIDES', 600),
     )
 
-    cart_id = request.session.get('cart_id')
-    cart_count = 0
-    cart_items = []
-    total_price = 0
-
-    if cart_id:
-        cart = Cart.objects.filter(id=cart_id).first()
-        if cart:
-            cart_items = CartItem.objects.filter(cart=cart)
-            cart_count = sum(item.quantity for item in cart_items)
-            total_price = sum(item.total_price for item in cart_items)
+    cd = _get_cart_data(request)
 
     context = {
         'products': products,
         'slides': slides,
-        'cart_count': cart_count,
-        'cart_items': cart_items,
-        'total_price': total_price,
+        'cart_count': cd['cart_count'],
+        'cart_items': cd['cart_items'],
+        'total_price': cd['total_price'],
     }
     return render(request, 'store/index.html', context)
 
@@ -99,17 +117,12 @@ def shop(request):
         timeout=getattr(settings, 'CACHE_TIMEOUT_CATEGORY', 600),
     )
 
-    cart_id = request.session.get('cart_id')
-    cart_count = 0
-    if cart_id:
-        cart = Cart.objects.filter(id=cart_id).first()
-        if cart:
-            cart_count = sum(item.quantity for item in CartItem.objects.filter(cart=cart))
+    cd = _get_cart_data(request)
 
     context = {
         'products': products,
         'categories': categories,
-        'cart_count': cart_count,
+        'cart_count': cd['cart_count'],
     }
     return render(request, 'store/shop.html', context)
 
@@ -139,18 +152,13 @@ def product_detail(request, product_id):
         timeout=getattr(settings, 'CACHE_TIMEOUT_PRODUCT_DETAIL', 600),
     )
 
-    cart_id = request.session.get('cart_id')
-    cart_count = 0
-    if cart_id:
-        cart = Cart.objects.filter(id=cart_id).first()
-        if cart:
-            cart_count = sum(item.quantity for item in CartItem.objects.filter(cart=cart))
+    cd = _get_cart_data(request)
 
     context = {
         'product': cached['product'],
         'variants': cached['variants'],
         'extra_images': cached['extra_images'],
-        'cart_count': cart_count,
+        'cart_count': cd['cart_count'],
     }
     return render(request, 'store/product_detail.html', context)
 
@@ -159,28 +167,23 @@ def product_detail(request, product_id):
 # صفحة السلة
 # ============================================================
 def cart_detail(request):
-    cart_id = request.session.get('cart_id')
-    cart = None
-    cart_items = []
-    total_price = 0
+    cd = _get_cart_data(request)
     shipping_cost = 0
     grand_total = 0
 
-    if cart_id:
-        cart = Cart.objects.filter(id=cart_id).first()
-        if cart:
-            cart_items = CartItem.objects.filter(cart=cart)
-            total_price = sum(item.total_price for item in cart_items)
-
-    if total_price > 0:
-        setting = StoreSetting.objects.first()
+    if cd['total_price'] > 0:
+        setting = get_or_cache(
+            'store_settings',
+            lambda: StoreSetting.objects.first(),
+            timeout=getattr(settings, 'CACHE_TIMEOUT_STORE_SETTINGS', 3600),
+        )
         shipping_cost = setting.shipping_cost if setting else 0
-        grand_total = total_price + shipping_cost
+        grand_total = cd['total_price'] + shipping_cost
 
     context = {
-        'cart': cart,
-        'cart_items': cart_items,
-        'total_price': total_price,
+        'cart': cd['cart'],
+        'cart_items': cd['cart_items'],
+        'total_price': cd['total_price'],
         'shipping_cost': shipping_cost,
         'grand_total': grand_total,
     }
@@ -223,7 +226,10 @@ def update_quantity(request, item_id, action):
 
     if request.headers.get('HX-Request'):
         cart = cart_item.cart
-        cart_items = CartItem.objects.filter(cart=cart)
+        cart_items = list(
+            CartItem.objects.filter(cart=cart)
+            .select_related('product', 'variant')
+        )
         total_price = sum(item.total_price for item in cart_items)
         cart_count = sum(item.quantity for item in cart_items)
 
@@ -256,27 +262,14 @@ def order_success(request):
 # درج السلة (HTMX)
 # ============================================================
 def cart_drawer(request):
-    cart_id = request.session.get('cart_id')
-    cart = None
-    cart_items = []
-    total_price = 0
-    grand_total = 0
-    cart_count = 0
-
-    if cart_id:
-        cart = Cart.objects.filter(id=cart_id).first()
-        if cart:
-            cart_items = CartItem.objects.filter(cart=cart)
-            total_price = sum(item.total_price for item in cart_items)
-            grand_total = total_price
-            cart_count = sum(item.quantity for item in cart_items)
+    cd = _get_cart_data(request)
 
     context = {
-        'cart': cart,
-        'cart_items': cart_items,
-        'total_price': total_price,
-        'grand_total': grand_total,
-        'cart_count': cart_count,
+        'cart': cd['cart'],
+        'cart_items': cd['cart_items'],
+        'total_price': cd['total_price'],
+        'grand_total': cd['total_price'],
+        'cart_count': cd['cart_count'],
     }
     return render(request, 'store/partials/cart_items.html', context)
 
@@ -327,7 +320,10 @@ def add_to_cart(request, product_id):
             cart_item.save()
 
         if request.headers.get('HX-Request'):
-            cart_items = CartItem.objects.filter(cart=cart)
+            cart_items = list(
+                CartItem.objects.filter(cart=cart)
+                .select_related('product', 'variant')
+            )
             total_price = sum(item.total_price for item in cart_items)
             cart_count = sum(item.quantity for item in cart_items)
 
@@ -398,12 +394,19 @@ def checkout(request):
     if not cart:
         return redirect('index')
 
-    cart_items = CartItem.objects.filter(cart=cart)
-    if not cart_items.exists():
+    cart_items = list(
+        CartItem.objects.filter(cart=cart)
+        .select_related('product', 'variant')
+    )
+    if not cart_items:
         return redirect('index')
 
     total_price = sum(item.total_price for item in cart_items)
-    setting = StoreSetting.objects.first()
+    setting = get_or_cache(
+        'store_settings',
+        lambda: StoreSetting.objects.first(),
+        timeout=getattr(settings, 'CACHE_TIMEOUT_STORE_SETTINGS', 3600),
+    )
     shipping_cost = setting.shipping_cost if setting else 0
     grand_total = total_price + shipping_cost
 

@@ -257,7 +257,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_MAX_AGE = 31536000  # 1 year cache for static files
 
 # Custom user model
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -277,7 +277,7 @@ STORAGES = {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
@@ -319,6 +319,10 @@ DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@mohager-store
 
 # Cache Configuration
 REDIS_URL = config('REDIS_URL', default='redis://127.0.0.1:6379/0')
+
+# Sessions via Redis (faster than DB sessions)
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
 
 CELERY_BROKER_URL = REDIS_URL
 CELERY_RESULT_BACKEND = REDIS_URL
@@ -392,7 +396,7 @@ CORS_ALLOW_CREDENTIALS = True
 sentry_sdk.init(
     dsn="https://1ba0ced8739c1b36b76fb859936600ac@o4511337997729792.ingest.de.sentry.io/4511338007568272",
     send_default_pii=True,
-    traces_sample_rate=0.2,  # 20% من الـ requests بس عشان الأداء
+    traces_sample_rate=0.05,  # 5% tracing for minimal overhead
 )
 
 # ==========================================
