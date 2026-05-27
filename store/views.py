@@ -347,6 +347,11 @@ def add_to_cart(request, product_id):
 # ============================================================
 @login_required(login_url='/accounts/login/')
 def dashboard(request):
+    if request.user.email:
+        unlinked_orders = Order.objects.filter(email__iexact=request.user.email, user__isnull=True)
+        if unlinked_orders.exists():
+            unlinked_orders.update(user=request.user)
+
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
 
     try:
