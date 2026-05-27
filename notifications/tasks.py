@@ -110,10 +110,15 @@ def send_order_owner_notification_email(self, order_id):
 
     order = Order.objects.prefetch_related('items__product', 'items__variant').get(id=order_id)
     cart_items = order.items.all()
+    
+    items_total = sum(item.price * item.quantity for item in cart_items)
+    shipping_cost = order.total_price - items_total
+    
     html_message = render_to_string('store/emails/admin_order_notify.html', {
         'order': order,
         'cart_items': cart_items,
-        'total_price': sum(item.price * item.quantity for item in cart_items),
+        'total_price': items_total,
+        'shipping_cost': shipping_cost,
         'grand_total': order.total_price,
         'admin_order_url': f'{settings.SITE_URL}{settings.MOHAGER_ADMIN_URL}orders/order/{order.id}/change/',
     })

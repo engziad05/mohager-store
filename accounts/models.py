@@ -14,3 +14,10 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+class StaffUser(CustomUser):
+    class Meta:
+        proxy = True
+        verbose_name = "مشرف (Staff)"
+        verbose_name_plural = "المشرفين (Staff)"

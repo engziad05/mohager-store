@@ -8,8 +8,8 @@ class CommonConfig(AppConfig):
     def ready(self):
         from django.contrib.admin.sites import AlreadyRegistered
 
-        from accounts.admin import CustomUserAdmin
-        from accounts.models import CustomUser
+        from accounts.admin import CustomUserAdmin, StaffUserAdmin
+        from accounts.models import CustomUser, StaffUser
         from cart.admin import CartAdmin
         from cart.models import Cart
         from common.admin import mohager_admin
@@ -22,6 +22,7 @@ class CommonConfig(AppConfig):
 
         for model, admin_class in (
             (CustomUser, CustomUserAdmin),
+            (StaffUser, StaffUserAdmin),
             (Product, ProductAdmin),
             (Category, CategoryAdmin),
             (Order, OrderAdmin),

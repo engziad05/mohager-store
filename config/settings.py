@@ -149,6 +149,11 @@ UNFOLD = {
                         'link': f'{MOHAGER_ADMIN_URL}accounts/customuser/',
                     },
                     {
+                        'title': 'Staff members',
+                        'icon': 'admin_panel_settings',
+                        'link': f'{MOHAGER_ADMIN_URL}accounts/staffuser/',
+                    },
+                    {
                         'title': 'Shipping rate',
                         'icon': 'local_shipping',
                         'link': f'{MOHAGER_ADMIN_URL}store/storesetting/',
