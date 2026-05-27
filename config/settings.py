@@ -25,14 +25,20 @@ MOHAGER_ADMIN_URL = f'/{MOHAGER_ADMIN_PATH}/'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
 
-ALLOWED_HOSTS = [host.strip() for host in config('ALLOWED_HOSTS', default='localhost').split(',') if host.strip()]
-# تم تحديث الدومين ليتطابق مع رابط موقع مهاجر الحالي
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in config('ALLOWED_HOSTS', default='localhost' if DEBUG else '').split(',')
+    if host.strip()
+]
+if not DEBUG:
+    if not ALLOWED_HOSTS:
+        raise ImproperlyConfigured('ALLOWED_HOSTS must be set in production.')
+    if '*' in ALLOWED_HOSTS:
+        raise ImproperlyConfigured('ALLOWED_HOSTS cannot contain "*" in production.')
+
 CSRF_TRUSTED_ORIGINS = [
     origin.strip()
-    for origin in config(
-        'CSRF_TRUSTED_ORIGINS',
-        default='https://mohager-store-production.up.railway.app',
-    ).split(',')
+    for origin in config('CSRF_TRUSTED_ORIGINS', default='').split(',')
     if origin.strip()
 ]
 SITE_URL = config('SITE_URL', default=CSRF_TRUSTED_ORIGINS[0] if CSRF_TRUSTED_ORIGINS else 'http://localhost:8000').rstrip('/')
@@ -225,18 +231,22 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # ==========================================
 # إعدادات قاعدة البيانات (PostgreSQL دايماً)
 # ==========================================
-# دعم DATABASE_URL من Railway
-if os.environ.get('DATABASE_URL'):
+DATABASE_URL = config('DATABASE_URL', default='')
+if DATABASE_URL:
     DATABASES = {
-        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'), conn_max_age=600)
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=config('DATABASE_CONN_MAX_AGE', default=600, cast=int),
+            ssl_require=config('DATABASE_SSL_REQUIRE', default=True, cast=bool) if not DEBUG else False,
+        )
     }
 else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
+            'NAME': config('DB_NAME', default='railway'),
+            'USER': config('DB_USER', default='postgres'),
+            'PASSWORD': config('DB_PASSWORD', default=''),
             'HOST': config('DB_HOST', default='localhost'),
             'PORT': config('DB_PORT', default='5432'),
         }
@@ -276,21 +286,35 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 # ==========================================
 # إعدادات Cloudinary لرفع الصور أونلاين
 # ==========================================
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': config('CLOUDINARY_API_KEY'),
-    'API_SECRET': config('CLOUDINARY_API_SECRET'),
-}
+CLOUDINARY_CLOUD_NAME = config('CLOUDINARY_CLOUD_NAME', default='')
+CLOUDINARY_API_KEY = config('CLOUDINARY_API_KEY', default='')
+CLOUDINARY_API_SECRET = config('CLOUDINARY_API_SECRET', default='')
 
-# إعدادات التخزين
-STORAGES = {
-    "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
-    },
-}
+if not DEBUG or (CLOUDINARY_CLOUD_NAME and CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET):
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
+        'API_KEY': CLOUDINARY_API_KEY,
+        'API_SECRET': CLOUDINARY_API_SECRET,
+    }
+    STORAGES = {
+        "default": {
+            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        },
+    }
+else:
+    # Fallback to local storage for development
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        },
+    }
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 MEDIA_URL = '/media/'
 
@@ -312,21 +336,27 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_USER_DISPLAY = 'store.forms.custom_user_display'
+# Note: AsyncAccountAdapter sends emails asynchronously via Celery background tasks
 ACCOUNT_ADAPTER = 'notifications.adapters.AsyncAccountAdapter'
 ACCOUNT_FORMS = {
     'signup': 'store.forms.CustomSignupForm',
 }
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = config('ACCOUNT_DEFAULT_HTTP_PROTOCOL', default='https' if not DEBUG else 'http')
 
 
 # ==========================================
-# إعدادات إرسال الإيميلات (Brevo HTTP API)
-# Railway بيحجب كل منافذ SMTP، فبنستخدم HTTP API بدل كده
+# إعدادات إرسال الإيميلات (Brevo SMTP)
 # ==========================================
-EMAIL_BACKEND = 'anymail.backends.brevo.EmailBackend'
-ANYMAIL = {
-    'BREVO_API_KEY': config('BREVO_API_KEY', default=''),
-}
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST', default='smtp-relay.brevo.com')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@mohager-store.com')
+
+# Anymail configuration (kept as empty fallback to support legacy scripts)
+ANYMAIL = {}
 
 # Cache Configuration
 REDIS_URL = config('REDIS_URL', default='redis://127.0.0.1:6379/0')
@@ -335,8 +365,8 @@ REDIS_URL = config('REDIS_URL', default='redis://127.0.0.1:6379/0')
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
 
-CELERY_BROKER_URL = REDIS_URL
-CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_BROKER_URL = config('CELERY_BROKER_URL', default=REDIS_URL)
+CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND', default=REDIS_URL)
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -398,7 +428,11 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-CORS_ALLOWED_ORIGINS = [origin.strip() for origin in config('CORS_ALLOWED_ORIGINS', default='http://localhost:8000').split(',')]
+CORS_ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in config('CORS_ALLOWED_ORIGINS', default='http://localhost:8000').split(',')
+    if origin.strip()
+]
 CORS_ALLOW_CREDENTIALS = True
 
 # ==========================================
