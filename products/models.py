@@ -99,6 +99,7 @@ class ProductVariant(models.Model):
         on_delete=models.CASCADE,
     )
     size = models.CharField(max_length=10, blank=True, null=True, verbose_name='المقاس')
+    weight_range = models.CharField(max_length=50, blank=True, null=True, verbose_name='الوزن (من-إلى)', help_text='مثال: 70-85')
     stock = models.PositiveIntegerField(default=0, verbose_name='المخزون')
 
     class Meta:

@@ -467,7 +467,12 @@
                     <div class="sizes-grid">
                         {% for variant in variants %}
                             <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box">
-                            <label for="variant_{{ variant.id }}" class="size-btn">{{ variant.size }}</label>
+                            <label for="variant_{{ variant.id }}" class="size-btn" style="flex-direction: column; line-height: 1.2;">
+                                <span>{{ variant.size }}</span>
+                                {% if variant.weight_range %}
+                                    <span style="font-size: 0.75rem; opacity: 0.9; font-family: 'Cairo', sans-serif; margin-top: 4px;">{{ variant.weight_range }} كجم</span>
+                                {% endif %}
+                            </label>
                         {% empty %}
                             <p style="color: var(--gold); font-family: var(--font-body); margin: 0;">عفواً، لا توجد مقاسات متاحة حالياً.</p>
                         {% endfor %}
