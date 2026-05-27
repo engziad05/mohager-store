@@ -21,7 +21,10 @@ def queue_order_confirmation_emails(sender, instance, created, **kwargs):
     order_id = instance.id
 
     def enqueue_order_emails():
-        send_new_order_emails.delay(order_id)
-        logger.info("Queued order emails for order %s", order_id)
+        import threading
+        # Run the celery task synchronously inside a background thread
+        thread = threading.Thread(target=send_new_order_emails, args=(order_id,))
+        thread.start()
+        logger.info("Started background thread for order emails: %s", order_id)
 
     transaction.on_commit(enqueue_order_emails)

@@ -117,10 +117,14 @@ def send_order_owner_notification_email(self, order_id):
 
 @shared_task
 def send_new_order_emails(order_id):
-    """Queue all emails related to a newly created order."""
-    send_order_confirmation_email.delay(order_id)
-    send_order_owner_notification_email.delay(order_id)
-    return "queued"
+    """Send all emails related to a newly created order synchronously."""
+    try:
+        send_order_confirmation_email(order_id)
+        send_order_owner_notification_email(order_id)
+        return "sent"
+    except Exception as e:
+        logger.error("Error sending order emails for order %s: %s", order_id, e)
+        return "error"
 
 
 @shared_task(
