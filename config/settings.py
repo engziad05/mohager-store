@@ -343,6 +343,10 @@ ACCOUNT_FORMS = {
 }
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = config('ACCOUNT_DEFAULT_HTTP_PROTOCOL', default='https' if not DEBUG else 'http')
 
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+
 
 # ==========================================
 # إعدادات إرسال الإيميلات (Brevo HTTP API)
