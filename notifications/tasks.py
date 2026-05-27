@@ -91,10 +91,21 @@ def send_order_confirmation_email(self, order_id):
     retry_kwargs={'max_retries': 3},
 )
 def send_order_owner_notification_email(self, order_id):
-    """Notify the store owner about a new order."""
+    """Notify the store owner and all staff members about a new order."""
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    
     owner_email = getattr(settings, 'STORE_OWNER_EMAIL', None)
-    if not owner_email:
-        logger.info("Skipping owner order email for order %s because STORE_OWNER_EMAIL is empty", order_id)
+    staff_emails = list(User.objects.filter(is_staff=True).exclude(email='').values_list('email', flat=True))
+    
+    recipients = set(staff_emails)
+    if owner_email:
+        recipients.add(owner_email)
+        
+    recipients = [email for email in recipients if email]
+    
+    if not recipients:
+        logger.info("Skipping owner order email for order %s because no staff/owner emails found", order_id)
         return "skipped"
 
     order = Order.objects.prefetch_related('items__product', 'items__variant').get(id=order_id)
@@ -110,21 +121,17 @@ def send_order_owner_notification_email(self, order_id):
     return send_email_task(
         subject=f"New order #{order.tracking_no} - {order.full_name}",
         body=f"New order from {order.full_name} - phone: {order.phone}",
-        recipient_list=[owner_email],
+        recipient_list=recipients,
         html_message=html_message,
     )
 
 
 @shared_task
 def send_new_order_emails(order_id):
-    """Send all emails related to a newly created order synchronously."""
-    try:
-        send_order_confirmation_email(order_id)
-        send_order_owner_notification_email(order_id)
-        return "sent"
-    except Exception as e:
-        logger.error("Error sending order emails for order %s: %s", order_id, e)
-        return "error"
+    """Queue all emails related to a newly created order."""
+    send_order_confirmation_email.delay(order_id)
+    send_order_owner_notification_email.delay(order_id)
+    return "queued"
 
 
 @shared_task(
