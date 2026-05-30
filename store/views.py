@@ -300,6 +300,10 @@ def add_to_cart(request, product_id):
             from products.models import ProductPrint
             product_print = get_object_or_404(ProductPrint, id=print_id, product=product)
 
+        if variant.product_print and variant.product_print != product_print:
+            messages.error(request, 'عفواً، هذا المقاس غير متوفر لهذه الطبعة!')
+            return redirect('product_detail', product_id=product.id)
+
         try:
             assert_sufficient_variant_stock(variant, 1)
         except ValueError:
