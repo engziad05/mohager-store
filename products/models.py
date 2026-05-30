@@ -81,7 +81,6 @@ class ProductPrint(models.Model):
         on_delete=models.CASCADE,
     )
     name = models.CharField(max_length=100, verbose_name='اسم الطبعه')
-    icon = models.ImageField(upload_to='products/prints/icons/', verbose_name='صورة الزر (أيقونة)', help_text='صورة مصغرة تظهر كزر')
     main_image = models.ImageField(upload_to='products/prints/main/', verbose_name='الصورة الرئيسية للطبعه')
     is_default = models.BooleanField(default=False, verbose_name='طبعه افتراضية')
 

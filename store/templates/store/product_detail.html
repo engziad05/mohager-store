@@ -253,6 +253,44 @@
     }
 
     /* ---------------------------------- */
+    /* Text Print Buttons Styles */
+    /* ---------------------------------- */
+    .print-text-btn {
+        background: transparent;
+        border: 1px solid rgba(200, 169, 110, 0.4);
+        color: var(--sand);
+        padding: 8px 22px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: var(--font-en);
+        font-size: 1.1rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .print-text-btn.active-print-text {
+        border-color: var(--gold) !important;
+        color: var(--bg-base) !important;
+        background-color: var(--gold) !important;
+        font-weight: bold;
+        transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(200, 169, 110, 0.3);
+    }
+
+    .print-text-btn:hover:not(.active-print-text) {
+        border-color: var(--gold);
+        color: var(--gold);
+    }
+
+    .print-text-btn.out-of-stock-print {
+        color: #ff4d4d !important;
+        border-color: #ff4d4d !important;
+    }
+
+    /* ---------------------------------- */
     /* 2. عمود الصور (اليمين) */
     /* ---------------------------------- */
     .product-gallery-col {
@@ -484,16 +522,13 @@
                     <input type="hidden" name="print_id" id="selected-print-id" value="{{ default_print.id }}">
                     <div class="sizes-grid" id="prints-container">
                         {% for p in prints %}
-                            <div class="thumb-item print-btn {% if p.id == default_print.id %}active-thumb{% endif %} {% if not p.in_stock %}out-of-stock-print{% endif %}" 
+                            <div class="print-text-btn print-btn {% if p.id == default_print.id %}active-print-text{% endif %} {% if not p.in_stock %}out-of-stock-print{% endif %}" 
                                  onclick="selectPrint('{{ p.id }}', '{{ p.main_image.url }}', [
                                      {% for g in p.gallery_images.all %}'{{ g.image.url }}'{% if not forloop.last %}, {% endif %}{% endfor %}
-                                 ])"
-                                 style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; border: 2px solid transparent; cursor: pointer; transition: 0.3s; padding: 0; position: relative;">
-                                <img src="{{ p.icon.url }}" alt="{{ p.name }}" style="width: 100%; height: 100%; object-fit: cover;" title="{{ p.name }}">
+                                 ])">
+                                {{ p.name }}
                                 {% if not p.in_stock %}
-                                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 3;">
-                                        <div style="width: 120%; height: 3px; background-color: #ff4d4d; transform: rotate(-45deg);"></div>
-                                    </div>
+                                    <div style="position: absolute; top: 50%; left: -5%; width: 110%; height: 2px; background-color: #ff4d4d; transform: translateY(-50%) rotate(-10deg); z-index: 3;"></div>
                                 {% endif %}
                             </div>
                         {% endfor %}
@@ -701,11 +736,9 @@
         
         // Update active class on print buttons
         document.querySelectorAll('.print-btn').forEach(btn => {
-            btn.classList.remove('active-thumb');
-            btn.style.borderColor = 'transparent';
+            btn.classList.remove('active-print-text');
         });
-        event.currentTarget.classList.add('active-thumb');
-        event.currentTarget.style.borderColor = 'var(--gold)';
+        event.currentTarget.classList.add('active-print-text');
 
         // Update gallery images array
         galleryImages.length = 0; // clear array
