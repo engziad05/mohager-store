@@ -239,11 +239,6 @@
     /* ---------------------------------- */
     /* Out of Stock Styles */
     /* ---------------------------------- */
-    .out-of-stock-print {
-        opacity: 0.4 !important;
-        pointer-events: none;
-    }
-
     .out-of-stock-size {
         opacity: 0.4 !important;
         pointer-events: none !important;
@@ -283,11 +278,6 @@
     .print-text-btn:hover:not(.active-print-text) {
         border-color: var(--gold);
         color: var(--gold);
-    }
-
-    .print-text-btn.out-of-stock-print {
-        color: #ff4d4d !important;
-        border-color: #ff4d4d !important;
     }
 
     /* ---------------------------------- */
@@ -522,14 +512,11 @@
                     <input type="hidden" name="print_id" id="selected-print-id" value="{{ default_print.id }}">
                     <div class="sizes-grid" id="prints-container">
                         {% for p in prints %}
-                            <div class="print-text-btn print-btn {% if p.id == default_print.id %}active-print-text{% endif %} {% if not p.in_stock %}out-of-stock-print{% endif %}" 
+                            <div class="print-text-btn print-btn {% if p.id == default_print.id %}active-print-text{% endif %}" 
                                  onclick="selectPrint('{{ p.id }}', '{{ p.main_image.url }}', [
                                      {% for g in p.gallery_images.all %}'{{ g.image.url }}'{% if not forloop.last %}, {% endif %}{% endfor %}
                                  ])">
                                 {{ p.name }}
-                                {% if not p.in_stock %}
-                                    <div style="position: absolute; top: 50%; left: -5%; width: 110%; height: 2px; background-color: #ff4d4d; transform: translateY(-50%) rotate(-10deg); z-index: 3;"></div>
-                                {% endif %}
                             </div>
                         {% endfor %}
                     </div>
@@ -540,18 +527,13 @@
                     <span class="option-label" style="display: block; margin-bottom: 10px;">اختر المقاس:</span>
                     <div class="sizes-grid">
                         {% for variant in variants %}
-                            <div class="variant-wrapper" 
-                                 data-print-id="{{ variant.product_print_id|default:'' }}" 
-                                 data-stock="{{ variant.stock }}" 
-                                 style="display: none;">
-                                <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box">
-                                <label for="variant_{{ variant.id }}" class="size-btn {% if variant.stock == 0 %}out-of-stock-size{% endif %}" style="flex-direction: column; line-height: 1.2;">
-                                    <span>{{ variant.size }}</span>
-                                    {% if variant.weight_range %}
-                                        <span style="font-size: 0.75rem; opacity: 0.9; font-family: 'Cairo', sans-serif; margin-top: 4px;">{{ variant.weight_range }} كجم</span>
-                                    {% endif %}
-                                </label>
-                            </div>
+                            <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box">
+                            <label for="variant_{{ variant.id }}" class="size-btn {% if variant.stock == 0 %}out-of-stock-size{% endif %}" style="flex-direction: column; line-height: 1.2;">
+                                <span>{{ variant.size }}</span>
+                                {% if variant.weight_range %}
+                                    <span style="font-size: 0.75rem; opacity: 0.9; font-family: 'Cairo', sans-serif; margin-top: 4px;">{{ variant.weight_range }} كجم</span>
+                                {% endif %}
+                            </label>
                         {% empty %}
                             <p style="color: var(--gold); font-family: var(--font-body); margin: 0;">عفواً، لا توجد مقاسات متاحة حالياً.</p>
                         {% endfor %}
@@ -763,38 +745,7 @@
         
         // Change main image
         changeMainImage(0);
-        
-        // Update available sizes for this print
-        updateSizesDisplay(printId);
     }
-
-    function updateSizesDisplay(selectedPrintId) {
-        const variantWrappers = document.querySelectorAll('.variant-wrapper');
-        
-        // Deselect any currently checked variant
-        document.querySelectorAll('.variant-box').forEach(box => box.checked = false);
-        
-        variantWrappers.forEach(wrapper => {
-            const printId = wrapper.getAttribute('data-print-id');
-            // Show if it belongs to selected print OR if it's a general size (printId === 'None' or empty)
-            if (printId === selectedPrintId || printId === 'None' || printId === '') {
-                wrapper.style.display = 'block';
-            } else {
-                wrapper.style.display = 'none';
-            }
-        });
-    }
-
-    // Call updateSizesDisplay on page load if a default print exists
-    document.addEventListener('DOMContentLoaded', function() {
-        const initialPrintId = document.getElementById('selected-print-id')?.value;
-        if (initialPrintId) {
-            updateSizesDisplay(initialPrintId);
-        } else {
-            // Show all general sizes if no prints exist
-            document.querySelectorAll('.variant-wrapper').forEach(wrapper => wrapper.style.display = 'block');
-        }
-    });
 
     function updateImageDisplay() {
         if (galleryImages.length === 0) return;

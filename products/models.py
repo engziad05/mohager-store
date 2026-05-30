@@ -92,14 +92,6 @@ class ProductPrint(models.Model):
     def __str__(self):
         return f'{self.product.name_en} - {self.name}'
 
-    @property
-    def in_stock(self):
-        variants = self.variants.all()
-        if not variants:
-            return True
-        return any(v.stock > 0 for v in variants)
-
-
 class ProductImage(models.Model):
     product = models.ForeignKey(
         Product,
@@ -132,15 +124,6 @@ class ProductVariant(models.Model):
         Product,
         related_name='variants',
         on_delete=models.CASCADE,
-    )
-    product_print = models.ForeignKey(
-        ProductPrint,
-        related_name='variants',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        verbose_name='الطبعه (اختياري)',
-        help_text='لو المقاس ده لطبعه معينة، اختارها من هنا.',
     )
     size = models.CharField(max_length=10, blank=True, null=True, verbose_name='المقاس')
     weight_range = models.CharField(max_length=50, blank=True, null=True, verbose_name='الوزن (من-إلى)', help_text='مثال: 70-85')
