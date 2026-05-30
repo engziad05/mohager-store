@@ -51,6 +51,10 @@ class OrderService:
                 price=cart_item.product.base_price,
             )
 
+        if shipping_data.get('phone') and hasattr(user, 'phone'):
+            user.phone = shipping_data.get('phone')
+            user.save(update_fields=['phone'])
+
         cart.items.all().delete()
         cache.delete(f'user_cart_{user.id}')
         return order
@@ -123,6 +127,10 @@ def complete_storefront_checkout(
         address_record.apartment = post_data.get('apartment')
         address_record.landmark = post_data.get('landmark')
         address_record.save()
+
+        if post_data.get('phone') and hasattr(user, 'phone'):
+            user.phone = post_data.get('phone')
+            user.save(update_fields=['phone'])
 
     for item in lines:
         OrderItem.objects.create(
