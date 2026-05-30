@@ -1,6 +1,11 @@
 from unfold.admin import ModelAdmin, TabularInline
 
-from .models import Category, Product, ProductImage, ProductVariant
+from .models import Category, Product, ProductImage, ProductVariant, ProductPrint
+
+
+class ProductPrintInline(TabularInline):
+    model = ProductPrint
+    extra = 1
 
 
 class ProductImageInline(TabularInline):
@@ -31,7 +36,7 @@ class ProductAdmin(ModelAdmin):
             'fields': ('color_ar', 'color_en', 'color_code')
         }),
     )
-    inlines = [ProductVariantInline, ProductImageInline]
+    inlines = [ProductVariantInline, ProductPrintInline, ProductImageInline]
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related('category').prefetch_related('variants')

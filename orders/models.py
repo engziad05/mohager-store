@@ -79,6 +79,13 @@ class OrderItem(models.Model):
         blank=True,
         verbose_name='المتغير (مقاس/لون)',
     )
+    product_print = models.ForeignKey(
+        'products.ProductPrint',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='الطبعه',
+    )
     quantity = models.PositiveIntegerField(default=1, verbose_name='الكمية')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='السعر وقت الشراء')
 

@@ -136,14 +136,18 @@ def product_detail(request, product_id):
 
     def _fetch_product():
         product = get_object_or_404(
-            Product.objects.select_related('category').prefetch_related('variants', 'images'),
+            Product.objects.select_related('category').prefetch_related('variants', 'images', 'prints__gallery_images'),
             id=product_id,
         )
+        prints = list(product.prints.all())
+        default_print = next((p for p in prints if p.is_default), prints[0] if prints else None)
         # Extract prefetched data while it's hot
         return {
             'product': product,
             'variants': list(product.variants.all()),
             'extra_images': list(product.images.all()),
+            'prints': prints,
+            'default_print': default_print,
         }
 
     cached = get_or_cache(
@@ -158,6 +162,8 @@ def product_detail(request, product_id):
         'product': cached['product'],
         'variants': cached['variants'],
         'extra_images': cached['extra_images'],
+        'prints': cached['prints'],
+        'default_print': cached['default_print'],
         'cart_count': cd['cart_count'],
     }
     return render(request, 'store/product_detail.html', context)
@@ -280,6 +286,7 @@ def cart_drawer(request):
 def add_to_cart(request, product_id):
     if request.method == 'POST':
         variant_id = request.POST.get('variant_id')
+        print_id = request.POST.get('print_id')
 
         if not variant_id:
             messages.error(request, 'من فضلك اختر المقاس أولاً!')
@@ -287,6 +294,11 @@ def add_to_cart(request, product_id):
 
         product = get_object_or_404(Product, id=product_id)
         variant = get_object_or_404(ProductVariant, id=variant_id)
+        
+        product_print = None
+        if print_id:
+            from products.models import ProductPrint
+            product_print = get_object_or_404(ProductPrint, id=print_id, product=product)
 
         try:
             assert_sufficient_variant_stock(variant, 1)
@@ -308,6 +320,7 @@ def add_to_cart(request, product_id):
             cart=cart,
             product=product,
             variant=variant,
+            product_print=product_print,
         )
 
         if not created:

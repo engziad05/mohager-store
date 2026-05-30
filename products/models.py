@@ -74,11 +74,40 @@ class Product(models.Model):
         return round((discount / self.compare_at_price) * 100)
 
 
+class ProductPrint(models.Model):
+    product = models.ForeignKey(
+        Product,
+        related_name='prints',
+        on_delete=models.CASCADE,
+    )
+    name = models.CharField(max_length=100, verbose_name='اسم الطبعه')
+    icon = models.ImageField(upload_to='products/prints/icons/', verbose_name='صورة الزر (أيقونة)', help_text='صورة مصغرة تظهر كزر')
+    main_image = models.ImageField(upload_to='products/prints/main/', verbose_name='الصورة الرئيسية للطبعه')
+    is_default = models.BooleanField(default=False, verbose_name='طبعه افتراضية')
+
+    class Meta:
+        db_table = 'store_productprint'
+        verbose_name = 'Product Print'
+        verbose_name_plural = 'Product Prints'
+
+    def __str__(self):
+        return f'{self.product.name_en} - {self.name}'
+
+
 class ProductImage(models.Model):
     product = models.ForeignKey(
         Product,
         related_name='images',
         on_delete=models.CASCADE,
+    )
+    product_print = models.ForeignKey(
+        ProductPrint,
+        related_name='gallery_images',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name='الطبعه (اختياري)',
+        help_text='لو الصورة دي تابعة لطبعه معينة، اختارها من هنا.',
     )
     image = models.ImageField(
         upload_to='products/gallery/',

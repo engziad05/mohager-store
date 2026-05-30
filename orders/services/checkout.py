@@ -47,6 +47,7 @@ class OrderService:
                 order=order,
                 product=cart_item.product,
                 variant=cart_item.variant,
+                product_print=cart_item.product_print,
                 quantity=cart_item.quantity,
                 price=cart_item.product.base_price,
             )
@@ -137,6 +138,7 @@ def complete_storefront_checkout(
             order=order,
             product=item.product,
             variant=item.variant,
+            product_print=item.product_print,
             quantity=item.quantity,
             price=item.product.base_price,
         )

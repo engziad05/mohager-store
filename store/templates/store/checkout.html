@@ -341,7 +341,9 @@
                         {% for item in cart_items %}
                         <div class="summary-item">
                             <div class="s-item-img">
-                                {% if item.product.image %}
+                                {% if item.product_print and item.product_print.main_image %}
+                                    <img src="{{ item.product_print.main_image.url }}" alt="{{ item.product.name_ar }}">
+                                {% elif item.product.image %}
                                     <img src="{{ item.product.image.url }}" alt="{{ item.product.name_ar }}">
                                 {% else %}
                                     <span style="color: #888; font-size: 0.7rem;">لا توجد</span>
@@ -349,7 +351,7 @@
                             </div>
                             <div class="s-item-details">
                                 <h4>{{ item.product.name_ar }}</h4>
-                                <p>اللون: {{ item.product.color_ar|default:"-" }} - المقاس: {{ item.variant.size|default:"-" }}</p>
+                                <p>{% if item.product_print %}الطبعه: {{ item.product_print.name }} - {% endif %}اللون: {{ item.product.color_ar|default:"-" }} - المقاس: {{ item.variant.size|default:"-" }}</p>
                                 <p>الكمية: {{ item.quantity }}</p>
                             </div>
                             <div class="s-item-price">

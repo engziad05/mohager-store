@@ -296,7 +296,9 @@
                     
                     <div class="item-info-col">
                         <div class="item-img">
-                            {% if item.product.image %}
+                            {% if item.product_print and item.product_print.main_image %}
+                                <img src="{{ item.product_print.main_image.url }}" alt="{{ item.product.name_ar }}">
+                            {% elif item.product.image %}
                                 <img src="{{ item.product.image.url }}" alt="{{ item.product.name_ar }}">
                             {% else %}
                                 <span style="color: #888; font-size: 0.8rem;">لا توجد</span>
@@ -317,6 +319,13 @@
                                 <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: {{ item.product.color_code }}; border: 1px solid rgba(255,255,255,0.2);"></span>
                                 {% endif %}
                             </p>
+                            {% if item.product_print %}
+                            <p style="display: flex; align-items: center; gap: 8px;">الطبعه: 
+                                <span style="color: var(--gold); font-weight: bold; font-family: var(--font-body);">
+                                    {{ item.product_print.name }}
+                                </span>
+                            </p>
+                            {% endif %}
                         </div>
                     </div>
 
