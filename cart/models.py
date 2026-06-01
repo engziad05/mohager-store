@@ -41,4 +41,7 @@ class CartItem(models.Model):
 
     @property
     def total_price(self):
-        return self.product.base_price * self.quantity
+        item_price = self.product.base_price
+        if self.product_print and self.product_print.price is not None:
+            item_price = self.product_print.price
+        return item_price * self.quantity

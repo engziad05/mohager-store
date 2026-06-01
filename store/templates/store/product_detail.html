@@ -515,7 +515,7 @@
                             <div class="print-text-btn print-btn {% if p.id == default_print.id %}active-print-text{% endif %}" 
                                  onclick="selectPrint('{{ p.id }}', '{{ p.main_image.url }}', [
                                      {% for g in p.gallery_images.all %}'{{ g.image.url }}'{% if not forloop.last %}, {% endif %}{% endfor %}
-                                 ])">
+                                 ], '{{ p.price|default_if_none:"" }}')">
                                 {{ p.name }}
                             </div>
                         {% endfor %}
@@ -712,8 +712,9 @@
     {% endif %}
     
     let currentImgIndex = 0;
+    const baseProductPrice = {{ product.base_price|default:"0" }};
 
-    function selectPrint(printId, mainImageUrl, galleryUrls) {
+    function selectPrint(printId, mainImageUrl, galleryUrls, printPriceStr) {
         document.getElementById('selected-print-id').value = printId;
         
         // Update active class on print buttons
@@ -745,6 +746,16 @@
         
         // Change main image
         changeMainImage(0);
+
+        // Update Price
+        const currentPriceEl = document.querySelector('.current-price');
+        if (currentPriceEl) {
+            if (printPriceStr && printPriceStr.trim() !== 'None' && printPriceStr.trim() !== '') {
+                currentPriceEl.innerText = parseFloat(printPriceStr).toFixed(2).replace(/\.00$/, '') + ' ج.م';
+            } else {
+                currentPriceEl.innerText = baseProductPrice.toFixed(2).replace(/\.00$/, '') + ' ج.م';
+            }
+        }
     }
 
     function updateImageDisplay() {

@@ -82,6 +82,14 @@ class ProductPrint(models.Model):
     )
     name = models.CharField(max_length=100, verbose_name='اسم الطبعه')
     main_image = models.ImageField(upload_to='products/prints/main/', verbose_name='الصورة الرئيسية للطبعه')
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        verbose_name='سعر الطبعه',
+        help_text='إذا تم تحديده، سيتم استخدام هذا السعر بدلاً من السعر الأساسي للمنتج.',
+    )
     is_default = models.BooleanField(default=False, verbose_name='طبعه افتراضية')
 
     class Meta:
