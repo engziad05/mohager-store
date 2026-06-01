@@ -45,7 +45,7 @@ class ProductAdmin(ModelAdmin):
     readonly_fields = ['discount_percent_display']
     
     class Media:
-        js = ('js/admin_product.js',)
+        js = ('js/admin_product_v2.js',)
         
     fieldsets = (
         ('Product details', {
