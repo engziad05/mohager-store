@@ -1,29 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Feature 1: Confirm before delete in inlines
-    document.body.addEventListener('click', function(e) {
-        // Intercept inline remove links (usually a element with class inline-deletelink)
-        if (e.target.classList.contains('inline-deletelink') || e.target.closest('.inline-deletelink')) {
-            if (!confirm('Are you sure you want to remove this item? (هل أنت متأكد من حذف هذا العنصر؟)')) {
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
-            }
-        }
-    });
-
-    document.body.addEventListener('change', function(e) {
-        // Intercept delete checkboxes
-        if (e.target.type === 'checkbox' && e.target.name && e.target.name.endsWith('-DELETE')) {
-            if (e.target.checked) {
-                if (!confirm('Are you sure you want to delete this item? (هل أنت متأكد من حذف هذا العنصر؟)')) {
-                    e.preventDefault();
-                    e.target.checked = false;
-                }
-            }
-        }
-    });
-
-    // Feature 2: Sync Product Print names to Product Image dropdowns
+    // Feature 1: Sync Product Print names to Product Image dropdowns
     function syncPrintNamesToDropdowns() {
         // 1. Get all current print names from the ProductPrint inline
         const printRows = document.querySelectorAll('#prints-group .dynamic-prints:not(.deleted), #productprint_set-group .dynamic-productprint_set:not(.deleted)');
