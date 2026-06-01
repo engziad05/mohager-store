@@ -127,27 +127,6 @@
         letter-spacing: 0.5px;
     }
 
-    /* تنسيق الملاحظات في الوصف (زي ملاحظة الذكاء الاصطناعي) */
-    .ai-note {
-        background: rgba(200, 169, 110, 0.08);
-        border-right: 4px solid var(--gold);
-        padding: 15px 20px;
-        margin: 20px 0;
-        border-radius: 8px;
-        color: #fff;
-        font-weight: bold;
-        font-size: 1.05rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        line-height: 1.8;
-    }
-
-    .ai-note strong {
-        color: var(--gold);
-    }
-
     .options-section {
         width: 100%;
         border-top: 1px solid rgba(255,255,255,0.05);
@@ -915,35 +894,7 @@
                     confirmButtonText: 'حسناً'
                 });
             }
+        });
     }
-    
-    // 5. تمييز وتنسيق أي ملاحظة (ملاحظة:) في الوصف تلقائياً
-    document.addEventListener('DOMContentLoaded', function() {
-        const prodDesc = document.querySelector('.prod-desc');
-        if (prodDesc) {
-            let html = prodDesc.innerHTML;
-            
-            // تحقق إذا كان الوصف يحتوي على الكلمة
-            if (html.includes('ملاحظة:')) {
-                // تقسيم النص بدقة بناءً على كلمة ملاحظة: وكل ما بعدها حتى نهاية السطر أو الفقرة
-                // استخدمنا تعبير نمطي (Regex) للبحث عن كلمة ملاحظة وما يليها
-                const noteRegex = /(<br\s*\/?>)?\s*(ملاحظة:.*?(?=(?:<br\s*\/?>|<\/p>|$)))/g;
-                
-                let newHtml = html.replace(noteRegex, function(match, br, noteText) {
-                    // نزيل كلمة ملاحظة: الأساسية لأننا سنضعها بتنسيق خاص
-                    let cleanText = noteText.replace('ملاحظة:', '').trim();
-                    
-                    // نرجع الصندوق الجديد بالتصميم
-                    return (br ? br : '') + 
-                           '<div class="ai-note" style="display: flex; align-items: flex-start; gap: 10px; background: rgba(200, 169, 110, 0.08); border-right: 4px solid var(--gold); padding: 15px 20px; margin: 20px 0; border-radius: 8px; color: #fff; font-weight: bold; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); line-height: 1.8;">' +
-                           '<strong style="color: var(--gold); white-space: nowrap;"><i class="fas fa-exclamation-circle" style="margin-left: 5px;"></i>ملاحظة:</strong>' +
-                           '<span>' + cleanText + '</span>' +
-                           '</div>';
-                });
-                
-                prodDesc.innerHTML = newHtml;
-            }
-        }
-    });
 </script>
 {% endblock %}
