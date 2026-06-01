@@ -10,11 +10,18 @@ document.addEventListener("DOMContentLoaded", function() {
         printRows.forEach(row => {
             if (row.classList.contains('empty-form')) return;
             const nameInput = row.querySelector('input[name$="-name"]');
-            const idInput = row.querySelector('input[name$="-id"]');
             
             if (nameInput && nameInput.value.trim() !== '') {
+                // More robust way to find the ID input (it might be outside the row wrapper in some admin themes)
+                let prefix = row.id;
+                if (!prefix) {
+                    const match = nameInput.name.match(/(.*)-name$/);
+                    if (match) prefix = match[1];
+                }
+                const idInput = document.querySelector(`input[name="${prefix}-id"]`);
+                
                 // Determine ID if exists, otherwise generate a temporary one based on index
-                let printId = idInput && idInput.value ? idInput.value : 'new_' + row.id;
+                let printId = idInput && idInput.value ? idInput.value : 'new_' + prefix;
                 let printName = nameInput.value.trim();
                 availablePrints.push({ id: printId, name: printName });
             }
@@ -70,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Or maybe they just want the UX to be smoother.
                 
                 option.text = print.name;
-                if (print.id === currentValue || print.name === selectedText) {
+                if (print.id === currentValue || (selectedText && selectedText.endsWith(print.name))) {
                     option.selected = true;
                 }
                 dropdown.appendChild(option);
