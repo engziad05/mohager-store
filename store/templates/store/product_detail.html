@@ -127,6 +127,27 @@
         letter-spacing: 0.5px;
     }
 
+    /* تنسيق الملاحظات في الوصف (زي ملاحظة الذكاء الاصطناعي) */
+    .ai-note {
+        background: rgba(200, 169, 110, 0.08);
+        border-right: 4px solid var(--gold);
+        padding: 15px 20px;
+        margin: 20px 0;
+        border-radius: 8px;
+        color: #fff;
+        font-weight: bold;
+        font-size: 1.05rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        line-height: 1.8;
+    }
+
+    .ai-note strong {
+        color: var(--gold);
+    }
+
     .options-section {
         width: 100%;
         border-top: 1px solid rgba(255,255,255,0.05);
@@ -894,7 +915,34 @@
                     confirmButtonText: 'حسناً'
                 });
             }
-        });
     }
+    
+    // 5. تمييز وتنسيق أي ملاحظة (ملاحظة:) في الوصف تلقائياً
+    document.addEventListener('DOMContentLoaded', function() {
+        const prodDesc = document.querySelector('.prod-desc');
+        if (prodDesc) {
+            // نبحث عن كل الفقرات أو النصوص
+            const elements = prodDesc.querySelectorAll('p, div, span');
+            elements.forEach(el => {
+                if (el.innerHTML.includes('ملاحظة:')) {
+                    // عشان لو كانت جوه فقرة كبيرة نفصلها، أو لو هي فقرة لوحدها نديها الكلاس
+                    el.classList.add('ai-note');
+                    // نقدر كمان نخلي كلمة ملاحظة لونها دهبي
+                    el.innerHTML = el.innerHTML.replace('ملاحظة:', '<strong><i class="fas fa-exclamation-circle" style="margin-left: 5px;"></i>ملاحظة:</strong>');
+                }
+            });
+            
+            // في حالة لو كان النص مكتوب بدون وسوم P
+            const childNodes = Array.from(prodDesc.childNodes);
+            childNodes.forEach(node => {
+                if (node.nodeType === Node.TEXT_NODE && node.textContent.includes('ملاحظة:')) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'ai-note';
+                    wrapper.innerHTML = node.textContent.replace('ملاحظة:', '<strong><i class="fas fa-exclamation-circle" style="margin-left: 5px;"></i>ملاحظة:</strong>');
+                    prodDesc.replaceChild(wrapper, node);
+                }
+            });
+        }
+    });
 </script>
 {% endblock %}
