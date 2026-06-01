@@ -24,6 +24,10 @@ class ProductAdmin(ModelAdmin):
     search_fields = ['name_ar', 'name_en']
     list_select_related = ['category']
     readonly_fields = ['discount_percent_display']
+    
+    class Media:
+        js = ('js/admin_product.js',)
+        
     fieldsets = (
         ('Product details', {
             'fields': ('category', 'name_ar', 'name_en', 'description_ar', 'description_en', 'image', 'is_active')
