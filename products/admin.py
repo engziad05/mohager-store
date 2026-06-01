@@ -1,6 +1,24 @@
 from unfold.admin import ModelAdmin, TabularInline
+from django import forms
 
 from .models import Category, Product, ProductImage, ProductVariant, ProductPrint
+
+
+class ProductImageForm(forms.ModelForm):
+    class Meta:
+        model = ProductImage
+        fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super().clean()
+        raw_val = self.data.get(self.add_prefix('product_print'))
+        
+        if raw_val and str(raw_val).startswith('new_'):
+            if 'product_print' in self._errors:
+                del self._errors['product_print']
+            cleaned_data['product_print'] = None
+            
+        return cleaned_data
 
 
 class ProductPrintInline(TabularInline):
@@ -11,6 +29,7 @@ class ProductPrintInline(TabularInline):
 class ProductImageInline(TabularInline):
     model = ProductImage
     extra = 1
+    form = ProductImageForm
 
 
 class ProductVariantInline(TabularInline):
@@ -41,6 +60,33 @@ class ProductAdmin(ModelAdmin):
         }),
     )
     inlines = [ProductVariantInline, ProductPrintInline, ProductImageInline]
+
+    def save_related(self, request, form, formsets, change):
+        super().save_related(request, form, formsets, change)
+        
+        print_formset = None
+        image_formset = None
+        
+        for fs in formsets:
+            if fs.model == ProductPrint:
+                print_formset = fs
+            elif fs.model == ProductImage:
+                image_formset = fs
+                
+        if print_formset and image_formset:
+            print_map = {}
+            for print_form in print_formset.forms:
+                if print_form.instance and print_form.instance.pk:
+                    print_map[print_form.prefix] = print_form.instance
+                    
+            for image_form in image_formset.forms:
+                if image_form.instance and image_form.instance.pk:
+                    raw_val = request.POST.get(image_form.add_prefix('product_print'))
+                    if raw_val and str(raw_val).startswith('new_'):
+                        print_prefix = str(raw_val).replace('new_', '')
+                        if print_prefix in print_map:
+                            image_form.instance.product_print = print_map[print_prefix]
+                            image_form.instance.save()
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related('category').prefetch_related('variants')

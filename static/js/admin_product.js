@@ -85,16 +85,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Alert if user selects a new print that hasn't been saved yet
-    document.body.addEventListener('change', function(e) {
-        if (e.target.matches('#images-group select[name$="-product_print"], #productimage_set-group select[name$="-product_print"]')) {
-            if (e.target.value.startsWith('new_')) {
-                alert('يجب حفظ المنتج أولاً قبل اختيار هذه الطبعة الجديدة للصور. يرجى الضغط على "حفظ ومتابعة التعديل" أولاً.');
-                e.target.value = ''; // Reset selection
-            }
-        }
-    });
-    
+    // We allow the user to select new prints. 
+    // The backend now handles saving the new print and linking the image to it automatically.
     // Initial sync
     setTimeout(syncPrintNamesToDropdowns, 500);
 
