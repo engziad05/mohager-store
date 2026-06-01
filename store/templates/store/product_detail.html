@@ -748,12 +748,26 @@
         changeMainImage(0);
 
         // Update Price
-        const currentPriceEl = document.querySelector('.current-price');
-        if (currentPriceEl) {
+        const priceStack = document.querySelector('.product-price-stack');
+        const compareAtPrice = {{ product.compare_at_price|default:"0" }};
+        
+        if (priceStack) {
+            let activePrice = baseProductPrice;
             if (printPriceStr && printPriceStr.trim() !== 'None' && printPriceStr.trim() !== '') {
-                currentPriceEl.innerText = parseFloat(printPriceStr).toFixed(2).replace(/\.00$/, '') + ' ج.م';
+                activePrice = parseFloat(printPriceStr);
+            }
+            
+            if (compareAtPrice > activePrice) {
+                let discount = Math.round(((compareAtPrice - activePrice) / compareAtPrice) * 100);
+                priceStack.innerHTML = `
+                    <span class="discount-badge">-${discount}%</span>
+                    <span class="current-price">${activePrice.toFixed(2).replace(/\.00$/, '')} ج.م</span>
+                    <span class="old-price">${compareAtPrice.toFixed(2).replace(/\.00$/, '')} ج.م</span>
+                `;
             } else {
-                currentPriceEl.innerText = baseProductPrice.toFixed(2).replace(/\.00$/, '') + ' ج.م';
+                priceStack.innerHTML = `
+                    <span class="current-price">${activePrice.toFixed(2).replace(/\.00$/, '')} ج.م</span>
+                `;
             }
         }
     }
