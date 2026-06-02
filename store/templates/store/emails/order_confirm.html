@@ -92,7 +92,7 @@
                       <tr>
                         <td style="padding-left:18px;">
                           <span style="color:rgba(255,255,255,0.4); font-size:12px;">المقاس</span><br>
-                          <span style="color:#f4ecd8; font-size:14px; font-weight:bold;">{{ item.variant.size }}</span>
+                          <span style="color:#f4ecd8; font-size:14px; font-weight:bold;">{{ item.variant.size|default:"-" }}</span>
                         </td>
                         <td style="padding-left:18px;">
                           <span style="color:rgba(255,255,255,0.4); font-size:12px;">الكمية</span><br>
@@ -100,7 +100,7 @@
                         </td>
                         <td style="padding-left:18px;">
                           <span style="color:rgba(255,255,255,0.4); font-size:12px;">اللون</span><br>
-                          <span style="color:#f4ecd8; font-size:14px; font-weight:bold;">{{ item.product.color_ar }}</span>
+                          <span style="color:#f4ecd8; font-size:14px; font-weight:bold;">{% if item.product_color %}{{ item.product_color.name_ar }}{% else %}{{ item.product.color_ar|default:"-" }}{% endif %}</span>
                         </td>
                         <td>
                           <span style="color:rgba(255,255,255,0.4); font-size:12px;">السعر</span><br>

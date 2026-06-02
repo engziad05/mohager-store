@@ -296,7 +296,9 @@
                     
                     <div class="item-info-col">
                         <div class="item-img">
-                            {% if item.product_print and item.product_print.main_image %}
+                            {% if item.product_color and item.product_color.main_image %}
+                                <img src="{{ item.product_color.main_image.url }}" alt="{{ item.product.name_ar }}">
+                            {% elif item.product_print and item.product_print.main_image %}
                                 <img src="{{ item.product_print.main_image.url }}" alt="{{ item.product.name_ar }}">
                             {% elif item.product.image %}
                                 <img src="{{ item.product.image.url }}" alt="{{ item.product.name_ar }}">
