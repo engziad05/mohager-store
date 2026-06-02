@@ -1,31 +1,31 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Feature 1: Sync Product Color names to Product Image dropdowns
     function syncColorNamesToDropdowns() {
-        // 1. Get all current color names from the ProductColor inline
-        const colorRows = document.querySelectorAll('#colors-group .dynamic-colors:not(.deleted), #productcolor_set-group .dynamic-productcolor_set:not(.deleted)');
-        
         let availableColors = [];
         
-        colorRows.forEach(row => {
-            if (row.classList.contains('empty-form')) return;
-            const nameInput = row.querySelector('input[name$="-name_ar"]');
+        const nameInputs = document.querySelectorAll('input[name$="-name_ar"]');
+        
+        nameInputs.forEach(nameInput => {
+            const row = nameInput.closest('tr, .inline-related, .dynamic-form');
+            if (row && (row.classList.contains('empty-form') || row.classList.contains('deleted') || row.style.display === 'none')) {
+                return;
+            }
             
-            if (nameInput && nameInput.value.trim() !== '') {
-                let prefix = row.id;
-                if (!prefix) {
-                    const match = nameInput.name.match(/(.*)-name_ar$/);
-                    if (match) prefix = match[1];
+            if (nameInput.value.trim() !== '') {
+                const match = nameInput.name.match(/(.*)-name_ar$/);
+                if (match) {
+                    const prefix = match[1];
+                    const idInput = document.querySelector(`input[name="${prefix}-id"]`);
+                    
+                    let colorId = idInput && idInput.value ? idInput.value : 'new_' + prefix;
+                    let colorName = nameInput.value.trim();
+                    availableColors.push({ id: colorId, name: colorName });
                 }
-                const idInput = document.querySelector(`input[name="${prefix}-id"]`);
-                
-                let colorId = idInput && idInput.value ? idInput.value : 'new_' + prefix;
-                let colorName = nameInput.value.trim();
-                availableColors.push({ id: colorId, name: colorName });
             }
         });
 
         // 2. Update all ProductImage dropdowns
-        const imageDropdowns = document.querySelectorAll('#images-group select[name$="-product_color"], #productimage_set-group select[name$="-product_color"]');
+        const imageDropdowns = document.querySelectorAll('select[name$="-product_color"]');
         
         imageDropdowns.forEach(dropdown => {
             const currentValue = dropdown.value;
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Attach event listeners for typing in Color names
     document.body.addEventListener('input', function(e) {
-        if (e.target.matches('#colors-group input[name$="-name_ar"], #productcolor_set-group input[name$="-name_ar"]')) {
+        if (e.target.matches('input[name$="-name_ar"]')) {
             syncColorNamesToDropdowns();
         }
     });
