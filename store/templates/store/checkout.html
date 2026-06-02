@@ -351,7 +351,7 @@
                             </div>
                             <div class="s-item-details">
                                 <h4>{{ item.product.name_ar }}</h4>
-                                <p>اللون: {% if item.product_print %}{{ item.product_print.name }}{% else %}{{ item.product.color_ar|default:"-" }}{% endif %} - المقاس: {{ item.variant.size|default:"-" }}</p>
+                                <p>اللون: {% if item.product_color %}{{ item.product_color.name_ar }}{% else %}{{ item.product.color_ar|default:"-" }}{% endif %} - المقاس: {{ item.variant.size|default:"-" }}</p>
                                 <p>الكمية: {{ item.quantity }}</p>
                             </div>
                             <div class="s-item-price">

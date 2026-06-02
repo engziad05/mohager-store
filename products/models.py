@@ -26,13 +26,7 @@ class Product(models.Model):
     name_en = models.CharField(max_length=200, verbose_name='اسم المنتج (إنجليزي)')
     description_ar = models.TextField(verbose_name='الوصف (عربي)', blank=True)
     description_en = models.TextField(verbose_name='الوصف (إنجليزي)', blank=True)
-    color_ar = models.CharField(max_length=50, blank=True, null=True, verbose_name='اللون (عربي)')
-    color_en = models.CharField(max_length=50, blank=True, null=True, verbose_name='اللون (إنجليزي)')
-    color_code = models.CharField(
-        max_length=20,
-        verbose_name='كود اللون (Hex)',
-        default='#111111',
-    )
+
     base_price = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -74,31 +68,33 @@ class Product(models.Model):
         return round((discount / self.compare_at_price) * 100)
 
 
-class ProductPrint(models.Model):
+class ProductColor(models.Model):
     product = models.ForeignKey(
         Product,
-        related_name='prints',
+        related_name='colors',
         on_delete=models.CASCADE,
     )
-    name = models.CharField(max_length=100, verbose_name='اسم الطبعه')
-    main_image = models.ImageField(upload_to='products/prints/main/', verbose_name='الصورة الرئيسية للطبعه')
+    name_ar = models.CharField(max_length=100, verbose_name='اسم اللون (عربي)')
+    name_en = models.CharField(max_length=100, verbose_name='اسم اللون (إنجليزي)', blank=True, null=True)
+    color_code = models.CharField(max_length=20, verbose_name='كود اللون (Hex)', default='#111111')
+    main_image = models.ImageField(upload_to='products/colors/main/', verbose_name='الصورة الرئيسية للون')
     price = models.DecimalField(
         max_digits=10,
         decimal_places=2,
         null=True,
         blank=True,
-        verbose_name='سعر الطبعه',
+        verbose_name='سعر اللون',
         help_text='إذا تم تحديده، سيتم استخدام هذا السعر بدلاً من السعر الأساسي للمنتج.',
     )
-    is_default = models.BooleanField(default=False, verbose_name='طبعه افتراضية')
+    is_default = models.BooleanField(default=False, verbose_name='لون افتراضي')
 
     class Meta:
-        db_table = 'store_productprint'
-        verbose_name = 'Product Print'
-        verbose_name_plural = 'Product Prints'
+        db_table = 'store_productcolor'
+        verbose_name = 'Product Color'
+        verbose_name_plural = 'Product Colors'
 
     def __str__(self):
-        return f'{self.product.name_en} - {self.name}'
+        return f'{self.product.name_en} - {self.name_ar}'
 
 class ProductImage(models.Model):
     product = models.ForeignKey(
@@ -106,14 +102,14 @@ class ProductImage(models.Model):
         related_name='images',
         on_delete=models.CASCADE,
     )
-    product_print = models.ForeignKey(
-        ProductPrint,
+    product_color = models.ForeignKey(
+        ProductColor,
         related_name='gallery_images',
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        verbose_name='الطبعه (اختياري)',
-        help_text='لو الصورة دي تابعة لطبعه معينة، اختارها من هنا.',
+        verbose_name='اللون (اختياري)',
+        help_text='لو الصورة دي تابعة للون معين، اختارها من هنا.',
     )
     image = models.ImageField(
         upload_to='products/gallery/',
@@ -141,4 +137,4 @@ class ProductVariant(models.Model):
         db_table = 'store_productvariant'
 
     def __str__(self):
-        return f'{self.product.name_en} - {self.size} - {self.product.color_en}'
+        return f'{self.product.name_en} - {self.size}'

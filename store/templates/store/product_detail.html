@@ -499,9 +499,10 @@
             
             <div class="options-section" style="width: 100%; display: flex; flex-direction: column; gap: 15px;">
                 
-                {% if prints %}
+                {% if colors %}
                 <div class="option-group">
                     <span class="option-label" style="display: block; margin-bottom: 10px;">اختر اللون:</span>
+                </div>
                 {% else %}
                 <div class="option-group">
                     <span class="option-label" style="display: block; margin-bottom: 8px;">اللون: <span style="color: var(--cream); font-weight: bold;">{{ product.color_ar|default:"-" }}</span></span>
@@ -511,18 +512,19 @@
                 </div>
                 {% endif %}
                 
-                {% if prints %}
+                {% if colors %}
                 <div class="option-group" style="margin-top: -15px;">
 
 
-                    <input type="hidden" name="print_id" id="selected-print-id" value="{{ default_print.id }}">
-                    <div class="sizes-grid" id="prints-container">
-                        {% for p in prints %}
-                            <div class="print-text-btn print-btn {% if p.id == default_print.id %}active-print-text{% endif %}" 
-                                 onclick="selectPrint('{{ p.id }}', '{{ p.main_image.url }}', [
-                                     {% for g in p.gallery_images.all %}'{{ g.image.url }}'{% if not forloop.last %}, {% endif %}{% endfor %}
-                                 ], '{{ p.price|default_if_none:"" }}')">
-                                {{ p.name }}
+                    <input type="hidden" name="color_id" id="selected-color-id" value="{{ default_color.id }}">
+                    <div class="sizes-grid" id="colors-container">
+                        {% for c in colors %}
+                            <div class="print-text-btn print-btn {% if c.id == default_color.id %}active-print-text{% endif %}" 
+                                 onclick="selectColor('{{ c.id }}', '{{ c.main_image.url }}', [
+                                     {% for g in c.gallery_images.all %}'{{ g.image.url }}'{% if not forloop.last %}, {% endif %}{% endfor %}
+                                 ], '{{ c.price|default_if_none:"" }}')"
+                                 style="padding: 0; width: 45px; height: 45px; border-radius: 50%; overflow: hidden; border: 2px solid {% if c.id == default_color.id %}var(--gold){% else %}rgba(255,255,255,0.2){% endif %}; background-color: {{ c.color_code|default:'#111' }}; display: flex; align-items: center; justify-content: center;"
+                                 title="{{ c.name_ar }}">
                             </div>
                         {% endfor %}
                     </div>
@@ -709,9 +711,9 @@
 <script>
     // 1. نظام الصور وتقليبها بالسحب (Swipe)
     const galleryImages = [];
-    {% if prints %}
-        {% if default_print and default_print.main_image %}galleryImages.push('{{ default_print.main_image.url }}');{% endif %}
-        {% for img in default_print.gallery_images.all %}galleryImages.push('{{ img.image.url }}');{% endfor %}
+    {% if colors %}
+        {% if default_color and default_color.main_image %}galleryImages.push('{{ default_color.main_image.url }}');{% endif %}
+        {% for img in default_color.gallery_images.all %}galleryImages.push('{{ img.image.url }}');{% endfor %}
     {% else %}
         {% if product.image %}galleryImages.push('{{ product.image.url }}');{% endif %}
         {% for img in extra_images %}galleryImages.push('{{ img.image.url }}');{% endfor %}

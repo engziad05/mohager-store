@@ -313,10 +313,10 @@
                             <p>المقاس: <span>{{ item.variant.size|default:"-" }}</span></p>
                             <p style="display: flex; align-items: center; gap: 8px;">اللون: 
                                 <span style="color: var(--gold); font-weight: bold; font-family: var(--font-body);">
-                                    {% if item.product_print %}{{ item.product_print.name }}{% else %}{{ item.product.color_ar|default:"-" }}{% endif %}
+                                    {% if item.product_color %}{{ item.product_color.name_ar }}{% else %}{{ item.product.color_ar|default:"-" }}{% endif %}
                                 </span>
-                                {% if not item.product_print and item.product.color_code %}
-                                <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: {{ item.product.color_code }}; border: 1px solid rgba(255,255,255,0.2);"></span>
+                                {% if item.product_color and item.product_color.color_code %}
+                                <span style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: {{ item.product_color.color_code }}; border: 1px solid rgba(255,255,255,0.2);"></span>
                                 {% endif %}
                             </p>
                         </div>

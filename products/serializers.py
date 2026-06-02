@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Product, ProductImage, ProductVariant
+from .models import Category, Product, ProductImage, ProductVariant, ProductColor
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -14,9 +14,16 @@ class ProductVariantSerializer(serializers.ModelSerializer):
         fields = ['id', 'size', 'stock']
 
 
+class ProductColorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductColor
+        fields = ['id', 'name_ar', 'name_en', 'color_code', 'main_image', 'price', 'is_default']
+
+
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
     variants = ProductVariantSerializer(many=True, read_only=True)
+    colors = ProductColorSerializer(many=True, read_only=True)
     category_name = serializers.CharField(source='category.name_en', read_only=True)
     has_discount = serializers.BooleanField(read_only=True)
     discount_percent = serializers.IntegerField(read_only=True)
@@ -33,9 +40,6 @@ class ProductSerializer(serializers.ModelSerializer):
             'compare_at_price',
             'has_discount',
             'discount_percent',
-            'color_en',
-            'color_ar',
-            'color_code',
             'image',
             'category',
             'category_name',
@@ -43,6 +47,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'created_at',
             'images',
             'variants',
+            'colors',
         ]
 
 

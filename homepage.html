@@ -1,0 +1,1739 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T7FY4EKJQT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T7FY4EKJQT');
+</script>
+    <link rel="stylesheet" href="/static/tokens.css">
+    <!-- استدعاء خطوط مُهاجر من جوجل (Aref Ruqaa & Cairo & Cinzel) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;600&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/htmx.org@1.9.11"></script>
+    <style>
+    /* Reset عشان منبقاش في margin تايع للمتصفح */
+    * {
+        box-sizing: border-box;
+    }
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* السطر ده مهم عشان اللوجو يعرف إنه مطبوع على الصفحة دي */
+    body {
+        position: relative;
+    }
+
+   
+</style>
+
+<!-- البلوك ده سحري: ده المكان اللي كل صفحة هتحط فيه التعديل بتاعها -->
+
+<style>
+    .bg-watermark {
+        background-position: 40% 60% !important;
+    }
+</style>
+
+
+<!-- البلوك ده سحري: ده المكان اللي كل صفحة هتحط فيه التعديل بتاعها -->
+
+
+    <meta charset="UTF-8">
+    <!-- تحسين محركات البحث (SEO) -->
+    <meta name="description" content="مُهاجر | Mohager - علامة تجارية رائدة في عالم الموضة تدمج بين الأصالة العربية والتصميم العصري. تسوق أحدث الأزياء الآن.">
+    <meta name="keywords" content="مهاجر, أزياء, ملابس, موضة عربية, تيشيرتات, تسوق أونلاين, أزياء ستريت وير, مصر">
+    <meta name="author" content="مُهاجر">
+
+    <!-- إعدادات المشاركة على السوشيال ميديا والواتساب (Open Graph) -->
+    <meta property="og:title" content="مُهاجر | أزياء تعبر عن هويتك">
+    <meta property="og:description" content="اكتشف أحدث الكوليكشنز من مُهاجر. جودة استثنائية وتصاميم عربية عصرية تناسب يومك.">
+    <!-- حط مسار صورة اللوجو بتاعك هنا عشان تظهر في الشير -->
+    <meta property="og:image" content="https://mohagerstore.com/static/images/logo.png"> 
+    <meta property="og:url" content="https://mohagerstore.com/">
+    <meta property="og:type" content="website">
+
+    <!-- إعدادات المشاركة على تويتر/X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="مُهاجر | أزياء تعبر عن هويتك">
+    <meta name="twitter:description" content="اكتشف أحدث الكوليكشنز من مُهاجر. جودة استثنائية وتصاميم عربية عصرية تناسب يومك.">
+    <meta name="twitter:image" content="https://mohagerstore.com/static/images/logo.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مُهاجر | الصفحة الرئيسية</title>
+    
+    <!-- ايقونة الموقع في المتصفح -->
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+     
+
+ 
+    
+    /* 1. بنهدي النافبار خالص */
+    header, 
+    .navbar,
+    .site-header {
+        z-index: 99 !important; 
+    }
+
+    /* 2. بنجبر السلة تبدأ من سقف الشاشة وتغطي على الكل */
+    .cart-sidebar, 
+    #cart-sidebar {
+        position: fixed !important;
+        top: 0 !important; /* السر هنا: بنلغي أي مسافة من فوق */
+        right: 0 !important;
+        height: 100vh !important;
+        z-index: 999999 !important; /* أعلى رقم ممكن */
+    }
+
+    /* 3. الضباب الأسود يغطي الموقع كله ما عدا السلة */
+    .cart-overlay,
+    .overlay {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        z-index: 999998 !important; 
+    }
+
+body {
+    position: relative;
+   
+}
+
+/* ========================================== */
+/* القاعدة الأساسية في البيز */
+.bg-watermark {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-image: url('/static/images/logo-Photoroom.png');
+    background-repeat: no-repeat;
+    
+    /* السر هنا: هيقرأ القيمة من متغير اسمه watermark-pos */
+    /* ولو الصفحة مفيهاش متغير، هيهرب للقيمة الافتراضية (center) */
+    background-position: var(--watermark-pos, center center) !important;
+    
+    background-size: 35%; 
+    opacity: 0.2 !important;
+    z-index: -9999;
+    pointer-events: none;
+    transition: background-position 0.5s ease; /* حركة ناعمة لما يتنقل بين الصفحات */
+}
+
+@media (max-width: 768px) {
+    .bg-watermark {
+        background-size: 85%; /* تكبير الواترمارك في الموبايل */
+    }
+}
+    
+/* ========================================== */
+        /* ستايل الهيدر (Navbar) - Glassmorphism & Premium UI */
+        /* ========================================== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1050;
+            background-color: rgba(10, 10, 10, 0.85) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(200, 169, 110, 0.15);
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.35s ease;
+        }
+        nav.nav-hidden {
+            transform: translateY(-100%);
+        }
+
+        /* تكبير كلمة مُهاجر (Anchor بصري) */
+        .logo {
+            font-family: var(--font-ar);
+            font-size: 2.9rem; /* كبرناها أكتر */
+            color: var(--gold);
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(200, 169, 110, 0.3);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* تضييق المسافات بين اللينكات (الرئيسية - المتجر) */
+        .nav-links-container {
+            display: flex;
+            gap: 15px; /* المسافات أضيق وأشيك */
+            align-items: center;
+            font-size: 1.1rem;
+        }
+
+        /* حركة الخط الدهبي والـ Glow تحت اللينكات */
+        .nav-link-item {
+            position: relative;
+            color: var(--cream);
+            text-decoration: none;
+            padding-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+        .nav-link-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 50%;
+            transform: translateX(50%);
+            width: 0;
+            height: 2px;
+            background-color: var(--gold);
+            box-shadow: 0 0 8px var(--gold); 
+            transition: all 0.3s ease;
+        }
+        .nav-link-item:hover {
+            color: var(--gold);
+        }
+        .nav-link-item:hover::after {
+            width: 100%;
+        }
+
+        /* تكبير الأيقونات (الباسكت واليوزر) */
+        .nav-icon {
+            font-size: 1.6rem !important; /* الأيقونات بقت واضحة */
+            color: var(--gold);
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        .nav-icon:hover {
+            transform: translateY(-3px);
+            filter: drop-shadow(0 0 8px rgba(201,167,92,0.6));
+        }
+
+        /* نظام الشبكة اللي هيرص الكروت جنب بعض */
+    .products-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px 20px 80px 20px !important; /* زودنا 80 بيكسل مساحة تنفس كاملة من تحت */
+        direction: rtl;
+    }
+
+    /* ديزاين كارت المنتج نفسه */
+    .product-card {
+        background-color: var(--bg-surface);
+        border: 1px solid #222;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* حركة فخمة لما تقف بالماوس على الكارت */
+    .product-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+        border-color: var(--gold);
+    }
+
+    /* المربع اللي جواه الصورة (عشان يخلي كل الصور مقاس واحد) */
+    .product-img-wrapper {
+        width: 100%;
+        aspect-ratio: 1 / 1; /* بيخلي الصورة مربعة بالظبط */
+        background-color: #1a1a1a; /* لون خلفية الصورة */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .product-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* بيخلي الصورة تملى المربع بشياكة من غير ما تتمط */
+        transition: 0.5s ease;
+    }
+
+    .product-card:hover .product-img-wrapper img {
+        transform: scale(1.05); /* زووم خفيف على الصورة في الهوفر */
+    }
+
+    /* قسم النصوص والزرار جوه الكارت */
+    .product-details {
+        padding: 15px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+        /* 1. تعريف متغيرات الخطوط عشان لو حبيت تغيرها بعدين تغيرها من هنا بس */
+        :root {
+            --font-heading: 'Aref Ruqaa', serif; /* خط العناوين والفخامة */
+            --font-body: 'Cairo', sans-serif;    /* خط القراءة والزراير */
+            --bg-base: #0D0D0B;
+            --bg-surface: #1C1C15;
+            --gold: #C8A96E;
+            --gold-dark: #8B6914;
+            --sand: #E8D5B0;
+            --cream: #F2EDE4;
+            --umber: #4A3728;
+            --font-ar: 'Aref Ruqaa', serif;
+            --font-en: 'Cinzel', serif; /* خط الإنجليزي الفخم */
+        }
+
+        /* 2. تعميم خط القراءة المريح على الموقع كله (النصوص، الزراير، الروابط) */
+        body, p, a, span, button, input, textarea, label {
+            font-family: var(--font-body);
+        }
+
+        /* 3. تعميم خط الفخامة على كل العناوين في الموقع */
+        h1, h2, h3, h4, h5, h6, .brand-title {
+            font-family: var(--font-heading);
+            font-weight: 700; 
+            color: var(--gold); 
+        }
+
+        /* 4. كلاس مخصوص لكلمة "مُهاجر" في أي حتة في الموقع */
+        .mohager-brand {
+            font-family: var(--font-heading) !important;
+            font-weight: normal;
+            color: var(--gold);
+        }
+
+        /* إجبار الصفحة كلها على اللون الأسود الفخم */
+        body {
+            background-color: var(--bg-base) !important;
+            color: var(--cream) !important;
+            margin: 0;
+        }
+
+        /* تظبيط اللينكات عشان نلغي الأزرق خالص */
+        a {
+            color: var(--sand);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        a:hover {
+            color: var(--gold);
+        }
+
+        /* ستايل الهيدر (Navbar) */
+        nav {
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--umber);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-ar);
+            font-size: 2.2rem;
+            color: var(--gold);
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(200, 169, 110, 0.2);
+        }
+
+        /* ستايل الفوتر - حطينا بوردر لونه أمبر كبداية لحد ما نضيف صورة الزخرفة */
+        footer {
+            background-color: var(--bg-surface);
+            border-top: 2px solid var(--umber);
+            padding: 40px 5%;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        /* إجبار كل حقول الإدخال والنصوص المساعدة على استخدام خط كايرو */
+        input, textarea, select, label, .form-control, small, .help-text {
+            font-family: 'Cairo', sans-serif !important;
+        }
+
+        input[type="email"], input[type="tel"], input[dir="ltr"] {
+            font-family: 'Cairo', sans-serif !important;
+        }
+
+        /* إجبار رسائل التحذير والـ SweetAlert على استخدام خط كايرو الواضح */
+        .swal2-popup, .swal2-title, .swal2-html-container, .swal2-confirm, .alert-msg {
+            font-family: 'Cairo', sans-serif !important;
+            font-weight: 600 !important;
+        }
+
+        .swal2-title {
+            font-size: 1.8rem !important;
+        }
+
+        /* ستايل المودال بتاع الإشعارات */
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.7); 
+            backdrop-filter: blur(4px); 
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInOverlay 0.3s ease forwards;
+        }
+
+        .custom-modal-box {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--gold);
+            border-radius: 20px; 
+            padding: 40px 30px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.9);
+            animation: popInModal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+            line-height: 1;
+        }
+        .close-modal-btn:hover {
+            color: var(--gold);
+        }
+
+        .modal-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .modal-icon-container i {
+            font-size: 5rem;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(200, 169, 110, 0.3); 
+        }
+
+        .modal-messages p {
+            font-family: var(--font-ar), sans-serif;
+            font-size: 1.5rem;
+            color: var(--cream);
+            font-weight: bold;
+            margin: 0;
+        }
+
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes popInModal {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="">
+
+<div class="bg-watermark"></div>
+
+    
+
+    <!-- Navbar -->
+    <nav>
+        <div style="display: flex; gap: 20px; align-items: center;">
+            <a href="#" 
+               hx-get="/cart/drawer/" 
+               hx-target="#cart-drawer-content" 
+               hx-trigger="click" 
+               onclick="openCart()" 
+               style="position: relative; text-decoration: none; display: flex; align-items: center;">
+                <i class="fas fa-shopping-bag nav-icon"></i>
+                <span id="cart-badge" style="position: absolute; top: -8px; right: -12px; background: var(--gold); color: var(--bg-base); font-size: 0.7rem; padding: 2px 6px; border-radius: 50%; font-weight: bold; font-family: var(--font-en);">
+                    0
+                </span>
+            </a>
+        </div>
+
+       
+        <!-- الديف المظبوط للوجو (رجعنا الأنيميشن ولغينا الهوامش اللي بتكبر النافبار) -->
+        <div style="display: flex; align-items: center;">
+            <a href="/" style="text-decoration: none; display: flex; align-items: center; margin: 0; padding: 0;">
+                <h1 class="logo" style="margin: 0; line-height: 1;">مهاجر</h1>
+            </a>
+        </div>
+
+        <div class="nav-links-container">
+            <a href="/" class="nav-link-item">الرئيسية</a>
+            <a href="/shop" class="nav-link-item">المتجر</a>
+            
+            <span style="color: rgba(255,255,255,0.2);">|</span> 
+            
+            
+                <a href="/accounts/login/" class="nav-link-item" style="display: flex; align-items: center; gap: 5px;">
+                    <i class="fas fa-user nav-icon" style="font-size: 1.3rem !important;"></i> الدخول
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- المحتوى -->
+    <main style="min-height: 60vh; padding: 20px;">
+        
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<style>
+    /* ========================================== */
+    /* 1. السلايدر والخلفية (Cinematic Edition) */
+    /* ========================================== */
+    .hero-slider {
+        width: calc(100% + 40px); /* كسر حدود الـ main padding */
+        margin-left: -20px;
+        margin-right: -20px;
+        margin-top: -20px;
+        min-height: calc(100vh - 20px);
+        background-color: #0a0a08; /* Fallback dark background */
+        border-bottom: 1px solid rgba(201, 167, 92, 0.2);
+        position: relative;
+        direction: rtl;
+        overflow: hidden;
+    }
+
+    /* خلفية كل سلايد منفصلة عشان نقدر نغير الصورة ديناميكياً */
+    .cinematic-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        z-index: 1;
+        animation: cinematicZoom 30s linear infinite alternate;
+        filter: brightness(0.6) contrast(1.2); /* Optimized filter instead of blur */
+    }
+
+    @keyframes cinematicZoom {
+        0% { transform: scale(1); }
+        100% { transform: scale(1.08); }
+    }
+
+    /* Ambient Glowing Waves (Optimized CSS Gradients) */
+    .ambient-glow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        background: radial-gradient(circle at 40% 60%, rgba(201, 167, 92, 0.12) 0%, transparent 60%),
+                    radial-gradient(circle at 80% 20%, rgba(201, 167, 92, 0.08) 0%, transparent 50%);
+        animation: ambientShift 15s ease-in-out infinite alternate;
+        pointer-events: none;
+    }
+
+    @keyframes ambientShift {
+        0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+        100% { transform: translate(-3%, 4%) scale(1.05); opacity: 1; }
+    }
+
+    #hero-particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 3;
+        pointer-events: none;
+    }
+
+    /* ========================================== */
+    /* 2. النص (اليمين) - التصميم العالمي */
+    /* ========================================== */
+    .slide-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        min-height: calc(100vh - 120px);
+        padding: 40px 12% 100px 0; /* زيادة البادينج تحت يزق المحتوى لفوق بعيد عن الشريط */
+        gap: 30px;
+        box-sizing: border-box;
+        position: relative;
+        z-index: 10;
+    }
+
+    .slide-text {
+        flex: 1;
+        max-width: 520px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: right;
+        padding-left: 20px;
+    }
+
+    .titles-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .slide-text h2 {
+        font-size: 4.5rem;
+        line-height: 1;
+        color: var(--gold, #dcb36a);
+        font-family: var(--font-heading, serif);
+        margin: 0 0 5px 0;
+        text-shadow: 0 0 15px rgba(201, 167, 92, 0.3);
+    }
+
+    .top-logo-text {
+        color: rgba(255, 255, 255, 0.7);
+        font-family: var(--font-en, sans-serif);
+        font-size: 1rem;
+        letter-spacing: 12px;
+        margin-bottom: 15px;
+        margin-left: 12px;
+    }
+
+    .custom-divider {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+    }
+
+    .custom-divider::before,
+    .custom-divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+    }
+
+    .custom-divider::after {
+        background: linear-gradient(to left, rgba(201, 167, 92, 0.4), transparent);
+    }
+
+    .custom-divider::before {
+        background: linear-gradient(to right, rgba(201, 167, 92, 0.4), transparent);
+    }
+
+    .custom-divider .diamond {
+        width: 6px;
+        height: 6px;
+        background: var(--gold, #dcb36a);
+        transform: rotate(45deg);
+        box-shadow: 0 0 8px rgba(201, 167, 92, 0.8);
+    }
+
+    .slide-desc {
+        font-size: 1.15rem;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 20px;
+        font-family: var(--font-body, sans-serif);
+        width: 100%;
+    }
+
+    .action-hint {
+        font-size: 1.05rem;
+        color: rgba(255, 255, 255, 0.95);
+        margin-bottom: 15px;
+        font-family: var(--font-body, sans-serif);
+        font-weight: bold;
+    }
+
+    .slide-btn {
+        background-color: transparent;
+        color: #dcb36a;
+        border: 1px solid #dcb36a;
+        padding: 12px 40px;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 6px;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        font-family: var(--font-body, sans-serif);
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        backdrop-filter: blur(4px);
+    }
+
+    .slide-btn:hover {
+        background-color: #dcb36a;
+        color: #111;
+        box-shadow: 0 0 15px rgba(220, 179, 106, 0.5);
+        transform: translateY(-3px);
+    }
+
+    /* ========================================== */
+    /* 3. الصورة والحلقات الذهبية (اليسار) */
+    /* ========================================== */
+    .slide-image-wrapper {
+        flex: 1;
+        width: 100%;
+        max-width: 55%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        transform: translateX(40px);
+    }
+
+    .slide-image-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 480px;
+        height: 480px;
+        border: 1px solid rgba(201, 167, 92, 0.3);
+        border-radius: 50%;
+        z-index: 1;
+        box-shadow: inset 0 0 40px rgba(201, 167, 92, 0.05);
+    }
+
+    .slide-image-wrapper::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 360px;
+        height: 360px;
+        border: 1px solid rgba(201, 167, 92, 0.15);
+        border-radius: 50%;
+        z-index: 1;
+    }
+
+    .main-logo-img {
+        width: 100% !important;
+        max-width: 420px !important;
+        height: auto;
+        object-fit: contain;
+        position: relative;
+        z-index: 2;
+        filter: drop-shadow(0 0 25px rgba(201, 167, 92, 0.2));
+        mix-blend-mode: screen;
+    }
+
+    /* ========================================== */
+    /* 4. شريط المميزات السفلي */
+    /* ========================================== */
+    .hero-features-bar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 60px;
+        padding: 20px 5%;
+        background: rgba(5, 5, 5, 0.9); /* شريط أسود داكن */
+        border-top: 1px solid rgba(201, 167, 92, 0.2);
+        direction: rtl;
+        position: absolute; /* التعديل هنا: يثبت تحت */
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        box-sizing: border-box;
+        z-index: 10;
+    }
+
+    .hero-feature {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .hero-feature i {
+        color: #dcb36a;
+        font-size: 1.5rem;
+        opacity: 0.9;
+    }
+
+    .feature-text {
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+    }
+
+    .feature-text h4 {
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+        font-size: 0.95rem;
+        font-family: var(--font-body, sans-serif);
+    }
+
+    .feature-text p {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.8rem;
+        margin: 3px 0 0 0;
+    }
+
+    /* ========================================== */
+    /* 5. شبكة المنتجات */
+    /* ========================================== */
+    .products-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0px 20px 60px 20px !important;
+        direction: rtl;
+    }
+
+    .product-card {
+        width: 290px !important;
+        background: transparent !important;
+        border: 1px solid transparent !important;
+        border-radius: 12px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .product-img-wrapper {
+        width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 15px;
+        background-color: transparent;
+    }
+
+    .product-img-wrapper img {
+        width: 100% !important;
+        aspect-ratio: 1 / 1 !important;
+        object-fit: cover !important;
+        display: block;
+        border-radius: 8px;
+    }
+
+    .product-details {
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 !important;
+    }
+
+    .product-details h3 {
+        color: var(--cream, #f5f5f0);
+        font-size: 1.15rem;
+        margin: 0 0 5px 0;
+        font-family: var(--font-body, sans-serif);
+        font-weight: 600;
+    }
+
+    .product-details p.price {
+        color: rgba(200, 169, 110, 0.9);
+        font-size: 1.05rem;
+        margin: 0 0 20px 0;
+        font-family: var(--font-body, sans-serif);
+    }
+
+    .product-price-stack,
+    .price.product-price-stack {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        margin: 0 0 20px 0;
+    }
+
+    .current-price {
+        color: rgba(200, 169, 110, 0.98);
+        font-family: var(--font-en, sans-serif);
+        font-size: 1.12rem;
+        font-weight: 800;
+    }
+
+    .old-price {
+        color: rgba(244, 236, 216, 0.45);
+        font-family: var(--font-en, sans-serif);
+        font-size: 0.9rem;
+        text-decoration: line-through;
+    }
+
+    .discount-badge {
+        background: linear-gradient(135deg, #c8a96e, #8b5cf6);
+        border-radius: 999px;
+        color: #111;
+        font-family: var(--font-en, sans-serif);
+        font-size: 0.75rem;
+        font-weight: 900;
+        padding: 4px 8px;
+    }
+
+    .premium-btn {
+        box-sizing: border-box !important;
+        display: block;
+        width: 100%;
+        background-color: transparent !important;
+        color: var(--gold, #dcb36a) !important;
+        border: 1px solid var(--gold, #dcb36a) !important;
+        border-radius: 6px !important;
+        padding: 10px 0;
+        text-align: center;
+        font-family: var(--font-body, sans-serif);
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .premium-btn:hover {
+        background-color: var(--gold, #dcb36a) !important;
+        color: var(--bg-base, #111) !important;
+    }
+
+    .product-card:hover {
+        transform: translateY(-6px) scale(1.02);
+        background-color: rgba(200, 169, 110, 0.02) !important;
+        box-shadow: 0 15px 40px rgba(200, 169, 110, 0.08);
+    }
+
+    /* ========================================== */
+    /* 6. الموبايل */
+    /* ========================================== */
+    @media (max-width: 992px) {
+        .hero-slider {
+            min-height: auto; /* الغاء الـ 100vh للموبايل */
+            height: auto;
+        }
+
+        .cinematic-bg {
+            background-position: center bottom;
+            background-size: cover;
+            min-height: 100%;
+        }
+
+        .swiper-slide {
+            overflow: hidden;
+        }
+
+        .slide-image-wrapper {
+            max-width: 100%;
+            transform: none;
+            margin-top: 40px;
+        }
+
+        .slide-content {
+            flex-direction: column-reverse;
+            text-align: center;
+            gap: 30px;
+            padding: 40px 20px;
+            min-height: 75vh;
+        }
+
+        .slide-text {
+            align-items: center;
+            text-align: center;
+            padding-left: 0;
+        }
+
+        .slide-text h2 {
+            font-size: 2.5rem;
+        }
+
+        .slide-desc {
+            font-size: 1rem;
+        }
+
+        .main-logo-img {
+            max-width: 280px !important;
+        }
+
+        .slide-image-wrapper::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .slide-image-wrapper::after {
+            width: 220px;
+            height: 220px;
+        }
+
+        .hero-features-bar {
+            position: relative; /* الغاء التثبيت في الموبايل */
+            bottom: auto;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-around;
+            padding: 20px 10px;
+        }
+
+        .hero-feature {
+            width: 45%;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            gap: 8px;
+        }
+
+        .feature-text {
+            align-items: center;
+        }
+
+        .feature-text p {
+            display: none;
+        }
+    }
+</style>
+
+<section class="hero-slider swiper">
+    <div class="swiper-wrapper">
+        
+        <div class="swiper-slide">
+            <!-- Cinematic Background and Ambient Glow layers per slide -->
+            <div class="cinematic-bg" style="background-image: url('/static/images/hero-bg.jpg');"></div>
+            <div class="ambient-glow"></div>
+
+            <div class="slide-content">
+                <div class="slide-text">
+                        <div class="titles-wrapper">
+                            <h2>مُهاجر</h2>
+                            <span class="top-logo-text">M O H A G E R</span>
+                            <div class="custom-divider">
+                                <span class="diamond"></span>
+                            </div>
+                        </div>
+
+                        <p class="slide-desc">هوية عربية بستايل عصري</p>
+
+                        
+                        <p class="action-hint">لطلب من مُهاجر الآن</p>
+                        
+
+                        <a href="https://mohagerstore.com/shop/" class="slide-btn">
+                            <i class="fas fa-arrow-left"></i> اطلب الآن
+                        </a>
+                    </div>
+
+                    
+                    <div class="slide-image-wrapper">
+                        <img src="https://res.cloudinary.com/dxvdsiauj/image/upload/v1/media/hero/logo-Photoroom_oceloy" class="main-logo-img" alt="مُهاجر">
+                    </div>
+                    
+                </div>
+        </div>
+        
+        <div class="swiper-slide">
+            <!-- Cinematic Background and Ambient Glow layers per slide -->
+            <div class="cinematic-bg" style="background-image: url('/static/images/hero-bg.jpg');"></div>
+            <div class="ambient-glow"></div>
+
+            <div class="slide-content">
+                <div class="slide-text">
+                        <div class="titles-wrapper">
+                            <h2>مُهاجر</h2>
+                            <span class="top-logo-text">M O H A G E R</span>
+                            <div class="custom-divider">
+                                <span class="diamond"></span>
+                            </div>
+                        </div>
+
+                        <p class="slide-desc">لطلب الصيفي الان</p>
+
+                        
+                        <p class="action-hint">لطلب من مُهاجر الآن</p>
+                        
+
+                        <a href="https://mohagerstore.com/shop/" class="slide-btn">
+                            <i class="fas fa-arrow-left"></i> اطلب الآن
+                        </a>
+                    </div>
+
+                    
+                    <div class="slide-image-wrapper">
+                        <img src="https://res.cloudinary.com/dxvdsiauj/image/upload/v1/media/hero/aa3700a4-5c54-42f3-bf39-0924eb12ee71_di2pnp" class="main-logo-img" alt="مُهاجر">
+                    </div>
+                    
+                </div>
+        </div>
+        
+    </div>
+
+    <!-- Canvas for Particle System -->
+    <canvas id="hero-particles"></canvas>
+
+    <div class="hero-features-bar">
+        <div class="hero-feature">
+            <i class="fas fa-shield-alt"></i>
+            <div class="feature-text">
+                <h4>هوية موثوقة</h4>
+                <p>علامة تجارية عربية</p>
+            </div>
+        </div>
+        <div class="hero-feature">
+            <i class="far fa-lightbulb"></i>
+            <div class="feature-text">
+                <h4>تصميم مبدع</h4>
+                <p>تصاميم فريدة ومعاصرة</p>
+            </div>
+        </div>
+        <div class="hero-feature">
+            <i class="fas fa-bullseye"></i>
+            <div class="feature-text">
+                <h4>فهم عميق</h4>
+                <p>نهتم بأدق التفاصيل</p>
+            </div>
+        </div>
+        <div class="hero-feature">
+            <i class="fas fa-award"></i>
+            <div class="feature-text">
+                <h4>جودة احترافية</h4>
+                <p>خامات مختارة بعناية</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="swiper-button-next" style="color: #dcb36a; opacity: 0.5;"></div>
+    <div class="swiper-button-prev" style="color: #dcb36a; opacity: 0.5;"></div>
+    <div class="swiper-pagination"></div>
+</section>
+
+<h2
+    style="text-align: center; color: #dcb36a; font-family: var(--font-heading, serif); margin-top: 20px; margin-bottom: 20px; font-size: 2.2rem;">
+    أحدث الإصدارات</h2>
+
+<section>
+    
+    <div class="products-grid">
+        
+        <div class="product-card" data-aos="fade-up" data-aos-duration="800">
+            <a href="/product/9/" class="product-img-wrapper">
+                
+                <img src="https://res.cloudinary.com/dxvdsiauj/image/upload/v1/media/products/8_o9mxhv" alt="مهاجر" loading="lazy">
+                
+            </a>
+            <div class="product-details">
+                <h3>مهاجر</h3>
+                <div class="price product-price-stack">
+<span class="discount-badge">-31%</span>
+<span class="current-price">550.00 ج.م</span>
+<span class="old-price">800.00 ج.م</span>
+
+</div>
+                <a href="/product/9/" class="premium-btn">التفاصيل</a>
+            </div>
+        </div>
+        
+        <div class="product-card" data-aos="fade-up" data-aos-duration="800">
+            <a href="/product/10/" class="product-img-wrapper">
+                
+                <img src="https://res.cloudinary.com/dxvdsiauj/image/upload/v1/media/products/back_q01qfh" alt="مهاجر" loading="lazy">
+                
+            </a>
+            <div class="product-details">
+                <h3>مهاجر</h3>
+                <div class="price product-price-stack">
+<span class="discount-badge">-31%</span>
+<span class="current-price">550.00 ج.م</span>
+<span class="old-price">800.00 ج.م</span>
+
+</div>
+                <a href="/product/10/" class="premium-btn">التفاصيل</a>
+            </div>
+        </div>
+        
+        <div class="product-card" data-aos="fade-up" data-aos-duration="800">
+            <a href="/product/8/" class="product-img-wrapper">
+                
+                <img src="https://res.cloudinary.com/dxvdsiauj/image/upload/v1/media/products/44_d1gu8t" alt="مهاجر" loading="lazy">
+                
+            </a>
+            <div class="product-details">
+                <h3>مهاجر</h3>
+                <div class="price product-price-stack">
+<span class="discount-badge">-31%</span>
+<span class="current-price">550.00 ج.م</span>
+<span class="old-price">800.00 ج.م</span>
+
+</div>
+                <a href="/product/8/" class="premium-btn">التفاصيل</a>
+            </div>
+        </div>
+        
+        <div class="product-card" data-aos="fade-up" data-aos-duration="800">
+            <a href="/product/11/" class="product-img-wrapper">
+                
+                <img src="https://res.cloudinary.com/dxvdsiauj/image/upload/v1/media/products/gg_jbj4c0" alt="مهاجر" loading="lazy">
+                
+            </a>
+            <div class="product-details">
+                <h3>مهاجر</h3>
+                <div class="price product-price-stack">
+<span class="discount-badge">-31%</span>
+<span class="current-price">550.00 ج.م</span>
+<span class="old-price">800.00 ج.م</span>
+
+</div>
+                <a href="/product/11/" class="premium-btn">التفاصيل</a>
+            </div>
+        </div>
+        
+    </div>
+    
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // تهيئة Swiper
+    var swiper = new Swiper(".hero-slider", {
+        loop: true,
+        autoplay: { delay: 6000, disableOnInteraction: false }, // أبطأنا الحركة لتناسب الجو السينمائي
+        pagination: { el: ".swiper-pagination", clickable: true },
+        navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+    });
+    AOS.init({ once: true });
+
+    // نظام الجزيئات (Particles) السينمائي
+    document.addEventListener("DOMContentLoaded", function() {
+        const canvas = document.getElementById('hero-particles');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let particles = [];
+        
+        // تقليل الجزيئات في الموبايل عشان الأداء
+        const isMobile = window.innerWidth < 768;
+        const particleCount = isMobile ? 25 : 60;
+
+        function resize() {
+            width = canvas.parentElement.clientWidth;
+            height = canvas.parentElement.clientHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedY = Math.random() * 0.3 + 0.1;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.opacity = Math.random() * 0.5 + 0.1;
+                this.pulseSpeed = Math.random() * 0.02 + 0.01;
+                this.pulseDir = Math.random() > 0.5 ? 1 : -1;
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                
+                // Pulse opacity
+                this.opacity += this.pulseSpeed * this.pulseDir;
+                if (this.opacity > 0.6 || this.opacity < 0.1) this.pulseDir *= -1;
+
+                if (this.y < 0) {
+                    this.y = height;
+                    this.x = Math.random() * width;
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(201, 167, 92, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    });
+</script>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- الفوتر (Premium Dark Design) -->
+    <!-- ========================================== -->
+    <style>
+    .site-footer {
+        background-color: #0b0b0b;
+        color: var(--cream);
+        position: relative;
+        padding-top: 0;
+        margin-top: 50px;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 20px;
+        padding-right: 20px;
+        font-family: var(--font-body);
+        direction: rtl;
+        z-index: 10;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Subtle Background Texture */
+    .site-footer::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-image: url('/static/images/horse.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 40%;
+        opacity: 0.015; /* Extremely low opacity */
+        filter: blur(5px);
+        pointer-events: none;
+        z-index: -1;
+        clip-path: inset(0); /* Contain the blur without clipping children of .site-footer */
+    }
+
+    .footer-top-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 60px;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(to right, transparent, rgba(200, 169, 107, 0.5), transparent);
+        box-shadow: 0 0 10px rgba(200, 169, 107, 0.2);
+        position: relative;
+    }
+
+    .footer-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: flex-start;
+        padding: 0 5%;
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+
+    .footer-section {
+        flex: 1;
+        min-width: 250px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .footer-section h4 {
+        color: var(--gold);
+        font-size: 1.15rem;
+        margin-bottom: 25px;
+        font-family: var(--font-heading);
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        opacity: 0.95;
+    }
+
+    /* "مهاجر" Column */
+    .footer-brand {
+        text-align: right;
+        align-items: flex-start;
+    }
+    .footer-brand h2 {
+        color: var(--gold);
+        font-family: var(--font-heading);
+        font-size: 2rem;
+        margin: 0;
+        text-shadow: 0 0 15px rgba(200, 169, 107, 0.4);
+    }
+    .footer-brand .en-logo {
+        letter-spacing: 8px;
+        font-size: 0.75rem;
+        color: var(--gold);
+        margin: 8px 0 20px 0;
+        text-transform: uppercase;
+        opacity: 0.8;
+    }
+    .footer-brand p {
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 0.9rem;
+        margin-bottom: 30px;
+        line-height: 1.6;
+        max-width: 250px;
+    }
+    
+    .social-icons {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-start;
+    }
+    .social-icons a {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid rgba(200, 169, 107, 0.25);
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .social-icons a:hover {
+        background: rgba(200, 169, 107, 0.1);
+        color: var(--gold);
+        border-color: rgba(200, 169, 107, 0.8);
+        box-shadow: 0 0 15px rgba(200, 169, 107, 0.3), inset 0 0 10px rgba(200, 169, 107, 0.1);
+        transform: translateY(-3px);
+    }
+
+    /* "معلومات تهمك" Column */
+    .footer-links {
+        text-align: right;
+        align-items: flex-start;
+    }
+    .footer-links a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: rgba(255, 255, 255, 0.65);
+        text-decoration: none;
+        padding: 8px 0;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+        position: relative;
+        width: 100%;
+        max-width: 180px;
+    }
+    .footer-links a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 0;
+        height: 1px;
+        background: var(--gold);
+        transition: width 0.4s ease;
+        opacity: 0.3;
+    }
+    .footer-links a:hover::after {
+        width: 100%;
+    }
+    
+    .footer-links a i {
+        color: var(--gold);
+        opacity: 0;
+        transform: translateX(10px);
+        transition: all 0.4s ease;
+        font-size: 0.75rem;
+    }
+    .footer-links a:hover {
+        color: var(--gold);
+        transform: translateX(-5px);
+    }
+    .footer-links a:hover i {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    /* "تواصل معنا" Column */
+    .footer-contact {
+        align-items: flex-start;
+        text-align: right;
+    }
+    .footer-contact .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 22px;
+        justify-content: flex-start;
+    }
+    .footer-contact .contact-icon {
+        width: 32px;
+        height: 32px;
+        border: 1px solid rgba(200, 169, 107, 0.25);
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(5px);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+        transition: all 0.3s ease;
+    }
+    .footer-contact .contact-item:hover .contact-icon {
+        background: rgba(200, 169, 107, 0.1);
+        border-color: rgba(200, 169, 107, 0.6);
+        box-shadow: 0 0 10px rgba(200, 169, 107, 0.2);
+    }
+    .footer-contact p {
+        color: rgba(255, 255, 255, 0.7);
+        margin: 0;
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
+    }
+
+    /* Bottom Bar */
+    .footer-bottom {
+        margin-top: 60px;
+        padding: 20px 5%;
+        border-top: 1px solid rgba(255, 255, 255, 0.03);
+        color: rgba(255, 255, 255, 0.35);
+        font-size: 0.85rem;
+        width: 100%;
+        box-sizing: border-box;
+        direction: ltr; /* إعادة تعيين الاتجاه عشان التوسيط يشتغل صح */
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .footer-bottom p {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-align: center;
+    }
+    .adova-credit {
+        position: absolute;
+        right: 5%;
+        top: 50%;
+        transform: translateY(-50%);
+        font-family: var(--font-en, sans-serif);
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.3);
+        letter-spacing: 1px;
+    }
+    .adova-credit span {
+        color: var(--gold);
+        font-weight: bold;
+        letter-spacing: 2px;
+        opacity: 0.8;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+        .footer-container {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 50px;
+        }
+        .footer-section {
+            align-items: center;
+        }
+        .footer-section h4 {
+            text-align: center;
+        }
+        .footer-brand, .footer-links, .footer-contact {
+            text-align: center;
+            align-items: center;
+        }
+        .footer-brand p {
+            margin: 0 auto 30px auto;
+        }
+        .social-icons {
+            justify-content: center;
+        }
+        .footer-links a {
+            justify-content: center;
+            gap: 15px;
+            text-align: center;
+            max-width: 100%;
+        }
+        .footer-links a::after {
+            left: 50%;
+            transform: translateX(-50%);
+            right: auto;
+        }
+        .footer-contact {
+            text-align: center;
+            align-items: center;
+        }
+        .footer-contact .contact-item {
+            justify-content: center;
+            flex-direction: row-reverse;
+        }
+        .footer-bottom {
+            flex-direction: column;
+            gap: 12px;
+        }
+        .adova-credit {
+            position: static;
+            transform: none;
+            margin-top: 5px;
+        }
+    }
+    </style>
+
+    <footer class="site-footer">
+        <div class="footer-top-divider"></div>
+        
+        <div class="footer-container">
+            
+            <!-- 1. مهاجر (يمين الشاشة) -->
+            <div class="footer-section footer-brand">
+                <h2>مهاجر</h2>
+                <p class="en-logo">M O H A G E R</p>
+                <p>هوية عربية بتفاصيل معاصرة.</p>
+                <div class="social-icons">
+                    <a href="https://www.tiktok.com/@mohager82?is_from_webapp=1&amp;sender_device=pc" target="_blank"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.instagram.com/mohagerbrand?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61587125740592" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+
+            <!-- 2. معلومات تهمك (النص) -->
+            <div class="footer-section footer-links">
+                <h4>معلومات تهمك</h4>
+                <a href="/return-policy/" target="_blank">
+                    سياسة الاسترجاع <i class="fas fa-arrow-left"></i>
+                </a>
+                <a href="/terms/" target="_blank">
+                    الشروط والأحكام <i class="fas fa-arrow-left"></i>
+                </a>
+                <a href="/about/" target="_blank">
+                    عن مُهاجر <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+
+            <!-- 3. تواصل معنا (شمال الشاشة) -->
+            <div class="footer-section footer-contact">
+                <h4>تواصل معنا</h4>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                    <p dir="ltr">+20 109 913 8710</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                    <p dir="ltr">mohagerbrand@gmail.com</p>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="footer-bottom">
+            <p>
+                <i class="fas fa-shield-alt" style="color: rgba(200, 169, 107, 0.4); font-size: 1rem;"></i>
+                &copy; 2026 متجر مُهاجر. جميع الحقوق محفوظة.
+            </p>
+            <div class="adova-credit">
+                Created by <span>ADOVA</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- خلفية مظلمة بتظهر ورا الدرج -->
+<div id="cart-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.5); z-index: 999998 !important; backdrop-filter: blur(5px); transition: 0.3s;" onclick="closeCart()"></div>
+
+<!-- الدرج نفسه (هيجي من اليمين) -->
+<div id="cart-drawer" style="position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100vh; background: var(--bg-base); z-index: 999999 !important; box-shadow: -5px 0 15px rgba(0,0,0,0.5); transition: right 0.4s ease-in-out; overflow-y: auto; border-left: 1px solid var(--umber);">    
+    <!-- رأس الدرج (العنوان وزرار القفل) -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--umber);">
+        <h2 style="color: var(--gold); font-family: var(--font-heading); margin: 0; font-size: 1.8rem;">حقيبة التسوق</h2>
+        <button onclick="closeCart()" style="background: none; border: none; color: var(--cream); font-size: 1.5rem; cursor: pointer;">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- المحتوى (المنتجات) هييجي هنا عن طريق HTMX -->
+    <div id="cart-drawer-content" style="padding: 20px;">
+        <!-- جاري تحميل السلة... -->
+    </div>
+</div>
+
+<script>
+    // وظايف بسيطة لفتح وقفل الدرج
+    function openCart() {
+        document.getElementById('cart-drawer').style.right = '0';
+        document.getElementById('cart-overlay').style.display = 'block';
+    }
+    
+    function closeCart() {
+        document.getElementById('cart-drawer').style.right = '-400px';
+        document.getElementById('cart-overlay').style.display = 'none';
+    }
+
+    // HTMX Event: لما أي حركة تحصل في السلة، نفتح الدرج أوتوماتيك
+    document.body.addEventListener('htmx:afterSwap', function(event) {
+        if(event.detail.target.id === 'cart-drawer-content') {
+            openCart();
+        }
+    });
+    // Smart Navbar: show on scroll down, hide on scroll up
+    (function() {
+        const nav = document.querySelector('nav');
+        let lastScroll = 0;
+        const threshold = 60; // minimum scroll before hiding
+
+        window.addEventListener('scroll', function() {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll <= threshold) {
+                // At top of page — always show
+                nav.classList.remove('nav-hidden');
+                return;
+            }
+
+            if (currentScroll > lastScroll) {
+                // Scrolling DOWN → show navbar
+                nav.classList.remove('nav-hidden');
+            } else {
+                // Scrolling UP → hide navbar
+                nav.classList.add('nav-hidden');
+            }
+
+            lastScroll = currentScroll;
+        }, { passive: true });
+    })();
+</script>
+
+</body>
+</html>

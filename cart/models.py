@@ -29,7 +29,7 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     variant = models.ForeignKey(ProductVariant, on_delete=models.SET_NULL, null=True)
-    product_print = models.ForeignKey('products.ProductPrint', on_delete=models.SET_NULL, null=True, blank=True)
+    product_color = models.ForeignKey('products.ProductColor', on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=1)
     added_at = models.DateTimeField(auto_now_add=True)
 
@@ -42,6 +42,6 @@ class CartItem(models.Model):
     @property
     def total_price(self):
         item_price = self.product.base_price
-        if self.product_print and self.product_print.price is not None:
-            item_price = self.product_print.price
+        if self.product_color and self.product_color.price is not None:
+            item_price = self.product_color.price
         return item_price * self.quantity
