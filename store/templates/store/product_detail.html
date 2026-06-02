@@ -490,10 +490,10 @@
             
             <div class="diamond-divider"></div>
 
-           <form hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-drawer-content" style="width: 100%; display: flex; flex-direction: column; gap: 15px; align-items: flex-start;" id="add-to-cart-form">
+           <form hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-drawer-content" style="width: 100%; display: flex; flex-direction: column; gap: 10px; align-items: flex-start;" id="add-to-cart-form">
             {% csrf_token %}
             
-            <div class="options-section" style="width: 100%; display: flex; flex-direction: column; gap: 15px; padding-top: 10px; border-top: none;">
+            <div class="options-section" style="width: 100%; display: flex; flex-direction: column; gap: 20px; padding: 10px 0 0 0; border: none; margin-bottom: 5px;">
                 
                 {% if colors %}
                 <div class="option-group">
@@ -548,7 +548,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="add-to-cart-premium" style="width: 100%; margin-top: 5px;">
+            <button type="submit" class="add-to-cart-premium" style="width: 100%; margin-top: 0;">
                 أضف إلى السلة <i class="fas fa-shopping-bag" style="margin-right: 8px;"></i>
             </button>
         </form>
