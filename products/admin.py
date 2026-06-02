@@ -37,12 +37,10 @@ class MasterStockVariantInline(TabularInline):
     model = MasterStockVariant
     extra = 1
 
-@admin.register(GlobalColor)
 class GlobalColorAdmin(ModelAdmin):
     list_display = ['name_ar', 'name_en', 'color_code']
     search_fields = ['name_ar', 'name_en']
 
-@admin.register(MasterStock)
 class MasterStockAdmin(ModelAdmin):
     list_display = ['category', 'color']
     list_filter = ['category', 'color']

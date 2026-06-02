@@ -28,8 +28,8 @@ class CommonConfig(AppConfig):
         from common.admin import mohager_admin
         from orders.admin import OrderAdmin
         from orders.models import Order
-        from products.admin import CategoryAdmin, ProductAdmin
-        from products.models import Category, Product
+        from products.admin import CategoryAdmin, ProductAdmin, GlobalColorAdmin, MasterStockAdmin
+        from products.models import Category, Product, GlobalColor, MasterStock
         from store.admin import HeroSlideAdmin, StoreSettingAdmin
         from store.models import HeroSlide, StoreSetting
 
@@ -42,6 +42,8 @@ class CommonConfig(AppConfig):
             (HeroSlide, HeroSlideAdmin),
             (Cart, CartAdmin),
             (StoreSetting, StoreSettingAdmin),
+            (GlobalColor, GlobalColorAdmin),
+            (MasterStock, MasterStockAdmin),
         ):
             try:
                 mohager_admin.register(model, admin_class)
