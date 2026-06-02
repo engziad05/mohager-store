@@ -274,56 +274,7 @@
     .add-to-cart-premium:active {
         transform: scale(0.96);
         box-shadow: none;
-        updateImageDisplay();
     }
-
-    // Initialize out-of-stock UI and trigger default color selection
-    function initializeStockUI() {
-        const sizesContainer = document.getElementById('sizes-container');
-        if (sizesContainer) {
-            // Calculate total stock per color
-            const colorStockMap = {};
-            let universalStock = 0;
-            
-            const allSizes = sizesContainer.querySelectorAll('.variant-label-wrapper');
-            allSizes.forEach(label => {
-                const cId = label.getAttribute('data-color-id');
-                const stock = parseInt(label.getAttribute('data-stock') || '0', 10);
-                if (cId) {
-                    colorStockMap[cId] = (colorStockMap[cId] || 0) + stock;
-                } else {
-                    universalStock += stock;
-                }
-            });
-
-            // Apply X shape to totally out-of-stock colors
-            document.querySelectorAll('.color-swatch-btn').forEach(btn => {
-                const btnColorId = btn.getAttribute('data-color-id');
-                if (btnColorId) {
-                    const totalStock = (colorStockMap[btnColorId] || 0) + universalStock;
-                    if (totalStock <= 0) {
-                        btn.classList.add('color-out-of-stock');
-                    }
-                }
-            });
-            
-            // Trigger click on the initial active color to filter sizes
-            const initialActiveColor = document.querySelector('.color-swatch-btn.active-color');
-            if (initialActiveColor && !initialActiveColor.classList.contains('color-out-of-stock')) {
-                // We don't want to smooth scroll on page load, so we temporarily override window.innerWidth check
-                const originalWidth = window.innerWidth;
-                window.innerWidth = 10000; // Pretend it's desktop
-                initialActiveColor.click();
-                window.innerWidth = originalWidth;
-            }
-        }
-    }
-    
-    initializeStockUI();
-
-    // ----------------------------------
-    // Drawer Handling
-    // ---------------------------------- */
 
     /* ---------------------------------- */
     /* Out of Stock Styles */
@@ -1042,5 +993,50 @@
             }
         });
     }
+    // 5. Initialize out-of-stock UI and trigger default color selection
+    function initializeStockUI() {
+        const sizesContainer = document.getElementById('sizes-container');
+        if (sizesContainer) {
+            // Calculate total stock per color
+            const colorStockMap = {};
+            let universalStock = 0;
+            
+            const allSizes = sizesContainer.querySelectorAll('.variant-label-wrapper');
+            allSizes.forEach(label => {
+                const cId = label.getAttribute('data-color-id');
+                const stock = parseInt(label.getAttribute('data-stock') || '0', 10);
+                if (cId) {
+                    colorStockMap[cId] = (colorStockMap[cId] || 0) + stock;
+                } else {
+                    universalStock += stock;
+                }
+            });
+
+            // Apply X shape to totally out-of-stock colors
+            document.querySelectorAll('.color-swatch-btn').forEach(btn => {
+                const btnColorId = btn.getAttribute('data-color-id');
+                if (btnColorId) {
+                    const totalStock = (colorStockMap[btnColorId] || 0) + universalStock;
+                    if (totalStock <= 0) {
+                        btn.classList.add('color-out-of-stock');
+                    }
+                }
+            });
+            
+            // Trigger click on the initial active color to filter sizes
+            const initialActiveColor = document.querySelector('.color-swatch-btn.active-color');
+            if (initialActiveColor && !initialActiveColor.classList.contains('color-out-of-stock')) {
+                // We don't want to smooth scroll on page load, so we temporarily override window.innerWidth check
+                const originalWidth = window.innerWidth;
+                window.innerWidth = 10000; // Pretend it's desktop
+                initialActiveColor.click();
+                window.innerWidth = originalWidth;
+            }
+        }
+    }
+    
+    // Call it right away so UI updates immediately
+    initializeStockUI();
+
 </script>
 {% endblock %}
