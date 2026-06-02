@@ -489,15 +489,11 @@
             <div class="prod-price product-price-stack">{% include "store/partials/product_price.html" %}</div>
             
             <div class="diamond-divider"></div>
-            
-            <div class="prod-desc">
-                {{ product.description_ar|linebreaks|safe }}
-            </div>
 
            <form hx-post="{% url 'add_to_cart' product.id %}" hx-target="#cart-drawer-content" style="width: 100%; display: flex; flex-direction: column; gap: 15px; align-items: flex-start;" id="add-to-cart-form">
             {% csrf_token %}
             
-            <div class="options-section" style="width: 100%; display: flex; flex-direction: column; gap: 15px;">
+            <div class="options-section" style="width: 100%; display: flex; flex-direction: column; gap: 15px; padding-top: 10px; border-top: none;">
                 
                 {% if colors %}
                 <div class="option-group">
@@ -617,6 +613,12 @@
         </script>
         </form>
        
+            <div class="diamond-divider" style="margin: 20px 0 30px 0; width: 100%;"></div>
+            
+            <div class="prod-desc" style="margin-bottom: 0;">
+                {{ product.description_ar|linebreaks|safe }}
+            </div>
+
         </div>
 
         <!-- قسم الصور -->
