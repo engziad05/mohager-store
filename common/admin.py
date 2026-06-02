@@ -83,14 +83,8 @@ class MohagerAdminSite(UnfoldAdminSite):
                     'height': max(8, int((revenue / max_chart_revenue) * 100)) if revenue else 8,
                 })
 
-            low_stock_products = list(
-                Product.objects.filter(is_active=True, variants__stock__lt=5)
-                .select_related('category')
-                .prefetch_related('variants')
-                .annotate(lowest_stock=Min('variants__stock'))
-                .distinct()
-                .order_by('lowest_stock', 'name_en')[:6]
-            )
+            # Product stock is now managed globally via MasterStock, skipping low stock products widget for now.
+            low_stock_products = []
             latest_orders = list(
                 Order.objects.select_related('user').order_by('-created_at')[:8]
             )

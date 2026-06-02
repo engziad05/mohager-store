@@ -60,7 +60,7 @@ def index(request):
         lambda: list(
             Product.objects.filter(is_active=True)
             .select_related('category')
-            .prefetch_related('variants', 'images')[:8]
+            .prefetch_related('images')[:8]
         ),
         timeout=getattr(settings, 'CACHE_TIMEOUT_PRODUCT_LIST', 300),
     )
@@ -93,7 +93,7 @@ def shop(request):
     cache_key = f"shop:products:{category_slug}:{query}"
 
     def _fetch_products():
-        qs = Product.objects.filter(is_active=True).select_related('category').prefetch_related('variants', 'images')
+        qs = Product.objects.filter(is_active=True).select_related('category').prefetch_related('images')
         if category_slug:
             qs = qs.filter(category__slug=category_slug)
         if query:

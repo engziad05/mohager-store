@@ -14,7 +14,7 @@ from common.permissions import IsAdminOrReadOnly
 
 
 class ProductViewSet(CachedViewSetMixin, viewsets.ModelViewSet):
-    queryset = Product.objects.filter(is_active=True).select_related('category').prefetch_related('variants', 'images')
+    queryset = Product.objects.filter(is_active=True).select_related('category').prefetch_related('images')
     serializer_class = ProductSerializer
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
@@ -34,7 +34,7 @@ class ProductViewSet(CachedViewSetMixin, viewsets.ModelViewSet):
         def _fetch():
             related_qs = Product.objects.filter(
                 category=product.category, is_active=True
-            ).select_related('category').prefetch_related('variants', 'images').exclude(pk=product.pk)[:5]
+            ).select_related('category').prefetch_related('images').exclude(pk=product.pk)[:5]
             serializer = self.get_serializer(related_qs, many=True)
             return Response(serializer.data)
 
