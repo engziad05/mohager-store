@@ -355,7 +355,9 @@
                 {% for item in order.orderitem_set.all|default:order.items.all %}
                 <div class="product-mini-card">
                     <div class="prod-img">
-                        {% if item.product.image %}
+                        {% if item.product_color and item.product_color.main_image %}
+                        <img src="{{ item.product_color.main_image.url }}" alt="{{ item.product.name_ar }}">
+                        {% elif item.product.image %}
                         <img src="{{ item.product.image.url }}" alt="{{ item.product.name_ar }}">
                         {% else %}
                         <i class="fas fa-box" style="color:#555; font-size:2rem;"></i>
@@ -364,7 +366,7 @@
                     <div class="prod-details">
                         <h4>{{ item.product.name_ar }}</h4>
                         <p>المقاس: <span>{{ item.variant.size|default:"-" }}</span></p>
-                        <p>اللون: <span>{{ item.product.color_ar|default:"-" }}</span></p>
+                        <p>اللون: <span>{% if item.product_color %}{{ item.product_color.name_ar }}{% else %}{{ item.product.color_ar|default:"-" }}{% endif %}</span></p>
                         <p>الكمية: <span>{{ item.quantity }}</span></p>
                     </div>
                 </div>
