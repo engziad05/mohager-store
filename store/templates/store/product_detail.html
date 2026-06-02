@@ -789,6 +789,15 @@
                 `;
             }
         }
+
+        // Auto-scroll to image on mobile so the user sees the color change
+        if (window.innerWidth <= 768) {
+            const mainImgContainer = document.querySelector('.main-img-container');
+            if (mainImgContainer) {
+                // Scroll smoothly to the image, centering it to leave room for the navbar
+                mainImgContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
     }
 
     function updateImageDisplay() {
