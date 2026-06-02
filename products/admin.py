@@ -36,6 +36,17 @@ class ProductVariantInline(TabularInline):
     model = ProductVariant
     extra = 1
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "color":
+            if hasattr(request, 'resolver_match') and request.resolver_match:
+                object_id = request.resolver_match.kwargs.get('object_id')
+                if object_id:
+                    kwargs["queryset"] = ProductColor.objects.filter(product_id=object_id)
+                else:
+                    # If adding a new Product, no colors exist yet
+                    kwargs["queryset"] = ProductColor.objects.none()
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 class ProductAdmin(ModelAdmin):
     list_display = ['name_en', 'category', 'base_price', 'compare_at_price', 'discount_percent_display', 'stock_summary', 'is_active']

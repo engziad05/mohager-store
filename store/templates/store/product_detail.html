@@ -89,6 +89,45 @@
         padding: 5px 10px;
     }
 
+    .out-of-stock-size {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    /* Out of stock line for sizes */
+    .diagonal-out-of-stock {
+        position: relative;
+        opacity: 0.5;
+        cursor: not-allowed;
+        overflow: hidden;
+    }
+    .diagonal-out-of-stock::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(to top right, transparent calc(50% - 1.5px), #ff4d4d calc(50% - 1.5px), #ff4d4d calc(50% + 1.5px), transparent calc(50% + 1.5px));
+        pointer-events: none;
+    }
+
+    /* Out of stock X for colors */
+    .color-out-of-stock {
+        position: relative;
+        opacity: 0.5;
+        cursor: not-allowed;
+        overflow: hidden;
+    }
+    .color-out-of-stock::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: 
+            linear-gradient(to top right, transparent calc(50% - 1.5px), #ff4d4d calc(50% - 1.5px), #ff4d4d calc(50% + 1.5px), transparent calc(50% + 1.5px)),
+            linear-gradient(to bottom right, transparent calc(50% - 1.5px), #ff4d4d calc(50% - 1.5px), #ff4d4d calc(50% + 1.5px), transparent calc(50% + 1.5px));
+        pointer-events: none;
+        border-radius: 50%;
+    }
+
     .diamond-divider {
         width: 60%;
         height: 1px;
@@ -235,7 +274,56 @@
     .add-to-cart-premium:active {
         transform: scale(0.96);
         box-shadow: none;
+        updateImageDisplay();
     }
+
+    // Initialize out-of-stock UI and trigger default color selection
+    function initializeStockUI() {
+        const sizesContainer = document.getElementById('sizes-container');
+        if (sizesContainer) {
+            // Calculate total stock per color
+            const colorStockMap = {};
+            let universalStock = 0;
+            
+            const allSizes = sizesContainer.querySelectorAll('.variant-label-wrapper');
+            allSizes.forEach(label => {
+                const cId = label.getAttribute('data-color-id');
+                const stock = parseInt(label.getAttribute('data-stock') || '0', 10);
+                if (cId) {
+                    colorStockMap[cId] = (colorStockMap[cId] || 0) + stock;
+                } else {
+                    universalStock += stock;
+                }
+            });
+
+            // Apply X shape to totally out-of-stock colors
+            document.querySelectorAll('.color-swatch-btn').forEach(btn => {
+                const btnColorId = btn.getAttribute('data-color-id');
+                if (btnColorId) {
+                    const totalStock = (colorStockMap[btnColorId] || 0) + universalStock;
+                    if (totalStock <= 0) {
+                        btn.classList.add('color-out-of-stock');
+                    }
+                }
+            });
+            
+            // Trigger click on the initial active color to filter sizes
+            const initialActiveColor = document.querySelector('.color-swatch-btn.active-color');
+            if (initialActiveColor && !initialActiveColor.classList.contains('color-out-of-stock')) {
+                // We don't want to smooth scroll on page load, so we temporarily override window.innerWidth check
+                const originalWidth = window.innerWidth;
+                window.innerWidth = 10000; // Pretend it's desktop
+                initialActiveColor.click();
+                window.innerWidth = originalWidth;
+            }
+        }
+    }
+    
+    initializeStockUI();
+
+    // ----------------------------------
+    // Drawer Handling
+    // ---------------------------------- */
 
     /* ---------------------------------- */
     /* Out of Stock Styles */
@@ -512,7 +600,8 @@
                     <div class="sizes-grid" id="colors-container" style="justify-content: center; gap: 15px;">
                         {% for c in colors %}
                             <div class="color-swatch-btn print-btn {% if c.id == default_color.id %}active-color{% endif %}" 
-                                 onclick="selectColor('{{ c.id }}', '{{ c.name_ar }}', '{{ c.main_image.url }}', [
+                                 data-color-id="{{ c.id }}"
+                                 onclick="if(!this.classList.contains('color-out-of-stock')) selectColor('{{ c.id }}', '{{ c.name_ar }}', '{{ c.main_image.url }}', [
                                      {% for g in c.gallery_images.all %}'{{ g.image.url }}'{% if not forloop.last %}, {% endif %}{% endfor %}
                                  ], '{{ c.price|default_if_none:"" }}')"
                                  style="background-color: {{ c.color_code|default:'#111' }};"
@@ -529,7 +618,7 @@
                     <div class="sizes-grid" id="sizes-container" style="justify-content: center; gap: 12px;">
                         {% for variant in variants %}
                             <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box">
-                            <label for="variant_{{ variant.id }}" class="size-btn {% if variant.stock == 0 %}out-of-stock-size{% endif %}" style="flex-direction: column; line-height: 1.3;">
+                            <label for="variant_{{ variant.id }}" class="size-btn variant-label-wrapper" data-color-id="{{ variant.color.id|default:'' }}" data-stock="{{ variant.stock }}" style="flex-direction: column; line-height: 1.3; display: none;">
                                 <span style="font-weight: bold;">{{ variant.size }}</span>
                                 {% if variant.weight_range %}
                                     <span style="font-size: 0.85rem; opacity: 0.9; font-family: 'Cairo', sans-serif; margin-top: 5px;">{{ variant.weight_range }} كجم</span>
@@ -733,7 +822,43 @@
         document.querySelectorAll('.print-btn').forEach(btn => {
             btn.classList.remove('active-color');
         });
-        event.currentTarget.classList.add('active-color');
+        
+        // Find the specific button we clicked or matching the ID
+        const targetBtn = document.querySelector(`.color-swatch-btn[data-color-id="${colorId}"]`);
+        if (targetBtn) {
+            targetBtn.classList.add('active-color');
+        }
+
+        // Filter sizes by color
+        const sizesContainer = document.getElementById('sizes-container');
+        if (sizesContainer) {
+            const allSizes = sizesContainer.querySelectorAll('.variant-label-wrapper');
+            allSizes.forEach(label => {
+                const variantColorId = label.getAttribute('data-color-id');
+                const stock = parseInt(label.getAttribute('data-stock') || '0', 10);
+                
+                // Show if it belongs to this color OR is universal
+                if (!variantColorId || variantColorId === colorId) {
+                    label.style.display = 'inline-flex';
+                    // Apply diagonal line if out of stock
+                    const radio = document.getElementById(label.getAttribute('for'));
+                    if (stock <= 0) {
+                        label.classList.add('diagonal-out-of-stock');
+                        if (radio) {
+                            radio.disabled = true;
+                            radio.checked = false;
+                        }
+                    } else {
+                        label.classList.remove('diagonal-out-of-stock');
+                        if (radio) radio.disabled = false;
+                    }
+                } else {
+                    label.style.display = 'none';
+                    const radio = document.getElementById(label.getAttribute('for'));
+                    if (radio && radio.checked) radio.checked = false;
+                }
+            });
+        }
 
         // Update gallery images array
         galleryImages.length = 0; // clear array

@@ -129,6 +129,15 @@ class ProductVariant(models.Model):
         related_name='variants',
         on_delete=models.CASCADE,
     )
+    color = models.ForeignKey(
+        ProductColor,
+        related_name='variants',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name='اللون (اختياري)',
+        help_text='حدد اللون الذي ينتمي إليه هذا المقاس والمخزون. اتركها فارغة إذا كان ينطبق على كل الألوان.'
+    )
     size = models.CharField(max_length=10, blank=True, null=True, verbose_name='المقاس')
     weight_range = models.CharField(max_length=50, blank=True, null=True, verbose_name='الوزن (من-إلى)', help_text='مثال: 70-85')
     stock = models.PositiveIntegerField(default=0, verbose_name='المخزون')

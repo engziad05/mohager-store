@@ -300,6 +300,10 @@ def add_to_cart(request, product_id):
             from products.models import ProductColor
             product_color = get_object_or_404(ProductColor, id=color_id, product=product)
 
+        if variant.color and product_color and variant.color.id != product_color.id:
+            messages.error(request, 'عفواً، هذا المقاس غير متوفر باللون المختار!')
+            return redirect('product_detail', product_id=product.id)
+
         try:
             assert_sufficient_variant_stock(variant, 1)
         except ValueError:
