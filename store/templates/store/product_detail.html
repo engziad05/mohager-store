@@ -552,7 +552,7 @@
                         {% for c in colors %}
                             <div class="color-swatch-btn print-btn {% if c.id == default_color.id %}active-color{% endif %}" 
                                  data-color-id="{{ c.id }}"
-                                 onclick="if(!this.classList.contains('color-out-of-stock')) selectColor('{{ c.id }}', '{{ c.name_ar }}', '{{ c.main_image.url }}', [
+                                 onclick="selectColor('{{ c.id }}', '{{ c.name_ar }}', '{{ c.main_image.url }}', [
                                      {% for g in c.gallery_images.all %}'{{ g.image.url }}'{% if not forloop.last %}, {% endif %}{% endfor %}
                                  ], '{{ c.price|default_if_none:"" }}')"
                                  style="background-color: {{ c.color_code|default:'#111' }};"
@@ -1025,7 +1025,7 @@
             
             // Trigger click on the initial active color to filter sizes
             const initialActiveColor = document.querySelector('.color-swatch-btn.active-color');
-            if (initialActiveColor && !initialActiveColor.classList.contains('color-out-of-stock')) {
+            if (initialActiveColor) {
                 // We don't want to smooth scroll on page load, so we temporarily override window.innerWidth check
                 const originalWidth = window.innerWidth;
                 window.innerWidth = 10000; // Pretend it's desktop

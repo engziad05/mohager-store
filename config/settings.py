@@ -177,6 +177,22 @@ UNFOLD = {
                 ],
             },
             {
+                'title': 'Inventory (المخزون)',
+                'icon': 'warehouse',
+                'items': [
+                    {
+                        'title': 'Master Stock',
+                        'icon': 'inventory',
+                        'link': f'{MOHAGER_ADMIN_URL}products/masterstock/',
+                    },
+                    {
+                        'title': 'Global Colors',
+                        'icon': 'palette',
+                        'link': f'{MOHAGER_ADMIN_URL}products/globalcolor/',
+                    },
+                ],
+            },
+            {
                 'title': 'Content',
                 'icon': 'web',
                 'items': [
