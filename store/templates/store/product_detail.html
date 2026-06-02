@@ -356,7 +356,7 @@
     .main-img-container img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* 🔥 دي هتخلي الصورة تفرش وتملى البوكس بالكامل بدون أي حواف */
+        object-fit: contain; /* 🔥 دي هتخلي الصورة تظهر بالكامل بدون ما تتقص */
         transition: transform 0.5s ease; 
     }
 
@@ -392,7 +392,7 @@
     .thumb-item img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* عشان تملى المربع الصغير بالكامل */
+        object-fit: contain; /* عشان تظهر الصورة المصغرة بالكامل */
     }
 
     /* ---------------------------------- */
