@@ -147,9 +147,10 @@
     }
 
     .option-label {
-        color: #888;
-        font-size: 0.95rem;
-        font-family: var(--font-body);
+        color: var(--cream);
+        font-size: 1.2rem;
+        font-family: var(--font-heading);
+        font-weight: bold;
     }
 
     .color-preview {
@@ -248,36 +249,39 @@
     }
 
     /* ---------------------------------- */
-    /* Text Print Buttons Styles */
+    /* Color Swatch Buttons Styles */
     /* ---------------------------------- */
-    .print-text-btn {
-        background: transparent;
-        border: 1px solid rgba(200, 169, 110, 0.4);
-        color: var(--sand);
-        padding: 8px 22px;
-        border-radius: 8px;
+    .color-swatch-btn {
+        padding: 0; 
+        width: 45px; 
+        height: 45px; 
+        border-radius: 50%; 
+        border: 2px solid rgba(255,255,255,0.2);
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
         cursor: pointer;
         transition: all 0.3s ease;
-        font-family: var(--font-en);
-        font-size: 1.1rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
     }
-
-    .print-text-btn.active-print-text {
+    
+    .color-swatch-btn.active-color {
         border-color: var(--gold) !important;
-        color: var(--bg-base) !important;
-        background-color: var(--gold) !important;
-        font-weight: bold;
-        transform: scale(1.05);
-        box-shadow: 0 4px 10px rgba(200, 169, 110, 0.3);
+        transform: scale(1.15);
+        box-shadow: 0 0 15px rgba(200, 169, 110, 0.5);
+    }
+    
+    .color-swatch-btn.active-color::after {
+        content: '\f00c';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        color: #fff;
+        font-size: 1.2rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.6);
     }
 
-    .print-text-btn:hover:not(.active-print-text) {
+    .color-swatch-btn:hover:not(.active-color) {
         border-color: var(--gold);
-        color: var(--gold);
+        transform: scale(1.05);
     }
 
     /* ---------------------------------- */
@@ -497,7 +501,7 @@
                 
                 {% if colors %}
                 <div class="option-group">
-                    <span class="option-label" style="display: block; margin-bottom: 10px;">اختر اللون:</span>
+                    <span class="option-label" style="display: block; margin-bottom: 10px;">اختر اللون: <span id="selected-color-name" style="color: var(--gold); font-family: var(--font-body); font-size: 1.1rem;">{{ default_color.name_ar }}</span></span>
                 </div>
                 {% else %}
                 <div class="option-group">
@@ -515,11 +519,11 @@
                     <input type="hidden" name="color_id" id="selected-color-id" value="{{ default_color.id }}">
                     <div class="sizes-grid" id="colors-container">
                         {% for c in colors %}
-                            <div class="print-text-btn print-btn {% if c.id == default_color.id %}active-print-text{% endif %}" 
-                                 onclick="selectColor('{{ c.id }}', '{{ c.main_image.url }}', [
+                            <div class="color-swatch-btn print-btn {% if c.id == default_color.id %}active-color{% endif %}" 
+                                 onclick="selectColor('{{ c.id }}', '{{ c.name_ar }}', '{{ c.main_image.url }}', [
                                      {% for g in c.gallery_images.all %}'{{ g.image.url }}'{% if not forloop.last %}, {% endif %}{% endfor %}
                                  ], '{{ c.price|default_if_none:"" }}')"
-                                 style="padding: 0; width: 45px; height: 45px; border-radius: 50%; overflow: hidden; border: 2px solid {% if c.id == default_color.id %}var(--gold){% else %}rgba(255,255,255,0.2){% endif %}; background-color: {{ c.color_code|default:'#111' }}; display: flex; align-items: center; justify-content: center;"
+                                 style="background-color: {{ c.color_code|default:'#111' }};"
                                  title="{{ c.name_ar }}">
                             </div>
                         {% endfor %}
@@ -724,14 +728,19 @@
     let currentImgIndex = 0;
     const baseProductPrice = {{ product.base_price|default:"0" }};
 
-    function selectPrint(printId, mainImageUrl, galleryUrls, printPriceStr) {
-        document.getElementById('selected-print-id').value = printId;
+    function selectColor(colorId, colorName, mainImageUrl, galleryUrls, customPriceStr) {
+        // Update selected color ID and Name
+        const selectedColorIdInput = document.getElementById('selected-color-id');
+        if (selectedColorIdInput) selectedColorIdInput.value = colorId;
         
-        // Update active class on print buttons
+        const selectedColorNameSpan = document.getElementById('selected-color-name');
+        if (selectedColorNameSpan) selectedColorNameSpan.textContent = colorName;
+
+        // Update active class on color buttons
         document.querySelectorAll('.print-btn').forEach(btn => {
-            btn.classList.remove('active-print-text');
+            btn.classList.remove('active-color');
         });
-        event.currentTarget.classList.add('active-print-text');
+        event.currentTarget.classList.add('active-color');
 
         // Update gallery images array
         galleryImages.length = 0; // clear array
@@ -763,8 +772,8 @@
         
         if (priceStack) {
             let activePrice = baseProductPrice;
-            if (printPriceStr && printPriceStr.trim() !== 'None' && printPriceStr.trim() !== '') {
-                activePrice = parseFloat(printPriceStr);
+            if (customPriceStr && customPriceStr.trim() !== 'None' && customPriceStr.trim() !== '') {
+                activePrice = parseFloat(customPriceStr);
             }
             
             if (compareAtPrice > activePrice) {
