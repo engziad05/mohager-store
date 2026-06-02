@@ -183,12 +183,12 @@
         background: transparent;
         border: 1px solid rgba(200, 169, 110, 0.4);
         color: var(--sand);
-        padding: 8px 22px;
+        padding: 10px 25px;
         border-radius: 8px;
         cursor: pointer;
         transition: all 0.3s ease;
         font-family: var(--font-en);
-        font-size: 1.1rem;
+        font-size: 1.3rem;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -470,8 +470,8 @@
         }
         
         .size-btn {
-            padding: 12px 28px; 
-            font-size: 1.2rem;
+            padding: 14px 32px; 
+            font-size: 1.4rem;
         }
         
         .add-to-cart-premium {
@@ -505,8 +505,8 @@
                 
                 {% if colors %}
                 <div class="option-group" style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%;">
-                    <span style="color: var(--gold); font-size: 0.95rem; font-family: var(--font-heading);">اللون</span>
-                    <span id="selected-color-name" style="color: var(--cream); font-family: var(--font-heading); font-size: 1.5rem; font-weight: bold; margin-bottom: 5px;">{{ default_color.name_ar }}</span>
+                    <span style="color: var(--gold); font-size: 1.3rem; font-family: var(--font-heading); font-weight: bold;">اللون</span>
+                    <span id="selected-color-name" style="color: var(--cream); font-family: var(--font-heading); font-size: 1.8rem; font-weight: bold; margin-bottom: 5px;">{{ default_color.name_ar }}</span>
 
                     <input type="hidden" name="color_id" id="selected-color-id" value="{{ default_color.id }}">
                     <div class="sizes-grid" id="colors-container" style="justify-content: center; gap: 15px;">
@@ -523,16 +523,16 @@
                 </div>
                 {% endif %}
                 
-                <div class="option-group" style="display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; margin-top: 10px;">
-                    <span style="color: var(--gold); font-size: 0.95rem; font-family: var(--font-heading);">المقاس</span>
+                <div class="option-group" style="display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; margin-top: 15px;">
+                    <span style="color: var(--gold); font-size: 1.3rem; font-family: var(--font-heading); font-weight: bold;">المقاس</span>
                     
                     <div class="sizes-grid" id="sizes-container" style="justify-content: center; gap: 12px;">
                         {% for variant in variants %}
                             <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box">
-                            <label for="variant_{{ variant.id }}" class="size-btn {% if variant.stock == 0 %}out-of-stock-size{% endif %}" style="flex-direction: column; line-height: 1.2;">
-                                <span>{{ variant.size }}</span>
+                            <label for="variant_{{ variant.id }}" class="size-btn {% if variant.stock == 0 %}out-of-stock-size{% endif %}" style="flex-direction: column; line-height: 1.3;">
+                                <span style="font-weight: bold;">{{ variant.size }}</span>
                                 {% if variant.weight_range %}
-                                    <span style="font-size: 0.75rem; opacity: 0.9; font-family: 'Cairo', sans-serif; margin-top: 4px;">{{ variant.weight_range }} كجم</span>
+                                    <span style="font-size: 0.85rem; opacity: 0.9; font-family: 'Cairo', sans-serif; margin-top: 5px;">{{ variant.weight_range }} كجم</span>
                                 {% endif %}
                             </label>
                         {% empty %}
