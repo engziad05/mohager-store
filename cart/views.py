@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from products.models import ProductVariant
+from products.models import MasterStockVariant
 from products.services import assert_sufficient_variant_stock
 
 from .models import Cart, CartItem
@@ -22,7 +22,7 @@ class CartViewSet(viewsets.ViewSet):
         variant_id = request.data.get('variant_id')
         quantity = int(request.data.get('quantity', 1))
 
-        variant = ProductVariant.objects.filter(id=variant_id).first()
+        variant = MasterStockVariant.objects.filter(id=variant_id).first()
         if not variant:
             return Response({'detail': 'Invalid variant.'}, status=status.HTTP_400_BAD_REQUEST)
 

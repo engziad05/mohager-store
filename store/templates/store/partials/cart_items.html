@@ -5,8 +5,8 @@
     <div style="display: flex; flex-direction: column; gap: 15px; max-height: 65vh; overflow-y: auto; padding-right: 5px;">
         {% for item in cart_items %}
             <div style="display: flex; gap: 15px; align-items: center; background: var(--bg-surface); padding: 10px; border-radius: 12px; border: 1px solid var(--umber);">
-                {% if item.product_print and item.product_print.icon %}
-                    <img src="{{ item.product_print.icon.url }}" alt="{{ item.product.name_ar }}" style="width: 70px; height: 70px; object-fit: cover; border-radius: 8px;">
+                {% if item.product_color and item.product_color.main_image %}
+                    <img src="{{ item.product_color.main_image.url }}" alt="{{ item.product.name_ar }}" style="width: 70px; height: 70px; object-fit: cover; border-radius: 8px;">
                 {% elif item.product.image %}
                     <img src="{{ item.product.image.url }}" alt="{{ item.product.name_ar }}" style="width: 70px; height: 70px; object-fit: cover; border-radius: 8px;">
                 {% endif %}

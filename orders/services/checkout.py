@@ -47,9 +47,9 @@ class OrderService:
                 order=order,
                 product=cart_item.product,
                 variant=cart_item.variant,
-                product_print=cart_item.product_print,
+                product_color=cart_item.product_color,
                 quantity=cart_item.quantity,
-                price=cart_item.product_print.price if cart_item.product_print and cart_item.product_print.price is not None else cart_item.product.base_price,
+                price=cart_item.product_color.price if cart_item.product_color and cart_item.product_color.price is not None else cart_item.product.base_price,
             )
 
         if shipping_data.get('phone') and hasattr(user, 'phone'):
@@ -138,9 +138,9 @@ def complete_storefront_checkout(
             order=order,
             product=item.product,
             variant=item.variant,
-            product_print=item.product_print,
+            product_color=item.product_color,
             quantity=item.quantity,
-            price=item.product_print.price if item.product_print and item.product_print.price is not None else item.product.base_price,
+            price=item.product_color.price if item.product_color and item.product_color.price is not None else item.product.base_price,
         )
 
     cart.delete()

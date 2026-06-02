@@ -9,7 +9,7 @@ from common.cache import (
     invalidate_store_settings_cache,
 )
 from cart.models import Cart, CartItem
-from products.models import Category, Product, ProductVariant
+from products.models import Category, Product, MasterStockVariant
 from .models import HeroSlide, StoreSetting
 
 
@@ -73,19 +73,25 @@ def on_category_delete(sender, instance, **kwargs):
     invalidate_category_cache(instance.slug)
 
 
-@receiver(post_save, sender=ProductVariant)
+@receiver(post_save, sender=MasterStockVariant)
 def on_variant_save(sender, instance, **kwargs):
     """
-    Invalidate the parent product's detail cache when a variant changes.
-    Stock updates are the most common trigger here.
+    Invalidate product caches when a master stock variant changes.
+    (This is trickier because MasterStock applies to multiple products, 
+    but we can invalidate all products in that category for simplicity).
     """
-    invalidate_product_cache(instance.product_id)
+    products = Product.objects.filter(category=instance.master_stock.category)
+    for p in products:
+        invalidate_product_cache(p.id)
 
 
-@receiver(post_delete, sender=ProductVariant)
+@receiver(post_delete, sender=MasterStockVariant)
 def on_variant_delete(sender, instance, **kwargs):
-    """Invalidate the parent product's detail cache when a variant is deleted."""
-    invalidate_product_cache(instance.product_id)
+    """Invalidate product caches when a variant is deleted."""
+    products = Product.objects.filter(category=instance.master_stock.category)
+    for p in products:
+        invalidate_product_cache(p.id)
+
 
 
 @receiver(post_save, sender=HeroSlide)

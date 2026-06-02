@@ -4,7 +4,7 @@ import string
 from django.conf import settings
 from django.db import models
 
-from products.models import Product, ProductVariant
+from products.models import Product, MasterStockVariant
 
 
 class Order(models.Model):
@@ -73,7 +73,7 @@ class OrderItem(models.Model):
         verbose_name='المنتج',
     )
     variant = models.ForeignKey(
-        ProductVariant,
+        'products.MasterStockVariant',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

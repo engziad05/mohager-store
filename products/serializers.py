@@ -1,17 +1,11 @@
 from rest_framework import serializers
-from .models import Category, Product, ProductImage, ProductVariant, ProductColor
-
+from .models import Category, Product, ProductImage, ProductColor, GlobalColor, MasterStock, MasterStockVariant
 
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
         fields = ['id', 'image']
 
-
-class ProductVariantSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductVariant
-        fields = ['id', 'size', 'stock']
 
 
 class ProductColorSerializer(serializers.ModelSerializer):
@@ -22,7 +16,6 @@ class ProductColorSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
-    variants = ProductVariantSerializer(many=True, read_only=True)
     colors = ProductColorSerializer(many=True, read_only=True)
     category_name = serializers.CharField(source='category.name_en', read_only=True)
     has_discount = serializers.BooleanField(read_only=True)
@@ -46,7 +39,6 @@ class ProductSerializer(serializers.ModelSerializer):
             'is_active',
             'created_at',
             'images',
-            'variants',
             'colors',
         ]
 

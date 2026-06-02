@@ -74,8 +74,15 @@ class ProductColor(models.Model):
         related_name='colors',
         on_delete=models.CASCADE,
     )
-    name_ar = models.CharField(max_length=100, verbose_name='اسم اللون (عربي)')
-    name_en = models.CharField(max_length=100, verbose_name='اسم اللون (إنجليزي)', blank=True, null=True)
+    global_color = models.ForeignKey(
+        'GlobalColor',
+        on_delete=models.PROTECT,
+        null=True,
+        verbose_name='اللون الأساسي السادة (المرجع)',
+        help_text='سيتم سحب مقاسات ومخزون هذا المنتج من مخزون اللون الأساسي المختار هنا.'
+    )
+    name_ar = models.CharField(max_length=100, verbose_name='اسم اللون للطبعة (عربي)')
+    name_en = models.CharField(max_length=100, verbose_name='اسم اللون للطبعة (إنجليزي)', blank=True, null=True)
     color_code = models.CharField(max_length=20, verbose_name='كود اللون (Hex)', default='#111111')
     main_image = models.ImageField(upload_to='products/colors/main/', verbose_name='الصورة الرئيسية للون')
     price = models.DecimalField(
@@ -123,28 +130,45 @@ class ProductImage(models.Model):
         return f'صورة إضافية لـ {self.product.name_en}'
 
 
-class ProductVariant(models.Model):
-    product = models.ForeignKey(
-        Product,
-        related_name='variants',
-        on_delete=models.CASCADE,
-    )
-    color = models.ForeignKey(
-        ProductColor,
-        related_name='variants',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        verbose_name='اللون (اختياري)',
-        help_text='حدد اللون الذي ينتمي إليه هذا المقاس والمخزون. اتركها فارغة إذا كان ينطبق على كل الألوان.'
-    )
-    size = models.CharField(max_length=10, blank=True, null=True, verbose_name='المقاس')
+class GlobalColor(models.Model):
+    name_ar = models.CharField(max_length=100, verbose_name='اسم اللون (عربي)')
+    name_en = models.CharField(max_length=100, verbose_name='اسم اللون (إنجليزي)', blank=True, null=True)
+    color_code = models.CharField(max_length=20, verbose_name='كود اللون (Hex)', default='#111111')
+
+    class Meta:
+        db_table = 'store_globalcolor'
+        verbose_name = 'لون أساسي سادة'
+        verbose_name_plural = 'الألوان الأساسية السادة'
+
+    def __str__(self):
+        return self.name_ar
+
+
+class MasterStock(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='القسم (نوع المنتج)')
+    color = models.ForeignKey(GlobalColor, on_delete=models.CASCADE, verbose_name='اللون الأساسي السادة')
+
+    class Meta:
+        db_table = 'store_masterstock'
+        unique_together = ('category', 'color')
+        verbose_name = 'مخزون أساسي'
+        verbose_name_plural = 'المخزون الأساسي (Master Stock)'
+
+    def __str__(self):
+        return f'{self.category.name_ar} - {self.color.name_ar}'
+
+
+class MasterStockVariant(models.Model):
+    master_stock = models.ForeignKey(MasterStock, related_name='variants', on_delete=models.CASCADE)
+    size = models.CharField(max_length=10, verbose_name='المقاس')
     weight_range = models.CharField(max_length=50, blank=True, null=True, verbose_name='الوزن (من-إلى)', help_text='مثال: 70-85')
     stock = models.PositiveIntegerField(default=0, verbose_name='المخزون')
 
     class Meta:
-        db_table = 'store_productvariant'
+        db_table = 'store_masterstockvariant'
         ordering = ['id']
+        verbose_name = 'مقاس مخزون'
+        verbose_name_plural = 'مقاسات المخزون'
 
     def __str__(self):
-        return f'{self.product.name_en} - {self.size}'
+        return f'{self.master_stock} - {self.size}'

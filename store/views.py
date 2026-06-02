@@ -16,7 +16,7 @@ from common.cache import get_or_cache
 from orders.models import Order
 from orders.services.checkout import complete_storefront_checkout
 from cart.models import Cart, CartItem
-from products.models import Category, Product, ProductVariant
+from products.models import Category, Product, MasterStockVariant
 from products.services import assert_sufficient_variant_stock
 from .forms import SavedAddressForm
 from .models import HeroSlide, SavedAddress, StoreSetting
@@ -136,15 +136,32 @@ def product_detail(request, product_id):
 
     def _fetch_product():
         product = get_object_or_404(
-            Product.objects.select_related('category').prefetch_related('variants', 'images', 'colors__gallery_images'),
+            Product.objects.select_related('category').prefetch_related('images', 'colors__gallery_images', 'colors__global_color'),
             id=product_id,
         )
         colors = list(product.colors.all())
         default_color = next((c for c in colors if c.is_default), colors[0] if colors else None)
-        # Extract prefetched data while it's hot
+        
+        from products.models import MasterStock
+        variants_data = []
+        for c in colors:
+            if c.global_color:
+                try:
+                    ms = MasterStock.objects.prefetch_related('variants').get(category=product.category, color=c.global_color)
+                    for v in ms.variants.all():
+                        variants_data.append({
+                            'id': v.id,
+                            'color_id': c.id,
+                            'size': v.size,
+                            'stock': v.stock,
+                            'weight_range': v.weight_range,
+                        })
+                except MasterStock.DoesNotExist:
+                    pass
+
         return {
             'product': product,
-            'variants': list(product.variants.all()),
+            'variants': variants_data,
             'extra_images': list(product.images.all()),
             'colors': colors,
             'default_color': default_color,
@@ -293,16 +310,17 @@ def add_to_cart(request, product_id):
             return redirect('product_detail', product_id=product_id)
 
         product = get_object_or_404(Product, id=product_id)
-        variant = get_object_or_404(ProductVariant, id=variant_id)
+        variant = get_object_or_404(MasterStockVariant, id=variant_id)
         
         product_color = None
         if color_id:
             from products.models import ProductColor
             product_color = get_object_or_404(ProductColor, id=color_id, product=product)
 
-        if variant.color and product_color and variant.color.id != product_color.id:
-            messages.error(request, 'عفواً، هذا المقاس غير متوفر باللون المختار!')
-            return redirect('product_detail', product_id=product.id)
+        if product_color and product_color.global_color:
+            if variant.master_stock.color_id != product_color.global_color_id:
+                messages.error(request, 'عفواً، هذا المقاس غير متوفر باللون المختار!')
+                return redirect('product_detail', product_id=product.id)
 
         try:
             assert_sufficient_variant_stock(variant, 1)

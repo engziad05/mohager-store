@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 
-from products.models import Product, ProductVariant
+from products.models import Product, MasterStockVariant
 
 
 class Cart(models.Model):
@@ -28,7 +28,7 @@ class Cart(models.Model):
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    variant = models.ForeignKey(ProductVariant, on_delete=models.SET_NULL, null=True)
+    variant = models.ForeignKey('products.MasterStockVariant', on_delete=models.SET_NULL, null=True)
     product_color = models.ForeignKey('products.ProductColor', on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=1)
     added_at = models.DateTimeField(auto_now_add=True)

@@ -569,7 +569,7 @@
                     <div class="sizes-grid" id="sizes-container" style="justify-content: center; gap: 12px;">
                         {% for variant in variants %}
                             <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" class="variant-box">
-                            <label for="variant_{{ variant.id }}" class="size-btn variant-label-wrapper" data-color-id="{{ variant.color.id|default:'' }}" data-stock="{{ variant.stock }}" style="flex-direction: column; line-height: 1.3; display: none;">
+                            <label for="variant_{{ variant.id }}" class="size-btn variant-label-wrapper" data-color-id="{{ variant.color_id|default:'' }}" data-stock="{{ variant.stock }}" style="flex-direction: column; line-height: 1.3; display: none;">
                                 <span style="font-weight: bold;">{{ variant.size }}</span>
                                 {% if variant.weight_range %}
                                     <span style="font-size: 0.85rem; opacity: 0.9; font-family: 'Cairo', sans-serif; margin-top: 5px;">{{ variant.weight_range }} كجم</span>

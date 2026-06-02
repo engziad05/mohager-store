@@ -1,7 +1,8 @@
 from unfold.admin import ModelAdmin, TabularInline
 from django import forms
+from django.contrib import admin
 
-from .models import Category, Product, ProductImage, ProductVariant, ProductColor
+from .models import Category, Product, ProductImage, ProductColor, GlobalColor, MasterStock, MasterStockVariant
 
 
 class ProductImageForm(forms.ModelForm):
@@ -32,20 +33,20 @@ class ProductImageInline(TabularInline):
     form = ProductImageForm
 
 
-class ProductVariantInline(TabularInline):
-    model = ProductVariant
+class MasterStockVariantInline(TabularInline):
+    model = MasterStockVariant
     extra = 1
 
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "color":
-            if hasattr(request, 'resolver_match') and request.resolver_match:
-                object_id = request.resolver_match.kwargs.get('object_id')
-                if object_id:
-                    kwargs["queryset"] = ProductColor.objects.filter(product_id=object_id)
-                else:
-                    # If adding a new Product, no colors exist yet
-                    kwargs["queryset"] = ProductColor.objects.none()
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+@admin.register(GlobalColor)
+class GlobalColorAdmin(ModelAdmin):
+    list_display = ['name_ar', 'name_en', 'color_code']
+    search_fields = ['name_ar', 'name_en']
+
+@admin.register(MasterStock)
+class MasterStockAdmin(ModelAdmin):
+    list_display = ['category', 'color']
+    list_filter = ['category', 'color']
+    inlines = [MasterStockVariantInline]
 
 
 class ProductAdmin(ModelAdmin):
@@ -67,7 +68,7 @@ class ProductAdmin(ModelAdmin):
             'description': 'Base price is the final selling price. Original price is shown as crossed-out when it is higher than base price.',
         }),
     )
-    inlines = [ProductVariantInline, ProductColorInline, ProductImageInline]
+    inlines = [ProductColorInline, ProductImageInline]
 
     def save_related(self, request, form, formsets, change):
         super().save_related(request, form, formsets, change)
@@ -97,10 +98,17 @@ class ProductAdmin(ModelAdmin):
                             image_form.instance.save()
 
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related('category').prefetch_related('variants')
+        return super().get_queryset(request).select_related('category')
 
     def stock_summary(self, obj):
-        total_stock = sum(variant.stock for variant in obj.variants.all())
+        total_stock = 0
+        for color in obj.colors.all():
+            if color.global_color:
+                try:
+                    master_stock = MasterStock.objects.get(category=obj.category, color=color.global_color)
+                    total_stock += sum(v.stock for v in master_stock.variants.all())
+                except MasterStock.DoesNotExist:
+                    pass
         return total_stock
 
     stock_summary.short_description = 'Stock'

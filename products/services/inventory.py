@@ -5,14 +5,14 @@ from typing import Iterable
 
 from django.conf import settings
 
-from products.models import ProductVariant
+from products.models import MasterStockVariant
 
 logger = logging.getLogger(__name__)
 
 LOW_STOCK_THRESHOLD = 5
 
 
-def assert_sufficient_variant_stock(variant: ProductVariant, quantity: int) -> None:
+def assert_sufficient_variant_stock(variant: MasterStockVariant, quantity: int) -> None:
     if quantity < 1:
         raise ValueError('Quantity must be at least 1.')
     if not variant:
@@ -32,7 +32,7 @@ def consume_stock_for_cart_items(cart_items: Iterable) -> None:
     for item in cart_items:
         if not item.variant_id:
             continue
-        variant = ProductVariant.objects.select_for_update().get(pk=item.variant_id)
+        variant = MasterStockVariant.objects.select_for_update().get(pk=item.variant_id)
         if variant.stock < item.quantity:
             raise ValueError(
                 f'عفواً، الكمية المتاحة من {item.product.name_ar} مقاس {variant.size} لم تعد تكفي.'
@@ -112,6 +112,6 @@ def restore_stock_for_order_items(order) -> None:
     """Restore variant stock when an order is cancelled (mirrors OrderService.cancel_order)."""
     for line in order.items.all():
         if line.variant_id:
-            variant = ProductVariant.objects.select_for_update().get(pk=line.variant_id)
+            variant = MasterStockVariant.objects.select_for_update().get(pk=line.variant_id)
             variant.stock += line.quantity
             variant.save(update_fields=['stock'])
