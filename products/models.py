@@ -144,6 +144,7 @@ class ProductVariant(models.Model):
 
     class Meta:
         db_table = 'store_productvariant'
+        ordering = ['id']
 
     def __str__(self):
         return f'{self.product.name_en} - {self.size}'
