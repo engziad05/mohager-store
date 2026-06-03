@@ -274,9 +274,18 @@ def update_quantity(request, item_id, action):
 def order_success(request):
     tracking_no = request.session.get('last_order_tracking', 'MHG-000000')
     order_id = request.session.get('last_order_id', None)
+    
+    order_total = 0
+    if order_id:
+        from orders.models import Order
+        order = Order.objects.filter(id=order_id).first()
+        if order:
+            order_total = order.total_price
+
     context = {
         'tracking_no': tracking_no,
         'order_id': order_id,
+        'order_total': order_total,
     }
     return render(request, 'store/order_success.html', context)
 

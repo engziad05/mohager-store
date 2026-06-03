@@ -623,6 +623,9 @@
                         const originalText = 'أضف إلى السلة <i class="fas fa-shopping-bag" style="margin-right: 8px;"></i>';
                         
                         if (e.detail.successful) {
+                            if (typeof fbq === 'function') {
+                                fbq('track', 'AddToCart');
+                            }
                             // نجاح: الزرار يقلب أخضر
                             btn.innerHTML = 'تم الإضافة بنجاح <i class="fas fa-check" style="margin-right: 8px;"></i>';
                             btn.style.backgroundColor = '#4caf50';

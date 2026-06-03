@@ -79,4 +79,10 @@
         
     </div>
 </div>
+
+<script>
+    if (typeof fbq === 'function') {
+        fbq('track', 'Purchase', {value: {{ order_total|default:"0" }}, currency: 'EGP'});
+    }
+</script>
 {% endblock %}
