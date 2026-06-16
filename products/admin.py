@@ -3,12 +3,29 @@ from django import forms
 from django.contrib import admin
 
 from .models import Category, Product, ProductImage, ProductColor, GlobalColor, MasterStock, MasterStockVariant
+from django.db.models import Sum, OuterRef, Subquery, IntegerField
+from django.db.models.functions import Coalesce
 
 
 class ProductImageForm(forms.ModelForm):
     class Meta:
         model = ProductImage
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'product_color' in self.fields:
+            if self.instance and hasattr(self.instance, 'product_id') and self.instance.product_id:
+                qs = ProductColor.objects.filter(product_id=self.instance.product_id)
+            else:
+                qs = ProductColor.objects.none()
+            
+            if self.is_bound:
+                raw_val = self.data.get(self.add_prefix('product_color'))
+                if raw_val and str(raw_val).isdigit():
+                    qs = ProductColor.objects.filter(id=raw_val) | qs
+                    
+            self.fields['product_color'].queryset = qs
 
     def clean(self):
         cleaned_data = super().clean()
@@ -96,9 +113,24 @@ class ProductAdmin(ModelAdmin):
                             image_form.instance.save()
 
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related('category')
+        qs = super().get_queryset(request).select_related('category')
+        
+        stock_sq = MasterStockVariant.objects.filter(
+            master_stock__category=OuterRef('category'),
+            master_stock__color__in=ProductColor.objects.filter(product=OuterRef('pk')).values('global_color')
+        ).order_by().values('master_stock__category').annotate(
+            total=Sum('stock')
+        ).values('total')
+        
+        qs = qs.annotate(
+            computed_stock=Coalesce(Subquery(stock_sq, output_field=IntegerField()), 0)
+        )
+        return qs
 
     def stock_summary(self, obj):
+        if hasattr(obj, 'computed_stock'):
+            return obj.computed_stock
+            
         total_stock = 0
         for color in obj.colors.all():
             if color.global_color:
