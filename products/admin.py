@@ -114,32 +114,20 @@ class ProductAdmin(ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request).select_related('category')
-        
-        stock_sq = MasterStockVariant.objects.filter(
-            master_stock__category=OuterRef('category'),
-            master_stock__color__in=ProductColor.objects.filter(product=OuterRef('pk')).values('global_color')
-        ).order_by().values('master_stock__category').annotate(
-            total=Sum('stock')
-        ).values('total')
-        
-        qs = qs.annotate(
-            computed_stock=Coalesce(Subquery(stock_sq, output_field=IntegerField()), 0)
-        )
+        qs = qs.prefetch_related('colors__global_color')
         return qs
 
     def stock_summary(self, obj):
-        if hasattr(obj, 'computed_stock'):
-            return obj.computed_stock
+        color_ids = [c.global_color_id for c in obj.colors.all() if c.global_color_id]
+        if not color_ids:
+            return 0
             
-        total_stock = 0
-        for color in obj.colors.all():
-            if color.global_color:
-                try:
-                    master_stock = MasterStock.objects.get(category=obj.category, color=color.global_color)
-                    total_stock += sum(v.stock for v in master_stock.variants.all())
-                except MasterStock.DoesNotExist:
-                    pass
-        return total_stock
+        total = MasterStockVariant.objects.filter(
+            master_stock__category_id=obj.category_id,
+            master_stock__color_id__in=color_ids
+        ).aggregate(total=Sum('stock'))['total']
+        
+        return total or 0
 
     stock_summary.short_description = 'Stock'
 
